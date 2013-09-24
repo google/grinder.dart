@@ -2,10 +2,6 @@
 
 Grinder - a task based, dependency aware build system.
 
-[![Build Status](https://drone.io/github.com/devoncarew/grinder.dart/status.png)](https://drone.io/github.com/devoncarew/grinder.dart/latest)
-
-API [docs](http://devoncarew.github.io/grinder.dart/).
-
 ## Intro
 
 A library and tool to drive a command-line build.
