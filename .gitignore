@@ -1,0 +1,9 @@
+pubspec.lock
+packages
+.svn
+.DS_Store
+.buildlog
+.project
+*.js.map
+*.js.deps
+docs/
