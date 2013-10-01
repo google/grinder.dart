@@ -1,0 +1,119 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>GrinderContext class / grinder Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="grinder" data-type="GrinderContext">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../grinder.html">grinder</a> &rsaquo; <a href="../grinder/GrinderContext.html">GrinderContext</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>GrinderContext</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>A <a class="crossref" href="../grinder/GrinderContext.html">GrinderContext</a> is used to given the currently running Grinder task the
+ability to introspect the running state. It can get the get the current
+<a class="crossref" href="../grinder/Grinder.html">Grinder</a> instance and get a reference to the current <a class="crossref" href="../grinder/GrinderTask.html">GrinderTask</a> instance
+as well as the previous and next tasks, if any.</p>
+<p>A <a class="crossref" href="../grinder/GrinderContext.html">GrinderContext</a> also allows you to log messages and errors.</p>
+<pre class="source">
+class GrinderContext {
+ /// The [Grinder] instance.
+ Grinder grinder;
+ /// The current running [GrinderTask].
+ GrinderTask task;
+
+ GrinderContext._(this.grinder, this.task);
+
+ /// Log an informational message to Grinder's output.
+ void log(String message) =&gt; grinder.log("  ${message.replaceAll('\n', '\n  ')}");
+
+ /// Halt task execution; throws an exception with the given error message.
+ void fail(String message) =&gt; throw new GrinderException(message);
+}
+</pre>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="grinder">
+<button class="show-code">Code</button>
+<a href="../grinder/Grinder.html">Grinder</a>         <strong>grinder</strong> <a class="anchor-link"
+            href="#grinder"
+            title="Permalink to GrinderContext.grinder">#</a>
+        </h4>
+        <div class="doc">
+<p>The <a class="crossref" href="../grinder/Grinder.html">Grinder</a> instance.</p>
+<pre class="source">
+Grinder grinder
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="task">
+<button class="show-code">Code</button>
+<a href="../grinder/GrinderTask.html">GrinderTask</a>         <strong>task</strong> <a class="anchor-link"
+            href="#task"
+            title="Permalink to GrinderContext.task">#</a>
+        </h4>
+        <div class="doc">
+<p>The current running <a class="crossref" href="../grinder/GrinderTask.html">GrinderTask</a>.</p>
+<pre class="source">
+GrinderTask task
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="fail">
+<button class="show-code">Code</button>
+void <strong>fail</strong>(String message) <a class="anchor-link" href="#fail"
+              title="Permalink to GrinderContext.fail">#</a></h4>
+<div class="doc">
+<p>Halt task execution; throws an exception with the given error message.</p>
+<pre class="source">
+void fail(String message) =&gt; throw new GrinderException(message);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="log">
+<button class="show-code">Code</button>
+void <strong>log</strong>(String message) <a class="anchor-link" href="#log"
+              title="Permalink to GrinderContext.log">#</a></h4>
+<div class="doc">
+<p>Log an informational message to Grinder's output.</p>
+<pre class="source">
+void log(String message) =&gt; grinder.log("  ${message.replaceAll('\n', '\n  ')}");
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

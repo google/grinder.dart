@@ -1,0 +1,169 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>grinder Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico">
+        
+        </head>
+        <body data-library="grinder">
+        <div class="page">
+        <div class="header">
+          <a href="index.html"><div class="logo"></div></a>
+          <a href="index.html">Dart Documentation</a>
+         &rsaquo; <a href="grinder.html">grinder</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+<h2><strong>grinder</strong> library</h2>
+<div class="doc"><p>A library and tool to drive a command-line build.</p>
+<p>Grinder build files are entirely specified in Dart code. This allows you to
+write and debug your build files with the same tools you use for the rest of
+your project source.</p>
+<p>Generally, a Grinder implementation will look something like this:</p>
+<pre><code>void main() {
+  defineTask('init', taskFunction: init);
+  defineTask('compile', taskFunction: compile, depends: ['init']);
+  defineTask('deploy', taskFunction: deploy, depends: ['compile']);
+  defineTask('docs', taskFunction: deploy, depends: ['init']);
+  defineTask('all', depends: ['deploy', 'docs']);
+
+  startGrinder();
+}
+
+void init(GrinderContext context) {
+  context.log("I set things up");
+}
+
+...
+</code></pre>
+<p>Tasks to run are specified on the command line. If a task has dependencies,
+those dependent tasks are run before the specified task.</p>
+<h2>Command-line usage</h2>
+<pre><code>usage: dart grinder.dart &lt;options&gt; target1 target2 ...
+
+valid options:
+-h, --help    show targets but don't build
+-d, --deps    display the dependencies of targets
+</code></pre></div>
+<div>
+<h3>Functions</h3>
+<div class="method"><h4 id="startGrinder">
+<button class="show-code">Code</button>
+void <strong>startGrinder</strong>() <a class="anchor-link" href="#startGrinder"
+              title="Permalink to startGrinder">#</a></h4>
+<div class="doc">
+<p>Start the build process. This should be called at the end of the <code>main()</code>
+method. If there is a task failure, this method will halt task execution and
+throw a <a class="crossref" href="grinder/GrinderException.html">GrinderException</a>.</p>
+<p><a class="crossref" href="grinder.html#startGrinder">startGrinder</a> should be called once and only once.</p>
+<pre class="source">
+void startGrinder() {
+ ArgParser parser = _createArgsParser();
+ ArgResults results = parser.parse(new Options().arguments);
+
+ if (results['help']) {
+   _printUsage(parser, _grinder);
+ } else if (results['deps']) {
+   _printDeps(_grinder);
+ } else if (results.rest.isEmpty) {
+   _printUsage(parser, _grinder);
+ } else {
+   _grinder.start(results.rest);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="defineTask">
+<button class="show-code">Code</button>
+void <strong>defineTask</strong>(String name, {<a href="grinder/TaskFunction.html">TaskFunction</a> taskFunction, List&lt;String&gt; depends: const[] }) <a class="anchor-link" href="#defineTask"
+              title="Permalink to defineTask">#</a></h4>
+<div class="doc">
+<p>Add a new task definition to the global <a class="crossref" href="grinder/Grinder.html">Grinder</a> instance. A 
+<span class="param">name</span> is
+required. If specified, a 
+<span class="param">taskFunction</span> is invoked when the task starts.
+Any dependencies of the task, that need to run before it, should be passed
+in via 
+<span class="param">depends</span>.</p>
+<pre class="source">
+void defineTask(String name, {TaskFunction taskFunction, List&lt;String&gt; depends : const []}) {
+ _grinder.addTask(
+     new GrinderTask(name, taskFunction: taskFunction, depends: depends));
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="addTask">
+<button class="show-code">Code</button>
+void <strong>addTask</strong>(<a href="grinder/GrinderTask.html">GrinderTask</a> task) <a class="anchor-link" href="#addTask"
+              title="Permalink to addTask">#</a></h4>
+<div class="doc">
+<p>Add a new task to the global <a class="crossref" href="grinder/Grinder.html">Grinder</a> instance. Some combination of this
+and <a class="crossref" href="grinder.html#defineTask">defineTask</a> should be called before <a class="crossref" href="grinder.html#startGrinder">startGrinder</a> is invoked.</p>
+<pre class="source">
+void addTask(GrinderTask task) =&gt; _grinder.addTask(task);
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Classes</h3>
+          <div class="type">
+          <h4>
+            <a href="grinder/Grinder.html"><strong>Grinder</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="grinder/GrinderContext.html"><strong>GrinderContext</strong></a>
+          </h4>
+          </div>
+          
+          <div class="type">
+          <h4>
+            <a href="grinder/GrinderTask.html"><strong>GrinderTask</strong></a>
+          </h4>
+          </div>
+          
+</div>
+<div>
+<h3>Typedefs</h3>
+          <div class="type">
+          <h4>
+            <a href="grinder/TaskFunction.html"><strong>TaskFunction</strong></a>
+          </h4>
+          </div>
+          
+</div>
+<div>
+<h3>Exceptions</h3>
+          <div class="type">
+          <h4>
+            <a href="grinder/GrinderException.html"><strong>GrinderException</strong></a>
+          </h4>
+          </div>
+          
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="client-live-nav.js"></script>
+        </body></html>
+        

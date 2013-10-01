@@ -1,0 +1,113 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>PubTools class / grinder.utils Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="grinder.utils" data-type="PubTools">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../grinder.utils.html">grinder.utils</a> &rsaquo; <a href="../grinder.utils/PubTools.html">PubTools</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>PubTools</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>Utility tasks for executing pub commands.</p>
+<pre class="source">
+class PubTools {
+
+ /**
+  * Run `pub install` on the current project. If [force] is true, this will
+  * execute even if the pubspec.lock file is up-to-date with respect to the
+  * pubspec.yaml file.
+  */
+ void install(GrinderContext context, {bool force: false}) {
+   FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+   FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+   if (force || !publock.upToDate(pubspec)) {
+     runSdkBinary(context, 'pub', arguments: ['install']);
+   }
+ }
+
+ void update(GrinderContext context, {bool force: false}) {
+   FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+   FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+   if (force || !publock.upToDate(pubspec)) {
+     runSdkBinary(context, 'pub', arguments: ['update']);
+   }
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="install">
+<button class="show-code">Code</button>
+void <strong>install</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#install"
+              title="Permalink to PubTools.install">#</a></h4>
+<div class="doc">
+<p>Run <code>pub install</code> on the current project. If 
+<span class="param">force</span> is true, this will
+execute even if the pubspec.lock file is up-to-date with respect to the
+pubspec.yaml file.</p>
+<pre class="source">
+void install(GrinderContext context, {bool force: false}) {
+ FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+ FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+ if (force || !publock.upToDate(pubspec)) {
+   runSdkBinary(context, 'pub', arguments: ['install']);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="update">
+<button class="show-code">Code</button>
+void <strong>update</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#update"
+              title="Permalink to PubTools.update">#</a></h4>
+<div class="doc">
+<pre class="source">
+void update(GrinderContext context, {bool force: false}) {
+ FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+ FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+ if (force || !publock.upToDate(pubspec)) {
+   runSdkBinary(context, 'pub', arguments: ['update']);
+ }
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

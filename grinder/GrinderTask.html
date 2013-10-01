@@ -1,0 +1,185 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>GrinderTask class / grinder Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="grinder" data-type="GrinderTask">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../grinder.html">grinder</a> &rsaquo; <a href="../grinder/GrinderTask.html">GrinderTask</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>GrinderTask</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>This class represents a Grinder task. These are created automatically by
+the <a class="crossref" href="../grinder.html#defineTask">defineTask</a> function.</p>
+<pre class="source">
+class GrinderTask {
+ /// The name of the task.
+ final String name;
+ /// An optional description of the task.
+ final String description;
+ /// The function to execute when starting this task.
+ TaskFunction taskFunction;
+ /// The list of task dependencies; tasks that must run before this task should
+ /// execute.
+ List&lt;String&gt; depends;
+
+ /**
+  * Create a new [GrinderTask]. A name is required; a [description],
+  * [taskFunction] to execute when this task is started, and a [depends] list
+  * are optional.
+  */
+ GrinderTask(this.name, {this.description, this.taskFunction, this.depends : const []});
+
+ /**
+  * This method is invoked when the task is started. If a task was created with
+  * a [TaskFunction], that function will be invoked by this method.
+  */
+ void execute(GrinderContext context) {
+   if (taskFunction != null) {
+     taskFunction(context);
+   };
+ }
+
+ String toString() =&gt; "[${name}]";
+}
+</pre>
+</div>
+<div>
+<h3>Constructors</h3>
+<div class="method"><h4 id="">
+<button class="show-code">Code</button>
+new <strong>GrinderTask</strong>(String name, {String description, <a href="../grinder/TaskFunction.html">TaskFunction</a> taskFunction, List&lt;String&gt; depends: const[] }) <a class="anchor-link" href="#"
+              title="Permalink to GrinderTask.GrinderTask">#</a></h4>
+<div class="doc">
+<p>Create a new <a class="crossref" href="../grinder/GrinderTask.html">GrinderTask</a>. A name is required; a 
+<span class="param">description</span>,
+
+<span class="param">taskFunction</span> to execute when this task is started, and a 
+<span class="param">depends</span> list
+are optional.</p>
+<pre class="source">
+GrinderTask(this.name, {this.description, this.taskFunction, this.depends : const []});
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="depends">
+<button class="show-code">Code</button>
+List&lt;String&gt;         <strong>depends</strong> <a class="anchor-link"
+            href="#depends"
+            title="Permalink to GrinderTask.depends">#</a>
+        </h4>
+        <div class="doc">
+<p>The list of task dependencies; tasks that must run before this task should
+execute.</p>
+<pre class="source">
+List&lt;String&gt; depends
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="description">
+<button class="show-code">Code</button>
+final String         <strong>description</strong> <a class="anchor-link"
+            href="#description"
+            title="Permalink to GrinderTask.description">#</a>
+        </h4>
+        <div class="doc">
+<p>An optional description of the task.</p>
+<pre class="source">
+final String description
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="name">
+<button class="show-code">Code</button>
+final String         <strong>name</strong> <a class="anchor-link"
+            href="#name"
+            title="Permalink to GrinderTask.name">#</a>
+        </h4>
+        <div class="doc">
+<p>The name of the task.</p>
+<pre class="source">
+final String name
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="taskFunction">
+<button class="show-code">Code</button>
+<a href="../grinder/TaskFunction.html">TaskFunction</a>         <strong>taskFunction</strong> <a class="anchor-link"
+            href="#taskFunction"
+            title="Permalink to GrinderTask.taskFunction">#</a>
+        </h4>
+        <div class="doc">
+<p>The function to execute when starting this task.</p>
+<pre class="source">
+TaskFunction taskFunction
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="execute">
+<button class="show-code">Code</button>
+void <strong>execute</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context) <a class="anchor-link" href="#execute"
+              title="Permalink to GrinderTask.execute">#</a></h4>
+<div class="doc">
+<p>This method is invoked when the task is started. If a task was created with
+a <a class="crossref" href="../grinder/TaskFunction.html">TaskFunction</a>, that function will be invoked by this method.</p>
+<pre class="source">
+void execute(GrinderContext context) {
+ if (taskFunction != null) {
+   taskFunction(context);
+ };
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to GrinderTask.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+String toString() =&gt; "[${name}]";
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

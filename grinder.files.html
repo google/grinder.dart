@@ -1,0 +1,217 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>grinder.files Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="favicon.ico">
+        
+        </head>
+        <body data-library="grinder.files">
+        <div class="page">
+        <div class="header">
+          <a href="index.html"><div class="logo"></div></a>
+          <a href="index.html">Dart Documentation</a>
+         &rsaquo; <a href="grinder.files.html">grinder.files</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+<h2><strong>grinder.files</strong> library</h2>
+<div class="doc"><p>General file system routines, useful in the context of running builds. This
+includes the <a class="crossref" href="grinder.files/FileSet.html">FileSet</a> class, which is used for reasoning about sets of
+files.</p></div>
+<div>
+<h3>Properties</h3>
+<div class="field"><h4 id="dartVM">
+<button class="show-code">Code</button>
+final File         <strong>dartVM</strong> <a class="anchor-link"
+            href="#dartVM"
+            title="Permalink to dartVM">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+File get dartVM =&gt; joinFile(sdkDir, ['bin', 'dart']);
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sdkDir">
+<button class="show-code">Code</button>
+final Directory         <strong>sdkDir</strong> <a class="anchor-link"
+            href="#sdkDir"
+            title="Permalink to sdkDir">#</a>
+        </h4>
+        <div class="doc">
+<p>Return the path to the current Dart SDK.</p>
+<pre class="source">
+Directory get sdkDir {
+ // look for --dart-sdk on the command line
+ List&lt;String&gt; args = new Options().arguments;
+ // TODO:
+ if (args.contains('--dart-sdk')) {
+   return new Directory(args[args.indexOf('dart-sdk') + 1]);
+ }
+
+ // look in env['DART_SDK']
+ if (Platform.environment['DART_SDK'] != null) {
+   return new Directory(Platform.environment['DART_SDK']);
+ }
+
+ // look relative to the dart executable
+ // TODO: file a bug re: the path to the executable and the cwd
+ return getParent(new File(Platform.executable).directory);
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Functions</h3>
+<div class="method"><h4 id="copyDirectory">
+<button class="show-code">Code</button>
+void <strong>copyDirectory</strong>(Directory srcDir, Directory destDir) <a class="anchor-link" href="#copyDirectory"
+              title="Permalink to copyDirectory">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyDirectory(Directory srcDir, Directory destDir) {
+ for (FileSystemEntity entity in srcDir.listSync()) {
+   String name = fileName(entity);
+
+   if (entity is File) {
+     copyFile(entity, destDir);
+   } else {
+     copyDirectory(entity, joinDir(destDir, [name]));
+   }
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="copyFile">
+<button class="show-code">Code</button>
+void <strong>copyFile</strong>(File srcFile, Directory destDir) <a class="anchor-link" href="#copyFile"
+              title="Permalink to copyFile">#</a></h4>
+<div class="doc">
+<pre class="source">
+void copyFile(File srcFile, Directory destDir) {
+ File destFile = joinFile(destDir, [fileName(srcFile)]);
+
+ if (!destFile.existsSync() ||
+     srcFile.lastModifiedSync() != destFile.lastModifiedSync()) {
+   destDir.createSync(recursive: true);
+   destFile.writeAsBytesSync(srcFile.readAsBytesSync());
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="getParent">
+<button class="show-code">Code</button>
+Directory <strong>getParent</strong>(Directory dir) <a class="anchor-link" href="#getParent"
+              title="Permalink to getParent">#</a></h4>
+<div class="doc">
+<pre class="source">
+Directory getParent(Directory dir) {
+ String base = baseName(dir);
+
+ if (base == null) {
+   return null;
+ } else {
+   return new Directory(base);
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="joinDir">
+<button class="show-code">Code</button>
+Directory <strong>joinDir</strong>(Directory dir, List&lt;String&gt; files) <a class="anchor-link" href="#joinDir"
+              title="Permalink to joinDir">#</a></h4>
+<div class="doc">
+<pre class="source">
+Directory joinDir(Directory dir, List&lt;String&gt; files) {
+ String pathFragment = files.join(Platform.pathSeparator);
+ return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="joinFile">
+<button class="show-code">Code</button>
+File <strong>joinFile</strong>(Directory dir, List&lt;String&gt; files) <a class="anchor-link" href="#joinFile"
+              title="Permalink to joinFile">#</a></h4>
+<div class="doc">
+<pre class="source">
+File joinFile(Directory dir, List&lt;String&gt; files) {
+ String pathFragment = files.join(Platform.pathSeparator);
+ return new File("${dir.path}${Platform.pathSeparator}${pathFragment}");
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="baseName">
+<button class="show-code">Code</button>
+String <strong>baseName</strong>(FileSystemEntity entity) <a class="anchor-link" href="#baseName"
+              title="Permalink to baseName">#</a></h4>
+<div class="doc">
+<pre class="source">
+String baseName(FileSystemEntity entity) {
+ String name = entity.path;
+ int index = name.lastIndexOf(Platform.pathSeparator);
+
+ if (index != -1) {
+   return name.substring(0, index);
+ } else {
+   return null;
+ }
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="fileName">
+<button class="show-code">Code</button>
+String <strong>fileName</strong>(FileSystemEntity entity) <a class="anchor-link" href="#fileName"
+              title="Permalink to fileName">#</a></h4>
+<div class="doc">
+<pre class="source">
+String fileName(FileSystemEntity entity) {
+ String name = entity.path;
+ int index = name.lastIndexOf(Platform.pathSeparator);
+
+ if (index != -1) {
+   name = name.substring(index + 1);
+ }
+
+ return name;
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
+<h3>Classes</h3>
+          <div class="type">
+          <h4>
+            <a href="grinder.files/FileSet.html"><strong>FileSet</strong></a>
+          </h4>
+          </div>
+          
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="client-live-nav.js"></script>
+        </body></html>
+        
