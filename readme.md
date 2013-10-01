@@ -2,7 +2,7 @@
 
 Grinder - a task based, dependency aware build system.
 
-## Intro
+### Intro
 
 A library and tool to drive a command-line build.
 
@@ -31,9 +31,13 @@ Generally, a Grinder implementation will look something like this:
 Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
 
-## Command-line usage
+### Command-line usage
     usage: dart grinder.dart <options> target1 target2 ...
 
     valid options:
     -h, --help    show targets but don't build
     -d, --deps    display the dependencies of targets
+
+### API documentation
+
+Documentation is available [here](http://google.github.io/grinder.dart/).
