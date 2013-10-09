@@ -70,7 +70,7 @@ class Grinder {
   * Throws [GrinderException] if named tasks don't exist, or there are
   * cycles in the dependency graph.
   */
- void start(List&lt;String&gt; targets, {bool dontRun: false}) {
+ Future start(List&lt;String&gt; targets, {bool dontRun: false}) {
    if (_taskDeps != null) {
      throw new StateError("Grinder instances are not re-usable");
    }
@@ -123,15 +123,17 @@ class Grinder {
    _sortTasks(_calcedTasks);
 
    if (!dontRun) {
-     log('grinder running ${_calcedTasks.join(', ')}');
+     log('grinder running ${_calcedTasks.join(' ')}');
      log('');
 
-     for (GrinderTask task in _calcedTasks) {
-       _executeTask(task);
-     }
-
-     Duration elapsed = new DateTime.now().difference(startTime);
-     log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+     return Future.forEach(_calcedTasks, (GrinderTask task) {
+       return _executeTask(task);
+     }).then((_) {
+       Duration elapsed = new DateTime.now().difference(startTime);
+       log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+     });
+   } else {
+     return new Future.value();
    }
  }
 
@@ -146,13 +148,19 @@ class Grinder {
  /// Log the given informational message.
  void log(String message) =&gt; print(message);
 
- void _executeTask(GrinderTask task) {
+ Future _executeTask(GrinderTask task) {
    log('${task}');
 
    GrinderContext context = new GrinderContext._(this, task);
-   task.execute(context);
+   var result = task.execute(context);
 
-   log('');
+   if (!(result is Future)) {
+     result = new Future.value(result);
+   }
+
+   return (result as Future).then((_) {
+     log('');
+   });
  }
 
  void _calculateAllDeps() {
@@ -301,7 +309,7 @@ void log(String message) =&gt; print(message);
 </div>
 <div class="method"><h4 id="start">
 <button class="show-code">Code</button>
-void <strong>start</strong>(List&lt;String&gt; targets, {bool dontRun: false}) <a class="anchor-link" href="#start"
+Future <strong>start</strong>(List&lt;String&gt; targets, {bool dontRun: false}) <a class="anchor-link" href="#start"
               title="Permalink to Grinder.start">#</a></h4>
 <div class="doc">
 <p>Start the build process and run all the tasks in the calculated build
@@ -314,7 +322,7 @@ actually executing any targets.</p>
 <p>Throws <a class="crossref" href="../grinder/GrinderException.html">GrinderException</a> if named tasks don't exist, or there are
 cycles in the dependency graph.</p>
 <pre class="source">
-void start(List&lt;String&gt; targets, {bool dontRun: false}) {
+Future start(List&lt;String&gt; targets, {bool dontRun: false}) {
  if (_taskDeps != null) {
    throw new StateError("Grinder instances are not re-usable");
  }
@@ -367,15 +375,17 @@ void start(List&lt;String&gt; targets, {bool dontRun: false}) {
  _sortTasks(_calcedTasks);
 
  if (!dontRun) {
-   log('grinder running ${_calcedTasks.join(', ')}');
+   log('grinder running ${_calcedTasks.join(' ')}');
    log('');
 
-   for (GrinderTask task in _calcedTasks) {
-     _executeTask(task);
-   }
-
-   Duration elapsed = new DateTime.now().difference(startTime);
-   log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+   return Future.forEach(_calcedTasks, (GrinderTask task) {
+     return _executeTask(task);
+   }).then((_) {
+     Duration elapsed = new DateTime.now().difference(startTime);
+     log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+   });
+ } else {
+   return new Future.value();
  }
 }
 </pre>

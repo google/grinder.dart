@@ -51,6 +51,8 @@ class GrinderContext {
 
  /// Halt task execution; throws an exception with the given error message.
  void fail(String message) =&gt; throw new GrinderException(message);
+
+ String toString() =&gt; "Context for ${task}";
 }
 </pre>
 </div>
@@ -104,6 +106,19 @@ void <strong>log</strong>(String message) <a class="anchor-link" href="#log"
 <p>Log an informational message to Grinder's output.</p>
 <pre class="source">
 void log(String message) =&gt; grinder.log("  ${message.replaceAll('\n', '\n  ')}");
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="toString">
+<button class="show-code">Code</button>
+String <strong>toString</strong>() <a class="anchor-link" href="#toString"
+              title="Permalink to GrinderContext.toString">#</a></h4>
+<div class="doc">
+<div class="inherited">
+<p>Returns a string representation of this object.</p>
+<div class="docs-inherited-from">docs inherited from Object </div></div>
+<pre class="source">
+String toString() =&gt; "Context for ${task}";
 </pre>
 </div>
 </div>

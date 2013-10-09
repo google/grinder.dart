@@ -57,9 +57,9 @@ class GrinderTask {
   * This method is invoked when the task is started. If a task was created with
   * a [TaskFunction], that function will be invoked by this method.
   */
- void execute(GrinderContext context) {
+ dynamic execute(GrinderContext context) {
    if (taskFunction != null) {
-     taskFunction(context);
+     return taskFunction(context);
    };
  }
 
@@ -146,15 +146,15 @@ TaskFunction taskFunction
 <h3>Methods</h3>
 <div class="method"><h4 id="execute">
 <button class="show-code">Code</button>
-void <strong>execute</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context) <a class="anchor-link" href="#execute"
+dynamic <strong>execute</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context) <a class="anchor-link" href="#execute"
               title="Permalink to GrinderTask.execute">#</a></h4>
 <div class="doc">
 <p>This method is invoked when the task is started. If a task was created with
 a <a class="crossref" href="../grinder/TaskFunction.html">TaskFunction</a>, that function will be invoked by this method.</p>
 <pre class="source">
-void execute(GrinderContext context) {
+dynamic execute(GrinderContext context) {
  if (taskFunction != null) {
-   taskFunction(context);
+   return taskFunction(context);
  };
 }
 </pre>
