@@ -19,7 +19,7 @@
  *       startGrinder();
  *     }
  *
- *     void init(GrinderContext context) {
+ *     init(GrinderContext context) {
  *       context.log("I set things up");
  *     }
  *
@@ -40,6 +40,7 @@ library grinder;
 export 'grinder_files.dart';
 export 'grinder_utils.dart';
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -49,7 +50,7 @@ final Grinder _grinder = new Grinder();
 /**
  * Used to define a method body for a task.
  */
-typedef void TaskFunction(GrinderContext context);
+typedef dynamic TaskFunction(GrinderContext context);
 
 /**
  * Add a new task to the global [Grinder] instance. Some combination of this
@@ -161,6 +162,8 @@ class GrinderContext {
 
   /// Halt task execution; throws an exception with the given error message.
   void fail(String message) => throw new GrinderException(message);
+
+  String toString() => "Context for ${task}";
 }
 
 /**
@@ -189,9 +192,9 @@ class GrinderTask {
    * This method is invoked when the task is started. If a task was created with
    * a [TaskFunction], that function will be invoked by this method.
    */
-  void execute(GrinderContext context) {
+  dynamic execute(GrinderContext context) {
     if (taskFunction != null) {
-      taskFunction(context);
+      return taskFunction(context);
     };
   }
 
@@ -237,7 +240,7 @@ class Grinder {
    * Throws [GrinderException] if named tasks don't exist, or there are
    * cycles in the dependency graph.
    */
-  void start(List<String> targets, {bool dontRun: false}) {
+  Future start(List<String> targets, {bool dontRun: false}) {
     if (_taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");
     }
@@ -290,15 +293,17 @@ class Grinder {
     _sortTasks(_calcedTasks);
 
     if (!dontRun) {
-      log('grinder running ${_calcedTasks.join(', ')}');
+      log('grinder running ${_calcedTasks.join(' ')}');
       log('');
 
-      for (GrinderTask task in _calcedTasks) {
-        _executeTask(task);
-      }
-
-      Duration elapsed = new DateTime.now().difference(startTime);
-      log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+      return Future.forEach(_calcedTasks, (GrinderTask task) {
+        return _executeTask(task);
+      }).then((_) {
+        Duration elapsed = new DateTime.now().difference(startTime);
+        log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+      });
+    } else {
+      return new Future.value();
     }
   }
 
@@ -313,13 +318,19 @@ class Grinder {
   /// Log the given informational message.
   void log(String message) => print(message);
 
-  void _executeTask(GrinderTask task) {
+  Future _executeTask(GrinderTask task) {
     log('${task}');
 
     GrinderContext context = new GrinderContext._(this, task);
-    task.execute(context);
+    var result = task.execute(context);
 
-    log('');
+    if (!(result is Future)) {
+      result = new Future.value(result);
+    }
+
+    return (result as Future).then((_) {
+      log('');
+    });
   }
 
   void _calculateAllDeps() {

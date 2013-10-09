@@ -3,6 +3,8 @@
 
 library grinder_test;
 
+import 'dart:async';
+
 import 'package:grinder/grinder.dart';
 import 'package:unittest/unittest.dart';
 
@@ -42,6 +44,27 @@ main() {
       expect(grinder.getBuildOrder(), orderedEquals([
           grinder.getTask('b'), grinder.getTask('a'), grinder.getTask('d'), grinder.getTask('c'), grinder.getTask('e')
       ]));
+    });
+
+    test('returns future', () {
+      StringBuffer buf = new StringBuffer();
+      Grinder grinder = new Grinder();
+
+      grinder.addTask(new GrinderTask('a1', taskFunction: (c) {
+        Completer completer = new Completer();
+        new Timer(new Duration(milliseconds: 100), () {
+          buf.write('a');
+          completer.complete();
+        });
+        return completer.future;
+      }));
+      grinder.addTask(new GrinderTask('a2', depends: ['a1'], taskFunction: (c) {
+        buf.write('b');
+      }));
+
+      return grinder.start(['a2']).then((_) {
+        expect(buf.toString(), 'ab');
+      });
     });
   });
 }

@@ -22,7 +22,7 @@ Generally, a Grinder implementation will look something like this:
       startGrinder();
     }
 
-    void init(GrinderContext context) {
+    init(GrinderContext context) {
       context.log("I set things up");
     }
 
