@@ -84,6 +84,16 @@ class Grinder {
      }
    }
 
+   // verify that there aren't any duplicate names
+   Set&lt;String&gt; names = new Set();
+
+   for (GrinderTask task in _tasks) {
+     if (names.contains(task.name)) {
+       throw new GrinderException("task '${task.name}' is defined twice");
+     }
+     names.add(task.name);
+   }
+
    List&lt;GrinderTask&gt; tasksToRun = targets.map(
        (name) =&gt; getTask(name)).toList();
 
@@ -334,6 +344,16 @@ Future start(List&lt;String&gt; targets, {bool dontRun: false}) {
    if (getTask(taskName) == null) {
      throw new GrinderException("task '${taskName}' doesn't exist");
    }
+ }
+
+ // verify that there aren't any duplicate names
+ Set&lt;String&gt; names = new Set();
+
+ for (GrinderTask task in _tasks) {
+   if (names.contains(task.name)) {
+     throw new GrinderException("task '${task.name}' is defined twice");
+   }
+   names.add(task.name);
  }
 
  List&lt;GrinderTask&gt; tasksToRun = targets.map(

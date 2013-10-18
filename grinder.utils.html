@@ -33,15 +33,18 @@
 <h3>Functions</h3>
 <div class="method"><h4 id="runSdkBinary">
 <button class="show-code">Code</button>
-void <strong>runSdkBinary</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false}) <a class="anchor-link" href="#runSdkBinary"
+void <strong>runSdkBinary</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false, String workingDirectory}) <a class="anchor-link" href="#runSdkBinary"
               title="Permalink to runSdkBinary">#</a></h4>
 <div class="doc">
+<p>Run the given Dart SDK binary, with optional arguments and working directory.
+This should be a script found in <code>&lt;dart-sdk&gt;/bin</code>.</p>
 <pre class="source">
 void runSdkBinary(GrinderContext context, String script,
-   {List&lt;String&gt; arguments : const [], bool quiet: false}) {
+   {List&lt;String&gt; arguments : const [], bool quiet: false, String workingDirectory}) {
  File scriptFile = joinFile(sdkDir, ['bin', script]);
 
- runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet);
+ runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
+            workingDirectory: workingDirectory);
 }
 </pre>
 </div>
@@ -51,7 +54,7 @@ void runSdkBinary(GrinderContext context, String script,
 void <strong>runProcess</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String executable, {List&lt;String&gt; arguments: const[] , bool quiet: false, String workingDirectory}) <a class="anchor-link" href="#runProcess"
               title="Permalink to runProcess">#</a></h4>
 <div class="doc">
-<p>TODO: doc</p>
+<p>Run the given executable, with optional arguments and working directory.</p>
 <pre class="source">
 void runProcess(GrinderContext context, String executable,
    {List&lt;String&gt; arguments : const [],
@@ -82,13 +85,14 @@ void runProcess(GrinderContext context, String executable,
 </div>
 <div class="method"><h4 id="runDartScript">
 <button class="show-code">Code</button>
-void <strong>runDartScript</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false, String packageRoot}) <a class="anchor-link" href="#runDartScript"
+void <strong>runDartScript</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false, String packageRoot, String workingDirectory}) <a class="anchor-link" href="#runDartScript"
               title="Permalink to runDartScript">#</a></h4>
 <div class="doc">
-<p>TODO:</p>
+<p>Run the given Dart script in a new process.</p>
 <pre class="source">
 void runDartScript(GrinderContext context, String script,
-   {List&lt;String&gt; arguments : const [], bool quiet: false, String packageRoot}) {
+   {List&lt;String&gt; arguments : const [], bool quiet: false, String packageRoot,
+   String workingDirectory}) {
  List&lt;String&gt; args = [];
 
  if (packageRoot != null) {
@@ -98,7 +102,8 @@ void runDartScript(GrinderContext context, String script,
  args.add(script);
  args.addAll(arguments);
 
- runProcess(context, dartVM.path, arguments: args, quiet: quiet);
+ runProcess(context, dartVM.path, arguments: args, quiet: quiet,
+     workingDirectory: workingDirectory);
 }
 </pre>
 </div>
