@@ -41,10 +41,11 @@ class PubTools {
 }
 
 /**
- * TODO:
+ * Run the given Dart script in a new process.
  */
 void runDartScript(GrinderContext context, String script,
-    {List<String> arguments : const [], bool quiet: false, String packageRoot}) {
+    {List<String> arguments : const [], bool quiet: false, String packageRoot,
+    String workingDirectory}) {
   List<String> args = [];
 
   if (packageRoot != null) {
@@ -54,11 +55,12 @@ void runDartScript(GrinderContext context, String script,
   args.add(script);
   args.addAll(arguments);
 
-  runProcess(context, dartVM.path, arguments: args, quiet: quiet);
+  runProcess(context, dartVM.path, arguments: args, quiet: quiet,
+      workingDirectory: workingDirectory);
 }
 
 /**
- * TODO: doc
+ * Run the given executable, with optional arguments and working directory.
  */
 void runProcess(GrinderContext context, String executable,
     {List<String> arguments : const [],
@@ -85,9 +87,14 @@ void runProcess(GrinderContext context, String executable,
   }
 }
 
+/**
+ * Run the given Dart SDK binary, with optional arguments and working directory.
+ * This should be a script found in `<dart-sdk>/bin`.
+ */
 void runSdkBinary(GrinderContext context, String script,
-    {List<String> arguments : const [], bool quiet: false}) {
+    {List<String> arguments : const [], bool quiet: false, String workingDirectory}) {
   File scriptFile = joinFile(sdkDir, ['bin', script]);
 
-  runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet);
+  runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
+             workingDirectory: workingDirectory);
 }

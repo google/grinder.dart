@@ -254,6 +254,16 @@ class Grinder {
       }
     }
 
+    // verify that there aren't any duplicate names
+    Set<String> names = new Set();
+
+    for (GrinderTask task in _tasks) {
+      if (names.contains(task.name)) {
+        throw new GrinderException("task '${task.name}' is defined twice");
+      }
+      names.add(task.name);
+    }
+
     List<GrinderTask> tasksToRun = targets.map(
         (name) => getTask(name)).toList();
 

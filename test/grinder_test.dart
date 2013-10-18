@@ -17,6 +17,13 @@ main() {
       expect(() => grinder.start(['bar'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
     });
 
+    test('duplicate task name', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('foo'));
+      grinder.addTask(new GrinderTask('foo'));
+      expect(() => grinder.start(['foo'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
+    });
+
     test('badDependencyName', () {
       // test that a bad task name throws
       Grinder grinder = new Grinder();
