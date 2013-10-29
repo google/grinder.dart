@@ -68,7 +68,7 @@ Directory get sdkDir {
 
  // look relative to the dart executable
  // TODO: file a bug re: the path to the executable and the cwd
- return getParent(new File(Platform.executable).directory);
+ return new File(Platform.executable).parent.parent;
 }
 </pre>
 </div>
@@ -120,6 +120,7 @@ Directory <strong>getParent</strong>(Directory dir) <a class="anchor-link" href=
               title="Permalink to getParent">#</a></h4>
 <div class="doc">
 <pre class="source">
+@deprecated
 Directory getParent(Directory dir) {
  String base = baseName(dir);
 
