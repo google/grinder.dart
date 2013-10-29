@@ -97,7 +97,7 @@ Directory get sdkDir {
 
   // look relative to the dart executable
   // TODO: file a bug re: the path to the executable and the cwd
-  return getParent(new File(Platform.executable).directory);
+  return new File(Platform.executable).parent.parent;
 }
 
 // TODO: .exe
@@ -147,6 +147,7 @@ Directory joinDir(Directory dir, List<String> files) {
   return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
 }
 
+@deprecated
 Directory getParent(Directory dir) {
   String base = baseName(dir);
 
