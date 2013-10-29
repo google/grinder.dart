@@ -28,8 +28,7 @@ class FileSet {
     if (dir.existsSync()) {
       files = dir.listSync(recursive: false, followLinks: false).where((FileSystemEntity entity) {
         if (entity is File) {
-          File f = entity as File;
-          return pattern.matchAsPrefix(fileName(f)) != null;
+          return pattern.matchAsPrefix(fileName(entity)) != null;
         } else {
           return false;
         }
