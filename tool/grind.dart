@@ -20,8 +20,7 @@ void init(GrinderContext context) {
 }
 
 void analyze(GrinderContext context) {
-  // TODO:
-
+  runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder.dart']);
 }
 
 void tests(GrinderContext context) {

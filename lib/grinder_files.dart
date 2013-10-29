@@ -10,6 +10,12 @@ library grinder.files;
 
 import 'dart:io';
 
+// TODO: add files to a set
+
+// TODO: union sets?
+
+// TODO: add tests for upToDate()
+
 /**
  * A class to handle defining, composing, and comparing groups of files.
  */
@@ -79,30 +85,6 @@ class FileSet {
 
 
 }
-
-/**
- * Return the path to the current Dart SDK.
- */
-Directory get sdkDir {
-  // look for --dart-sdk on the command line
-  List<String> args = new Options().arguments;
-  // TODO:
-  if (args.contains('--dart-sdk')) {
-    return new Directory(args[args.indexOf('dart-sdk') + 1]);
-  }
-
-  // look in env['DART_SDK']
-  if (Platform.environment['DART_SDK'] != null) {
-    return new Directory(Platform.environment['DART_SDK']);
-  }
-
-  // look relative to the dart executable
-  // TODO: file a bug re: the path to the executable and the cwd
-  return getParent(new File(Platform.executable).directory);
-}
-
-// TODO: .exe
-File get dartVM => joinFile(sdkDir, ['bin', 'dart']);
 
 String fileName(FileSystemEntity entity) {
   String name = entity.path;
