@@ -31,50 +31,6 @@
 includes the <a class="crossref" href="grinder.files/FileSet.html">FileSet</a> class, which is used for reasoning about sets of
 files.</p></div>
 <div>
-<h3>Properties</h3>
-<div class="field"><h4 id="dartVM">
-<button class="show-code">Code</button>
-final File         <strong>dartVM</strong> <a class="anchor-link"
-            href="#dartVM"
-            title="Permalink to dartVM">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-File get dartVM =&gt; joinFile(sdkDir, ['bin', 'dart']);
-</pre>
-</div>
-</div>
-<div class="field"><h4 id="sdkDir">
-<button class="show-code">Code</button>
-final Directory         <strong>sdkDir</strong> <a class="anchor-link"
-            href="#sdkDir"
-            title="Permalink to sdkDir">#</a>
-        </h4>
-        <div class="doc">
-<p>Return the path to the current Dart SDK.</p>
-<pre class="source">
-Directory get sdkDir {
- // look for --dart-sdk on the command line
- List&lt;String&gt; args = new Options().arguments;
- // TODO:
- if (args.contains('--dart-sdk')) {
-   return new Directory(args[args.indexOf('dart-sdk') + 1]);
- }
-
- // look in env['DART_SDK']
- if (Platform.environment['DART_SDK'] != null) {
-   return new Directory(Platform.environment['DART_SDK']);
- }
-
- // look relative to the dart executable
- // TODO: file a bug re: the path to the executable and the cwd
- return new File(Platform.executable).parent.parent;
-}
-</pre>
-</div>
-</div>
-</div>
-<div>
 <h3>Functions</h3>
 <div class="method"><h4 id="copyDirectory">
 <button class="show-code">Code</button>

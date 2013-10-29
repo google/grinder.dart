@@ -1,0 +1,98 @@
+        <!DOCTYPE html>
+        <html>
+        <head>
+                <meta charset="utf-8">
+        <title>Dart2jsTools class / grinder.utils Library / Dart Documentation</title>
+        <link rel="stylesheet" type="text/css"
+            href="../styles.css">
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="../favicon.ico">
+        
+        </head>
+        <body data-library="grinder.utils" data-type="Dart2jsTools">
+        <div class="page">
+        <div class="header">
+          <a href="../index.html"><div class="logo"></div></a>
+          <a href="../index.html">Dart Documentation</a>
+         &rsaquo; <a href="../grinder.utils.html">grinder.utils</a> &rsaquo; <a href="../grinder.utils/Dart2jsTools.html">Dart2jsTools</a>        <div id="search-box">
+          <input type="search" name="q" id="q" autocomplete="off"
+              class="search-input" placeholder="Search API">
+        </div>
+        
+      </div>
+      <div class="drop-down" id="drop-down"></div>
+      
+        <div class="nav">
+        
+</div>
+<div class="content">
+        <h2><strong>Dart2jsTools</strong>
+          class
+        </h2>
+        
+<button id="show-inherited" class="show-inherited">Hide inherited</button>
+<div class="doc">
+<p>Utility tasks for executing pub commands.</p>
+<pre class="source">
+class Dart2jsTools {
+
+ /**
+  * Run `pub install` on the current project. If [force] is true, this will
+  * execute even if the pubspec.lock file is up-to-date with respect to the
+  * pubspec.yaml file.
+  */
+ void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
+//    // TODO: check for the out.deps file, us it to know when to compile
+//    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+//    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+   if (outDir == null) {
+     outDir = sourceFile.directory;
+   }
+
+   File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+
+   runSdkBinary(context, 'dart2js',
+       arguments: ['-o${outFile.path}', sourceFile.path]);
+ }
+}
+</pre>
+</div>
+<div>
+<h3>Methods</h3>
+<div class="method"><h4 id="compile">
+<button class="show-code">Code</button>
+void <strong>compile</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, File sourceFile, {Directory outDir}) <a class="anchor-link" href="#compile"
+              title="Permalink to Dart2jsTools.compile">#</a></h4>
+<div class="doc">
+<p>Run <code>pub install</code> on the current project. If <code>force</code> is true, this will
+execute even if the pubspec.lock file is up-to-date with respect to the
+pubspec.yaml file.</p>
+<pre class="source">
+void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
+//    // TODO: check for the out.deps file, us it to know when to compile
+//    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+//    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+ if (outDir == null) {
+   outDir = sourceFile.directory;
+ }
+
+ File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+
+ runSdkBinary(context, 'dart2js',
+     arguments: ['-o${outFile.path}', sourceFile.path]);
+}
+</pre>
+</div>
+</div>
+</div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        <script async src="../client-live-nav.js"></script>
+        </body></html>
+        

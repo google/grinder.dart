@@ -30,6 +30,50 @@
 <div class="doc"><p>Commonly used utilities for build scripts, including for tasks like running
 <code>pub</code> commands.</p></div>
 <div>
+<h3>Properties</h3>
+<div class="field"><h4 id="dartVM">
+<button class="show-code">Code</button>
+final File         <strong>dartVM</strong> <a class="anchor-link"
+            href="#dartVM"
+            title="Permalink to dartVM">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+File get dartVM =&gt; joinFile(sdkDir, ['bin', _execName('dart')]);
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="sdkDir">
+<button class="show-code">Code</button>
+final Directory         <strong>sdkDir</strong> <a class="anchor-link"
+            href="#sdkDir"
+            title="Permalink to sdkDir">#</a>
+        </h4>
+        <div class="doc">
+<p>Return the path to the current Dart SDK.</p>
+<pre class="source">
+Directory get sdkDir {
+ // look for --dart-sdk on the command line
+ List&lt;String&gt; args = new Options().arguments;
+ // TODO:
+ if (args.contains('--dart-sdk')) {
+   return new Directory(args[args.indexOf('dart-sdk') + 1]);
+ }
+
+ // look in env['DART_SDK']
+ if (Platform.environment['DART_SDK'] != null) {
+   return new Directory(Platform.environment['DART_SDK']);
+ }
+
+ // look relative to the dart executable
+ // TODO: file a bug re: the path to the executable and the cwd
+ return new File(Platform.executable).parent.parent;
+}
+</pre>
+</div>
+</div>
+</div>
+<div>
 <h3>Functions</h3>
 <div class="method"><h4 id="runSdkBinary">
 <button class="show-code">Code</button>
@@ -41,7 +85,7 @@ This should be a script found in <code>&lt;dart-sdk&gt;/bin</code>.</p>
 <pre class="source">
 void runSdkBinary(GrinderContext context, String script,
    {List&lt;String&gt; arguments : const [], bool quiet: false, String workingDirectory}) {
- File scriptFile = joinFile(sdkDir, ['bin', script]);
+ File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
 
  runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
             workingDirectory: workingDirectory);
@@ -102,7 +146,7 @@ void runDartScript(GrinderContext context, String script,
  args.add(script);
  args.addAll(arguments);
 
- runProcess(context, dartVM.path, arguments: args, quiet: quiet,
+ runSdkBinary(context, 'dart', arguments: args, quiet: quiet,
      workingDirectory: workingDirectory);
 }
 </pre>
@@ -111,6 +155,12 @@ void runDartScript(GrinderContext context, String script,
 </div>
 <div>
 <h3>Classes</h3>
+          <div class="type">
+          <h4>
+            <a href="grinder.utils/Dart2jsTools.html"><strong>Dart2jsTools</strong></a>
+          </h4>
+          </div>
+          
           <div class="type">
           <h4>
             <a href="grinder.utils/PubTools.html"><strong>PubTools</strong></a>
