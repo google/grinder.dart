@@ -29,7 +29,7 @@ Directory get sdkDir {
 
   // look relative to the dart executable
   // TODO: file a bug re: the path to the executable and the cwd
-  return getParent(new File(Platform.executable).directory);
+  return new File(Platform.executable).parent.parent;
 }
 
 File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);

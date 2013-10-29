@@ -34,8 +34,7 @@ class FileSet {
     if (dir.existsSync()) {
       files = dir.listSync(recursive: false, followLinks: false).where((FileSystemEntity entity) {
         if (entity is File) {
-          File f = entity as File;
-          return pattern.matchAsPrefix(fileName(f)) != null;
+          return pattern.matchAsPrefix(fileName(entity)) != null;
         } else {
           return false;
         }
@@ -83,7 +82,6 @@ class FileSet {
 
   // TODO: have a refresh method?
 
-
 }
 
 String fileName(FileSystemEntity entity) {
@@ -130,6 +128,7 @@ Directory joinDir(Directory dir, List<String> files) {
   return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
 }
 
+@deprecated
 Directory getParent(Directory dir) {
   String base = baseName(dir);
 
