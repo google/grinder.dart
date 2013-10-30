@@ -32,14 +32,14 @@
 write and debug your build files with the same tools you use for the rest of
 your project source.</p>
 <p>Generally, a Grinder implementation will look something like this:</p>
-<pre><code>void main() {
+<pre><code>void main([List&lt;String&gt; args]) {
   defineTask('init', taskFunction: init);
   defineTask('compile', taskFunction: compile, depends: ['init']);
   defineTask('deploy', taskFunction: deploy, depends: ['compile']);
   defineTask('docs', taskFunction: deploy, depends: ['init']);
   defineTask('all', depends: ['deploy', 'docs']);
 
-  startGrinder();
+  startGrinder(args);
 }
 
 init(GrinderContext context) {
@@ -61,7 +61,7 @@ valid options:
 <h3>Functions</h3>
 <div class="method"><h4 id="startGrinder">
 <button class="show-code">Code</button>
-void <strong>startGrinder</strong>() <a class="anchor-link" href="#startGrinder"
+void <strong>startGrinder</strong>([List&lt;String&gt; args]) <a class="anchor-link" href="#startGrinder"
               title="Permalink to startGrinder">#</a></h4>
 <div class="doc">
 <p>Start the build process. This should be called at the end of the <code>main()</code>
@@ -69,9 +69,11 @@ method. If there is a task failure, this method will halt task execution and
 throw a <a class="crossref" href="grinder/GrinderException.html">GrinderException</a>.</p>
 <p><a class="crossref" href="grinder.html#startGrinder">startGrinder</a> should be called once and only once.</p>
 <pre class="source">
-void startGrinder() {
+void startGrinder([List&lt;String&gt; args]) {
+ _args = args == null ? [] : args;
+
  ArgParser parser = _createArgsParser();
- ArgResults results = parser.parse(new Options().arguments);
+ ArgResults results = parser.parse(grinderArgs());
 
  if (results['help']) {
    _printUsage(parser, _grinder);
@@ -115,6 +117,16 @@ void <strong>addTask</strong>(<a href="grinder/GrinderTask.html">GrinderTask</a>
 and <a class="crossref" href="grinder.html#defineTask">defineTask</a> should be called before <a class="crossref" href="grinder.html#startGrinder">startGrinder</a> is invoked.</p>
 <pre class="source">
 void addTask(GrinderTask task) =&gt; _grinder.addTask(task);
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="grinderArgs">
+<button class="show-code">Code</button>
+List&lt;String&gt; <strong>grinderArgs</strong>() <a class="anchor-link" href="#grinderArgs"
+              title="Permalink to grinderArgs">#</a></h4>
+<div class="doc">
+<pre class="source">
+List&lt;String&gt; grinderArgs() =&gt; _args;
 </pre>
 </div>
 </div>

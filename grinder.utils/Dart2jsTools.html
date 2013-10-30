@@ -47,7 +47,7 @@ class Dart2jsTools {
 //    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
    if (outDir == null) {
-     outDir = sourceFile.directory;
+     outDir = sourceFile.parent;
    }
 
    File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -75,7 +75,7 @@ void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
 //    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
  if (outDir == null) {
-   outDir = sourceFile.directory;
+   outDir = sourceFile.parent;
  }
 
  File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);

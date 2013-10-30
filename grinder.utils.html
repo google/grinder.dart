@@ -54,9 +54,8 @@ final Directory         <strong>sdkDir</strong> <a class="anchor-link"
 <pre class="source">
 Directory get sdkDir {
  // look for --dart-sdk on the command line
- List&lt;String&gt; args = new Options().arguments;
- // TODO:
- if (args.contains('--dart-sdk')) {
+ List&lt;String&gt; args = grinderArgs();
+ if (args != null &amp;&amp; args.contains('--dart-sdk')) {
    return new Directory(args[args.indexOf('dart-sdk') + 1]);
  }
 

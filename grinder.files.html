@@ -34,11 +34,15 @@ files.</p></div>
 <h3>Functions</h3>
 <div class="method"><h4 id="copyDirectory">
 <button class="show-code">Code</button>
-void <strong>copyDirectory</strong>(Directory srcDir, Directory destDir) <a class="anchor-link" href="#copyDirectory"
+void <strong>copyDirectory</strong>(Directory srcDir, Directory destDir, [<a href="grinder/GrinderContext.html">GrinderContext</a> context]) <a class="anchor-link" href="#copyDirectory"
               title="Permalink to copyDirectory">#</a></h4>
 <div class="doc">
 <pre class="source">
-void copyDirectory(Directory srcDir, Directory destDir) {
+void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]) {
+ if (context != null) {
+   context.log('copying ${srcDir.path} to ${destDir.path}');
+ }
+
  for (FileSystemEntity entity in srcDir.listSync()) {
    String name = fileName(entity);
 
@@ -54,15 +58,18 @@ void copyDirectory(Directory srcDir, Directory destDir) {
 </div>
 <div class="method"><h4 id="copyFile">
 <button class="show-code">Code</button>
-void <strong>copyFile</strong>(File srcFile, Directory destDir) <a class="anchor-link" href="#copyFile"
+void <strong>copyFile</strong>(File srcFile, Directory destDir, [<a href="grinder/GrinderContext.html">GrinderContext</a> context]) <a class="anchor-link" href="#copyFile"
               title="Permalink to copyFile">#</a></h4>
 <div class="doc">
 <pre class="source">
-void copyFile(File srcFile, Directory destDir) {
+void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
  File destFile = joinFile(destDir, [fileName(srcFile)]);
 
  if (!destFile.existsSync() ||
      srcFile.lastModifiedSync() != destFile.lastModifiedSync()) {
+   if (context != null) {
+     context.log('copying ${srcFile.path} to ${destDir.path}');
+   }
    destDir.createSync(recursive: true);
    destFile.writeAsBytesSync(srcFile.readAsBytesSync());
  }
