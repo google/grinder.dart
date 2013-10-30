@@ -14,14 +14,14 @@ your project source.
 
 Generally, a Grinder implementation will look something like this:
 
-    void main() {
+    void main([List<String> args]) {
       defineTask('init', taskFunction: init);
       defineTask('compile', taskFunction: compile, depends: ['init']);
       defineTask('deploy', taskFunction: deploy, depends: ['compile']);
       defineTask('docs', taskFunction: deploy, depends: ['init']);
       defineTask('all', depends: ['deploy', 'docs']);
 
-      startGrinder();
+      startGrinder(args);
     }
 
     init(GrinderContext context) {

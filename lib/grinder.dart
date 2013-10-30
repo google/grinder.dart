@@ -9,14 +9,14 @@
  * your project source.
  *
  * Generally, a Grinder implementation will look something like this:
- *     void main() {
+ *     void main([List<String> args]) {
  *       defineTask('init', taskFunction: init);
  *       defineTask('compile', taskFunction: compile, depends: ['init']);
  *       defineTask('deploy', taskFunction: deploy, depends: ['compile']);
  *       defineTask('docs', taskFunction: deploy, depends: ['init']);
  *       defineTask('all', depends: ['deploy', 'docs']);
  *
- *       startGrinder();
+ *       startGrinder(args);
  *     }
  *
  *     init(GrinderContext context) {
@@ -46,11 +46,14 @@ import 'dart:io';
 import 'package:args/args.dart';
 
 final Grinder _grinder = new Grinder();
+List<String> _args;
 
 /**
  * Used to define a method body for a task.
  */
 typedef dynamic TaskFunction(GrinderContext context);
+
+List<String> grinderArgs() => _args;
 
 /**
  * Add a new task to the global [Grinder] instance. Some combination of this
@@ -76,9 +79,11 @@ void defineTask(String name, {TaskFunction taskFunction, List<String> depends : 
  *
  * [startGrinder] should be called once and only once.
  */
-void startGrinder() {
+void startGrinder([List<String> args]) {
+  _args = args == null ? [] : args;
+
   ArgParser parser = _createArgsParser();
-  ArgResults results = parser.parse(new Options().arguments);
+  ArgResults results = parser.parse(grinderArgs());
 
   if (results['help']) {
     _printUsage(parser, _grinder);

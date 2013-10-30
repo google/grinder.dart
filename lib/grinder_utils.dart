@@ -16,9 +16,8 @@ import 'grinder.dart';
  */
 Directory get sdkDir {
   // look for --dart-sdk on the command line
-  List<String> args = new Options().arguments;
-  // TODO:
-  if (args.contains('--dart-sdk')) {
+  List<String> args = grinderArgs();
+  if (args != null && args.contains('--dart-sdk')) {
     return new Directory(args[args.indexOf('dart-sdk') + 1]);
   }
 
@@ -138,7 +137,7 @@ class Dart2jsTools {
 //    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (outDir == null) {
-      outDir = sourceFile.directory;
+      outDir = sourceFile.parent;
     }
 
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);

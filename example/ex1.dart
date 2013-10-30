@@ -5,13 +5,13 @@ library grinder_example_1;
 
 import 'package:grinder/grinder.dart';
 
-void main() {
+void main([List<String> args]) {
   defineTask('init', taskFunction: init);
   defineTask('compile', taskFunction: compile, depends: ['init']);
   defineTask('deploy', taskFunction: deploy, depends: ['compile']);
   defineTask('all', depends: ['deploy']);
 
-  startGrinder();
+  startGrinder(args);
 }
 
 void init(GrinderContext context) {

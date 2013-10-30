@@ -10,6 +10,8 @@ library grinder.files;
 
 import 'dart:io';
 
+import 'grinder.dart';
+
 // TODO: add files to a set
 
 // TODO: union sets?
@@ -139,19 +141,24 @@ Directory getParent(Directory dir) {
   }
 }
 
-void copyFile(File srcFile, Directory destDir) {
+void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
   File destFile = joinFile(destDir, [fileName(srcFile)]);
 
   if (!destFile.existsSync() ||
       srcFile.lastModifiedSync() != destFile.lastModifiedSync()) {
+    if (context != null) {
+      context.log('copying ${srcFile.path} to ${destDir.path}');
+    }
     destDir.createSync(recursive: true);
     destFile.writeAsBytesSync(srcFile.readAsBytesSync());
   }
 }
 
-// TODO: this should take a context, and log if it does any work -
+void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]) {
+  if (context != null) {
+    context.log('copying ${srcDir.path} to ${destDir.path}');
+  }
 
-void copyDirectory(Directory srcDir, Directory destDir) {
   for (FileSystemEntity entity in srcDir.listSync()) {
     String name = fileName(entity);
 

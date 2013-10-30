@@ -5,13 +5,13 @@ import 'dart:io';
 
 import 'package:grinder/grinder.dart';
 
-void main() {
+void main([List<String> args]) {
   defineTask('init', taskFunction: init);
   defineTask('analyze', taskFunction: analyze, depends: ['init']);
   defineTask('tests', taskFunction: tests, depends: ['init']);
   defineTask('docs', taskFunction: docs, depends: ['analyze']);
 
-  startGrinder();
+  startGrinder(args);
 }
 
 void init(GrinderContext context) {
