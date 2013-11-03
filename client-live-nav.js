@@ -269,7 +269,7 @@ return a<=b},
 F:function(a,b){if(typeof b!=="number")throw H.b(new P.AT(b))
 return a>=b},
 $isnum:true,
-static:{"":"SA,ey",}},im:{"":"int/P;",$isdouble:true,$isnum:true,$isint:true},vE:{"":"double/P;",$isdouble:true,$isnum:true},O:{"":"String/Gv;",
+static:{"":"SA,ey",}},im:{"":"int/P;",$isnum:true,$isint:true},vE:{"":"double/P;",$isnum:true},O:{"":"String/Gv;",
 j:function(a,b){if(typeof b!=="number"||Math.floor(b)!==b)throw H.b(P.u(b))
 if(b<0)throw H.b(P.N(b))
 if(b>=a.length)throw H.b(P.N(b))
@@ -2945,7 +2945,7 @@ x=0}}break $loop$0}if(y>0){this.Ok=z
 this.iU=y
 this.VN=x}},
 static:{"":"dn",}}}],["dart.core","dart:core",,P,{Hp:function(a){return H.Fv(a)},Wc:function(a,b){return J.oE(a,b)},hl:function(a){var z,y,x,w,v,u
-if(typeof a==="number"&&Math.floor(a)===a||typeof a==="number"||typeof a==="boolean"||null==a)return J.AG(a)
+if(typeof a==="number"||typeof a==="boolean"||null==a)return J.AG(a)
 if(typeof a==="string"){z=new P.Rn("")
 z.vM="\""
 for(y=a.length,x=0;x<y;++x){w=C.xB.j(a,x)
