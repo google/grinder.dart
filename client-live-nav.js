@@ -507,8 +507,7 @@ call$0:function(){if(!this.a.xB())return
 P.rT(C.RT,this)}},IY:{"":"a;od,i3,G1",
 VU:function(){this.od.vV(this.i3)}},JH:{"":"a;"},jl:{"":"Tp;a,b,c,d,e",
 call$0:function(){H.Z7(this.a,this.b,this.c,this.d,this.e)}},Iy:{"":"a;",$isbC:true},JM:{"":"Iy;JE,Jz",
-LV:function(a,b,c){H.ff(b,new H.Ua(this,b))},
-wR:function(a,b){return this.LV(a,b,null)},
+wR:function(a,b){H.ff(b,new H.Ua(this,b))},
 n:function(a,b){var z
 if(b==null)return!1
 z=J.x(b)
@@ -538,8 +537,7 @@ y.a=H.Hh(y.a)}z=z.da
 y=this.a.a
 if(z.Gv>=4)H.vh(z.nG())
 z.Rg(y)}}},D6:{"":"Iy;Ws,bv,Jz",
-LV:function(a,b,c){H.ff(b,new H.wd(this,b))},
-wR:function(a,b){return this.LV(a,b,null)},
+wR:function(a,b){H.ff(b,new H.wd(this,b))},
 n:function(a,b){var z
 if(b==null)return!1
 z=J.x(b)
@@ -779,6 +777,7 @@ else{u=w+500
 u=u<z?u:z
 v=a.slice(w,u)}x+=String.fromCharCode.apply(null,v)}return x},PL:function(a){var z,y,x
 z=[]
+z.$builtinTypeInfo=[J.im]
 for(y=new H.a7(a,a.length,0,null);y.G();){x=y.mD
 if(typeof x!=="number"||Math.floor(x)!==x)throw H.b(new P.AT(x))
 if(x<=65535)z.push(x)
@@ -1147,39 +1146,41 @@ $is_aB:true}}],["classify","file:///home/ubuntu/dart/dart-sdk/lib/_internal/dart
 try{r=new P.Rn("")
 r.vM=""
 z=r
-q=new Y.MQ(a,-1,C.Dj,!0,-1,new Y.a0(C.ps,-1,null),null,null,[0])
-q.m5=q.EJ
-p=q.Qk
-o=p.length
+q=[0]
+q.$builtinTypeInfo=[J.im]
+p=new Y.MQ(a,-1,C.Dj,!0,-1,new Y.a0(C.ps,-1,null),null,null,q)
+p.m5=p.EJ
+q=p.Qk
+o=q.length
 if(o!==0){n=o-1
-p.toString
+q.toString
 if(n<0)H.vh(P.N(n))
 if(n>=o)H.vh(P.N(n))
-p=p.charCodeAt(n)!==0}else p=!0
-if(p)q.Qk=J.WB(q.Qk,"\u0000")
-y=q
+q=q.charCodeAt(n)!==0}else q=!0
+if(q)p.Qk=J.WB(p.Qk,"\u0000")
+y=p
 x=0
 w=y.rD()
 v=!1
-for(;w.gqa().fY!==0;){p=z
+for(;w.gqa().fY!==0;){q=z
 o=J.Nj(a,x,w.gmJ())
-p.vM=p.gvM()+o
+q.vM=q.gvM()+o
 x=C.CD.g(w.gmJ(),w.gLJ())
 switch(J.Iz(w)){case 39:case 128:v=!0
 break
 default:}u=D.cZ(w)
-p=J.JA(J.Vm(w),"&","&amp;")
-p=H.ys(p,"<","&lt;")
-t=H.ys(p,">","&gt;")
+q=J.JA(J.Vm(w),"&","&amp;")
+q=H.ys(q,"<","&lt;")
+t=H.ys(q,">","&gt;")
 if(u!=null){s=v===!0?"si":""
-p=z
+q=z
 o="<span class=\""+H.d(u)+" "+H.d(s)+"\">"+H.d(t)+"</span>"
-p.vM=p.gvM()+o}else{p=z
+q.vM=q.gvM()+o}else{q=z
 m=t
 m=typeof m==="string"?m:H.d(m)
-p.vM=p.gvM()+m}J.Iz(w)
-w=w.gaw()}p=z.gvM()
-return p}catch(l){H.Ru(l)
+q.vM=q.gvM()+m}J.Iz(w)
+w=w.gaw()}q=z.gvM()
+return q}catch(l){H.Ru(l)
 return a}},vd:function(a){var z=a.gB(a)
 z.F(z,3)
 return!1},cZ:function(a){var z,y
@@ -3198,7 +3199,9 @@ pr:function(a,b){return W.Ao(a.querySelectorAll(b),null)},
 gDD:function(a){return new W.I4(a)},
 bu:function(a){return a.localName},
 r6:function(a,b,c,d){var z,y,x,w,v
-if(c==null){if($.lt==null){z=new W.vD([])
+if(c==null){if($.lt==null){z=[]
+H.VM(z,[W.kF])
+z=new W.vD(z)
 y=z.YM
 y.push(W.Tw(null))
 y.push(W.Bl())
@@ -3776,7 +3779,9 @@ z.FV(z,b)},
 shf:function(a,b){a.textContent=null
 a.appendChild(this.r6(a,b,null,null))},
 r6:function(a,b,c,d){var z,y,x,w,v
-d=new W.vD([])
+z=[]
+H.VM(z,[W.kF])
+d=new W.vD(z)
 z=d.YM
 z.push(W.Tw(null))
 z.push(W.Bl())
@@ -4031,36 +4036,37 @@ else if(z.n(a,"getter"))return"getter"
 else if(z.n(a,"setter"))return"setter"
 return""}}],["dropdown","file:///home/ubuntu/dart/dart-sdk/lib/_internal/dartdoc/lib/src/client/dropdown.dart",,A,{HA:function(a){var z,y,x,w,v,u,t,s,r,q,p
 if($.B2==null)return
-z=$.XF
-if(z==null)return
+if($.XF==null)return
 if($.pA==null)return
-y=[]
-x=J.Vm(z)
-z=$.wP
-if(x==null?z==null:x===z)return
-if(J.U6(x).gl0(x)){A.Pa(x,y)
+z=[]
+H.VM(z,[B.oe])
+y=J.Vm($.XF)
+x=$.wP
+if(y==null?x==null:y===x)return
+if(J.U6(y).gl0(y)){A.Pa(y,z)
 A.PE()
-return}if(C.xB.tg(x,".")){w=C.xB.Nj(x,0,C.xB.u8(x,"."))
-v=C.xB.yn(x,C.xB.u8(x,".")+1)
-z=w.length===0
-if(z&&v.length===0);else if(z)A.xi(y,v)
-else if(v.length===0)A.DI(y,w,v)
-else A.NJ(y,x,w,v)}else{u=B.FR(x)
-for(z=J.GP($.B2);z.G();){t=z.gl()
-A.nU(y,u,t)
-A.OT(y,u,t)
-A.Ym(y,u,t)}}s=[]
+return}if(C.xB.tg(y,".")){w=C.xB.Nj(y,0,C.xB.u8(y,"."))
+v=C.xB.yn(y,C.xB.u8(y,".")+1)
+x=w.length===0
+if(x&&v.length===0);else if(x)A.xi(z,v)
+else if(v.length===0)A.DI(z,w,v)
+else A.NJ(z,y,w,v)}else{u=B.FR(y)
+for(x=J.GP($.B2);x.G();){t=x.gl()
+A.nU(z,u,t)
+A.OT(z,u,t)
+A.Ym(z,u,t)}}s=[]
+H.VM(s,[W.cv])
 r=document.createElement("table",null)
-z=J.RE(r)
-q=z.gDD(r)
+x=J.RE(r)
+q=x.gDD(r)
 q.h(q,"drop-down-table")
 s.push(r)
-if(y.length===0)J.GD(z.fh(r,0),"<tr><td>No matches found for '"+x+"'.</td></tr>")
-else{H.rd(y,B.A3)
-for(q=new H.a7(y,y.length,0,null),p=0;q.G();){J.L9(q.mD,r);++p
-if(p>=10)break}if(y.length>=10){J.GD(z.fh(r,J.q8(z.gWT(r))),"<tr><td>+ "+(y.length-10)+" more.</td></tr>")
-y=C.Nm.aM(y,0,10)}}J.Li($.pA,s)
-A.Pa(x,y)
+if(z.length===0)J.GD(x.fh(r,0),"<tr><td>No matches found for '"+y+"'.</td></tr>")
+else{H.rd(z,B.A3)
+for(q=new H.a7(z,z.length,0,null),p=0;q.G();){J.L9(q.mD,r);++p
+if(p>=10)break}if(z.length>=10){J.GD(x.fh(r,J.q8(x.gWT(r))),"<tr><td>+ "+(z.length-10)+" more.</td></tr>")
+z=C.Nm.aM(z,0,10)}}J.Li($.pA,s)
+A.Pa(y,z)
 A.lU()},xi:function(a,b){var z,y,x,w,v,u,t,s,r,q,p,o,n,m,l,k,j
 z=B.FR(b)
 for(y=J.GP($.B2);y.G();){x=y.gl()
@@ -5088,6 +5094,8 @@ B.oe.$isa=true
 W.Iv.$iscv=true
 W.Iv.$isKV=true
 W.Iv.$isa=true
+W.kF.$iskF=true
+W.kF.$isa=true
 W.Aj.$ispS=true
 W.Aj.$isa=true
 W.zU.$isa=true
@@ -5125,8 +5133,6 @@ P.MO.$isMO=true
 P.MO.$isa=true
 P.qh.$isqh=true
 P.qh.$isa=true
-W.kF.$iskF=true
-W.kF.$isa=true
 P.fI.$isfI=true
 P.fI.$isa=true
 P.iP.$isiP=true
