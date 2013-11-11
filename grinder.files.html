@@ -77,25 +77,6 @@ void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="getParent">
-<button class="show-code">Code</button>
-Directory <strong>getParent</strong>(Directory dir) <a class="anchor-link" href="#getParent"
-              title="Permalink to getParent">#</a></h4>
-<div class="doc">
-<pre class="source">
-@deprecated
-Directory getParent(Directory dir) {
- String base = baseName(dir);
-
- if (base == null) {
-   return null;
- } else {
-   return new Directory(base);
- }
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="joinDir">
 <button class="show-code">Code</button>
 Directory <strong>joinDir</strong>(Directory dir, List&lt;String&gt; files) <a class="anchor-link" href="#joinDir"
@@ -132,11 +113,7 @@ String baseName(FileSystemEntity entity) {
  String name = entity.path;
  int index = name.lastIndexOf(Platform.pathSeparator);
 
- if (index != -1) {
-   return name.substring(0, index);
- } else {
-   return null;
- }
+ return (index != -1 ? name.substring(0, index) : null);
 }
 </pre>
 </div>
@@ -151,11 +128,7 @@ String fileName(FileSystemEntity entity) {
  String name = entity.path;
  int index = name.lastIndexOf(Platform.pathSeparator);
 
- if (index != -1) {
-   name = name.substring(index + 1);
- }
-
- return name;
+ return (index != -1 ? name.substring(index + 1) : name);
 }
 </pre>
 </div>

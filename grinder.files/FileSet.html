@@ -43,17 +43,8 @@ class FileSet {
      pattern = new RegExp(".*${endsWith}\$");
    }
 
-   // TODO: handle recursion
-   // TODO: skip '.' directories
-
    if (dir.existsSync()) {
-     files = dir.listSync(recursive: false, followLinks: false).where((FileSystemEntity entity) {
-       if (entity is File) {
-         return pattern.matchAsPrefix(fileName(entity)) != null;
-       } else {
-         return false;
-       }
-     }).toList();
+     _collect(files, dir, pattern, recurse);
    }
  }
 
@@ -69,7 +60,6 @@ class FileSet {
    if (!exists) {
      return false;
    } else {
-     // TODO: add a test for this
      return !other.lastModified.isAfter(lastModified);
    }
  }
@@ -77,9 +67,9 @@ class FileSet {
  bool get exists {
    if (files.isEmpty) {
      return false;
+   } else {
+     return files.any((f) =&gt; f.existsSync());
    }
-
-   return files.any((f) =&gt; f.existsSync());
  }
 
  DateTime get lastModified {
@@ -97,6 +87,21 @@ class FileSet {
 
  // TODO: have a refresh method?
 
+ static void _collect(List&lt;File&gt; files, Directory dir, RegExp pattern, bool recurse) {
+   for (FileSystemEntity entity in dir.listSync(recursive: false, followLinks: false)) {
+     String name = fileName(entity);
+
+     if (entity is File) {
+       if (pattern == null || pattern.matchAsPrefix(name) != null) {
+         files.add(entity);
+       }
+     } else if (entity is Directory) {
+       if (recurse &amp;&amp; !name.startsWith('.')) {
+         _collect(files, entity, pattern, recurse);
+       }
+     }
+   }
+ }
 }
 </pre>
 </div>
@@ -114,17 +119,8 @@ FileSet.fromDir(Directory dir, {RegExp pattern, String endsWith, bool recurse: f
    pattern = new RegExp(".*${endsWith}\$");
  }
 
- // TODO: handle recursion
- // TODO: skip '.' directories
-
  if (dir.existsSync()) {
-   files = dir.listSync(recursive: false, followLinks: false).where((FileSystemEntity entity) {
-     if (entity is File) {
-       return pattern.matchAsPrefix(fileName(entity)) != null;
-     } else {
-       return false;
-     }
-   }).toList();
+   _collect(files, dir, pattern, recurse);
  }
 }
 </pre>
@@ -156,9 +152,9 @@ final bool         <strong>exists</strong> <a class="anchor-link"
 bool get exists {
  if (files.isEmpty) {
    return false;
+ } else {
+   return files.any((f) =&gt; f.existsSync());
  }
-
- return files.any((f) =&gt; f.existsSync());
 }
 </pre>
 </div>
@@ -213,7 +209,6 @@ bool upToDate(FileSet other) {
  if (!exists) {
    return false;
  } else {
-   // TODO: add a test for this
    return !other.lastModified.isAfter(lastModified);
  }
 }

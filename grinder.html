@@ -61,7 +61,7 @@ valid options:
 <h3>Functions</h3>
 <div class="method"><h4 id="startGrinder">
 <button class="show-code">Code</button>
-void <strong>startGrinder</strong>([List&lt;String&gt; args]) <a class="anchor-link" href="#startGrinder"
+void <strong>startGrinder</strong>(List&lt;String&gt; args) <a class="anchor-link" href="#startGrinder"
               title="Permalink to startGrinder">#</a></h4>
 <div class="doc">
 <p>Start the build process. This should be called at the end of the <code>main()</code>
@@ -69,7 +69,7 @@ method. If there is a task failure, this method will halt task execution and
 throw a <a class="crossref" href="grinder/GrinderException.html">GrinderException</a>.</p>
 <p><a class="crossref" href="grinder.html#startGrinder">startGrinder</a> should be called once and only once.</p>
 <pre class="source">
-void startGrinder([List&lt;String&gt; args]) {
+void startGrinder(List&lt;String&gt; args) {
  _args = args == null ? [] : args;
 
  ArgParser parser = _createArgsParser();
