@@ -16,8 +16,6 @@ import 'grinder.dart';
 
 // TODO: union sets?
 
-// TODO: add tests for upToDate()
-
 /**
  * A class to handle defining, composing, and comparing groups of files.
  */
@@ -30,17 +28,8 @@ class FileSet {
       pattern = new RegExp(".*${endsWith}\$");
     }
 
-    // TODO: handle recursion
-    // TODO: skip '.' directories
-
     if (dir.existsSync()) {
-      files = dir.listSync(recursive: false, followLinks: false).where((FileSystemEntity entity) {
-        if (entity is File) {
-          return pattern.matchAsPrefix(fileName(entity)) != null;
-        } else {
-          return false;
-        }
-      }).toList();
+      _collect(files, dir, pattern, recurse);
     }
   }
 
@@ -56,7 +45,6 @@ class FileSet {
     if (!exists) {
       return false;
     } else {
-      // TODO: add a test for this
       return !other.lastModified.isAfter(lastModified);
     }
   }
@@ -64,9 +52,9 @@ class FileSet {
   bool get exists {
     if (files.isEmpty) {
       return false;
+    } else {
+      return files.any((f) => f.existsSync());
     }
-
-    return files.any((f) => f.existsSync());
   }
 
   DateTime get lastModified {
@@ -84,41 +72,36 @@ class FileSet {
 
   // TODO: have a refresh method?
 
+  static void _collect(List<File> files, Directory dir, RegExp pattern, bool recurse) {
+    for (FileSystemEntity entity in dir.listSync(recursive: false, followLinks: false)) {
+      String name = fileName(entity);
+
+      if (entity is File) {
+        if (pattern == null || pattern.matchAsPrefix(name) != null) {
+          files.add(entity);
+        }
+      } else if (entity is Directory) {
+        if (recurse && !name.startsWith('.')) {
+          _collect(files, entity, pattern, recurse);
+        }
+      }
+    }
+  }
 }
 
 String fileName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(Platform.pathSeparator);
 
-  if (index != -1) {
-    name = name.substring(index + 1);
-  }
-
-  return name;
+  return (index != -1 ? name.substring(index + 1) : name);
 }
 
 String baseName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(Platform.pathSeparator);
 
-  if (index != -1) {
-    return name.substring(0, index);
-  } else {
-    return null;
-  }
+  return (index != -1 ? name.substring(0, index) : null);
 }
-
-//void copyDirectory(Directory srcDir, Directory destDir) {
-//  for (FileSystemEntity entity in srcDir.listSync()) {
-//    String name = getName(entity);
-//
-//    if (entity is File) {
-//      copyFile(entity, destDir);
-//    } else {
-//      copyDirectory(entity, joinDir(destDir, [name]));
-//    }
-//  }
-//}
 
 File joinFile(Directory dir, List<String> files) {
   String pathFragment = files.join(Platform.pathSeparator);
@@ -128,17 +111,6 @@ File joinFile(Directory dir, List<String> files) {
 Directory joinDir(Directory dir, List<String> files) {
   String pathFragment = files.join(Platform.pathSeparator);
   return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
-}
-
-@deprecated
-Directory getParent(Directory dir) {
-  String base = baseName(dir);
-
-  if (base == null) {
-    return null;
-  } else {
-    return new Directory(base);
-  }
 }
 
 void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {

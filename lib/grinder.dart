@@ -79,7 +79,7 @@ void defineTask(String name, {TaskFunction taskFunction, List<String> depends : 
  *
  * [startGrinder] should be called once and only once.
  */
-void startGrinder([List<String> args]) {
+void startGrinder(List<String> args) {
   _args = args == null ? [] : args;
 
   ArgParser parser = _createArgsParser();
