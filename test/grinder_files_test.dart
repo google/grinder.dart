@@ -50,7 +50,9 @@ main() {
     test('exists', () {
       FileSet fileSet = new FileSet.fromFile(fileA);
       expect(fileSet.exists, true);
+    });
 
+    test("doesn't exist", () {
       FileSet notExistFileSet = new FileSet.fromFile(new File('noFile'));
       expect(notExistFileSet.exists, false);
     });

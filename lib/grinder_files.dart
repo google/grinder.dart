@@ -89,6 +89,9 @@ class FileSet {
   }
 }
 
+/**
+ * Return the last segment of the file path.
+ */
 String fileName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(Platform.pathSeparator);
@@ -96,6 +99,19 @@ String fileName(FileSystemEntity entity) {
   return (index != -1 ? name.substring(index + 1) : name);
 }
 
+/**
+ * Return the file's extension without the period. This will return `null` if
+ * there is no extension.
+ */
+String fileExt(FileSystemEntity entity) {
+  String name = fileName(entity);
+  int index = name.indexOf('.');
+  return index == -1 ? null : name.substring(index + 1);
+}
+
+/**
+ * Return the first n - 1 segments of the file path.
+ */
 String baseName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(Platform.pathSeparator);
@@ -112,6 +128,31 @@ Directory joinDir(Directory dir, List<String> files) {
   String pathFragment = files.join(Platform.pathSeparator);
   return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
 }
+
+/**
+ * Return the file pointed to by the given [path]. This method converts the
+ * given path to a platform dependent path.
+ */
+File getFile(String path) {
+  if (Platform.pathSeparator == '/') {
+    return new File(path);
+  } else {
+    return new File(path.replaceAll('/', Platform.pathSeparator));
+  }
+}
+
+/**
+ * Return the directory pointed to by the given [path]. This method converts the
+ * given path to a platform dependent path.
+ */
+Directory getDir(String path) {
+  if (Platform.pathSeparator == '/') {
+    return new Directory(path);
+  } else {
+    return new Directory(path.replaceAll('/', Platform.pathSeparator));
+  }
+}
+
 
 void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
   File destFile = joinFile(destDir, [fileName(srcFile)]);
@@ -139,5 +180,15 @@ void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]
     } else {
       copyDirectory(entity, joinDir(destDir, [name]));
     }
+  }
+}
+
+void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
+  if (entity.existsSync()) {
+    if (context != null) {
+      context.log('deleteing ${entity.path}');
+    }
+
+    entity.deleteSync(recursive: true);
   }
 }
