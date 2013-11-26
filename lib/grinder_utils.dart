@@ -147,4 +147,10 @@ class Dart2jsTools {
   }
 }
 
-String _execName(String name) => Platform.isWindows ? "${name}.exe" : name;
+String _execName(String name) {
+  if (Platform.isWindows) {
+    return name == 'dart' ? 'dart.exe' : '${name}.bat';
+  } else {
+    return name;
+  }
+}
