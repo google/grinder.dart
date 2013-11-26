@@ -153,7 +153,6 @@ Directory getDir(String path) {
   }
 }
 
-
 void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
   File destFile = joinFile(destDir, [fileName(srcFile)]);
 
