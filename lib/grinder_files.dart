@@ -186,7 +186,7 @@ void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]
 void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
   if (entity.existsSync()) {
     if (context != null) {
-      context.log('deleteing ${entity.path}');
+      context.log('deleting ${entity.path}');
     }
 
     entity.deleteSync(recursive: true);
