@@ -63,11 +63,11 @@ main() {
       expect(fileSetB.upToDate(fileSetA), true);
     });
 
-    test('filename', () {
+    test('fileName', () {
       final String tempFileName = "temp.txt";
       final String sep = Platform.pathSeparator;
       File tempFile = new File('${temp.path}${sep}tempdir${sep}${tempFileName}');
-      expect(fileName(tempFile) == tempFileName, true);
+      expect(fileName(tempFile), tempFileName);
     });
   });
 }
