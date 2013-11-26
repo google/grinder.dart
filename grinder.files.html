@@ -41,7 +41,7 @@ void <strong>deleteEntity</strong>(FileSystemEntity entity, [<a href="grinder/Gr
 void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
  if (entity.existsSync()) {
    if (context != null) {
-     context.log('deleteing ${entity.path}');
+     context.log('deleting ${entity.path}');
    }
 
    entity.deleteSync(recursive: true);
