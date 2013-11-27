@@ -3,13 +3,17 @@
 
 library grinder_utils_test;
 
+import 'dart:io';
+
 import 'package:grinder/grinder.dart';
 import 'package:unittest/unittest.dart';
 
 main() {
   group('grinder.utils', () {
     test('get sdkDir', () {
-      expect(sdkDir, isNotNull);
+      if (Platform.environment['DART_SDK'] != null) {
+        expect(sdkDir, isNotNull);
+      }
     });
   });
 }
