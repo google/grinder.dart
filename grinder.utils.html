@@ -50,7 +50,8 @@ final Directory         <strong>sdkDir</strong> <a class="anchor-link"
             title="Permalink to sdkDir">#</a>
         </h4>
         <div class="doc">
-<p>Return the path to the current Dart SDK.</p>
+<p>Return the path to the current Dart SDK. This will return <code>null</code> if we are
+unable to locate the Dart SDK.</p>
 <pre class="source">
 Directory get sdkDir {
  // look for --dart-sdk on the command line
@@ -65,8 +66,10 @@ Directory get sdkDir {
  }
 
  // look relative to the dart executable
- // TODO: file a bug re: the path to the executable and the cwd
- return new File(Platform.executable).parent.parent;
+ // TODO: file a bug re: the path to the executable and the cwd.
+ Directory maybeSdkDirectory = new File(Platform.executable).parent.parent;
+ return joinFile(maybeSdkDirectory, ['version']).existsSync() ?
+     maybeSdkDirectory : null;
 }
 </pre>
 </div>
