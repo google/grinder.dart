@@ -12,7 +12,8 @@ import 'dart:io';
 import 'grinder.dart';
 
 /**
- * Return the path to the current Dart SDK.
+ * Return the path to the current Dart SDK. This will return `null` if we are
+ * unable to locate the Dart SDK.
  */
 Directory get sdkDir {
   // look for --dart-sdk on the command line
@@ -27,8 +28,10 @@ Directory get sdkDir {
   }
 
   // look relative to the dart executable
-  // TODO: file a bug re: the path to the executable and the cwd
-  return new File(Platform.executable).parent.parent;
+  // TODO: file a bug re: the path to the executable and the cwd.
+  Directory maybeSdkDirectory = new File(Platform.executable).parent.parent;
+  return joinFile(maybeSdkDirectory, ['version']).existsSync() ?
+      maybeSdkDirectory : null;
 }
 
 File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
