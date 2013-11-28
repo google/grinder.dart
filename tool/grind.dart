@@ -16,7 +16,7 @@ void main([List<String> args]) {
 
 void init(GrinderContext context) {
   PubTools pub = new PubTools();
-  pub.update(context);
+  pub.get(context);
 }
 
 void analyze(GrinderContext context) {
