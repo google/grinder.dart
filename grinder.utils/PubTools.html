@@ -37,49 +37,72 @@
 class PubTools {
 
  /**
-  * Run `pub install` on the current project. If [force] is true, this will
-  * execute even if the pubspec.lock file is up-to-date with respect to the
+  * Run `pub get` on the current project. If [force] is true, this will execute
+  * even if the pubspec.lock file is up-to-date with respect to the
   * pubspec.yaml file.
   */
- void install(GrinderContext context, {bool force: false}) {
+ void get(GrinderContext context, {bool force: false}) {
    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
    if (force || !publock.upToDate(pubspec)) {
-     runSdkBinary(context, 'pub', arguments: ['install']);
+     runSdkBinary(context, 'pub', arguments: ['get']);
    }
  }
 
- void update(GrinderContext context, {bool force: false}) {
+ void upgrade(GrinderContext context, {bool force: false}) {
    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
    if (force || !publock.upToDate(pubspec)) {
-     runSdkBinary(context, 'pub', arguments: ['update']);
+     runSdkBinary(context, 'pub', arguments: ['upgrade']);
    }
+ }
+
+ @deprecated
+ void install(GrinderContext context, {bool force: false}) {
+   get(context, force: force);
+ }
+
+ @deprecated
+ void update(GrinderContext context, {bool force: false}) {
+   upgrade(context, force: force);
  }
 }
 </pre>
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="get">
+<button class="show-code">Code</button>
+void <strong>get</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#get"
+              title="Permalink to PubTools.get">#</a></h4>
+<div class="doc">
+<p>Run <code>pub get</code> on the current project. If 
+<span class="param">force</span> is true, this will execute
+even if the pubspec.lock file is up-to-date with respect to the
+pubspec.yaml file.</p>
+<pre class="source">
+void get(GrinderContext context, {bool force: false}) {
+ FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+ FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+ if (force || !publock.upToDate(pubspec)) {
+   runSdkBinary(context, 'pub', arguments: ['get']);
+ }
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="install">
 <button class="show-code">Code</button>
 void <strong>install</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#install"
               title="Permalink to PubTools.install">#</a></h4>
 <div class="doc">
-<p>Run <code>pub install</code> on the current project. If 
-<span class="param">force</span> is true, this will
-execute even if the pubspec.lock file is up-to-date with respect to the
-pubspec.yaml file.</p>
 <pre class="source">
+@deprecated
 void install(GrinderContext context, {bool force: false}) {
- FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
- FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
-
- if (force || !publock.upToDate(pubspec)) {
-   runSdkBinary(context, 'pub', arguments: ['install']);
- }
+ get(context, force: force);
 }
 </pre>
 </div>
@@ -90,12 +113,25 @@ void <strong>update</strong>(<a href="../grinder/GrinderContext.html">GrinderCon
               title="Permalink to PubTools.update">#</a></h4>
 <div class="doc">
 <pre class="source">
+@deprecated
 void update(GrinderContext context, {bool force: false}) {
+ upgrade(context, force: force);
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="upgrade">
+<button class="show-code">Code</button>
+void <strong>upgrade</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#upgrade"
+              title="Permalink to PubTools.upgrade">#</a></h4>
+<div class="doc">
+<pre class="source">
+void upgrade(GrinderContext context, {bool force: false}) {
  FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
  FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
  if (force || !publock.upToDate(pubspec)) {
-   runSdkBinary(context, 'pub', arguments: ['update']);
+   runSdkBinary(context, 'pub', arguments: ['upgrade']);
  }
 }
 </pre>
