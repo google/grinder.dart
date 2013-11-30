@@ -32,19 +32,14 @@
         
 <button id="show-inherited" class="show-inherited">Hide inherited</button>
 <div class="doc">
-<p>Utility tasks for executing pub commands.</p>
+<p>Utility tasks for invoking dart2js.</p>
 <pre class="source">
 class Dart2jsTools {
-
  /**
-  * Run `pub get` on the current project. If [force] is true, this will
-  * execute even if the pubspec.lock file is up-to-date with respect to the
-  * pubspec.yaml file.
+  * Invoke a dart2js compile with the given [sourceFile] as input.
   */
  void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
 //    // TODO: check for the out.deps file, us it to know when to compile
-//    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-//    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
    if (outDir == null) {
      outDir = sourceFile.parent;
@@ -52,7 +47,9 @@ class Dart2jsTools {
 
    File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-   runSdkBinary(context, 'dart2js',
+   runSdkBinary(
+       context,
+       'dart2js',
        arguments: ['-o${outFile.path}', sourceFile.path]);
  }
 }
@@ -65,14 +62,11 @@ class Dart2jsTools {
 void <strong>compile</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, File sourceFile, {Directory outDir}) <a class="anchor-link" href="#compile"
               title="Permalink to Dart2jsTools.compile">#</a></h4>
 <div class="doc">
-<p>Run <code>pub get</code> on the current project. If <code>force</code> is true, this will
-execute even if the pubspec.lock file is up-to-date with respect to the
-pubspec.yaml file.</p>
+<p>Invoke a dart2js compile with the given 
+<span class="param">sourceFile</span> as input.</p>
 <pre class="source">
 void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
 //    // TODO: check for the out.deps file, us it to know when to compile
-//    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-//    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
  if (outDir == null) {
    outDir = sourceFile.parent;
@@ -80,7 +74,9 @@ void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
 
  File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
- runSdkBinary(context, 'dart2js',
+ runSdkBinary(
+     context,
+     'dart2js',
      arguments: ['-o${outFile.path}', sourceFile.path]);
 }
 </pre>

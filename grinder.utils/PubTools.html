@@ -35,7 +35,6 @@
 <p>Utility tasks for executing pub commands.</p>
 <pre class="source">
 class PubTools {
-
  /**
   * Run `pub get` on the current project. If [force] is true, this will execute
   * even if the pubspec.lock file is up-to-date with respect to the
@@ -50,24 +49,24 @@ class PubTools {
    }
  }
 
- void upgrade(GrinderContext context, {bool force: false}) {
-   FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-   FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
-
-   if (force || !publock.upToDate(pubspec)) {
-     runSdkBinary(context, 'pub', arguments: ['upgrade']);
-   }
+ /**
+  * Run `pub upgrade` on the current project.
+  */
+ void upgrade(GrinderContext context) {
+   runSdkBinary(context, 'pub', arguments: ['upgrade']);
  }
 
+ /**
+  * Deprecated in favor of [get].
+  */
  @deprecated
- void install(GrinderContext context, {bool force: false}) {
-   get(context, force: force);
- }
+ void install(context, {force: false}) =&gt; get(context, force: force);
 
+ /**
+  * Deprecated in favor of [upgrade].
+  */
  @deprecated
- void update(GrinderContext context, {bool force: false}) {
-   upgrade(context, force: force);
- }
+ void update(context, {force: false}) =&gt; upgrade(context);
 }
 </pre>
 </div>
@@ -96,43 +95,37 @@ void get(GrinderContext context, {bool force: false}) {
 </div>
 <div class="method"><h4 id="install">
 <button class="show-code">Code</button>
-void <strong>install</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#install"
+void <strong>install</strong>(context, {force: false}) <a class="anchor-link" href="#install"
               title="Permalink to PubTools.install">#</a></h4>
 <div class="doc">
+<p>Deprecated in favor of <a class="crossref" href="../grinder.utils/PubTools.html#get">get</a>.</p>
 <pre class="source">
 @deprecated
-void install(GrinderContext context, {bool force: false}) {
- get(context, force: force);
-}
+void install(context, {force: false}) =&gt; get(context, force: force);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="update">
 <button class="show-code">Code</button>
-void <strong>update</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#update"
+void <strong>update</strong>(context, {force: false}) <a class="anchor-link" href="#update"
               title="Permalink to PubTools.update">#</a></h4>
 <div class="doc">
+<p>Deprecated in favor of <a class="crossref" href="../grinder.utils/PubTools.html#upgrade">upgrade</a>.</p>
 <pre class="source">
 @deprecated
-void update(GrinderContext context, {bool force: false}) {
- upgrade(context, force: force);
-}
+void update(context, {force: false}) =&gt; upgrade(context);
 </pre>
 </div>
 </div>
 <div class="method"><h4 id="upgrade">
 <button class="show-code">Code</button>
-void <strong>upgrade</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#upgrade"
+void <strong>upgrade</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context) <a class="anchor-link" href="#upgrade"
               title="Permalink to PubTools.upgrade">#</a></h4>
 <div class="doc">
+<p>Run <code>pub upgrade</code> on the current project.</p>
 <pre class="source">
-void upgrade(GrinderContext context, {bool force: false}) {
- FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
- FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
-
- if (force || !publock.upToDate(pubspec)) {
-   runSdkBinary(context, 'pub', arguments: ['upgrade']);
- }
+void upgrade(GrinderContext context) {
+ runSdkBinary(context, 'pub', arguments: ['upgrade']);
 }
 </pre>
 </div>
