@@ -101,7 +101,6 @@ void runSdkBinary(GrinderContext context, String script,
  * Utility tasks for executing pub commands.
  */
 class PubTools {
-
   /**
    * Run `pub get` on the current project. If [force] is true, this will execute
    * even if the pubspec.lock file is up-to-date with respect to the
@@ -116,40 +115,35 @@ class PubTools {
     }
   }
 
-  void upgrade(GrinderContext context, {bool force: false}) {
-    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
-
-    if (force || !publock.upToDate(pubspec)) {
-      runSdkBinary(context, 'pub', arguments: ['upgrade']);
-    }
+  /**
+   * Run `pub upgrade` on the current project.
+   */
+  void upgrade(GrinderContext context) {
+    runSdkBinary(context, 'pub', arguments: ['upgrade']);
   }
 
+  /**
+   * Deprecated in favor of [get].
+   */
   @deprecated
-  void install(GrinderContext context, {bool force: false}) {
-    get(context, force: force);
-  }
+  void install(context, {force: false}) => get(context, force: force);
 
+  /**
+   * Deprecated in favor of [upgrade].
+   */
   @deprecated
-  void update(GrinderContext context, {bool force: false}) {
-    upgrade(context, force: force);
-  }
+  void update(context, {force: false}) => upgrade(context);
 }
 
 /**
- * Utility tasks for executing pub commands.
+ * Utility tasks for invoking dart2js.
  */
 class Dart2jsTools {
-
   /**
-   * Run `pub get` on the current project. If [force] is true, this will
-   * execute even if the pubspec.lock file is up-to-date with respect to the
-   * pubspec.yaml file.
+   * Invoke a dart2js compile with the given [sourceFile] as input.
    */
   void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
 //    // TODO: check for the out.deps file, us it to know when to compile
-//    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-//    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (outDir == null) {
       outDir = sourceFile.parent;
@@ -157,14 +151,17 @@ class Dart2jsTools {
 
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-    runSdkBinary(context, 'dart2js',
+    runSdkBinary(
+        context,
+        'dart2js',
         arguments: ['-o${outFile.path}', sourceFile.path]);
   }
 }
 
 String _execName(String name) {
-  if (Platform.isWindows)
+  if (Platform.isWindows) {
     return name == 'dart' ? 'dart.exe' : '${name}.bat';
+  }
 
   return name;
 }
