@@ -16,19 +16,19 @@ import 'grinder.dart';
  * unable to locate the Dart SDK.
  */
 Directory get sdkDir {
-  // look for --dart-sdk on the command line
+  // Look for --dart-sdk on the command line.
   List<String> args = grinderArgs();
   if (args != null && args.contains('--dart-sdk')) {
     return new Directory(args[args.indexOf('dart-sdk') + 1]);
   }
 
-  // look in env['DART_SDK']
+  // Look in env['DART_SDK']
   if (Platform.environment['DART_SDK'] != null) {
     return new Directory(Platform.environment['DART_SDK']);
   }
 
-  // look relative to the dart executable
-  // TODO: file a bug re: the path to the executable and the cwd.
+  // Look relative to the dart executable.
+  // TODO: File a bug re: the path to the executable and the cwd.
   Directory maybeSdkDirectory = new File(Platform.executable).parent.parent;
   return joinFile(maybeSdkDirectory, ['version']).existsSync() ?
       maybeSdkDirectory : null;
@@ -88,7 +88,9 @@ void runProcess(GrinderContext context, String executable,
  * This should be a script found in `<dart-sdk>/bin`.
  */
 void runSdkBinary(GrinderContext context, String script,
-    {List<String> arguments : const [], bool quiet: false, String workingDirectory}) {
+    {List<String> arguments : const [],
+     bool quiet: false,
+     String workingDirectory}) {
   File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
 
   runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
@@ -101,26 +103,36 @@ void runSdkBinary(GrinderContext context, String script,
 class PubTools {
 
   /**
-   * Run `pub install` on the current project. If [force] is true, this will
-   * execute even if the pubspec.lock file is up-to-date with respect to the
+   * Run `pub get` on the current project. If [force] is true, this will execute
+   * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  void install(GrinderContext context, {bool force: false}) {
+  void get(GrinderContext context, {bool force: false}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      runSdkBinary(context, 'pub', arguments: ['install']);
+      runSdkBinary(context, 'pub', arguments: ['get']);
     }
   }
 
-  void update(GrinderContext context, {bool force: false}) {
+  void upgrade(GrinderContext context, {bool force: false}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      runSdkBinary(context, 'pub', arguments: ['update']);
+      runSdkBinary(context, 'pub', arguments: ['upgrade']);
     }
+  }
+
+  @deprecated
+  void install(GrinderContext context, {bool force: false}) {
+    get(context, force: force);
+  }
+
+  @deprecated
+  void update(GrinderContext context, {bool force: false}) {
+    upgrade(context, force: force);
   }
 }
 
@@ -130,7 +142,7 @@ class PubTools {
 class Dart2jsTools {
 
   /**
-   * Run `pub install` on the current project. If [force] is true, this will
+   * Run `pub get` on the current project. If [force] is true, this will
    * execute even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
@@ -151,9 +163,8 @@ class Dart2jsTools {
 }
 
 String _execName(String name) {
-  if (Platform.isWindows) {
+  if (Platform.isWindows)
     return name == 'dart' ? 'dart.exe' : '${name}.bat';
-  } else {
-    return name;
-  }
+
+  return name;
 }
