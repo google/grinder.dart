@@ -106,7 +106,7 @@ String fileName(FileSystemEntity entity) {
 String fileExt(FileSystemEntity entity) {
   String name = fileName(entity);
   int index = name.indexOf('.');
-  return index == -1 ? null : name.substring(index + 1);
+  return index != -1 && index < name.length ? name.substring(index + 1) : null;
 }
 
 /**
