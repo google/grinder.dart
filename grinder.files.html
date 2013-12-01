@@ -186,7 +186,7 @@ there is no extension.</p>
 String fileExt(FileSystemEntity entity) {
  String name = fileName(entity);
  int index = name.indexOf('.');
- return index == -1 ? null : name.substring(index + 1);
+ return index != -1 &amp;&amp; index &lt; name.length ? name.substring(index + 1) : null;
 }
 </pre>
 </div>
