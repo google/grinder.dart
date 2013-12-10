@@ -53,6 +53,81 @@ main() {
       ]));
     });
 
+    // Test that we execute tasks in the correct order.
+    test('spark archive', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('setup'));
+      grinder.addTask(new GrinderTask('mode-notest'));
+      grinder.addTask(new GrinderTask('mode-test'));
+      grinder.addTask(new GrinderTask('compile', depends: ['setup']));
+      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(new GrinderTask('docs', depends: ['setup']));
+      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+
+      grinder.start(['archive'], dontRun: true);
+      expect(grinder.getBuildOrder(), orderedEquals([
+          grinder.getTask('mode-notest'), grinder.getTask('setup'), grinder.getTask('compile'), grinder.getTask('archive')
+      ]));
+    });
+
+    test('spark docs', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('setup'));
+      grinder.addTask(new GrinderTask('mode-notest'));
+      grinder.addTask(new GrinderTask('mode-test'));
+      grinder.addTask(new GrinderTask('compile', depends: ['setup']));
+      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(new GrinderTask('docs', depends: ['setup']));
+      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+
+      grinder.start(['docs'], dontRun: true);
+      expect(grinder.getBuildOrder(), orderedEquals([
+          grinder.getTask('setup'), grinder.getTask('docs')
+      ]));
+    });
+
+    test('spark docs, archive', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('setup'));
+      grinder.addTask(new GrinderTask('mode-notest'));
+      grinder.addTask(new GrinderTask('mode-test'));
+      grinder.addTask(new GrinderTask('compile', depends: ['setup']));
+      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(new GrinderTask('docs', depends: ['setup']));
+      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+
+      grinder.start(['docs', 'archive'], dontRun: true);
+      expect(grinder.getBuildOrder(), orderedEquals([
+          grinder.getTask('setup'), grinder.getTask('docs'), grinder.getTask('mode-notest'), grinder.getTask('compile'), grinder.getTask('archive')
+      ]));
+    });
+
+    test('spark clean', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('setup'));
+      grinder.addTask(new GrinderTask('mode-notest'));
+      grinder.addTask(new GrinderTask('mode-test'));
+      grinder.addTask(new GrinderTask('compile', depends: ['setup']));
+      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(new GrinderTask('docs', depends: ['setup']));
+      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+
+      grinder.addTask(new GrinderTask('clean'));
+
+      grinder.start(['clean'], dontRun: true);
+      expect(grinder.getBuildOrder(), orderedEquals([
+          grinder.getTask('clean')
+      ]));
+    });
+
     test('returns future', () {
       StringBuffer buf = new StringBuffer();
       Grinder grinder = new Grinder();

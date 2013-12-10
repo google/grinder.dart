@@ -213,6 +213,7 @@ class Grinder {
   List<GrinderTask> _tasks = [];
   Map<GrinderTask, List> _taskDeps;
   List<GrinderTask> _calcedTasks = [];
+  Set<String> _calcedTaskNameSet = new Set();
 
   /// Create a new instance of Grinder.
   Grinder();
@@ -230,6 +231,16 @@ class Grinder {
   /// Return the calculated build order of the tasks for this run.
   List<GrinderTask> getBuildOrder() {
     return _calcedTasks;
+  }
+
+  void _postOrder(GrinderTask task) {
+    for (String dependName in task.depends) {
+      _postOrder(getTask(dependName));
+    }
+    if (!_calcedTaskNameSet.contains(task.name)) {
+      _calcedTaskNameSet.add(task.name);
+      _calcedTasks.add(task);
+    }
   }
 
   /**
@@ -252,14 +263,14 @@ class Grinder {
 
     DateTime startTime = new DateTime.now();
 
-    // verify that all named tasks exist
+    // Verify that all named tasks exist.
     for (String taskName in targets) {
       if (getTask(taskName) == null) {
         throw new GrinderException("task '${taskName}' doesn't exist");
       }
     }
 
-    // verify that there aren't any duplicate names
+    // Verify that there aren't any duplicate names.
     Set<String> names = new Set();
 
     for (GrinderTask task in _tasks) {
@@ -269,10 +280,7 @@ class Grinder {
       names.add(task.name);
     }
 
-    List<GrinderTask> tasksToRun = targets.map(
-        (name) => getTask(name)).toList();
-
-    // verify that all referenced tasks exist
+    // Verify that all referenced tasks exist.
     for (GrinderTask task in tasks) {
       for (String name in task.depends) {
         if (getTask(name) == null) {
@@ -284,7 +292,7 @@ class Grinder {
 
     _calculateAllDeps();
 
-    // verify that there are no dependency cycles
+    // Verify that there are no dependency cycles.
     for (GrinderTask task in tasks) {
       if (getAllDependencies(task).contains(task)) {
         throw new GrinderException("Task ${task} has a dependency cycle.\n"
@@ -292,20 +300,9 @@ class Grinder {
       }
     }
 
-    // print out the calculated tasks + order
-    for (GrinderTask task in tasksToRun) {
-      if (!_calcedTasks.contains(task)) {
-        _calcedTasks.add(task);
-
-        for (GrinderTask depTask in getAllDependencies(task)) {
-          if (!_calcedTasks.contains(depTask)) {
-            _calcedTasks.add(depTask);
-          }
-        }
-      }
+    for (String taskName in targets) {
+      _postOrder(getTask(taskName));
     }
-
-    _sortTasks(_calcedTasks);
 
     if (!dontRun) {
       log('grinder running ${_calcedTasks.join(' ')}');
@@ -354,11 +351,6 @@ class Grinder {
     for (GrinderTask task in _tasks) {
       _taskDeps[task] = _calcDependencies(task, new Set()).toList();
     }
-
-    // sort the deps
-    for (List<GrinderTask> deps in _taskDeps.values) {
-      _sortTasks(deps);
-    }
   }
 
   Set<GrinderTask> _calcDependencies(GrinderTask task, Set<GrinderTask> foundTasks) {
@@ -370,21 +362,6 @@ class Grinder {
       }
     }
     return foundTasks;
-  }
-
-  void _sortTasks(List<GrinderTask> tasks) {
-    tasks.sort((t1, t2) {
-      if (getAllDependencies(t2).contains(t1)) {
-        return -1;
-      } else if (getAllDependencies(t1).contains(t2)) {
-        return 1;
-      } else {
-        // Use the task name to break ties. This means that we will have
-        // consistent execution order regardless of the order the tasks are
-        // specified on the command-line.
-        return t1.name.compareTo(t2.name);
-      }
-    });
   }
 }
 
