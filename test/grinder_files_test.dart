@@ -143,5 +143,10 @@ main() {
                               joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
     });
+
+    test('replacePathSeparator', () {
+      expect(replacePathSeparator('foo/bar/file'), 'foo${sep}bar${sep}file');
+      expect(replacePathSeparator('foo\\bar\\file'), 'foo${sep}bar${sep}file');
+    });
   });
 }
