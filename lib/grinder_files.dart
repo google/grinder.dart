@@ -191,3 +191,14 @@ void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
     entity.deleteSync(recursive: true);
   }
 }
+
+/**
+ * Return the [path] replaced with current platform seperator.
+ */
+String replacePathSeparator(String path) {
+  if (Platform.isWindows) {
+    return path.replaceAll('/', Platform.pathSeparator);
+  } else {
+    return path.replaceAll('\\', Platform.pathSeparator);
+  }
+}
