@@ -133,18 +133,26 @@ void runProcess(GrinderContext context, String executable,
 </div>
 <div class="method"><h4 id="runDartScript">
 <button class="show-code">Code</button>
-void <strong>runDartScript</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false, String packageRoot, String workingDirectory}) <a class="anchor-link" href="#runDartScript"
+void <strong>runDartScript</strong>(<a href="grinder/GrinderContext.html">GrinderContext</a> context, String script, {List&lt;String&gt; arguments: const[] , bool quiet: false, String packageRoot, String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) <a class="anchor-link" href="#runDartScript"
               title="Permalink to runDartScript">#</a></h4>
 <div class="doc">
 <p>Run the given Dart script in a new process.</p>
 <pre class="source">
 void runDartScript(GrinderContext context, String script,
    {List&lt;String&gt; arguments : const [], bool quiet: false, String packageRoot,
-   String workingDirectory}) {
+   String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
  List&lt;String&gt; args = [];
 
  if (packageRoot != null) {
    args.add('--package-root=${packageRoot}');
+ }
+
+ if (vmNewGenHeapMB != null) {
+   args.add('--new_gen_heap_size=${vmNewGenHeapMB}');
+ }
+
+ if (vmOldGenHeapMB != null) {
+   args.add('--old_gen_heap_size=${vmOldGenHeapMB}');
  }
 
  args.add(script);
