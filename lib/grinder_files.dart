@@ -16,6 +16,8 @@ import 'grinder.dart';
 
 // TODO: union sets?
 
+// TODO: use the Glob class from quiver
+
 /**
  * A class to handle defining, composing, and comparing groups of files.
  */

@@ -41,11 +41,19 @@ File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
  */
 void runDartScript(GrinderContext context, String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
-    String workingDirectory}) {
+    String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
   List<String> args = [];
 
   if (packageRoot != null) {
     args.add('--package-root=${packageRoot}');
+  }
+
+  if (vmNewGenHeapMB != null) {
+    args.add('--new_gen_heap_size=${vmNewGenHeapMB}');
+  }
+
+  if (vmOldGenHeapMB != null) {
+    args.add('--old_gen_heap_size=${vmOldGenHeapMB}');
   }
 
   args.add(script);
@@ -143,8 +151,7 @@ class Dart2jsTools {
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
   void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
-//    // TODO: check for the out.deps file, us it to know when to compile
-
+    // TODO: check for the out.deps file, us it to know when to compile
     if (outDir == null) {
       outDir = sourceFile.parent;
     }
