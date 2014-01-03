@@ -37,14 +37,11 @@
 class FileSet {
  List&lt;File&gt; files = [];
 
- FileSet.fromDir(Directory dir, {RegExp pattern, String endsWith, bool recurse: false}) {
-   if (pattern == null &amp;&amp; endsWith != null) {
-     endsWith = endsWith.replaceAll('.', '\\.');
-     pattern = new RegExp(".*${endsWith}\$");
-   }
+ FileSet.fromDir(Directory dir, {String pattern, bool recurse: false}) {
+   Glob glob = (pattern == null ? null : new Glob(pattern));
 
    if (dir.existsSync()) {
-     _collect(files, dir, pattern, recurse);
+     _collect(files, dir, glob, recurse);
    }
  }
 
@@ -87,17 +84,17 @@ class FileSet {
 
  // TODO: have a refresh method?
 
- static void _collect(List&lt;File&gt; files, Directory dir, RegExp pattern, bool recurse) {
+ static void _collect(List&lt;File&gt; files, Directory dir, Glob glob, bool recurse) {
    for (FileSystemEntity entity in dir.listSync(recursive: false, followLinks: false)) {
      String name = fileName(entity);
 
      if (entity is File) {
-       if (pattern == null || pattern.matchAsPrefix(name) != null) {
+       if (glob == null || glob.hasMatch(name)) {
          files.add(entity);
        }
      } else if (entity is Directory) {
        if (recurse &amp;&amp; !name.startsWith('.')) {
-         _collect(files, entity, pattern, recurse);
+         _collect(files, entity, glob, recurse);
        }
      }
    }
@@ -109,18 +106,15 @@ class FileSet {
 <h3>Constructors</h3>
 <div class="method"><h4 id="fromDir">
 <button class="show-code">Code</button>
-new <strong>FileSet.fromDir</strong>(Directory dir, {RegExp pattern, String endsWith, bool recurse: false}) <a class="anchor-link" href="#fromDir"
+new <strong>FileSet.fromDir</strong>(Directory dir, {String pattern, bool recurse: false}) <a class="anchor-link" href="#fromDir"
               title="Permalink to FileSet.FileSet.fromDir">#</a></h4>
 <div class="doc">
 <pre class="source">
-FileSet.fromDir(Directory dir, {RegExp pattern, String endsWith, bool recurse: false}) {
- if (pattern == null &amp;&amp; endsWith != null) {
-   endsWith = endsWith.replaceAll('.', '\\.');
-   pattern = new RegExp(".*${endsWith}\$");
- }
+FileSet.fromDir(Directory dir, {String pattern, bool recurse: false}) {
+ Glob glob = (pattern == null ? null : new Glob(pattern));
 
  if (dir.existsSync()) {
-   _collect(files, dir, pattern, recurse);
+   _collect(files, dir, glob, recurse);
  }
 }
 </pre>

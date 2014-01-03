@@ -57,21 +57,41 @@ class PubTools {
  }
 
  /**
-  * Deprecated in favor of [get].
+  * Run `pub build` on the current project.
+  *
+  * The valid values for [mode] are `release` and `debug`.
   */
- @deprecated
- void install(context, {force: false}) =&gt; get(context, force: force);
-
- /**
-  * Deprecated in favor of [upgrade].
-  */
- @deprecated
- void update(context, {force: false}) =&gt; upgrade(context);
+ void build(GrinderContext context, {String mode}) {
+   List args = ['build'];
+   if (mode != null) {
+     args.add('--mode=${mode}');
+   }
+   runSdkBinary(context, 'pub', arguments: args);
+ }
 }
 </pre>
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="build">
+<button class="show-code">Code</button>
+void <strong>build</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {String mode}) <a class="anchor-link" href="#build"
+              title="Permalink to PubTools.build">#</a></h4>
+<div class="doc">
+<p>Run <code>pub build</code> on the current project.</p>
+<p>The valid values for 
+<span class="param">mode</span> are <code>release</code> and <code>debug</code>.</p>
+<pre class="source">
+void build(GrinderContext context, {String mode}) {
+ List args = ['build'];
+ if (mode != null) {
+   args.add('--mode=${mode}');
+ }
+ runSdkBinary(context, 'pub', arguments: args);
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="get">
 <button class="show-code">Code</button>
 void <strong>get</strong>(<a href="../grinder/GrinderContext.html">GrinderContext</a> context, {bool force: false}) <a class="anchor-link" href="#get"
@@ -90,30 +110,6 @@ void get(GrinderContext context, {bool force: false}) {
    runSdkBinary(context, 'pub', arguments: ['get']);
  }
 }
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="install">
-<button class="show-code">Code</button>
-void <strong>install</strong>(context, {force: false}) <a class="anchor-link" href="#install"
-              title="Permalink to PubTools.install">#</a></h4>
-<div class="doc">
-<p>Deprecated in favor of <a class="crossref" href="../grinder.utils/PubTools.html#get">get</a>.</p>
-<pre class="source">
-@deprecated
-void install(context, {force: false}) =&gt; get(context, force: force);
-</pre>
-</div>
-</div>
-<div class="method"><h4 id="update">
-<button class="show-code">Code</button>
-void <strong>update</strong>(context, {force: false}) <a class="anchor-link" href="#update"
-              title="Permalink to PubTools.update">#</a></h4>
-<div class="doc">
-<p>Deprecated in favor of <a class="crossref" href="../grinder.utils/PubTools.html#upgrade">upgrade</a>.</p>
-<pre class="source">
-@deprecated
-void update(context, {force: false}) =&gt; upgrade(context);
 </pre>
 </div>
 </div>
