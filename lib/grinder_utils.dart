@@ -131,16 +131,17 @@ class PubTools {
   }
 
   /**
-   * Deprecated in favor of [get].
+   * Run `pub build` on the current project.
+   *
+   * The valid values for [mode] are `release` and `debug`.
    */
-  @deprecated
-  void install(context, {force: false}) => get(context, force: force);
-
-  /**
-   * Deprecated in favor of [upgrade].
-   */
-  @deprecated
-  void update(context, {force: false}) => upgrade(context);
+  void build(GrinderContext context, {String mode}) {
+    List args = ['build'];
+    if (mode != null) {
+      args.add('--mode=${mode}');
+    }
+    runSdkBinary(context, 'pub', arguments: args);
+  }
 }
 
 /**
@@ -151,7 +152,7 @@ class Dart2jsTools {
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
   void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
-    // TODO: check for the out.deps file, us it to know when to compile
+    // TODO: check for the out.deps file, use it to know when to compile
     if (outDir == null) {
       outDir = sourceFile.parent;
     }

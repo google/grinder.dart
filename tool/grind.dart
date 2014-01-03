@@ -29,9 +29,9 @@ void tests(GrinderContext context) {
 
 void docs(GrinderContext context) {
   FileSet docFiles = new FileSet.fromDir(
-      new Directory('docs'), endsWith: '.html');
+      new Directory('docs'), pattern: '*.html');
   FileSet sourceFiles = new FileSet.fromDir(
-      new Directory('lib'), endsWith: '.dart', recurse: true);
+      new Directory('lib'), pattern: '*.dart', recurse: true);
 
   if (!docFiles.upToDate(sourceFiles)) {
     runSdkBinary(context, 'dartdoc',
