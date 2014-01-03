@@ -62,6 +62,21 @@ main() {
       FileSet fileSetB = new FileSet.fromFile(fileB);
       expect(fileSetB.upToDate(fileSetA), true);
     });
+
+    test('fromDir glob', () {
+      FileSet fileSet = new FileSet.fromDir(fileA.parent, pattern: '*.txt');
+      expect(fileSet.files.length, 2);
+    });
+
+    test('fromDir glob 2', () {
+      FileSet fileSet = new FileSet.fromDir(fileA.parent, pattern: '*.txts');
+      expect(fileSet.files.length, 0);
+    });
+
+    test('fromDir glob 3', () {
+      FileSet fileSet = new FileSet.fromDir(fileA.parent);
+      expect(fileSet.files.length, 2);
+    });
   });
 
   group('grinder.files', () {

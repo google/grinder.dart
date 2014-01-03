@@ -10,13 +10,13 @@ library grinder.files;
 
 import 'dart:io';
 
+import 'package:quiver/pattern.dart';
+
 import 'grinder.dart';
 
 // TODO: add files to a set
 
 // TODO: union sets?
-
-// TODO: use the Glob class from quiver
 
 /**
  * A class to handle defining, composing, and comparing groups of files.
@@ -24,14 +24,11 @@ import 'grinder.dart';
 class FileSet {
   List<File> files = [];
 
-  FileSet.fromDir(Directory dir, {RegExp pattern, String endsWith, bool recurse: false}) {
-    if (pattern == null && endsWith != null) {
-      endsWith = endsWith.replaceAll('.', '\\.');
-      pattern = new RegExp(".*${endsWith}\$");
-    }
+  FileSet.fromDir(Directory dir, {String pattern, bool recurse: false}) {
+    Glob glob = (pattern == null ? null : new Glob(pattern));
 
     if (dir.existsSync()) {
-      _collect(files, dir, pattern, recurse);
+      _collect(files, dir, glob, recurse);
     }
   }
 
@@ -74,17 +71,17 @@ class FileSet {
 
   // TODO: have a refresh method?
 
-  static void _collect(List<File> files, Directory dir, RegExp pattern, bool recurse) {
+  static void _collect(List<File> files, Directory dir, Glob glob, bool recurse) {
     for (FileSystemEntity entity in dir.listSync(recursive: false, followLinks: false)) {
       String name = fileName(entity);
 
       if (entity is File) {
-        if (pattern == null || pattern.matchAsPrefix(name) != null) {
+        if (glob == null || glob.hasMatch(name)) {
           files.add(entity);
         }
       } else if (entity is Directory) {
         if (recurse && !name.startsWith('.')) {
-          _collect(files, entity, pattern, recurse);
+          _collect(files, entity, glob, recurse);
         }
       }
     }
