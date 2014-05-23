@@ -174,9 +174,9 @@ void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]
     String name = fileName(entity);
 
     if (entity is File) {
-      copyFile(entity, destDir, context);
+      copyFile(entity, destDir);
     } else {
-      copyDirectory(entity, joinDir(destDir, [name]), context);
+      copyDirectory(entity, joinDir(destDir, [name]));
     }
   }
 }
