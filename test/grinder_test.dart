@@ -148,5 +148,16 @@ main() {
         expect(buf.toString(), 'ab');
       });
     });
+
+    test('Dont throw on fail', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('i_throw', taskFunction: (GrinderContext context) {
+        context.fail('boo');
+      }));
+
+      return grinder.start(['i_throw']).catchError((e) {
+        fail("shouldn't throw");
+      });
+    });
   });
 }
