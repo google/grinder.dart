@@ -7,6 +7,7 @@
  */
 library grinder.utils;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'grinder.dart';
@@ -92,6 +93,40 @@ void runProcess(GrinderContext context, String executable,
 }
 
 /**
+ * Run the given executable, with optional arguments and working directory.
+ */
+Future runProcessAsync(GrinderContext context, String executable,
+    {List<String> arguments : const [],
+     bool quiet: false,
+     String workingDirectory}) {
+  context.log("${executable} ${arguments.join(' ')}");
+
+  return Process.start(executable, arguments, workingDirectory: workingDirectory)
+      .then((Process process) {
+    // Handle stdout.
+    process.stdout.listen((List<int> data) {
+      if (!quiet) {
+        context.log(new String.fromCharCodes(data).trim());
+      }
+    });
+
+    // Handle stderr.
+    process.stderr.listen((List<int> data) {
+      context.log('stderr: ${new String.fromCharCodes(data).trim()}');
+    });
+
+    return process.exitCode.then((int code) {
+      if (code == 0) {
+        return new Future.value();
+      } else {
+        throw new GrinderException(
+            "${executable} failed with a return code of ${code}");
+      }
+    });
+  });
+}
+
+/**
  * Run the given Dart SDK binary, with optional arguments and working directory.
  * This should be a script found in `<dart-sdk>/bin`.
  */
@@ -102,7 +137,21 @@ void runSdkBinary(GrinderContext context, String script,
   File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
 
   runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
-             workingDirectory: workingDirectory);
+      workingDirectory: workingDirectory);
+}
+
+/**
+ * Run the given Dart SDK binary, with optional arguments and working directory.
+ * This should be a script found in `<dart-sdk>/bin`.
+ */
+Future runSdkBinaryAsync(GrinderContext context, String script,
+    {List<String> arguments : const [],
+     bool quiet: false,
+     String workingDirectory}) {
+  File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
+
+  return runProcessAsync(context, scriptFile.path, arguments: arguments,
+      quiet: quiet, workingDirectory: workingDirectory);
 }
 
 /**
@@ -124,6 +173,22 @@ class PubTools {
   }
 
   /**
+   * Run `pub get` on the current project. If [force] is true, this will execute
+   * even if the pubspec.lock file is up-to-date with respect to the
+   * pubspec.yaml file.
+   */
+  Future getAsync(GrinderContext context, {bool force: false}) {
+    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
+    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+
+    if (force || !publock.upToDate(pubspec)) {
+      return runSdkBinaryAsync(context, 'pub', arguments: ['get']);
+    } else {
+      return new Future.value();
+    }
+  }
+
+  /**
    * Run `pub upgrade` on the current project.
    */
   void upgrade(GrinderContext context) {
@@ -131,16 +196,38 @@ class PubTools {
   }
 
   /**
+   * Run `pub upgrade` on the current project.
+   */
+  Future upgradeAsync(GrinderContext context) {
+    return runSdkBinaryAsync(context, 'pub', arguments: ['upgrade']);
+  }
+
+  /**
    * Run `pub build` on the current project.
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  void build(GrinderContext context, {String mode}) {
+  void build(GrinderContext context,
+      {String mode, List<String> directories}) {
     List args = ['build'];
-    if (mode != null) {
-      args.add('--mode=${mode}');
-    }
+    if (mode != null) args.add('--mode=${mode}');
+    if (directories != null && directories.isNotEmpty) args.addAll(directories);
+
     runSdkBinary(context, 'pub', arguments: args);
+  }
+
+  /**
+   * Run `pub build` on the current project.
+   *
+   * The valid values for [mode] are `release` and `debug`.
+   */
+  Future buildAsync(GrinderContext context,
+      {String mode, List<String> directories}) {
+    List args = ['build'];
+    if (mode != null) args.add('--mode=${mode}');
+    if (directories != null && directories.isNotEmpty) args.addAll(directories);
+
+    return runSdkBinaryAsync(context, 'pub', arguments: args);
   }
 }
 
@@ -152,7 +239,7 @@ class Dart2jsTools {
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
   void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
-    // TODO: check for the out.deps file, use it to know when to compile
+    // TODO: Check for the out.deps file, use it to know when to compile.
     if (outDir == null) {
       outDir = sourceFile.parent;
     }
@@ -160,6 +247,23 @@ class Dart2jsTools {
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
     runSdkBinary(
+        context,
+        'dart2js',
+        arguments: ['-o${outFile.path}', sourceFile.path]);
+  }
+
+  /**
+   * Invoke a dart2js compile with the given [sourceFile] as input.
+   */
+  Future compileAsync(GrinderContext context, File sourceFile, {Directory outDir}) {
+    // TODO: Check for the out.deps file, use it to know when to compile.
+    if (outDir == null) {
+      outDir = sourceFile.parent;
+    }
+
+    File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+
+    return runSdkBinaryAsync(
         context,
         'dart2js',
         arguments: ['-o${outFile.path}', sourceFile.path]);

@@ -92,7 +92,14 @@ void startGrinder(List<String> args) {
   } else if (results.rest.isEmpty) {
     _printUsage(parser, _grinder);
   } else {
-    _grinder.start(results.rest);
+    var result = _grinder.start(results.rest);
+
+    if (result is Future) {
+      result.catchError((e, st) {
+        print('${e}\n${st}');
+        exit(1);
+      });
+    }
   }
 }
 
