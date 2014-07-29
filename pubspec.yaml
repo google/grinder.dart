@@ -1,5 +1,5 @@
 name: grinder
-version: 0.5.7-dev
+version: 0.5.7
 author: Devon Carew <devoncarew@google.com>
 description: Grinder - a task based, dependency aware build system.
 homepage: https://github.com/google/grinder.dart

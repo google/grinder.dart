@@ -134,8 +134,13 @@ void runSdkBinary(GrinderContext context, String script,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory}) {
-  File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
+  Directory sdk = sdkDir;
+  if (sdk == null) {
+    throw new GrinderException('Unable to locate the Dart SDK; try setting the '
+        'DART_SDK environment variable.');
+  }
 
+  File scriptFile = joinFile(sdk, ['bin', _execName(script)]);
   runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
       workingDirectory: workingDirectory);
 }
@@ -148,8 +153,13 @@ Future runSdkBinaryAsync(GrinderContext context, String script,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory}) {
-  File scriptFile = joinFile(sdkDir, ['bin', _execName(script)]);
+  Directory sdk = sdkDir;
+  if (sdk == null) {
+    return new Future.error(new GrinderException('Unable to locate the Dart '
+        'SDK; try setting the DART_SDK environment variable.'));
+  }
 
+  File scriptFile = joinFile(sdk, ['bin', _execName(script)]);
   return runProcessAsync(context, scriptFile.path, arguments: arguments,
       quiet: quiet, workingDirectory: workingDirectory);
 }
