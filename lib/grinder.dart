@@ -10,11 +10,11 @@
  *
  * Generally, a Grinder implementation will look something like this:
  *     void main([List<String> args]) {
- *       defineTask('init', taskFunction: init);
- *       defineTask('compile', taskFunction: compile, depends: ['init']);
- *       defineTask('deploy', taskFunction: deploy, depends: ['compile']);
- *       defineTask('docs', taskFunction: deploy, depends: ['init']);
- *       defineTask('all', depends: ['deploy', 'docs']);
+ *       task('init', run: init);
+ *       task('compile', run: compile, depends: ['init']);
+ *       task('deploy', run: deploy, depends: ['compile']);
+ *       task('docs', run: deploy, depends: ['init']);
+ *       task('all', depends: ['deploy', 'docs']);
  *
  *       startGrinder(args);
  *     }
@@ -57,19 +57,19 @@ List<String> grinderArgs() => _args;
 
 /**
  * Add a new task to the global [Grinder] instance. Some combination of this
- * and [defineTask] should be called before [startGrinder] is invoked.
+ * and [task] should be called before [startGrinder] is invoked.
  */
 void addTask(GrinderTask task) => _grinder.addTask(task);
 
 /**
  * Add a new task definition to the global [Grinder] instance. A [name] is
- * required. If specified, a [taskFunction] is invoked when the task starts.
+ * required. If specified, a [run] is invoked when the task starts.
  * Any dependencies of the task, that need to run before it, should be passed
  * in via [depends].
  */
-void defineTask(String name, {TaskFunction taskFunction, List<String> depends : const []}) {
+void task(String name, {TaskFunction run, List<String> depends : const []}) {
   _grinder.addTask(
-      new GrinderTask(name, taskFunction: taskFunction, depends: depends));
+      new GrinderTask(name, taskFunction: run, depends: depends));
 }
 
 /**
@@ -185,7 +185,7 @@ class GrinderContext {
 
 /**
  * This class represents a Grinder task. These are created automatically by
- * the [defineTask] function.
+ * the [task] function.
  */
 class GrinderTask {
   /// The name of the task.
@@ -200,7 +200,7 @@ class GrinderTask {
 
   /**
    * Create a new [GrinderTask]. A name is required; a [description],
-   * [taskFunction] to execute when this task is started, and a [depends] list
+   * [run] to execute when this task is started, and a [depends] list
    * are optional.
    */
   GrinderTask(this.name, {this.description, this.taskFunction, this.depends : const []});
