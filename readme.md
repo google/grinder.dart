@@ -44,8 +44,8 @@ those dependent tasks are run before the specified task.
 
 Documentation is available [here][docs].
 
-[docs]: http://www.dartdocs.org/documentation/grinder/latest
-
 ## Disclaimer
 
 This is not an official Google product.
+
+[docs]: http://www.dartdocs.org/documentation/grinder/latest
