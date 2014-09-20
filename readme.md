@@ -42,4 +42,4 @@ those dependent tasks are run before the specified task.
 
 ### API documentation
 
-Documentation is available [here](http://google.github.io/grinder.dart/).
+Documentation is available [here](http://www.dartdocs.org/documentation/grinder/latest).
