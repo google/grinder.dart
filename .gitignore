@@ -6,7 +6,9 @@
 .DS_Store
 .project
 .svn
-docs/
 packages
 pubspec.lock
 .idea
+.pub/
+docs/
+build/
