@@ -4,10 +4,10 @@
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
-  defineTask('init', taskFunction: init);
-  defineTask('analyze', taskFunction: analyze, depends: ['init']);
-  defineTask('tests', taskFunction: tests, depends: ['init']);
-  //defineTask('docs', taskFunction: docs, depends: ['analyze']);
+  task('init', run: init);
+  task('analyze', run: analyze, depends: ['init']);
+  task('tests', run: tests, depends: ['init']);
+  //task('docs', run: docs, depends: ['analyze']);
 
   startGrinder(args);
 }

@@ -1,6 +1,6 @@
-# Grinder
+# Grinder for Dart
 
-Grinder - a task based, dependency aware build system.
+A task based, dependency aware build system.
 
 [![Build Status](https://drone.io/github.com/google/grinder.dart/status.png)](https://drone.io/github.com/google/grinder.dart/latest)
 
@@ -15,11 +15,11 @@ your project source.
 Generally, a Grinder implementation will look something like this:
 
     void main([List<String> args]) {
-      defineTask('init', taskFunction: init);
-      defineTask('compile', taskFunction: compile, depends: ['init']);
-      defineTask('deploy', taskFunction: deploy, depends: ['compile']);
-      defineTask('docs', taskFunction: deploy, depends: ['init']);
-      defineTask('all', depends: ['deploy', 'docs']);
+      task('init', run: init);
+      task('compile', run: compile, depends: ['init']);
+      task('deploy', run: deploy, depends: ['compile']);
+      task('docs', run: deploy, depends: ['init']);
+      task('all', depends: ['deploy', 'docs']);
 
       startGrinder(args);
     }
@@ -42,4 +42,10 @@ those dependent tasks are run before the specified task.
 
 ### API documentation
 
-Documentation is available [here](http://www.dartdocs.org/documentation/grinder/latest).
+Documentation is available [here][docs].
+
+## Disclaimer
+
+This is not an official Google product.
+
+[docs]: http://www.dartdocs.org/documentation/grinder/latest
