@@ -10,11 +10,11 @@
  *
  * Generally, a Grinder implementation will look something like this:
  *     void main([List<String> args]) {
- *       task('init', run: init);
- *       task('compile', run: compile, depends: ['init']);
- *       task('deploy', run: deploy, depends: ['compile']);
- *       task('docs', run: deploy, depends: ['init']);
- *       task('all', depends: ['deploy', 'docs']);
+ *       task('init', init);
+ *       task('compile', compile, ['init']);
+ *       task('deploy', deploy, ['compile']);
+ *       task('docs', deploy, ['init']);
+ *       task('all', ['deploy', 'docs']);
  *
  *       startGrinder(args);
  *     }
@@ -63,13 +63,13 @@ void addTask(GrinderTask task) => _grinder.addTask(task);
 
 /**
  * Add a new task definition to the global [Grinder] instance. A [name] is
- * required. If specified, a [run] is invoked when the task starts.
+ * required. If specified, a [taskFunction] is invoked when the task starts.
  * Any dependencies of the task, that need to run before it, should be passed
  * in via [depends].
  */
-void task(String name, {TaskFunction run, List<String> depends : const []}) {
+void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
   _grinder.addTask(
-      new GrinderTask(name, taskFunction: run, depends: depends));
+      new GrinderTask(name, taskFunction: taskFunction, depends: depends));
 }
 
 /**
