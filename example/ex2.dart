@@ -8,9 +8,9 @@ import 'dart:async';
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
-  defineTask('init', taskFunction: init);
-  defineTask('build', taskFunction: build, depends: ['init']);
-  defineTask('all', depends: ['build']);
+  task('init', run: init);
+  task('build', run: build, depends: ['init']);
+  task('all', depends: ['build']);
 
   startGrinder(args);
 }

@@ -6,10 +6,10 @@ library grinder_example_1;
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
-  defineTask('init', taskFunction: init);
-  defineTask('compile', taskFunction: compile, depends: ['init']);
-  defineTask('deploy', taskFunction: deploy, depends: ['compile']);
-  defineTask('all', depends: ['deploy']);
+  task('init', run: init);
+  task('compile', run: compile, depends: ['init']);
+  task('deploy', run: deploy, depends: ['compile']);
+  task('all', depends: ['deploy']);
 
   startGrinder(args);
 }

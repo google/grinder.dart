@@ -15,7 +15,11 @@ pub get
 
 # Verify that the libraries are error free.
 dartanalyzer --fatal-warnings \
+  example/ex1.dart \
+  example/ex2.dart \
   lib/grinder.dart \
+  lib/grinder_files.dart \
+  lib/grinder_utils.dart \
   tool/grind.dart \
   test/all.dart
 
