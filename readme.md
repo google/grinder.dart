@@ -4,6 +4,8 @@ A task based, dependency aware build system.
 
 [![Build Status](https://drone.io/github.com/google/grinder.dart/status.png)](https://drone.io/github.com/google/grinder.dart/latest)
 
+[![Build Status](https://travis-ci.org/google/grinder.dart.svg?branch=master)](https://travis-ci.org/google/grinder.dart)
+
 ### Intro
 
 A library and tool to drive a command-line build.
