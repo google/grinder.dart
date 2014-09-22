@@ -4,9 +4,9 @@
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
-  task('init', run: init);
-  task('analyze', run: analyze, depends: ['init']);
-  task('tests', run: tests, depends: ['init']);
+  task('init', init);
+  task('analyze', analyze, ['init']);
+  task('tests', tests, ['init']);
 
   startGrinder(args);
 }
@@ -17,10 +17,11 @@ void init(GrinderContext context) {
 }
 
 void analyze(GrinderContext context) {
+  runSdkBinary(context, 'dartanalyzer', arguments: ['example/ex1.dart']);
+  runSdkBinary(context, 'dartanalyzer', arguments: ['example/ex2.dart']);
   runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder.dart']);
   runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder_files.dart']);
   runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder_utils.dart']);
-  runSdkBinary(context, 'dartanalyzer', arguments: ['example/ex1.dart']);
 }
 
 void tests(GrinderContext context) {
