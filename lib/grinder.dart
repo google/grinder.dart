@@ -190,20 +190,21 @@ class GrinderContext {
 class GrinderTask {
   /// The name of the task.
   final String name;
-  /// An optional description of the task.
-  final String description;
   /// The function to execute when starting this task.
   TaskFunction taskFunction;
   /// The list of task dependencies; tasks that must run before this task should
   /// execute.
   List<String> depends;
+  /// An optional description of the task.
+  final String description;
 
   /**
    * Create a new [GrinderTask]. A name is required; a [description],
    * [run] to execute when this task is started, and a [depends] list
    * are optional.
    */
-  GrinderTask(this.name, {this.description, this.taskFunction, this.depends : const []});
+  GrinderTask(this.name,
+      {this.taskFunction, this.depends : const [], this.description});
 
   /**
    * This method is invoked when the task is started. If a task was created with

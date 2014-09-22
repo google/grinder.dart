@@ -18,6 +18,15 @@ import 'grinder.dart';
 
 // TODO: union sets?
 
+// TODO: it would be nice to be able to pipeline processing sets of files. So
+// copy groups a, b, c to location d. zip that new set d. the zip file is set e;
+// move that somewhere. Or, being able to run map, reduce, and expand on groups
+// of files.
+// Every operation:
+//   - takes an input set
+//   - performs work
+//   - and returns an output set
+
 /**
  * A class to handle defining, composing, and comparing groups of files.
  */

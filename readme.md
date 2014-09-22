@@ -16,11 +16,11 @@ your project source.
 Generally, a Grinder implementation will look something like this:
 
     void main([List<String> args]) {
-      task('init', run: init);
-      task('compile', run: compile, depends: ['init']);
-      task('deploy', run: deploy, depends: ['compile']);
-      task('docs', run: deploy, depends: ['init']);
-      task('all', depends: ['deploy', 'docs']);
+      task('init', init);
+      task('compile', compile, ['init']);
+      task('deploy', deploy, ['compile']);
+      task('docs', deploy, ['init']);
+      task('all', null, ['deploy', 'docs']);
 
       startGrinder(args);
     }
@@ -45,7 +45,7 @@ those dependent tasks are run before the specified task.
 
 Documentation is available [here][docs].
 
-## Disclaimer
+### Disclaimer
 
 This is not an official Google product.
 
