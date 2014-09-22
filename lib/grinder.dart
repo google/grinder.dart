@@ -115,7 +115,7 @@ ArgParser _createArgsParser() {
 }
 
 void _printUsage(ArgParser parser, Grinder grinder) {
-  print('usage: dart ${Platform.script} <options> target1 target2 ...');
+  print('usage: dart ${_currentScript()} <options> target1 target2 ...');
   print('');
   print('valid options:');
   print(parser.getUsage().replaceAll('\n\n', '\n'));
@@ -129,6 +129,15 @@ void _printUsage(ArgParser parser, Grinder grinder) {
     tasks.forEach(
         (t) => t.description == null ? print("  ${t}") : print("  ${t} ${t.description}"));
   }
+}
+
+String _currentScript() {
+  String script = Platform.script.toString();
+  String uriBase = Uri.base.toString();
+  if (script.startsWith(uriBase)) {
+    script = script.substring(uriBase.length);
+  }
+  return script;
 }
 
 void _printDeps(Grinder grinder) {
