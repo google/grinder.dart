@@ -41,6 +41,12 @@ those dependent tasks are run before the specified task.
     -h, --help    show targets but don't build
     -d, --deps    display the dependencies of targets
 
+or:
+
+    pub run grind <args>
+
+will run the `tool/grind.dart` script with the given arguments.
+
 ### API documentation
 
 Documentation is available [here][docs].
