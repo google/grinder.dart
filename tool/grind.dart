@@ -17,11 +17,11 @@ void init(GrinderContext context) {
 }
 
 void analyze(GrinderContext context) {
-  runSdkBinary(context, 'dartanalyzer', arguments: ['example/ex1.dart']);
-  runSdkBinary(context, 'dartanalyzer', arguments: ['example/ex2.dart']);
-  runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder.dart']);
-  runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder_files.dart']);
-  runSdkBinary(context, 'dartanalyzer', arguments: ['lib/grinder_utils.dart']);
+  runProcess(context, 'dartanalyzer', arguments: ['example/ex1.dart']);
+  runProcess(context, 'dartanalyzer', arguments: ['example/ex2.dart']);
+  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder.dart']);
+  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder_files.dart']);
+  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder_utils.dart']);
 }
 
 void tests(GrinderContext context) {
