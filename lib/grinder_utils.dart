@@ -60,7 +60,7 @@ void runDartScript(GrinderContext context, String script,
   args.add(script);
   args.addAll(arguments);
 
-  runSdkBinary(context, 'dart', arguments: args, quiet: quiet,
+  runProcess(context, 'dart', arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
 }
 
@@ -127,44 +127,6 @@ Future runProcessAsync(GrinderContext context, String executable,
 }
 
 /**
- * Run the given Dart SDK binary, with optional arguments and working directory.
- * This should be a script found in `<dart-sdk>/bin`.
- */
-void runSdkBinary(GrinderContext context, String script,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory}) {
-  Directory sdk = sdkDir;
-  if (sdk == null) {
-    throw new GrinderException('Unable to locate the Dart SDK; try setting the '
-        'DART_SDK environment variable.');
-  }
-
-  File scriptFile = joinFile(sdk, ['bin', _execName(script)]);
-  runProcess(context, scriptFile.path, arguments: arguments, quiet: quiet,
-      workingDirectory: workingDirectory);
-}
-
-/**
- * Run the given Dart SDK binary, with optional arguments and working directory.
- * This should be a script found in `<dart-sdk>/bin`.
- */
-Future runSdkBinaryAsync(GrinderContext context, String script,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory}) {
-  Directory sdk = sdkDir;
-  if (sdk == null) {
-    return new Future.error(new GrinderException('Unable to locate the Dart '
-        'SDK; try setting the DART_SDK environment variable.'));
-  }
-
-  File scriptFile = joinFile(sdk, ['bin', _execName(script)]);
-  return runProcessAsync(context, scriptFile.path, arguments: arguments,
-      quiet: quiet, workingDirectory: workingDirectory);
-}
-
-/**
  * Utility tasks for executing pub commands.
  */
 class PubTools {
@@ -178,7 +140,7 @@ class PubTools {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      runSdkBinary(context, 'pub', arguments: ['get']);
+      runProcess(context, 'pub', arguments: ['get']);
     }
   }
 
@@ -192,7 +154,7 @@ class PubTools {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runSdkBinaryAsync(context, 'pub', arguments: ['get']);
+      return runProcessAsync(context, 'pub', arguments: ['get']);
     } else {
       return new Future.value();
     }
@@ -202,14 +164,14 @@ class PubTools {
    * Run `pub upgrade` on the current project.
    */
   void upgrade(GrinderContext context) {
-    runSdkBinary(context, 'pub', arguments: ['upgrade']);
+    runProcess(context, 'pub', arguments: ['upgrade']);
   }
 
   /**
    * Run `pub upgrade` on the current project.
    */
   Future upgradeAsync(GrinderContext context) {
-    return runSdkBinaryAsync(context, 'pub', arguments: ['upgrade']);
+    return runProcessAsync(context, 'pub', arguments: ['upgrade']);
   }
 
   /**
@@ -223,7 +185,7 @@ class PubTools {
     if (mode != null) args.add('--mode=${mode}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runSdkBinary(context, 'pub', arguments: args,
+    runProcess(context, 'pub', arguments: args,
       workingDirectory: workingDirectory);
   }
 
@@ -238,7 +200,7 @@ class PubTools {
     if (mode != null) args.add('--mode=${mode}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runSdkBinaryAsync(context, 'pub', arguments: args,
+    return runProcessAsync(context, 'pub', arguments: args,
       workingDirectory: workingDirectory);
   }
 }
@@ -258,7 +220,7 @@ class Dart2jsTools {
 
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-    runSdkBinary(
+    runProcess(
         context,
         'dart2js',
         arguments: ['-o${outFile.path}', sourceFile.path]);
@@ -275,7 +237,7 @@ class Dart2jsTools {
 
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-    return runSdkBinaryAsync(
+    return runProcessAsync(
         context,
         'dart2js',
         arguments: ['-o${outFile.path}', sourceFile.path]);
