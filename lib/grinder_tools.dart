@@ -70,11 +70,13 @@ void runDartScript(GrinderContext context, String script,
 void runProcess(GrinderContext context, String executable,
     {List<String> arguments : const [],
      bool quiet: false,
-     String workingDirectory}) {
+     String workingDirectory,
+     Map<String, String> environment}) {
   context.log("${executable} ${arguments.join(' ')}");
 
   ProcessResult result = Process.runSync(
-      executable, arguments, workingDirectory: workingDirectory);
+      executable, arguments, workingDirectory: workingDirectory,
+      environment: environment);
 
   if (!quiet) {
     if (result.stdout != null && !result.stdout.isEmpty) {
@@ -322,31 +324,85 @@ class Tests {
 //  }
 }
 
-///**
-// * TODO: check if content_shell exists
-// * TODO: download content_shell
-// * TODO: run content_shell
-// */
-//class ContentShell {
-//
-//}
+class ChromeBrowser {
+  final String browserPath;
+  Directory _tempDir;
 
-///**
-// * TODO:
-// */
-//class Dartium {
-//  String _path;
-//
-//  Dartium() {
-//    _path = _dartiumPath();
-//  }
-//
-//  bool isInstalled() => _path != null;
-//
-//  void runApp() {
-//    // TODO:
-//  }
-//}
+  ChromeBrowser(this.browserPath) {
+    _tempDir = Directory.systemTemp.createTempSync('userDataDir-');
+  }
+
+  ChromeBrowser.createDartium() : this(_dartiumPath());
+  ChromeBrowser.createChromeStable() : this(_chromeStablePath());
+  ChromeBrowser.createChromeDev() : this(_chromeDevPath());
+
+  bool get exists => new File(browserPath).existsSync();
+
+  void launchFile(GrinderContext context, String filePath,
+      {bool verbose: false, Map envVars}) {
+    String url;
+
+    if (new File(filePath).existsSync()) {
+      url = 'file:/' + new Directory(filePath).absolute.path;
+    } else {
+      url = filePath;
+    }
+
+    List<String> args = [
+        '--no-default-browser-check',
+        '--no-first-run',
+        '--user-data-dir=${_tempDir.path}'
+    ];
+
+    if (verbose) {
+      args.addAll(['--enable-logging=stderr', '--v=1']);
+    }
+
+    args.add(url);
+
+    // TODO: This process often won't terminate, so that's a problem.
+    context.log("starting chrome...");
+    runProcess(context, browserPath, arguments: args, environment: envVars);
+  }
+}
+
+/**
+ * A utility class for accessing Dartium. This is a the same as calling
+ * [ChromeBrowser.createDartium].
+ */
+class Dartium extends ChromeBrowser {
+  Dartium() : super.createDartium();
+}
+
+// TODO: Have a utility method to install content shell.
+class ContentShell extends ChromeBrowser {
+  static String _contentShellPath() {
+    final Map m = {
+      "linux": "content_shell/content_shell",
+      "macos": "content_shell/Content Shell.app/Contents/MacOS/Content Shell",
+      "windows": "content_shell/content_shell.exe"
+    };
+
+    String sep = Platform.pathSeparator;
+    String os = Platform.operatingSystem;
+    String dartSdkPath = sdkDir.path;
+
+    // Truncate any trailing /'s.
+    if (dartSdkPath.endsWith(sep)) {
+      dartSdkPath = dartSdkPath.substring(0, dartSdkPath.length - 1);
+    }
+
+    String path = "${dartSdkPath}${sep}..${sep}chromium${sep}${m[os]}";
+
+    if (FileSystemEntity.isFileSync(path)) {
+      return new File(path).absolute.path;
+    }
+
+    return null;
+  }
+
+  ContentShell() : super(_contentShellPath());
+}
 
 String _execName(String name) {
   if (Platform.isWindows) {
@@ -399,7 +455,7 @@ String _chromeStablePath() {
     }
   }
 
-  throw 'unable to locate Chrome; ${Platform.operatingSystem} not yet supported';
+  return null;
 }
 
 String _chromeDevPath() {
@@ -408,6 +464,6 @@ String _chromeDevPath() {
   } else if (Platform.isMacOS) {
     return '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary';
   } else {
-    throw 'unable to locate Chrome dev; ${Platform.operatingSystem} not yet supported';
+    return null;
   }
 }

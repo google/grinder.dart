@@ -36,4 +36,12 @@ main() {
       expect(context.isFailed, false);
     });
   });
+
+  group('grinder.tools contentshell', () {
+    test('exists', () {
+      // We can't rely on this being installed.
+//      ContentShell contentShell = new ContentShell();
+//      expect(contentShell.exists, true);
+    });
+  });
 }
