@@ -218,12 +218,13 @@ class PubTools {
    * The valid values for [mode] are `release` and `debug`.
    */
   void build(GrinderContext context,
-      {String mode, List<String> directories}) {
+      {String mode, List<String> directories, String workingDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runSdkBinary(context, 'pub', arguments: args);
+    runSdkBinary(context, 'pub', arguments: args,
+      workingDirectory: workingDirectory);
   }
 
   /**
@@ -232,12 +233,13 @@ class PubTools {
    * The valid values for [mode] are `release` and `debug`.
    */
   Future buildAsync(GrinderContext context,
-      {String mode, List<String> directories}) {
+      {String mode, List<String> directories, String workingDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runSdkBinaryAsync(context, 'pub', arguments: args);
+    return runSdkBinaryAsync(context, 'pub', arguments: args,
+      workingDirectory: workingDirectory);
   }
 }
 
