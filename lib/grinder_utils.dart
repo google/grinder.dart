@@ -129,18 +129,18 @@ Future runProcessAsync(GrinderContext context, String executable,
 /**
  * Utility tasks for executing pub commands.
  */
-class PubTools {
+class Pub {
   /**
    * Run `pub get` on the current project. If [force] is true, this will execute
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  void get(GrinderContext context, {bool force: false}) {
+  static void get(GrinderContext context, {bool force: false}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      runProcess(context, 'pub', arguments: ['get']);
+      _run(context, 'get');
     }
   }
 
@@ -149,7 +149,7 @@ class PubTools {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  Future getAsync(GrinderContext context, {bool force: false}) {
+  static Future getAsync(GrinderContext context, {bool force: false}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
@@ -163,14 +163,12 @@ class PubTools {
   /**
    * Run `pub upgrade` on the current project.
    */
-  void upgrade(GrinderContext context) {
-    runProcess(context, 'pub', arguments: ['upgrade']);
-  }
+  static void upgrade(GrinderContext context) => _run(context, 'upgrade');
 
   /**
    * Run `pub upgrade` on the current project.
    */
-  Future upgradeAsync(GrinderContext context) {
+  static Future upgradeAsync(GrinderContext context) {
     return runProcessAsync(context, 'pub', arguments: ['upgrade']);
   }
 
@@ -179,7 +177,7 @@ class PubTools {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  void build(GrinderContext context,
+  static void build(GrinderContext context,
       {String mode, List<String> directories, String workingDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -194,7 +192,7 @@ class PubTools {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  Future buildAsync(GrinderContext context,
+  static Future buildAsync(GrinderContext context,
       {String mode, List<String> directories, String workingDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -203,16 +201,22 @@ class PubTools {
     return runProcessAsync(context, 'pub', arguments: args,
       workingDirectory: workingDirectory);
   }
+
+  static void version(GrinderContext context) => _run(context, '--version');
+
+  static void _run(GrinderContext context, String command) {
+    runProcess(context, 'pub', arguments: [command]);
+  }
 }
 
 /**
  * Utility tasks for invoking dart2js.
  */
-class Dart2jsTools {
+class Dart2js {
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
+  static void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
     // TODO: Check for the out.deps file, use it to know when to compile.
     if (outDir == null) {
       outDir = sourceFile.parent;
@@ -229,7 +233,7 @@ class Dart2jsTools {
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  Future compileAsync(GrinderContext context, File sourceFile, {Directory outDir}) {
+  static Future compileAsync(GrinderContext context, File sourceFile, {Directory outDir}) {
     // TODO: Check for the out.deps file, use it to know when to compile.
     if (outDir == null) {
       outDir = sourceFile.parent;
@@ -242,6 +246,48 @@ class Dart2jsTools {
         'dart2js',
         arguments: ['-o${outFile.path}', sourceFile.path]);
   }
+
+  static void version(GrinderContext context) => _run(context, '--version');
+
+  static void _run(GrinderContext context, String command) {
+    runProcess(context, 'dart2js', arguments: [command]);
+  }
+}
+
+/**
+ * Utility tasks for invoking the analyzer.
+ */
+class Analyzer {
+  static void analyze(GrinderContext context, File file,
+      {Directory packageRoot, bool fatalWarnings: false}) {
+    analyzePaths(context, [file.path], packageRoot: packageRoot,
+        fatalWarnings: fatalWarnings);
+  }
+
+  static void analyzeFiles(GrinderContext context, List<File> files,
+      {Directory packageRoot, bool fatalWarnings: false}) {
+    analyzePaths(context, files.map((f) => f.path).toList(),
+        packageRoot: packageRoot, fatalWarnings: fatalWarnings);
+  }
+
+  static void analyzePath(GrinderContext context, String path,
+      {Directory packageRoot, bool fatalWarnings: false}) {
+    analyzePaths(context, [path], packageRoot: packageRoot,
+        fatalWarnings: fatalWarnings);
+  }
+
+  static void analyzePaths(GrinderContext context, List<String> paths,
+      {Directory packageRoot, bool fatalWarnings: false}) {
+    List args = [];
+    if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
+    if (fatalWarnings) args.add('--fatal-warnings');
+    args.addAll(paths);
+
+    runProcess(context, 'dartanalyzer', arguments: args);
+  }
+
+  static void version(GrinderContext context) =>
+      runProcess(context, 'dartanalyzer', arguments: ['--version']);
 }
 
 String _execName(String name) {

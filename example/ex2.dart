@@ -20,6 +20,5 @@ void init(GrinderContext context) {
 }
 
 Future build(GrinderContext context) {
-  PubTools pub = new PubTools();
-  return pub.buildAsync(context, directories: ['test']);
+  return Pub.buildAsync(context, directories: ['test']);
 }
