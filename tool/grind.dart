@@ -19,9 +19,9 @@ void analyze(GrinderContext context) {
   Analyzer.analyzePaths(context,
       ['example/ex1.dart', 'example/ex2.dart']);
   Analyzer.analyzePaths(context,
-      ['lib/grinder.dart', 'lib/grinder_files.dart', 'lib/grinder_utils.dart']);
+      ['lib/grinder.dart', 'lib/grinder_files.dart', 'lib/grinder_tools.dart']);
 }
 
 void tests(GrinderContext context) {
-  runDartScript(context, "test/all.dart");
+  Tests.runCliTests(context);
 }
