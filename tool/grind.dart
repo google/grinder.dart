@@ -12,16 +12,14 @@ void main([List<String> args]) {
 }
 
 void init(GrinderContext context) {
-  PubTools pub = new PubTools();
-  pub.get(context);
+  Pub.get(context);
 }
 
 void analyze(GrinderContext context) {
-  runProcess(context, 'dartanalyzer', arguments: ['example/ex1.dart']);
-  runProcess(context, 'dartanalyzer', arguments: ['example/ex2.dart']);
-  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder.dart']);
-  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder_files.dart']);
-  runProcess(context, 'dartanalyzer', arguments: ['lib/grinder_utils.dart']);
+  Analyzer.analyzePaths(context,
+      ['example/ex1.dart', 'example/ex2.dart']);
+  Analyzer.analyzePaths(context,
+      ['lib/grinder.dart', 'lib/grinder_files.dart', 'lib/grinder_utils.dart']);
 }
 
 void tests(GrinderContext context) {
