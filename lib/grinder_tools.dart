@@ -2,10 +2,10 @@
 // governed by a BSD-style license that can be found in the LICENSE file.
 
 /**
- * Commonly used utilities for build scripts, including for tasks like running
+ * Commonly used tools for build scripts, including for tasks like running the
  * `pub` commands.
  */
-library grinder.utils;
+library grinder.tools;
 
 import 'dart:async';
 import 'dart:io';
@@ -216,35 +216,38 @@ class Dart2js {
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static void compile(GrinderContext context, File sourceFile, {Directory outDir}) {
+  static void compile(GrinderContext context, File sourceFile,
+      {Directory outDir, bool minify: false, bool csp: false}) {
     // TODO: Check for the out.deps file, use it to know when to compile.
-    if (outDir == null) {
-      outDir = sourceFile.parent;
-    }
 
+    if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-    runProcess(
-        context,
-        'dart2js',
-        arguments: ['-o${outFile.path}', sourceFile.path]);
+    List args = [];
+    if (minify) args.add('--minify');
+    if (csp) args.add('--csp');
+    args.add('-o${outFile.path}');
+    args.add(sourceFile.path);
+
+    runProcess(context, 'dart2js', arguments: args);
   }
 
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static Future compileAsync(GrinderContext context, File sourceFile, {Directory outDir}) {
+  static Future compileAsync(GrinderContext context, File sourceFile,
+      {Directory outDir, bool minify: false, bool csp: false}) {
     // TODO: Check for the out.deps file, use it to know when to compile.
-    if (outDir == null) {
-      outDir = sourceFile.parent;
-    }
-
+    if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
-    return runProcessAsync(
-        context,
-        'dart2js',
-        arguments: ['-o${outFile.path}', sourceFile.path]);
+    List args = [];
+    if (minify) args.add('--minify');
+    if (csp) args.add('--csp');
+    args.add('-o${outFile.path}');
+    args.add(sourceFile.path);
+
+    return runProcessAsync(context, 'dart2js', arguments: args);
   }
 
   static void version(GrinderContext context) => _run(context, '--version');
@@ -290,10 +293,121 @@ class Analyzer {
       runProcess(context, 'dartanalyzer', arguments: ['--version']);
 }
 
+/**
+ * A utility class to run tests for your project.
+ */
+class Tests {
+  /**
+   * Run command-line tests in the `test` directory. If no parameters are passed
+   * for [paths], this method defaults to running the `test/all.dart` script.
+   */
+  static void runCliTests(GrinderContext context, [List<String> paths]) {
+    if (paths == null) {
+      paths = ['all.dart'];
+    }
+
+    for (String path in paths) {
+      String testFile = 'test/${path}';
+      context.log('running tests ${testFile}...');
+      runDartScript(context, testFile);
+    }
+  }
+
+//  /**
+//   * TODO: doc
+//   */
+//  static void runWebTests(GrinderContext context, [List<String> paths]) {
+//    // TODO: we'll need to locate content_shell
+//
+//  }
+}
+
+///**
+// * TODO: check if content_shell exists
+// * TODO: download content_shell
+// * TODO: run content_shell
+// */
+//class ContentShell {
+//
+//}
+
+///**
+// * TODO:
+// */
+//class Dartium {
+//  String _path;
+//
+//  Dartium() {
+//    _path = _dartiumPath();
+//  }
+//
+//  bool isInstalled() => _path != null;
+//
+//  void runApp() {
+//    // TODO:
+//  }
+//}
+
 String _execName(String name) {
   if (Platform.isWindows) {
     return name == 'dart' ? 'dart.exe' : '${name}.bat';
   }
 
   return name;
+}
+
+String _dartiumPath() {
+  final Map m = {
+    "linux": "chrome",
+    "macos": "Chromium.app/Contents/MacOS/Chromium",
+    "windows": "chrome.exe"
+  };
+
+  String sep = Platform.pathSeparator;
+  String os = Platform.operatingSystem;
+  String dartSdkPath = sdkDir.path;
+
+  // Truncate any trailing /'s.
+  if (dartSdkPath.endsWith(sep)) {
+    dartSdkPath = dartSdkPath.substring(0, dartSdkPath.length - 1);
+  }
+
+  String path = "${dartSdkPath}${sep}..${sep}chromium${sep}${m[os]}";
+
+  if (FileSystemEntity.isFileSync(path)) {
+    return new File(path).absolute.path;
+  }
+
+  return null;
+}
+
+String _chromeStablePath() {
+  if (Platform.isLinux) {
+    return '/usr/bin/google-chrome';
+  } else if (Platform.isMacOS) {
+    return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  } else {
+    List paths = [
+      r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+      r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    ];
+
+    for (String path in paths) {
+      if (new File(path).existsSync()) {
+        return path;
+      }
+    }
+  }
+
+  throw 'unable to locate Chrome; ${Platform.operatingSystem} not yet supported';
+}
+
+String _chromeDevPath() {
+  if (Platform.isLinux) {
+    return '/usr/bin/google-chrome-unstable';
+  } else if (Platform.isMacOS) {
+    return '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary';
+  } else {
+    throw 'unable to locate Chrome dev; ${Platform.operatingSystem} not yet supported';
+  }
 }

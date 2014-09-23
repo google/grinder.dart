@@ -38,7 +38,7 @@
 library grinder;
 
 export 'grinder_files.dart';
-export 'grinder_utils.dart';
+export 'grinder_tools.dart';
 
 import 'dart:async';
 import 'dart:io';
