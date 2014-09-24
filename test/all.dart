@@ -5,10 +5,10 @@ library all_test;
 
 import 'grinder_test.dart' as grinder_test;
 import 'grinder_files_test.dart' as grinder_files_test;
-import 'grinder_utils_test.dart' as grinder_utils_test;
+import 'grinder_tools_test.dart' as grinder_tools_test;
 
 main() {
   grinder_test.main();
   grinder_files_test.main();
-  grinder_utils_test.main();
+  grinder_tools_test.main();
 }
