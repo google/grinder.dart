@@ -19,7 +19,7 @@ of each project.
 
 PubTool's build methods now take an optional `workingDirectory` argument.
 
-Remove `runSdkBinary` and `runSdkBinaryAsync`, and they are no longer needed.
+Removed `runSdkBinary` and `runSdkBinaryAsync`, and they are no longer needed.
 Use `runProcess` and `runProcessAsync` instead.
 
 ## 0.5.7 (2014/07/28)
