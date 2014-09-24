@@ -7,7 +7,7 @@ A task based, dependency aware build system.
 
 ### Breaking changes!
 
-Warning: lots of breaking changes in v0.6! Please see the [changelog.md](https://github.com/google/grinder.dart/blob/master/changelog.md).
+Warning: lots of breaking changes in v0.6! Please see the [change log](https://github.com/google/grinder.dart/blob/master/changelog.md).
 
 ### Intro
 

@@ -23,8 +23,9 @@ Removed `runSdkBinary` and `runSdkBinaryAsync`, and they are no longer needed.
 Use `runProcess` and `runProcessAsync` instead.
 
 The methods on `PubTools` and `Dart2jsTools` are now static - you no longer need
-to create an instance to use them. `PubTools` renamed to `Pub` and `Dart2jsTools`
-renamed to `Dart2js`. A new utility class for dartanalyzer - `Analyzer` created.
+to create an instance to use them. Also, `PubTools` was renamed to `Pub` and
+`Dart2jsTools` was renamed to `Dart2js`. And a new utility class for
+dartanalyzer - `Analyzer` - was created.
 
 ## 0.5.7 (2014/07/28)
 
