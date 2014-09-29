@@ -125,7 +125,6 @@ void _printUsage(ArgParser parser, Grinder grinder) {
     print('valid targets:');
 
     List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.sort((t1, t2) => t1.name.compareTo(t2.name));
     tasks.forEach(
         (t) => t.description == null ? print("  ${t}") : print("  ${t} ${t.description}"));
   }
@@ -151,7 +150,6 @@ void _printDeps(Grinder grinder) {
     print('');
 
     List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.sort((t1, t2) => t1.name.compareTo(t2.name));
     tasks.forEach((GrinderTask t) {
       t.description == null ? print("${t}") : print("  ${t} ${t.description}");
 
