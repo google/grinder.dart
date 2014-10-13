@@ -1,5 +1,9 @@
 # grinder.dart changes
 
+## 0.6.1 (2014/10/12)
+
+- widen the version constraint on `args`
+
 ## 0.6.0 (2014/09/22)
 
 The convenience API is now more terse:
