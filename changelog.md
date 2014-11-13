@@ -1,5 +1,9 @@
 # grinder.dart changes
 
+## 0.6.2 (2014/11/13)
+
+- widen the version constraint on `quiver`
+
 ## 0.6.1 (2014/10/12)
 
 - widen the version constraint on `args`

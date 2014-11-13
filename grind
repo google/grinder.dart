@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-if [ ! -d packages ]
-then
-  pub get
-fi
-
-dart tool/grind.dart $@

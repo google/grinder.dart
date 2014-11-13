@@ -118,7 +118,7 @@ void _printUsage(ArgParser parser, Grinder grinder) {
   print('usage: dart ${_currentScript()} <options> target1 target2 ...');
   print('');
   print('valid options:');
-  print(parser.getUsage().replaceAll('\n\n', '\n'));
+  print(parser.usage.replaceAll('\n\n', '\n'));
 
   if (!grinder.tasks.isEmpty) {
     print('');
