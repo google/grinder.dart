@@ -11,13 +11,16 @@ Warning: lots of breaking changes in v0.6! Please see the [change log](https://g
 
 ### Intro
 
-A library and tool to drive a command-line build.
+Grinder is a library and tool to drive a command-line build.
 
-Grinder build files are entirely specified in Dart code. This allows you to
+Build files are entirely specified in Dart code. This allows you to
 write and debug your build files with the same tools you use for the rest of
 your project source.
 
-Generally, a Grinder implementation will look something like this:
+### Getting Started
+
+The build file for your application should reside at `tool/grind.dart`.  A 
+typical Grinder build file may look something like this:
 
     void main([List<String> args]) {
       task('init', init);
@@ -39,7 +42,7 @@ Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
 
 ### Command-line usage
-    usage: dart grinder.dart <options> target1 target2 ...
+    usage: dart grind.dart <options> target1 target2 ...
 
     valid options:
     -h, --help    show targets but don't build
@@ -49,7 +52,7 @@ or:
 
     pub run grind <args>
 
-will run the `tool/grind.dart` script with the given arguments.
+will run the `tool/grind.dart` script with the supplied arguments.
 
 ### API documentation
 
