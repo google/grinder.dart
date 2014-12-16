@@ -19,7 +19,7 @@ your project source.
 
 ### Getting Started
 
-The build file for your application should reside at `tool/grinder.dart`.  A 
+The build file for your application should reside at `tool/grind.dart`.  A 
 typical Grinder build file may look something like this:
 
     void main([List<String> args]) {
@@ -42,7 +42,7 @@ Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
 
 ### Command-line usage
-    usage: dart grinder.dart <options> target1 target2 ...
+    usage: dart grind.dart <options> target1 target2 ...
 
     valid options:
     -h, --help    show targets but don't build
@@ -52,7 +52,7 @@ or:
 
     pub run grind <args>
 
-will run the `tool/grinder.dart` script with the supplied arguments.
+will run the `tool/grind.dart` script with the supplied arguments.
 
 ### API documentation
 
