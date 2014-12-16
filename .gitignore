@@ -4,7 +4,6 @@
 *.swp
 .buildlog
 .DS_Store
-.project
 .svn
 packages
 pubspec.lock
@@ -12,3 +11,4 @@ pubspec.lock
 .pub/
 docs/
 build/
+.settings/
