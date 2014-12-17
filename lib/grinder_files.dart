@@ -170,7 +170,7 @@ void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
       context.log('copying ${srcFile.path} to ${destDir.path}');
     }
     destDir.createSync(recursive: true);
-    destFile.writeAsBytesSync(srcFile.readAsBytesSync());
+    srcFile.copySync(destFile.path);
   }
 }
 
