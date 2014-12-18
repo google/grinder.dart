@@ -1,5 +1,5 @@
 name: grinder
-version: 0.6.4
+version: 0.6.5-dev
 
 description: Grinder - a task based, dependency aware build system.
 homepage: https://github.com/google/grinder.dart
