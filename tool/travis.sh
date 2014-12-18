@@ -15,5 +15,35 @@ rm $DART_DIST
 export DART_SDK="$PWD/dart-sdk"
 export PATH="$DART_SDK/bin:$PATH"
 
-# Invoke the drone.sh script (which assumes that dart-sdk/bin is on the path).
-./tool/drone.sh
+# Display installed versions.
+dart --version
+
+# Get our packages.
+pub get
+
+# Verify that the libraries are error free.
+dartanalyzer --fatal-warnings \
+  example/ex1.dart \
+  example/ex2.dart \
+  lib/grinder.dart \
+  lib/grinder_files.dart \
+  lib/grinder_tools.dart \
+  tool/grind.dart \
+  test/all.dart
+
+# Run the tests.
+dart test/all.dart
+
+# Install dart_coveralls; gather and send coverage data.
+if [ "$REPO_TOKEN" ]; then
+  export PATH="$PATH":"~/.pub-cache/bin"
+
+  echo
+  echo "Installing dart_coveralls"
+  pub global activate dart_coveralls
+
+  echo
+  echo "Running code coverage report"
+  # --debug for verbose logging
+  pub global run dart_coveralls report --token $REPO_TOKEN --retry 3 test/all.dart
+fi

@@ -15,12 +15,19 @@ import 'grinder.dart';
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
  * unable to locate the Dart SDK.
+ *
+ * See also [getSdkDir].
  */
-Directory get sdkDir {
+Directory get sdkDir => getSdkDir(grinderArgs());
+
+/**
+ * Return the path to the current Dart SDK. This will return `null` if we are
+ * unable to locate the Dart SDK.
+ */
+Directory getSdkDir([List<String> cliArgs]) {
   // Look for --dart-sdk on the command line.
-  List<String> args = grinderArgs();
-  if (args != null && args.contains('--dart-sdk')) {
-    return new Directory(args[args.indexOf('dart-sdk') + 1]);
+  if (cliArgs != null && cliArgs.contains('--dart-sdk')) {
+    return new Directory(cliArgs[cliArgs.indexOf('dart-sdk') + 1]);
   }
 
   // Look in env['DART_SDK']
@@ -29,10 +36,25 @@ Directory get sdkDir {
   }
 
   // Look relative to the dart executable.
-  // TODO: File a bug re: the path to the executable and the cwd.
-  Directory maybeSdkDirectory = new File(Platform.executable).parent.parent;
-  return joinFile(maybeSdkDirectory, ['version']).existsSync() ?
-      maybeSdkDirectory : null;
+  Directory sdkDirectory = new File(Platform.executable).parent.parent;
+  if (_isSdkDir(sdkDirectory)) return sdkDirectory;
+
+  // Try and locate the VM using 'which'.
+  if (!Platform.isWindows) {
+    String executable = Process.runSync('which', ['dart']).stdout.trim();
+
+    // In case Dart is symlinked (e.g. homebrew on Mac) follow symbolic links.
+    Link link = new Link(executable);
+    if (link.existsSync()) {
+      executable = link.resolveSymbolicLinksSync();
+    }
+
+    File dartVm = new File(executable);
+    Directory dir = dartVm.parent.parent;
+    if (_isSdkDir(dir)) return dir;
+  }
+
+  return null;
 }
 
 File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
@@ -467,3 +489,5 @@ String _chromeDevPath() {
     return null;
   }
 }
+
+bool _isSdkDir(Directory dir) => joinFile(dir, ['version']).existsSync();

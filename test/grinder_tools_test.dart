@@ -12,10 +12,16 @@ import 'test_utils.dart';
 
 main() {
   group('grinder.tools', () {
-    test('get sdkDir', () {
+    test('sdkDir', () {
       if (Platform.environment['DART_SDK'] != null) {
         expect(sdkDir, isNotNull);
       }
+    });
+
+    test('getSdkDir', () {
+      expect(getSdkDir(), isNotNull);
+      expect(getSdkDir(grinderArgs()), isNotNull);
+      expect(getSdkDir([]), isNotNull);
     });
 
     test('pub version', () {

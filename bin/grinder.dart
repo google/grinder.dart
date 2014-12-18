@@ -8,10 +8,4 @@ library grinder.grinder;
 
 import 'grind.dart' as grind;
 
-@deprecated
-void main(List args) {
-  print("The 'grinder' entrypoint is deprecated; please use the 'grind'.");
-  print('');
-
-  grind.main(args);
-}
+void main(List args) => grind.runScript('tool/grind.dart', args);

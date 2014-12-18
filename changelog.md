@@ -1,7 +1,8 @@
 # grinder.dart changes
 
-## 0.6.4
-- deprecate the `grinder` entrypoint; users should start the tool with `grind`
+## 0.6.4 (2014/12/18)
+- clarify that users should put their build scripts in `tools/grind.dart`
+- add a `getSdkDir` method
 
 ## 0.6.2 (2014/11/13)
 
@@ -41,7 +42,7 @@ dartanalyzer - `Analyzer` - was created.
 
 ## 0.5.7 (2014/07/28)
 
-- added `runProcessAsync()` and related async methods (such as 
+- added `runProcessAsync()` and related async methods (such as
   `PubTools.buildAsync(...)`)
 - removed duplicated stack traces when the build fails with exceptions
 - throw an exception when running SDK binaries, and we are not able to locate
