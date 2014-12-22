@@ -14,36 +14,28 @@ unzip $DART_DIST > /dev/null
 rm $DART_DIST
 export DART_SDK="$PWD/dart-sdk"
 export PATH="$DART_SDK/bin:$PATH"
+export PATH="$PATH":"~/.pub-cache/bin"
 
 # Display installed versions.
 dart --version
+
+# Install global tools.
+pub global activate tuneup
+
+if [ "$REPO_TOKEN" ]; then
+  pub global activate dart_coveralls
+fi
 
 # Get our packages.
 pub get
 
 # Verify that the libraries are error free.
-dartanalyzer --fatal-warnings \
-  example/ex1.dart \
-  example/ex2.dart \
-  lib/grinder.dart \
-  lib/grinder_files.dart \
-  lib/grinder_tools.dart \
-  tool/grind.dart \
-  test/all.dart
+pub global run tuneup check
 
 # Run the tests.
 dart test/all.dart
 
-# Install dart_coveralls; gather and send coverage data.
+# Gather and send coverage data.
 if [ "$REPO_TOKEN" ]; then
-  export PATH="$PATH":"~/.pub-cache/bin"
-
-  echo
-  echo "Installing dart_coveralls"
-  pub global activate dart_coveralls
-
-  echo
-  echo "Running code coverage report"
-  # --debug for verbose logging
   pub global run dart_coveralls report --token $REPO_TOKEN --retry 3 test/all.dart
 fi
