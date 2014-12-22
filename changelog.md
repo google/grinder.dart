@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.6.5
+- added `defaultInit()` and `defaultClean()` methods, for common tasks
+
 ## 0.6.4 (2014/12/18)
 - clarify that users should put their build scripts in `tools/grind.dart`
 - add a `getSdkDir` method
