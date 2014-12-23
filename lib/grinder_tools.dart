@@ -27,7 +27,7 @@ Directory get sdkDir => getSdkDir(grinderArgs());
 Directory getSdkDir([List<String> cliArgs]) {
   // Look for --dart-sdk on the command line.
   if (cliArgs != null && cliArgs.contains('--dart-sdk')) {
-    return new Directory(cliArgs[cliArgs.indexOf('dart-sdk') + 1]);
+    return new Directory(cliArgs[cliArgs.indexOf('--dart-sdk') + 1]);
   }
 
   // Look in env['DART_SDK']
