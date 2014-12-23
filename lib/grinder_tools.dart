@@ -12,6 +12,11 @@ import 'dart:io';
 
 import 'grinder.dart';
 
+final Directory BIN_DIR = new Directory('bin');
+final Directory BUILD_DIR = new Directory('build');
+final Directory LIB_DIR = new Directory('lib');
+final Directory WEB_DIR = new Directory('web');
+
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
  * unable to locate the Dart SDK.
@@ -148,6 +153,26 @@ Future runProcessAsync(GrinderContext context, String executable,
       }
     });
   });
+}
+
+/**
+ * A default implementation of an `init` task. This task verifies that the grind
+ * script is executed from the project root.
+ */
+void defaultInit(GrinderContext context) {
+  // Verify that we're running in the project root.
+  if (!getFile('pubspec.yaml').existsSync()) {
+    context.fail('This script must be run from the project root.');
+  }
+}
+
+/**
+ * A default implementation of a `clean` task. This task deletes all generated
+ * artifacts in the `build/`.
+ */
+void defaultClean(GrinderContext context) {
+  // Delete the `build/` dir.
+  deleteEntity(BUILD_DIR, context);
 }
 
 /**
