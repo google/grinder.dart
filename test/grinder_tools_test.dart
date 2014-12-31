@@ -24,6 +24,10 @@ main() {
       expect(getSdkDir([]), isNotNull);
     });
 
+    test('get dartVM', () {
+      expect(dartVM, isNotNull);
+    });
+
     test('pub version', () {
       MockGrinderContext context = new MockGrinderContext();
       Pub.version(context);
@@ -40,14 +44,6 @@ main() {
       MockGrinderContext context = new MockGrinderContext();
       Analyzer.version(context);
       expect(context.isFailed, false);
-    });
-  });
-
-  group('grinder.tools contentshell', () {
-    test('exists', () {
-      // We can't rely on this being installed.
-//      ContentShell contentShell = new ContentShell();
-//      expect(contentShell.exists, true);
     });
   });
 }

@@ -14,21 +14,24 @@ main() {
       // test that a bad task name throws
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo'));
-      expect(() => grinder.start(['bar'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
+      expect(() => grinder.start(['bar'], dontRun: true),
+          throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('duplicate task name', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo'));
       grinder.addTask(new GrinderTask('foo'));
-      expect(() => grinder.start(['foo'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
+      expect(() => grinder.start(['foo'], dontRun: true),
+          throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('badDependencyName', () {
       // test that a bad task name throws
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', depends: ['baz']));
-      expect(() => grinder.start(['foo'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
+      expect(() => grinder.start(['foo'], dontRun: true),
+          throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('htmlEscape', () {
@@ -36,7 +39,8 @@ main() {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', depends: ['bar']));
       grinder.addTask(new GrinderTask('bar', depends: ['foo']));
-      expect(() => grinder.start(['foo'], dontRun: true), throwsA(new isInstanceOf<GrinderException>()));
+      expect(() => grinder.start(['foo'], dontRun: true),
+          throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('stringEscape', () {
@@ -49,7 +53,11 @@ main() {
       grinder.addTask(new GrinderTask('e', depends: ['a', 'c']));
       grinder.start(['e'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('b'), grinder.getTask('a'), grinder.getTask('d'), grinder.getTask('c'), grinder.getTask('e')
+          grinder.getTask('b'),
+          grinder.getTask('a'),
+          grinder.getTask('d'),
+          grinder.getTask('c'),
+          grinder.getTask('e')
       ]));
     });
 
@@ -68,7 +76,10 @@ main() {
 
       grinder.start(['archive'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('mode-notest'), grinder.getTask('setup'), grinder.getTask('compile'), grinder.getTask('archive')
+          grinder.getTask('mode-notest'),
+          grinder.getTask('setup'),
+          grinder.getTask('compile'),
+          grinder.getTask('archive')
       ]));
     });
 
@@ -104,7 +115,11 @@ main() {
 
       grinder.start(['docs', 'archive'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('setup'), grinder.getTask('docs'), grinder.getTask('mode-notest'), grinder.getTask('compile'), grinder.getTask('archive')
+          grinder.getTask('setup'),
+          grinder.getTask('docs'),
+          grinder.getTask('mode-notest'),
+          grinder.getTask('compile'),
+          grinder.getTask('archive')
       ]));
     });
 

@@ -79,7 +79,7 @@ void task(String name, [TaskFunction taskFunction, List<String> depends = const 
  *
  * [startGrinder] should be called once and only once.
  */
-void startGrinder(List<String> args) {
+Future startGrinder(List<String> args) {
   _args = args == null ? [] : args;
 
   ArgParser parser = _createArgsParser();
@@ -92,15 +92,15 @@ void startGrinder(List<String> args) {
   } else if (results.rest.isEmpty) {
     _printUsage(parser, _grinder);
   } else {
-    var result = _grinder.start(results.rest);
+    Future result = _grinder.start(results.rest);
 
-    if (result is Future) {
-      result.catchError((e, st) {
-        print('${e}\n${st}');
-        exit(1);
-      });
-    }
+    return result.catchError((e, st) {
+      print('${e}\n${st}');
+      exit(1);
+    });
   }
+
+  return new Future.value();
 }
 
 // args handling

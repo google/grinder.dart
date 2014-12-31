@@ -14,17 +14,12 @@ unzip $DART_DIST > /dev/null
 rm $DART_DIST
 export DART_SDK="$PWD/dart-sdk"
 export PATH="$DART_SDK/bin:$PATH"
-export PATH="$PATH":"~/.pub-cache/bin"
 
 # Display installed versions.
 dart --version
 
 # Install global tools.
 pub global activate tuneup
-
-if [ "$REPO_TOKEN" ]; then
-  pub global activate dart_coveralls
-fi
 
 # Get our packages.
 pub get
@@ -37,5 +32,10 @@ dart test/all.dart
 
 # Gather and send coverage data.
 if [ "$REPO_TOKEN" ]; then
-  pub global run dart_coveralls report --token $REPO_TOKEN --retry 3 test/all.dart
+  pub global activate dart_coveralls
+  pub global run dart_coveralls report \
+    --token $REPO_TOKEN \
+    --retry 2 \
+    --exclude-test-files \
+    test/all.dart
 fi
