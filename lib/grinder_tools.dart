@@ -31,8 +31,18 @@ Directory get sdkDir => getSdkDir(grinderArgs());
  */
 Directory getSdkDir([List<String> cliArgs]) {
   // Look for --dart-sdk on the command line.
-  if (cliArgs != null && cliArgs.contains('--dart-sdk')) {
-    return new Directory(cliArgs[cliArgs.indexOf('--dart-sdk') + 1]);
+  if (cliArgs != null) {
+    int index = cliArgs.indexOf('--dart-sdk');
+
+    if (index != -1 && (index + 1 < cliArgs.length)) {
+      return new Directory(cliArgs[index + 1]);
+    }
+
+    for (String arg in cliArgs) {
+      if (arg.startsWith('--dart-sdk=')) {
+        return new Directory(arg.substring('--dart-sdk='.length));
+      }
+    }
   }
 
   // Look in env['DART_SDK']
@@ -189,7 +199,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      _run(context, 'get');
+      _run(context, _execName('get'));
     }
   }
 
@@ -203,7 +213,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runProcessAsync(context, 'pub', arguments: ['get']);
+      return runProcessAsync(context, _execName('pub'), arguments: ['get']);
     } else {
       return new Future.value();
     }
@@ -218,7 +228,7 @@ class Pub {
    * Run `pub upgrade` on the current project.
    */
   static Future upgradeAsync(GrinderContext context) {
-    return runProcessAsync(context, 'pub', arguments: ['upgrade']);
+    return runProcessAsync(context, _execName('pub'), arguments: ['upgrade']);
   }
 
   /**
@@ -227,13 +237,15 @@ class Pub {
    * The valid values for [mode] are `release` and `debug`.
    */
   static void build(GrinderContext context,
-      {String mode, List<String> directories, String workingDirectory}) {
+      {String mode, List<String> directories, String workingDirectory,
+       String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
+    if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runProcess(context, 'pub', arguments: args,
-      workingDirectory: workingDirectory);
+    runProcess(context, _execName('pub'), arguments: args,
+        workingDirectory: workingDirectory);
   }
 
   /**
@@ -242,19 +254,21 @@ class Pub {
    * The valid values for [mode] are `release` and `debug`.
    */
   static Future buildAsync(GrinderContext context,
-      {String mode, List<String> directories, String workingDirectory}) {
+      {String mode, List<String> directories, String workingDirectory,
+       String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
+    if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runProcessAsync(context, 'pub', arguments: args,
-      workingDirectory: workingDirectory);
+    return runProcessAsync(context, _execName('pub'), arguments: args,
+        workingDirectory: workingDirectory);
   }
 
   static void version(GrinderContext context) => _run(context, '--version');
 
   static void _run(GrinderContext context, String command) {
-    runProcess(context, 'pub', arguments: [command]);
+    runProcess(context, _execName('pub'), arguments: [command]);
   }
 }
 
@@ -278,7 +292,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    runProcess(context, 'dart2js', arguments: args);
+    runProcess(context, _execName('dart2js'), arguments: args);
   }
 
   /**
@@ -296,13 +310,13 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(context, 'dart2js', arguments: args);
+    return runProcessAsync(context, _execName('dart2js'), arguments: args);
   }
 
   static void version(GrinderContext context) => _run(context, '--version');
 
   static void _run(GrinderContext context, String command) {
-    runProcess(context, 'dart2js', arguments: [command]);
+    runProcess(context, _execName('dart2js'), arguments: [command]);
   }
 }
 
@@ -335,11 +349,11 @@ class Analyzer {
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(paths);
 
-    runProcess(context, 'dartanalyzer', arguments: args);
+    runProcess(context, _execName('dartanalyzer'), arguments: args);
   }
 
   static void version(GrinderContext context) =>
-      runProcess(context, 'dartanalyzer', arguments: ['--version']);
+      runProcess(context, _execName('dartanalyzer'), arguments: ['--version']);
 }
 
 /**
