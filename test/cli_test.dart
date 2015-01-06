@@ -29,6 +29,11 @@ main() {
       });
     });
   });
+
+  group('interation', () {
+    // TODO: add some integration tests - actually execute real tasks
+
+  });
 }
 
 void _clear() => ranTasks.clear();
