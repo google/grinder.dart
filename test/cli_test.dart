@@ -41,4 +41,3 @@ void _clear() => ranTasks.clear();
 _fooTask(GrinderContext context) => ranTasks['foo'] = true;
 
 _barTask(GrinderContext context) => ranTasks['bar'] = true;
-
