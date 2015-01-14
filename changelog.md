@@ -1,5 +1,13 @@
 # grinder.dart changes
 
+## TODO:
+- add method for Pub.global.activate and Pub.global.run
+- add an optional `workingDirectory` argument to more methods
+- added a `--version` command line flag
+- have the version command check to see if there's a newer version of grinder
+  available
+- the dart2js compile tasks now create the output directory if it doesn't exist
+
 ## 0.6.5
 - added `defaultInit()` and `defaultClean()` methods, for common tasks
 
@@ -27,11 +35,11 @@ let you run grinder via:
 
     pub run grinder test
 
-They look for a corresponding grinder script in the `tool` directory (`bin/grind.dart`
-looks for `tool/grind.dart` and `bin/grinder.dart` looks for `tool/grinder.dart`).
-If they find a corresponding script they run it in a new Dart VM process. This
-means that projects will no longer have to have a `grind.sh` script in the root
-of each project.
+They look for a corresponding grinder script in the `tool` directory 
+(`bin/grind.dart` looks for `tool/grind.dart` and `bin/grinder.dart` looks for
+`tool/grinder.dart`). If they find a corresponding script they run it in a new
+Dart VM process. This means that projects will no longer have to have a
+`grind.sh` script in the root of each project.
 
 PubTool's build methods now take an optional `workingDirectory` argument.
 

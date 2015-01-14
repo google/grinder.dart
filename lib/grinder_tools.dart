@@ -189,17 +189,20 @@ void defaultClean(GrinderContext context) {
  * Utility tasks for executing pub commands.
  */
 class Pub {
+  static PubGlobal _global = new PubGlobal._();
+
   /**
    * Run `pub get` on the current project. If [force] is true, this will execute
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static void get(GrinderContext context, {bool force: false}) {
+  static void get(GrinderContext context,
+      {bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      _run(context, _execName('get'));
+      _run(context, _execName('get'), workingDirectory: workingDirectory);
     }
   }
 
@@ -208,12 +211,14 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static Future getAsync(GrinderContext context, {bool force: false}) {
+  static Future getAsync(GrinderContext context,
+      {bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runProcessAsync(context, _execName('pub'), arguments: ['get']);
+      return runProcessAsync(context, _execName('pub'), arguments: ['get'],
+          workingDirectory: workingDirectory);
     } else {
       return new Future.value();
     }
@@ -222,13 +227,16 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static void upgrade(GrinderContext context) => _run(context, 'upgrade');
+  static void upgrade(GrinderContext context, {String workingDirectory}) {
+    _run(context, 'upgrade', workingDirectory: workingDirectory);
+  }
 
   /**
    * Run `pub upgrade` on the current project.
    */
-  static Future upgradeAsync(GrinderContext context) {
-    return runProcessAsync(context, _execName('pub'), arguments: ['upgrade']);
+  static Future upgradeAsync(GrinderContext context, {String workingDirectory}) {
+    return runProcessAsync(context, _execName('pub'), arguments: ['upgrade'],
+        workingDirectory: workingDirectory);
   }
 
   /**
@@ -267,8 +275,28 @@ class Pub {
 
   static void version(GrinderContext context) => _run(context, '--version');
 
-  static void _run(GrinderContext context, String command) {
-    runProcess(context, _execName('pub'), arguments: [command]);
+  PubGlobal get global => _global;
+
+  static void _run(GrinderContext context, String command,
+      {String workingDirectory}) {
+    runProcess(context, _execName('pub'), arguments: [command],
+        workingDirectory: workingDirectory);
+  }
+}
+
+class PubGlobal {
+  PubGlobal._();
+
+  void activate(GrinderContext context, String package) {
+    runProcess(context, _execName('pub'), arguments: ['activate', package]);
+  }
+
+  void run(GrinderContext context, String package,
+      {List<String> arguments, String workingDirectory}) {
+    List args = ['run', package];
+    if (arguments != null) args.addAll(arguments);
+    runProcess(context, _execName('pub'), arguments: args,
+        workingDirectory: workingDirectory);
   }
 }
 
@@ -285,6 +313,8 @@ class Dart2js {
 
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+
+    if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
     List args = [];
     if (minify) args.add('--minify');
@@ -303,6 +333,8 @@ class Dart2js {
     // TODO: Check for the out.deps file, use it to know when to compile.
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+
+    if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
     List args = [];
     if (minify) args.add('--minify');

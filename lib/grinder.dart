@@ -32,6 +32,7 @@
  *     usage: dart grinder.dart <options> target1 target2 ...
  *
  *     valid options:
+ *     --version     print the version of grinder
  *     -h, --help    show targets but don't build
  *     -d, --deps    display the dependencies of targets
  */
@@ -41,12 +42,16 @@ export 'grinder_files.dart';
 export 'grinder_tools.dart';
 
 import 'dart:async';
+import 'dart:convert' show JSON, UTF8;
 import 'dart:io';
 
 import 'package:args/args.dart';
 
 final Grinder _grinder = new Grinder();
 List<String> _args;
+
+// This version must be updated in tandem with the pubspec version.
+const String _APP_VERSION = '0.6.4+1';
 
 /**
  * Used to define a method body for a task.
@@ -85,7 +90,27 @@ Future startGrinder(List<String> args) {
   ArgParser parser = _createArgsParser();
   ArgResults results = parser.parse(grinderArgs());
 
-  if (results['help']) {
+  if (results['version']) {
+    const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
+
+    print('grinder version ${_APP_VERSION}');
+
+    HttpClient client = new HttpClient();
+    return client.getUrl(Uri.parse(pubUrl)).then((HttpClientRequest request) {
+      return request.close();
+    }).then((HttpClientResponse response) {
+      return response.toList();
+    }).then((List<List> data) {
+      String str = UTF8.decode(data.reduce((a, b) => a.addAll(b)));
+      List versions = JSON.decode(str)['versions'];
+      if (_APP_VERSION != versions.last) {
+        print("Version ${versions.last} is available! Run `pub global activate"
+             " grinder` to get the latest.");
+      } else {
+        print('grinder is up to date!');
+      }
+    }).catchError((e) => null);
+  } else if (results['help']) {
     _printUsage(parser, _grinder);
   } else if (results['deps']) {
     _printDeps(_grinder);
@@ -107,6 +132,8 @@ Future startGrinder(List<String> args) {
 
 ArgParser _createArgsParser() {
   ArgParser parser = new ArgParser();
+  parser.addFlag('version', negatable: false,
+      help: "print the version of grinder");
   parser.addFlag('help', abbr: 'h', negatable: false,
       help: "show targets but don't build");
   parser.addFlag('deps', abbr: 'd', negatable: false,
@@ -170,9 +197,9 @@ void _printDeps(Grinder grinder) {
  */
 class GrinderContext {
   /// The [Grinder] instance.
-  Grinder grinder;
+  final Grinder grinder;
   /// The current running [GrinderTask].
-  GrinderTask task;
+  final GrinderTask task;
 
   GrinderContext._(this.grinder, this.task);
 
@@ -198,10 +225,10 @@ class GrinderTask {
   /// The name of the task.
   final String name;
   /// The function to execute when starting this task.
-  TaskFunction taskFunction;
+  final TaskFunction taskFunction;
   /// The list of task dependencies; tasks that must run before this task should
   /// execute.
-  List<String> depends;
+  final List<String> depends;
   /// An optional description of the task.
   final String description;
 
