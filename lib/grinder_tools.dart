@@ -309,8 +309,6 @@ class Dart2js {
    */
   static void compile(GrinderContext context, File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
-    // TODO: Check for the out.deps file, use it to know when to compile.
-
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
@@ -330,7 +328,6 @@ class Dart2js {
    */
   static Future compileAsync(GrinderContext context, File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
-    // TODO: Check for the out.deps file, use it to know when to compile.
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
 
@@ -408,6 +405,8 @@ class Tests {
     }
   }
 
+  // TODO: specify dartium in web/, or chrome in build/web
+
 //  /**
 //   * TODO: doc
 //   */
@@ -417,17 +416,16 @@ class Tests {
 //  }
 }
 
-class ChromeBrowser {
+class Chrome {
   final String browserPath;
   Directory _tempDir;
 
-  ChromeBrowser(this.browserPath) {
+  Chrome(this.browserPath) {
     _tempDir = Directory.systemTemp.createTempSync('userDataDir-');
   }
 
-  ChromeBrowser.createDartium() : this(_dartiumPath());
-  ChromeBrowser.createChromeStable() : this(_chromeStablePath());
-  ChromeBrowser.createChromeDev() : this(_chromeDevPath());
+  Chrome.createChromeStable() : this(_chromeStablePath());
+  Chrome.createChromeDev() : this(_chromeDevPath());
 
   bool get exists => new File(browserPath).existsSync();
 
@@ -460,15 +458,13 @@ class ChromeBrowser {
 }
 
 /**
- * A utility class for accessing Dartium. This is a the same as calling
- * [ChromeBrowser.createDartium].
+ * A wrapper around the Dartium browser.
  */
-class Dartium extends ChromeBrowser {
-  Dartium() : super.createDartium();
+class Dartium extends Chrome {
+  Dartium() : super(_dartiumPath());
 }
 
-// TODO: Have a utility method to install content shell.
-class ContentShell extends ChromeBrowser {
+class ContentShell extends Chrome {
   static String _contentShellPath() {
     final Map m = {
       "linux": "content_shell/content_shell",

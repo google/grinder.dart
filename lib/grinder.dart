@@ -51,7 +51,7 @@ final Grinder _grinder = new Grinder();
 List<String> _args;
 
 // This version must be updated in tandem with the pubspec version.
-const String _APP_VERSION = '0.6.4+1';
+const String _APP_VERSION = '0.6.5';
 
 /**
  * Used to define a method body for a task.

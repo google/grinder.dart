@@ -1,15 +1,13 @@
 # grinder.dart changes
 
-## TODO:
-- add method for Pub.global.activate and Pub.global.run
-- add an optional `workingDirectory` argument to more methods
+## 0.6.5 (2015/1/13)
+- added `defaultInit()` and `defaultClean()` methods, for common tasks
+- added methods for Pub.global.activate and Pub.global.run
+- added an optional `workingDirectory` argument to more methods
 - added a `--version` command line flag
 - have the version command check to see if there's a newer version of grinder
   available
 - the dart2js compile tasks now create the output directory if it doesn't exist
-
-## 0.6.5
-- added `defaultInit()` and `defaultClean()` methods, for common tasks
 
 ## 0.6.4 (2014/12/18)
 - clarify that users should put their build scripts in `tools/grind.dart`
