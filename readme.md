@@ -18,21 +18,23 @@ source.
 The build file for your application should reside at `tool/grind.dart`. A
 typical Grinder build file may look something like this:
 
-    void main([List<String> args]) {
-      task('init', init);
-      task('compile', compile, ['init']);
-      task('deploy', deploy, ['compile']);
-      task('docs', deploy, ['init']);
-      task('all', null, ['deploy', 'docs']);
+```dart
+void main([List<String> args]) {
+  task('init', init);
+  task('compile', compile, ['init']);
+  task('deploy', deploy, ['compile']);
+  task('docs', deploy, ['init']);
+  task('all', null, ['deploy', 'docs']);
 
-      startGrinder(args);
-    }
+  startGrinder(args);
+}
 
-    init(GrinderContext context) {
-      context.log("I set things up");
-    }
+init(GrinderContext context) {
+  context.log("I set things up");
+}
 
-    ...
+...
+```
 
 Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
