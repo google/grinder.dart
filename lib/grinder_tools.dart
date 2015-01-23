@@ -288,12 +288,13 @@ class PubGlobal {
   PubGlobal._();
 
   void activate(GrinderContext context, String package) {
-    runProcess(context, _execName('pub'), arguments: ['activate', package]);
+    runProcess(context, _execName('pub'),
+        arguments: ['global', 'activate', package]);
   }
 
   void run(GrinderContext context, String package,
       {List<String> arguments, String workingDirectory}) {
-    List args = ['run', package];
+    List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
     runProcess(context, _execName('pub'), arguments: args,
         workingDirectory: workingDirectory);
