@@ -275,7 +275,7 @@ class Pub {
 
   static void version(GrinderContext context) => _run(context, '--version');
 
-  PubGlobal get global => _global;
+  static PubGlobal get global => _global;
 
   static void _run(GrinderContext context, String command,
       {String workingDirectory}) {
