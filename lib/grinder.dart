@@ -221,7 +221,7 @@ class GrinderContext {
       } else {
         return [line];
       }
-    });
+    }).toList();
     grinder.log("  ${lines.join('\n  ')}");
   }
 
