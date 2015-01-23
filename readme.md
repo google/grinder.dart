@@ -54,7 +54,7 @@ To install, run:
 
 or:
 
-    pub run grind <args>
+    pub global run grind <args>
 
 will run the `tool/grind.dart` script with the supplied arguments.
 
