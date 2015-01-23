@@ -47,6 +47,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 
+import 'src/utils.dart';
+
 final Grinder _grinder = new Grinder();
 List<String> _args;
 
@@ -95,17 +97,11 @@ Future startGrinder(List<String> args) {
 
     print('grinder version ${_APP_VERSION}');
 
-    HttpClient client = new HttpClient();
-    return client.getUrl(Uri.parse(pubUrl)).then((HttpClientRequest request) {
-      return request.close();
-    }).then((HttpClientResponse response) {
-      return response.toList();
-    }).then((List<List> data) {
-      String str = UTF8.decode(data.reduce((a, b) => a.addAll(b)));
+    return httpGet(pubUrl).then((String str) {
       List versions = JSON.decode(str)['versions'];
       if (_APP_VERSION != versions.last) {
         print("Version ${versions.last} is available! Run `pub global activate"
-             " grinder` to get the latest.");
+            " grinder` to get the latest version.");
       } else {
         print('grinder is up to date!');
       }
@@ -120,7 +116,11 @@ Future startGrinder(List<String> args) {
     Future result = _grinder.start(results.rest);
 
     return result.catchError((e, st) {
-      print('${e}\n${st}');
+      if (st != null) {
+        print('\n${e}\n${st}');
+      } else {
+        print('\n${e}');
+      }
       exit(1);
     });
   }
@@ -204,13 +204,33 @@ class GrinderContext {
   GrinderContext._(this.grinder, this.task);
 
   /// Log an informational message to Grinder's output.
-  void log(String message) => grinder.log("  ${message.replaceAll('\n', '\n  ')}");
+  void log(String message) {
+    List lines = message.trimRight().split('\n');
+    lines = lines.expand((line) {
+      final int len = 120;
+      if (line.length > len) {
+        List results = [];
+        results.add(line.substring(0, len));
+        line = line.substring(len);
+        while (line.length > len) {
+          results.add('  ${line.substring(0, len)}');
+          line = line.substring(len);
+        }
+        if (line.isNotEmpty) results.add('  ${line}');
+        return results;
+      } else {
+        return [line];
+      }
+    });
+    grinder.log("  ${lines.join('\n  ')}");
+  }
 
   /// Halt task execution; throws an exception with the given error message.
   void fail(String message) {
     log('');
     log('failed: ${message}');
     log('      : ${_getLocation()}');
+
     throw new _FailException(message);
   }
 

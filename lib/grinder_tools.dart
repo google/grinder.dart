@@ -10,6 +10,8 @@ library grinder.tools;
 import 'dart:async';
 import 'dart:io';
 
+import 'package:which/which.dart';
+
 import 'grinder.dart';
 
 final Directory BIN_DIR = new Directory('bin');
@@ -55,19 +57,17 @@ Directory getSdkDir([List<String> cliArgs]) {
   if (_isSdkDir(sdkDirectory)) return sdkDirectory;
 
   // Try and locate the VM using 'which'.
-  if (!Platform.isWindows) {
-    String executable = Process.runSync('which', ['dart']).stdout.trim();
+  String executable = whichSync('dart', orElse: () => null);
 
-    // In case Dart is symlinked (e.g. homebrew on Mac) follow symbolic links.
-    Link link = new Link(executable);
-    if (link.existsSync()) {
-      executable = link.resolveSymbolicLinksSync();
-    }
-
-    File dartVm = new File(executable);
-    Directory dir = dartVm.parent.parent;
-    if (_isSdkDir(dir)) return dir;
+  // In case Dart is symlinked (e.g. homebrew on Mac) follow symbolic links.
+  Link link = new Link(executable);
+  if (link.existsSync()) {
+    executable = link.resolveSymbolicLinksSync();
   }
+
+  File dartVm = new File(executable);
+  Directory dir = dartVm.parent.parent;
+  if (_isSdkDir(dir)) return dir;
 
   return null;
 }

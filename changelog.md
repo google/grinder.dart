@@ -33,7 +33,7 @@ let you run grinder via:
 
     pub run grinder test
 
-They look for a corresponding grinder script in the `tool` directory 
+They look for a corresponding grinder script in the `tool` directory
 (`bin/grind.dart` looks for `tool/grind.dart` and `bin/grinder.dart` looks for
 `tool/grinder.dart`). If they find a corresponding script they run it in a new
 Dart VM process. This means that projects will no longer have to have a
