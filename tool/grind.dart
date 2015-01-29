@@ -1,12 +1,15 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
   task('init', init);
   task('analyze', analyze, ['init']);
   task('tests', tests, ['init']);
+  task('tests-web', testsWeb, ['init']);
 
   startGrinder(args);
 }
@@ -24,4 +27,12 @@ void analyze(GrinderContext context) {
 
 void tests(GrinderContext context) {
   Tests.runCliTests(context);
+}
+
+Future testsWeb(GrinderContext context) {
+  return Pub.buildAsync(context, directories: ['web']).then((_) {
+    return Tests.runWebTests(context, directory: 'build/web', htmlFile: 'web.html');
+  });
+
+//  return Tests.runWebTests(context, directory: 'web', htmlFile: 'web.html');
 }

@@ -9,10 +9,14 @@ library grinder.tools;
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:which/which.dart';
 
 import 'grinder.dart';
+import 'src/utils.dart';
+import 'src/_mserve.dart';
+import 'src/_wip.dart';
 
 final Directory BIN_DIR = new Directory('bin');
 final Directory BUILD_DIR = new Directory('build');
@@ -145,13 +149,15 @@ Future runProcessAsync(GrinderContext context, String executable,
     // Handle stdout.
     process.stdout.listen((List<int> data) {
       if (!quiet) {
-        context.log(new String.fromCharCodes(data).trim());
+        String str = new String.fromCharCodes(data).trimRight();
+        if (str.isNotEmpty) context.log(str);
       }
     });
 
     // Handle stderr.
     process.stderr.listen((List<int> data) {
-      context.log('stderr: ${new String.fromCharCodes(data).trim()}');
+      String str = new String.fromCharCodes(data).trimRight();
+      if (str.isNotEmpty) context.log('stderr: $str');
     });
 
     return process.exitCode.then((int code) {
@@ -391,30 +397,112 @@ class Analyzer {
  */
 class Tests {
   /**
-   * Run command-line tests in the `test` directory. If no parameters are passed
-   * for [paths], this method defaults to running the `test/all.dart` script.
+   * Run command-line tests. You can specify the base directory (`test`), and
+   * the file to run (`all.dart`).
    */
-  static void runCliTests(GrinderContext context, [List<String> paths]) {
-    if (paths == null) {
-      paths = ['all.dart'];
-    }
-
-    for (String path in paths) {
-      String testFile = 'test/${path}';
-      context.log('running tests ${testFile}...');
-      runDartScript(context, testFile);
-    }
+  static void runCliTests(GrinderContext context,
+      {String directory: 'test', String testFile: 'all.dart'}) {
+    String file = '${directory}/${testFile}';
+    context.log('running tests: ${file}...');
+    runDartScript(context, file);
   }
 
-  // TODO: specify dartium in web/, or chrome in build/web
+  /**
+   * Run web tests in a browser instance. You can specify the base directory
+   * (`test`), and the html file to run (`index.html`).
+   */
+  static Future runWebTests(GrinderContext context,
+      {String directory: 'test',
+       String htmlFile: 'index.html',
+       Chrome browser}) {
+    // Choose a random port to tell the browser to serve debug info to. If we
+    // specify a fixed port the browser may fail to connect, but we'll still try
+    // and create a debug connection to the port.
+    int wip = 33000 + new math.Random().nextInt(10000); //9222;
 
-//  /**
-//   * TODO: doc
-//   */
-//  static void runWebTests(GrinderContext context, [List<String> paths]) {
-//    // TODO: we'll need to locate content_shell
-//
-//  }
+    if (browser == null) {
+      if (directory.startsWith('build')) {
+        browser = new Chrome.createChromeStable();
+      } else {
+        browser = new Dartium();
+      }
+    }
+
+    MicroServer server;
+    BrowserInstance browserInstance;
+    String url;
+    ChromeTab tab;
+    WipConnection connection;
+
+    // Start a server.
+    return MicroServer.start(path: directory).then((s) {
+      server = s;
+
+      context.log("microserver serving '${server.path}' on ${server.urlBase}");
+
+      // Start the browser.
+      context.log('opening ${browser.browserPath}');
+
+      url = 'http://${server.host}:${server.port}/${htmlFile}';
+      return browser.launchUrl(context, url,
+          args: ['--remote-debugging-port=${wip}']);
+    }).then((bi) {
+      browserInstance = bi;
+
+      // Find tab.
+      return new ChromeConnection(server.host, wip).getTab((tab) {
+        return tab.url == url || tab.url.endsWith(htmlFile);
+      }, retryFor: new Duration(seconds: 5));
+    }).then((t) {
+      tab = t;
+
+      context.log('connected to ${tab}');
+
+      // Connect via WIP.
+      return WipConnection.connect(tab.webSocketDebuggerUrl);
+    }).then((c) {
+      connection = c;
+      connection.console.enable();
+      StreamSubscription sub;
+      ResettableTimer timer;
+
+      var teardown = () {
+        sub.cancel();
+        connection.close();
+        browserInstance.kill();
+        server.destroy();
+        timer.cancel();
+      };
+
+      Completer completer = new Completer();
+
+      timer = new ResettableTimer(new Duration(seconds: 60), () {
+        teardown();
+        if (!completer.isCompleted) {
+          completer.completeError('tests timed out');
+        }
+      });
+
+      sub = connection.console.onMessage.listen(
+          (ConsoleMessageEvent event) {
+        timer.reset();
+        context.log(event.text);
+
+        // 'tests finished - passed' or 'tests finished - failed'.
+        if (event.text.contains('tests finished -')) {
+          teardown();
+
+          if (event.text.contains('tests finished - failed')) {
+            completer.completeError('tests failed');
+          } else {
+            completer.complete();
+          }
+        }
+      });
+
+      return completer.future;
+    });
+  }
 }
 
 class Chrome {
@@ -455,6 +543,58 @@ class Chrome {
     // TODO: This process often won't terminate, so that's a problem.
     context.log("starting chrome...");
     runProcess(context, browserPath, arguments: args, environment: envVars);
+  }
+
+  Future<BrowserInstance> launchUrl(GrinderContext context, String url,
+      {List<String> args, bool verbose: false, Map envVars}) {
+    List<String> _args = [
+        '--no-default-browser-check',
+        '--no-first-run',
+        '--user-data-dir=${_tempDir.path}'
+    ];
+
+    if (verbose) _args.addAll(['--enable-logging=stderr', '--v=1']);
+    if (args != null) _args.addAll(args);
+
+    _args.add(url);
+
+    return Process.start(browserPath, _args, environment: envVars)
+        .then((Process process) {
+      // Handle stdout.
+      process.stdout.listen((List<int> data) {
+        context.log(new String.fromCharCodes(data).trim());
+      });
+
+      // Handle stderr.
+      process.stderr.listen((List<int> data) {
+        context.log('stderr: ${new String.fromCharCodes(data).trim()}');
+      });
+
+      return process;
+    }).then((process) {
+      return new BrowserInstance(this, process);
+    });
+  }
+}
+
+class BrowserInstance {
+  final Chrome browser;
+  final Process process;
+
+  int _exitCode;
+
+  BrowserInstance(this.browser, this.process) {
+    process.exitCode.then((int code) {
+      _exitCode = code;
+    });
+  }
+
+  int get exitCode => _exitCode;
+
+  bool get running => _exitCode != null;
+
+  void kill() {
+    process.kill();
   }
 }
 
@@ -524,7 +664,9 @@ String _dartiumPath() {
     return new File(path).absolute.path;
   }
 
-  return null;
+  path = whichSync('Dartium', orElse: () => null);
+
+  return path;
 }
 
 String _chromeStablePath() {

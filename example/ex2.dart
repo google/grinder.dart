@@ -8,15 +8,11 @@ import 'dart:async';
 import 'package:grinder/grinder.dart';
 
 void main([List<String> args]) {
-  task('init', init);
+  task('init', defaultInit);
   task('build', build, ['init']);
   task('all', null, ['build']);
 
   startGrinder(args);
-}
-
-void init(GrinderContext context) {
-  context.log("I set things up");
 }
 
 Future build(GrinderContext context) {
