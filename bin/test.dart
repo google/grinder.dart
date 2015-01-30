@@ -12,7 +12,7 @@ import 'package:grinder/grinder.dart';
 void main(List<String> args) {
   if (args.length != 1) {
     print(
-        'usage: pub global activate grinder:test <filepath>');
+        'usage: pub global run grinder:test <filepath>');
     print(
         '  where <filepath> is either a .dart file (for CLI tests), '
         'or an .html file (for web tests).');
