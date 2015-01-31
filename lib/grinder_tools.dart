@@ -422,10 +422,14 @@ class Tests {
 
     if (browser == null) {
       if (directory.startsWith('build')) {
-        browser = new Chrome.createChromeStable();
+        browser = Chrome.getBestInstalledChrome();
       } else {
-        browser = new Dartium();
+        browser = Chrome.getBestInstalledChrome(preferDartium: true);
       }
+    }
+
+    if (browser == null) {
+      return new Future.error('Unable to locate a Chrome install');
     }
 
     MicroServer server;
@@ -435,7 +439,7 @@ class Tests {
     WipConnection connection;
 
     // Start a server.
-    return MicroServer.start(path: directory).then((s) {
+    return MicroServer.start(port: 0, path: directory).then((s) {
       server = s;
 
       context.log("microserver serving '${server.path}' on ${server.urlBase}");
@@ -506,6 +510,31 @@ class Tests {
 }
 
 class Chrome {
+  static Chrome getBestInstalledChrome({bool preferDartium: false}) {
+    Chrome chrome;
+
+    if (preferDartium) {
+      chrome = new Dartium();
+      if (chrome.exists) return chrome;
+    }
+
+    chrome = new Chrome.createChromeStable();
+    if (chrome.exists) return chrome;
+
+    chrome = new Chrome.createChromeDev();
+    if (chrome.exists) return chrome;
+
+    chrome = new Chrome.createChromium();
+    if (chrome.exists) return chrome;
+
+    if (!preferDartium) {
+      chrome = new Dartium();
+      if (chrome.exists) return chrome;
+    }
+
+    return null;
+  }
+
   final String browserPath;
   Directory _tempDir;
 
@@ -515,6 +544,7 @@ class Chrome {
 
   Chrome.createChromeStable() : this(_chromeStablePath());
   Chrome.createChromeDev() : this(_chromeDevPath());
+  Chrome.createChromium() : this(_chromiumPath());
 
   bool get exists => new File(browserPath).existsSync();
 
@@ -698,6 +728,16 @@ String _chromeDevPath() {
   } else {
     return null;
   }
+}
+
+String _chromiumPath() {
+  if (Platform.isLinux) {
+    return '/usr/bin/chromium-browser';
+  } else if (Platform.isMacOS) {
+    return '/Applications/Chromium.app/Contents/MacOS/Chromium';
+  }
+
+  return null;
 }
 
 bool _isSdkDir(Directory dir) => joinFile(dir, ['version']).existsSync();

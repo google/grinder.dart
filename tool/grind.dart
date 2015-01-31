@@ -10,6 +10,7 @@ void main([List<String> args]) {
   task('analyze', analyze, ['init']);
   task('tests', tests, ['init']);
   task('tests-web', testsWeb, ['init']);
+  task('tests-build-web', testsBuildWeb, ['init']);
 
   startGrinder(args);
 }
@@ -30,9 +31,11 @@ void tests(GrinderContext context) {
 }
 
 Future testsWeb(GrinderContext context) {
+  return Tests.runWebTests(context, directory: 'web', htmlFile: 'web.html');
+}
+
+Future testsBuildWeb(GrinderContext context) {
   return Pub.buildAsync(context, directories: ['web']).then((_) {
     return Tests.runWebTests(context, directory: 'build/web', htmlFile: 'web.html');
   });
-
-//  return Tests.runWebTests(context, directory: 'web', htmlFile: 'web.html');
 }
