@@ -447,9 +447,12 @@ class Tests {
       // Start the browser.
       context.log('opening ${browser.browserPath}');
 
+      List<String> args = ['--remote-debugging-port=${wip}'];
+      if (Platform.environment['CHROME_ARGS'] != null) {
+       args.addAll(Platform.environment['CHROME_ARGS'].split(' '));
+      }
       url = 'http://${server.host}:${server.port}/${htmlFile}';
-      return browser.launchUrl(context, url,
-          args: ['--remote-debugging-port=${wip}']);
+      return browser.launchUrl(context, url, args: args);
     }).then((bi) {
       browserInstance = bi;
 
