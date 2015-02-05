@@ -11,6 +11,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:cli_util/cli_util.dart' as cli_util;
 import 'package:which/which.dart';
 
 import 'grinder.dart';
@@ -34,47 +35,10 @@ Directory get sdkDir => getSdkDir(grinderArgs());
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
  * unable to locate the Dart SDK.
+ *
+ * This is an alias for the `cli_util` package's `getSdkDir()` method.
  */
-Directory getSdkDir([List<String> cliArgs]) {
-  // Look for --dart-sdk on the command line.
-  if (cliArgs != null) {
-    int index = cliArgs.indexOf('--dart-sdk');
-
-    if (index != -1 && (index + 1 < cliArgs.length)) {
-      return new Directory(cliArgs[index + 1]);
-    }
-
-    for (String arg in cliArgs) {
-      if (arg.startsWith('--dart-sdk=')) {
-        return new Directory(arg.substring('--dart-sdk='.length));
-      }
-    }
-  }
-
-  // Look in env['DART_SDK']
-  if (Platform.environment['DART_SDK'] != null) {
-    return new Directory(Platform.environment['DART_SDK']);
-  }
-
-  // Look relative to the dart executable.
-  Directory sdkDirectory = new File(Platform.executable).parent.parent;
-  if (_isSdkDir(sdkDirectory)) return sdkDirectory;
-
-  // Try and locate the VM using 'which'.
-  String executable = whichSync('dart', orElse: () => null);
-
-  // In case Dart is symlinked (e.g. homebrew on Mac) follow symbolic links.
-  Link link = new Link(executable);
-  if (link.existsSync()) {
-    executable = link.resolveSymbolicLinksSync();
-  }
-
-  File dartVm = new File(executable);
-  Directory dir = dartVm.parent.parent;
-  if (_isSdkDir(dir)) return dir;
-
-  return null;
-}
+Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
 
@@ -742,5 +706,3 @@ String _chromiumPath() {
 
   return null;
 }
-
-bool _isSdkDir(Directory dir) => joinFile(dir, ['version']).existsSync();
