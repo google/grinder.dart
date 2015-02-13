@@ -10,7 +10,7 @@ import 'package:grinder/grinder.dart';
 void main([List<String> args]) {
   task('init', init);
   task('build', build, ['init']);
-  task('all', null, ['build']);
+  task('default', null, ['build']);
 
   startGrinder(args);
 }

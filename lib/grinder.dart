@@ -110,8 +110,6 @@ Future startGrinder(List<String> args) {
     _printUsage(parser, _grinder);
   } else if (results['deps']) {
     _printDeps(_grinder);
-  } else if (results.rest.isEmpty) {
-    _printUsage(parser, _grinder);
   } else {
     Future result = _grinder.start(results.rest);
 
@@ -327,6 +325,11 @@ class Grinder {
     }
 
     DateTime startTime = new DateTime.now();
+
+    if (targets.isEmpty) {
+      log('run `grinder -h` for help and a list of valid tasks');
+      targets = ['default'];
+    }
 
     // Verify that all named tasks exist.
     for (String taskName in targets) {

@@ -9,7 +9,7 @@ void main([List<String> args]) {
   task('init', init);
   task('compile', compile, ['init']);
   task('deploy', deploy, ['compile']);
-  task('all', null, ['deploy']);
+  task('default', null, ['deploy']);
 
   startGrinder(args);
 }

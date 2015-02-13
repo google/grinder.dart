@@ -34,6 +34,15 @@ main() {
           throwsA(new isInstanceOf<GrinderException>()));
     });
 
+    test('default task is run by default', () {
+      Grinder grinder = new Grinder();
+      grinder.addTask(new GrinderTask('default'));
+      grinder.start([], dontRun: true);
+      expect(grinder.getBuildOrder(), orderedEquals([
+          grinder.getTask('default')
+      ]));
+    });
+
     test('htmlEscape', () {
       // test that dependency cycles are caught
       Grinder grinder = new Grinder();
