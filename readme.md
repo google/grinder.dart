@@ -24,7 +24,7 @@ void main([List<String> args]) {
   task('compile', compile, ['init']);
   task('deploy', deploy, ['compile']);
   task('docs', deploy, ['init']);
-  task('all', null, ['deploy', 'docs']);
+  task('default', null, ['deploy', 'docs']);
 
   startGrinder(args);
 }
@@ -38,6 +38,8 @@ init(GrinderContext context) {
 
 Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
+
+Specifying no tasks on the command-line is equivalent to specifying the `default` task.
 
 ## Installing
 
