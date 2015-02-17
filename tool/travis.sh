@@ -11,7 +11,7 @@ set -e
 pub global activate tuneup
 
 # Verify that the libraries are error free.
-pub global run tuneup check
+pub global run tuneup check --ignore-infos
 
 # Run the tests.
 dart test/all.dart
