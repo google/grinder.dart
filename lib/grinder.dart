@@ -1,41 +1,6 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/**
- * A library and tool to drive a command-line build.
- *
- * Grinder build files are entirely specified in Dart code. This allows you to
- * write and debug your build files with the same tools you use for the rest of
- * your project source.
- *
- * Generally, a Grinder implementation will look something like this:
- *     void main([List<String> args]) {
- *       task('init', init);
- *       task('compile', compile, ['init']);
- *       task('deploy', deploy, ['compile']);
- *       task('docs', deploy, ['init']);
- *       task('all', ['deploy', 'docs']);
- *
- *       startGrinder(args);
- *     }
- *
- *     init(GrinderContext context) {
- *       context.log("I set things up");
- *     }
- *
- *     ...
- *
- * Tasks to run are specified on the command line. If a task has dependencies,
- * those dependent tasks are run before the specified task.
- *
- * ## Command-line usage
- *     usage: dart grinder.dart <options> target1 target2 ...
- *
- *     valid options:
- *     --version     print the version of grinder
- *     -h, --help    show targets but don't build
- *     -d, --deps    display the dependencies of targets
- */
 library grinder;
 
 export 'grinder_files.dart';
@@ -44,10 +9,12 @@ export 'grinder_tools.dart';
 import 'dart:async';
 import 'dart:convert' show JSON, UTF8;
 import 'dart:io';
+import 'dart:mirrors';
 
 import 'package:args/args.dart';
 
 import 'src/utils.dart';
+import 'src/get_annotated_tasks.dart';
 
 final Grinder _grinder = new Grinder();
 List<String> _args;
@@ -77,6 +44,14 @@ void addTask(GrinderTask task) => _grinder.addTask(task);
 void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
   _grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
+}
+
+/**
+ * Add all [Task]-annotated tasks declared in the grinder build file.
+ */
+void addAnnotatedTasks() {
+  var lib = currentMirrorSystem().isolate.rootLibrary;
+  getAnnotatedTasks(lib).forEach(_grinder.addTask);
 }
 
 /**
@@ -267,6 +242,33 @@ class GrinderTask {
   }
 
   String toString() => "[${name}]";
+}
+
+/**
+ * An annotation to define a [GrinderTask].
+ *
+ * In your grinder entry point file, place this on top-levels which are
+ * either [TaskFunction] methods or properties which return [TaskFunction]s.
+ *
+ * Use [addAnnotatedTasks] to add initialize annotated tasks.
+ */
+class Task {
+  /**
+   * See [GrinderTask.name].
+   *
+   * By default the task name is the identifier of the annotated declaration.
+   * Use this to override the name.
+   *
+   */
+  final String name;
+
+  /// See [GrinderTask.depends].
+  final List<String> depends;
+
+  /// See [GrinderTask.description].
+  final String description;
+
+  const Task({this.name, this.depends : const [], this.description});
 }
 
 /**

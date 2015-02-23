@@ -1,29 +1,31 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder_example_1;
+library grinder.example.declarative;
 
 import 'package:grinder/grinder.dart';
 
-void main([List<String> args]) {
-  task('init', init);
-  task('compile', compile, ['init']);
-  task('deploy', deploy, ['compile']);
-  task('default', null, ['deploy']);
-
+void main(List<String> args) {
+  addAnnotatedTasks();
   startGrinder(args);
 }
 
-void init(GrinderContext context) {
+@Task()
+init(GrinderContext context) {
   context.log("I set things up");
 }
 
-void compile(GrinderContext context) {
+@Task(depends: const ['init'])
+compile(GrinderContext context) {
   context.log("I'm compiling now...");
   //context.fail('woot');
 }
 
-void deploy(GrinderContext context) {
+@Task(depends: const ['compile'])
+deploy(GrinderContext context) {
   context.log("deploying a");
   context.log("deploying b");
 }
+
+@Task(name: 'default', depends: const ['deploy'])
+_default(GrinderContext context) {}

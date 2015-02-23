@@ -15,31 +15,41 @@ source.
 
 ## Getting Started
 
-The build file for your application should reside at `tool/grind.dart`. A
-typical Grinder build file may look something like this:
+Your grinder build file should reside at `tool/grind.dart`, and may look
+something like:
 
 ```dart
-void main([List<String> args]) {
-  task('init', init);
-  task('compile', compile, ['init']);
-  task('deploy', deploy, ['compile']);
-  task('docs', deploy, ['init']);
-  task('default', null, ['deploy', 'docs']);
+import 'package:grinder/grinder.dart';
 
+void main(List<String> args) {
+  addAnnotatedTasks();
   startGrinder(args);
 }
 
+@Task()
 init(GrinderContext context) {
-  context.log("I set things up");
+  // ...
 }
 
-...
+@Task(depends: const ['init'])
+compile(GrinderContext context) {
+  context.log("I'm compiling now...");
+}
+
+@Task(depends: const ['compile'])
+deploy(GrinderContext context) {
+  // ...
+}
+
+@Task(name: 'default', depends: const ['deploy'])
+_default(GrinderContext context) {}
 ```
 
 Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
 
-Specifying no tasks on the command-line is equivalent to specifying the `default` task.
+Specifying no tasks on the command-line is equivalent to specifying the 
+`default` task.
 
 ## Installing
 
