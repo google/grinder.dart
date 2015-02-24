@@ -1,6 +1,13 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
+/**
+ * A task based, dependency aware build system.
+ *
+ * See the [README][] for detailed usage information.
+ *
+ * [README]: https://pub.dartlang.org/packages/grinder
+ */
 library grinder;
 
 export 'grinder_files.dart';
