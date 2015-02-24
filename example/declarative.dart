@@ -7,22 +7,27 @@ import 'package:grinder/grinder.dart';
 
 const main = grind;
 
-@Task()
+@Task(
+    description: 'Initialize stuff.')
 init(GrinderContext context) {
-  context.log("I set things up");
+  context.log("Initializing stuff...");
 }
 
-@Task(depends: const ['init'])
+@Task(
+    depends: const ['init'],
+    description: 'Compile stuff.')
 compile(GrinderContext context) {
-  context.log("I'm compiling now...");
-  //context.fail('woot');
+  context.log("Compiling stuff...");
 }
 
-@Task(depends: const ['compile'])
+@Task(
+    depends: const ['compile'],
+    description: 'Deploy stuff.')
 deploy(GrinderContext context) {
-  context.log("deploying a");
-  context.log("deploying b");
+  context.log("Deploying stuff...");
 }
 
-@Task(name: 'default', depends: const ['deploy'])
+@Task(
+    name: 'default',
+    depends: const ['deploy'])
 _default(GrinderContext context) {}

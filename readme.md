@@ -21,27 +21,31 @@ something like:
 ```dart
 import 'package:grinder/grinder.dart';
 
-void main(List<String> args) {
-  addAnnotatedTasks();
-  startGrinder(args);
-}
+const main = grind;
 
-@Task()
+@Task(
+    description: 'Initialize stuff.')
 init(GrinderContext context) {
-  // ...
+  context.log("Initializing stuff...");
 }
 
-@Task(depends: const ['init'])
+@Task(
+    depends: const ['init'],
+    description: 'Compile stuff.')
 compile(GrinderContext context) {
-  context.log("I'm compiling now...");
+  context.log("Compiling stuff...");
 }
 
-@Task(depends: const ['compile'])
+@Task(
+    depends: const ['compile'],
+    description: 'Deploy stuff.')
 deploy(GrinderContext context) {
-  // ...
+  context.log("Deploying stuff...");
 }
 
-@Task(name: 'default', depends: const ['deploy'])
+@Task(
+    name: 'default',
+    depends: const ['deploy'])
 _default(GrinderContext context) {}
 ```
 
