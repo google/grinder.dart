@@ -51,7 +51,7 @@ String camelToDashes(String input) {
 
 // Upper-case or lower-case the first charater of a String.
 String withCapitalization(String s, bool capitalized) {
-  if(s.isEmpty || capitalized == null) return s;
+  if (s.isEmpty || capitalized == null) return s;
   var firstLetter = s[0];
   firstLetter = capitalized ?
      firstLetter.toUpperCase() :

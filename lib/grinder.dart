@@ -13,8 +13,8 @@ import 'dart:mirrors';
 
 import 'package:args/args.dart';
 
-import 'src/utils.dart';
 import 'src/get_annotated_tasks.dart';
+import 'src/utils.dart';
 
 final Grinder _grinder = new Grinder();
 List<String> _args;
