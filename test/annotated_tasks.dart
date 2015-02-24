@@ -16,3 +16,6 @@ void camelCase(GrinderContext context) {}
 
 @Task(name: 'renamed')
 void name(GrinderContext context) {}
+
+/// Test that non-[Task]-annotated things are not added.
+notATask() {}
