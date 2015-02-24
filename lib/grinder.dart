@@ -46,10 +46,15 @@ void task(String name, [TaskFunction taskFunction, List<String> depends = const 
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
 }
 
+Future grind(List<String> args) => new Future(() {
+  _discoverTasks();
+  return startGrinder(args);
+});
+
 /**
  * Add all [Task]-annotated tasks declared in the grinder build file.
  */
-void addAnnotatedTasks() {
+void _discoverTasks() {
   var lib = currentMirrorSystem().isolate.rootLibrary;
   getAnnotatedTasks(lib).forEach(_grinder.addTask);
 }
@@ -250,7 +255,7 @@ class GrinderTask {
  * In your grinder entry point file, place this on top-levels which are
  * either [TaskFunction] methods or properties which return [TaskFunction]s.
  *
- * Use [addAnnotatedTasks] to add initialize annotated tasks.
+ * Use [_discoverTasks] to add initialize annotated tasks.
  */
 class Task {
   /**

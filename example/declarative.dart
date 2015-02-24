@@ -5,10 +5,7 @@ library grinder.example.declarative;
 
 import 'package:grinder/grinder.dart';
 
-void main(List<String> args) {
-  addAnnotatedTasks();
-  startGrinder(args);
-}
+const main = grind;
 
 @Task()
 init(GrinderContext context) {
