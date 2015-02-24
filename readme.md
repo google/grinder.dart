@@ -21,7 +21,7 @@ something like:
 ```dart
 import 'package:grinder/grinder.dart';
 
-const main = grind;
+main(args) => grind(args);
 
 @Task(
     description: 'Initialize stuff.')

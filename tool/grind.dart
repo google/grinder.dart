@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:grinder/grinder.dart';
 
-const main = grind;
+main(args) => grind(args);
 
 @Task()
 void init(GrinderContext context) {
