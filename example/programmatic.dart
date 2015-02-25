@@ -9,9 +9,7 @@ import 'package:grinder/grinder.dart';
 
 void main(List<String> args) {
   task('init', defaultInit);
-  task('build', build, ['init']);
-  task('default', null, ['build']);
-
+  defaultTask = new GrinderTask('build', depends: ['init'], taskFunction: build);
   startGrinder(args);
 }
 

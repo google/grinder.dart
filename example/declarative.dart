@@ -20,14 +20,9 @@ compile(GrinderContext context) {
   context.log("Compiling stuff...");
 }
 
-@Task(
+@DefaultTask(
     depends: const ['compile'],
     description: 'Deploy stuff.')
 deploy(GrinderContext context) {
   context.log("Deploying stuff...");
 }
-
-@Task(
-    name: 'default',
-    depends: const ['deploy'])
-_default(GrinderContext context) {}

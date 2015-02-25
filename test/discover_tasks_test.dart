@@ -5,7 +5,7 @@ library grinder.test.get_annotated_tasks_test;
 
 import 'dart:mirrors';
 
-import 'package:grinder/src/get_annotated_tasks.dart';
+import 'package:grinder/src/discover_tasks.dart';
 import 'package:unittest/unittest.dart';
 
 import 'annotated_tasks.dart';
@@ -31,25 +31,36 @@ main() {
   group('getAnnotatedTask', () {
 
     test('regular method task', () {
-      var task = getAnnotatedTask(decl(#foo));
+      var annotated = getAnnotatedTask(decl(#foo));
+      expect(annotated.isDefault, isFalse);
+      var task = annotated.task;
       expect(task.name, 'foo');
       expect(task.description, 'foo description');
     });
 
     test('variable task', () {
-      var task = getAnnotatedTask(decl(#bar));
+      var annotated = getAnnotatedTask(decl(#bar));
+      var task = annotated.task;
       expect(task.name, 'bar');
       expect(task.depends, ['foo']);
     });
 
     test('camel case task', () {
-      var task = getAnnotatedTask(decl(#camelCase));
-      expect(task.name, 'camel-case');
+      var annotated = getAnnotatedTask(decl(#camelCase));
+      expect(annotated.task.name, 'camel-case');
     });
 
-    test('renamed task', () {
-      var task = getAnnotatedTask(decl(#name));
-      expect(task.name, 'renamed');
+    test('default task', () {
+      var annotated = getAnnotatedTask(decl(#def));
+      expect(annotated.isDefault, isTrue);
+      var task = annotated.task;
+      expect(task.name, 'def');
+      expect(task.depends, ['foo']);
+    });
+
+    test('should return null if not an annotated task', () {
+      var annotated = getAnnotatedTask(decl(#notATask));
+      expect(annotated, isNull);
     });
   });
 
@@ -58,11 +69,11 @@ main() {
     test('gets annotated tasks', () {
       var tasks = getAnnotatedTasks(library);
 
-      expect(tasks.map((task) => task.name), unorderedEquals([
+      expect(tasks.map((annotated) => annotated.task.name), unorderedEquals([
         'foo',
         'bar',
         'camel-case',
-        'renamed'
+        'def'
       ]));
     });
   });

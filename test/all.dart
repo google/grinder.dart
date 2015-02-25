@@ -4,7 +4,7 @@
 library all_test;
 
 import 'cli_test.dart' as cli_test;
-import 'get_annotated_tasks_test.dart' as get_annotated_tasks_test;
+import 'discover_tasks_test.dart' as get_annotated_tasks_test;
 import 'grinder_test.dart' as grinder_test;
 import 'grinder_files_test.dart' as grinder_files_test;
 import 'grinder_tools_test.dart' as grinder_tools_test;
