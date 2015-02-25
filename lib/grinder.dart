@@ -264,8 +264,6 @@ class GrinderTask {
  *
  * In your grinder entry point file, place this on top-levels which are
  * either [TaskFunction] methods or properties which return [TaskFunction]s.
- *
- * Use [_discoverTasks] to add initialize annotated tasks.
  */
 class Task {
   /// See [GrinderTask.depends].
@@ -278,7 +276,10 @@ class Task {
 }
 
 /**
- * An annotation to define the default [GrinderTask].
+ * An annotation to define the default [GrinderTask] to run when no tasks are
+ * specified on the command line.
+ *
+ * Use this instead of [Task] when defining the default task.
  */
 class DefaultTask extends Task {
   const DefaultTask({List<String> depends: const [], String description})
