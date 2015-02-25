@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.7.0
+- TODO:
+
 ## 0.6.5 (2015/1/13)
 - added `defaultInit()` and `defaultClean()` methods, for common tasks
 - added methods for Pub.global.activate and Pub.global.run
