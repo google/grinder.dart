@@ -52,7 +52,7 @@ _default(GrinderContext context) {}
 Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task.
 
-Specifying no tasks on the command-line is equivalent to specifying the 
+Specifying no tasks on the command-line is equivalent to specifying the
 `default` task.
 
 ## Installing

@@ -58,4 +58,3 @@ String withCapitalization(String s, bool capitalized) {
      firstLetter.toLowerCase();
   return firstLetter + s.substring(1);
 }
-
