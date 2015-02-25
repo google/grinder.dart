@@ -29,7 +29,6 @@ GrinderTask getAnnotatedTask(DeclarationMirror declaration) {
       Task annotation = taskAnnotations.first.reflectee;
       TaskFunction taskFunction;
 
-
       if (declaration is VariableMirror ||
           (declaration is MethodMirror && declaration.isGetter)) {
         print('variable: $declaration');
@@ -53,5 +52,6 @@ GrinderTask getAnnotatedTask(DeclarationMirror declaration) {
           description: annotation.description);
     }
   }
+
   return null;
 }
