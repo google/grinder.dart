@@ -15,8 +15,11 @@ source.
 
 ## Getting Started
 
-Your grinder build file should reside at `tool/grind.dart`, and may look
-something like:
+Your grinder build file should reside at `tool/grind.dart`. You can use grinder
+to create a simple, starting build script. Run `pub run grinder:init`; this will
+create a starting script in `tool/grind.dart`.
+
+In general, your build script will look something like this:
 
 ```dart
 import 'package:grinder/grinder.dart';
