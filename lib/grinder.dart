@@ -20,7 +20,7 @@ import 'dart:mirrors';
 
 import 'package:args/args.dart';
 
-import 'src/get_annotated_tasks.dart';
+import 'src/discover_tasks.dart';
 import 'src/utils.dart';
 
 final Grinder _grinder = new Grinder();
@@ -42,6 +42,13 @@ List<String> grinderArgs() => _args;
  */
 void addTask(GrinderTask task) => _grinder.addTask(task);
 
+/// The default task run when no tasks are specified on the command line.
+GrinderTask get defaultTask => _grinder.defaultTask;
+
+set defaultTask(GrinderTask v) {
+  _grinder.defaultTask = v;
+}
+
 /**
  * Add a new task definition to the global [Grinder] instance. A [name] is
  * required. If specified, a [taskFunction] is invoked when the task starts.
@@ -54,17 +61,9 @@ void task(String name, [TaskFunction taskFunction, List<String> depends = const 
 }
 
 Future grind(List<String> args) => new Future(() {
-  _discoverTasks();
+  discoverTasks(_grinder, currentMirrorSystem().isolate.rootLibrary);
   return startGrinder(args);
 });
-
-/**
- * Add all [Task]-annotated tasks declared in the grinder build file.
- */
-void _discoverTasks() {
-  var lib = currentMirrorSystem().isolate.rootLibrary;
-  getAnnotatedTasks(lib).forEach(_grinder.addTask);
-}
 
 /**
  * Start the build process. This should be called at the end of the `main()`
@@ -137,8 +136,12 @@ void _printUsage(ArgParser parser, Grinder grinder) {
     print('valid targets:');
 
     List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.forEach(
-        (t) => t.description == null ? print("  ${t}") : print("  ${t} ${t.description}"));
+    tasks.forEach((t) {
+      var buffer = new StringBuffer()..write('  $t');
+      if (grinder.defaultTask == t) buffer.write(' (default)');
+      if (t.description != null) buffer.write(' ${t.description}');
+      print(buffer.toString());
+    });
   }
 }
 
@@ -261,26 +264,26 @@ class GrinderTask {
  *
  * In your grinder entry point file, place this on top-levels which are
  * either [TaskFunction] methods or properties which return [TaskFunction]s.
- *
- * Use [_discoverTasks] to add initialize annotated tasks.
  */
 class Task {
-  /**
-   * See [GrinderTask.name].
-   *
-   * By default the task name is the identifier of the annotated declaration.
-   * Use this to override the name.
-   *
-   */
-  final String name;
-
   /// See [GrinderTask.depends].
   final List<String> depends;
 
   /// See [GrinderTask.description].
   final String description;
 
-  const Task({this.name, this.depends : const [], this.description});
+  const Task({this.depends: const [], this.description});
+}
+
+/**
+ * An annotation to define the default [GrinderTask] to run when no tasks are
+ * specified on the command line.
+ *
+ * Use this instead of [Task] when defining the default task.
+ */
+class DefaultTask extends Task {
+  const DefaultTask({List<String> depends: const [], String description})
+      : super(depends: depends, description: description);
 }
 
 /**
@@ -297,6 +300,17 @@ class Grinder {
 
   /// Add a task to this Grinder instance.
   void addTask(GrinderTask task) => _tasks.add(task);
+
+  /// The default task run when no tasks are specified on the command line.
+  GrinderTask get defaultTask => _defaultTask;
+
+  set defaultTask(GrinderTask v) {
+    // TODO: Throw when overwriting an existing default task?
+    addTask(v);
+    _defaultTask = v;
+  }
+
+  GrinderTask _defaultTask;
 
   /// Get the list of all the Grinder tasks.
   List<GrinderTask> get tasks => _tasks;
@@ -341,8 +355,13 @@ class Grinder {
     DateTime startTime = new DateTime.now();
 
     if (targets.isEmpty) {
+      if (defaultTask != null) {
+        targets = [defaultTask.name];
+      } else {
+        log('no tasks specified, and no default task defined');
+      }
       log('run `grinder -h` for help and a list of valid tasks');
-      targets = ['default'];
+      if (targets.isEmpty) return new Future.value();
     }
 
     // Verify that all named tasks exist.

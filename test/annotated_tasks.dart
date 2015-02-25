@@ -14,8 +14,8 @@ final bar = (GrinderContext context) {};
 @Task()
 void camelCase(GrinderContext context) {}
 
-@Task(name: 'renamed')
-void name(GrinderContext context) {}
+@DefaultTask(depends: const ['foo'])
+void def(GrinderContext context) {}
 
 /// Test that non-[Task]-annotated things are not added.
 notATask() {}

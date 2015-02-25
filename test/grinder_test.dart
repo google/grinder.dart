@@ -36,10 +36,12 @@ main() {
 
     test('default task is run by default', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('default'));
+      grinder.addTask(new GrinderTask('foo'));
+      grinder.defaultTask = new GrinderTask('bar', depends: ['foo']);
       grinder.start([], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('default')
+        grinder.getTask('foo'),
+        grinder.getTask('bar')
       ]));
     });
 

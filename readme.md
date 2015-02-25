@@ -36,24 +36,17 @@ compile(GrinderContext context) {
   context.log("Compiling stuff...");
 }
 
-@Task(
+@DefaultTask(
     depends: const ['compile'],
     description: 'Deploy stuff.')
 deploy(GrinderContext context) {
   context.log("Deploying stuff...");
 }
-
-@Task(
-    name: 'default',
-    depends: const ['deploy'])
-_default(GrinderContext context) {}
 ```
 
 Tasks to run are specified on the command line. If a task has dependencies,
-those dependent tasks are run before the specified task.
-
-Specifying no tasks on the command-line is equivalent to specifying the
-`default` task.
+those dependent tasks are run before the specified task.  Specifying no tasks 
+on the command-line will run the default task if one is configured.
 
 ## Installing
 
