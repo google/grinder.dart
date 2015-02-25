@@ -37,3 +37,25 @@ class ResettableTimer implements Timer {
 
   bool get isActive => _timer.isActive;
 }
+
+String camelToDashes(String input) {
+  var segment = new RegExp(r'.[^A-Z]*');
+  var matches = segment.allMatches(input);
+  return matches
+      .map((Match match) =>
+          withCapitalization(
+              match.input.substring(match.start, match.end),
+              false))
+      .join('-');
+}
+
+// Upper-case or lower-case the first charater of a String.
+String withCapitalization(String s, bool capitalized) {
+  if (s.isEmpty || capitalized == null) return s;
+  var firstLetter = s[0];
+  firstLetter = capitalized ?
+     firstLetter.toUpperCase() :
+     firstLetter.toLowerCase();
+  return firstLetter + s.substring(1);
+}
+
