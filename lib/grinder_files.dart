@@ -10,7 +10,7 @@ library grinder.files;
 
 import 'dart:io';
 
-import 'package:quiver/pattern.dart';
+import 'package:glob/glob.dart';
 
 import 'grinder.dart';
 
@@ -85,7 +85,7 @@ class FileSet {
       String name = fileName(entity);
 
       if (entity is File) {
-        if (glob == null || glob.hasMatch(name)) {
+        if (glob == null || glob.matches(name)) {
           files.add(entity);
         }
       } else if (entity is Directory) {
