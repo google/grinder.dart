@@ -36,14 +36,14 @@ init(GrinderContext context) {
 }
 
 @Task(
-    depends: const ['init'],
+    depends: const [init],
     description: 'Compile stuff.')
 compile(GrinderContext context) {
   context.log("Compiling stuff...");
 }
 
 @DefaultTask(
-    depends: const ['compile'],
+    depends: const [compile],
     description: 'Deploy stuff.')
 deploy(GrinderContext context) {
   context.log("Deploying stuff...");

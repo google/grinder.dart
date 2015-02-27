@@ -267,7 +267,12 @@ class GrinderTask {
  */
 class Task {
   /// See [GrinderTask.depends].
-  final List<String> depends;
+  ///
+  /// Each listed dependency can be either a:
+  /// * link to a [TaskFunction] which is also annotated as a [Task]. Useful
+  ///   for rename refactoring, finding uses, etc.
+  /// * [String]. Useful for referring to programmatically added tasks.
+  final List depends;
 
   /// See [GrinderTask.description].
   final String description;
@@ -282,7 +287,7 @@ class Task {
  * Use this instead of [Task] when defining the default task.
  */
 class DefaultTask extends Task {
-  const DefaultTask({List<String> depends: const [], String description})
+  const DefaultTask({List depends: const [], String description})
       : super(depends: depends, description: description);
 }
 

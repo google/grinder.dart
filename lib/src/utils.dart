@@ -4,7 +4,9 @@
 library grinder.utils;
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert' show UTF8;
+import 'dart:mirrors';
 import 'dart:io';
 
 Future<String> httpGet(String url) {
@@ -57,4 +59,39 @@ String withCapitalization(String s, bool capitalized) {
      firstLetter.toUpperCase() :
      firstLetter.toLowerCase();
   return firstLetter + s.substring(1);
+}
+
+// TODO: Remove this once this `dart:mirrors` bug is fixed:
+//       http://dartbug.com/22601
+declarationsEqual(DeclarationMirror decl1, decl2) =>
+    decl2 is DeclarationMirror &&
+    decl1.owner == decl2.owner &&
+    decl1.simpleName == decl2.simpleName;
+
+// TODO: Remove if this becomes supported by `dart:mirrors`:
+//       http://dartbug.com/22591
+Map<Symbol, DeclarationMirror> resolveExportedDeclarations(LibraryMirror library) {
+  var resolved = {}..addAll(library.declarations);
+  library.libraryDependencies.forEach((dependency) {
+    if (dependency.isExport) {
+      var shown = {};
+      var hidden = [];
+      dependency.combinators.forEach((combinator) {
+        if (combinator.isShow) {
+          combinator.identifiers.forEach((id) {
+            shown[id] = dependency.targetLibrary.declarations[id];
+          });
+        }
+        if (combinator.isHide) {
+          hidden.addAll(combinator.identifiers);
+        }
+      });
+      if (shown.isEmpty) {
+        shown.addAll(dependency.targetLibrary.declarations);
+        hidden.forEach(shown.remove);
+      }
+      resolved.addAll(shown);
+    }
+  });
+  return new UnmodifiableMapView(resolved);
 }
