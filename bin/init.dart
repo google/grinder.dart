@@ -39,7 +39,7 @@ main(args) => grind(args);
 @Task()
 init(GrinderContext context) => defaultInit(context);
 
-@DefaultTask(depends: const ['init'])
+@DefaultTask(depends: const [init])
 build(GrinderContext context) {
   Pub.build(context);
 }
