@@ -43,32 +43,38 @@ class TaskDiscovery {
         discoverDeclaration(decl, cache)).where((task) => task != null);
   }
 
-  /// Extract a task from a [Task]-annotated [declaration].
+  /// Extract a task from a [Task]-annotated [decl].
   ///
-  /// Returns `null` if [declaration] is not [Task]-annotated.
+  /// Returns `null` if [decl] is not [Task]-annotated.
   AnnotatedTask discoverDeclaration(
-      DeclarationMirror declaration,
+      DeclarationMirror decl,
       Map<DeclarationMirror, AnnotatedTask> cache) {
-    if (cache.containsKey(declaration)) {
-      return cache[declaration];
+    if (cache.containsKey(decl)) {
+      return cache[decl];
     }
 
-    var owner = declaration.owner as LibraryMirror;
-    var methodName = MirrorSystem.getName(declaration.simpleName);
-    var taskAnnotations = declaration.metadata.where(
-        (annotation) => annotation.reflectee is Task);
+    var owner = decl.owner as LibraryMirror;
+    var methodName = MirrorSystem.getName(decl.simpleName);
+    Task annotation = getFirstMatchingAnnotation(decl, (a) => a is Task);
+    Depends dependsAnnotation = getFirstMatchingAnnotation(decl,
+        (a) => a is Depends);
 
-    if (taskAnnotations.isNotEmpty) {
-      Task annotation = taskAnnotations.first.reflectee;
+    if (annotation == null && dependsAnnotation != null) {
+      throw new GrinderException(
+          'Top-level `$methodName` is annotated with `Depends` but not '
+          '`Task`');
+    }
+
+    if (annotation != null) {
       TaskFunction taskFunction;
 
-      if (declaration is VariableMirror ||
-          (declaration is MethodMirror && declaration.isGetter)) {
-        taskFunction = owner.getField(declaration.simpleName).reflectee;
-      } else if (declaration is MethodMirror &&
-                 declaration.isRegularMethod) {
+      if (decl is VariableMirror ||
+          (decl is MethodMirror && decl.isGetter)) {
+        taskFunction = owner.getField(decl.simpleName).reflectee;
+      } else if (decl is MethodMirror &&
+                 decl.isRegularMethod) {
         taskFunction = (GrinderContext context) =>
-            owner.invoke(declaration.simpleName, [context]);
+            owner.invoke(decl.simpleName, [context]);
       }
 
       if (taskFunction == null) {
@@ -78,10 +84,10 @@ class TaskDiscovery {
       }
 
       var name = camelToDashes(methodName);
-      var depends = annotation.depends;
 
-      if (depends is List) {
-        depends = depends.map((dep) {
+      var depends = [];
+      if (dependsAnnotation != null) {
+        depends = dependsAnnotation.depends.map((dep) {
           if (dep is String) return dep;
           if (dep is TaskFunction) {
             var depMethod = (reflect(dep) as ClosureMirror).function;
@@ -113,7 +119,7 @@ class TaskDiscovery {
           description: annotation.description);
       var annotated = new AnnotatedTask(task, annotation is DefaultTask);
 
-      return cache[declaration] = annotated;
+      return cache[decl] = annotated;
     }
 
     return null;

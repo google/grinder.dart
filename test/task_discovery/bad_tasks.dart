@@ -18,14 +18,20 @@ get nullReturningGetter => null;
 @Task()
 class Class {}
 
-@Task(depends: const [shownMethod])
+@Task()
+@Depends(shownMethod)
 dependsNonExported(GrinderContext context) {}
 
-@Task(depends: const [shownVariable])
+@Task()
+@Depends(shownVariable)
 recursivelyDependsNonExported(GrinderContext context) {}
 
-@Task(depends: const [nonTask])
+@Task()
+@Depends(nonTask)
 dependsNonTask(GrinderContext context) {}
+
+@Depends(hidden)
+dependsWithoutTask() {}
 
 /// Test that non-[Task]-annotated things are not added.
 nonTask() {}

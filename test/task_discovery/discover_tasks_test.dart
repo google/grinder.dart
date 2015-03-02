@@ -139,6 +139,12 @@ main() {
           badLib.declarations[#dependsNonTask], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
+
+    test('should throw when annotated with Depends but not Task', () {
+      f() => discoveryBad.discoverDeclaration(
+          badLib.declarations[#dependsWithoutTask], {});
+      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+    });
   });
 
   group('discover', () {

@@ -7,22 +7,19 @@ import 'package:grinder/grinder.dart';
 
 main(args) => grind(args);
 
-@Task(
-    description: 'Initialize stuff.')
+@Task('Initialize stuff.')
 init(GrinderContext context) {
   context.log("Initializing stuff...");
 }
 
-@Task(
-    depends: const [init],
-    description: 'Compile stuff.')
+@Task('Compile stuff.')
+@Depends(init)
 compile(GrinderContext context) {
   context.log("Compiling stuff...");
 }
 
-@DefaultTask(
-    depends: const [compile],
-    description: 'Deploy stuff.')
+@DefaultTask('Deploy stuff.')
+@Depends(compile)
 deploy(GrinderContext context) {
   context.log("Deploying stuff...");
 }
