@@ -55,6 +55,7 @@ set defaultTask(GrinderTask v) {
  * Any dependencies of the task, that need to run before it, should be passed
  * in via [depends].
  */
+@deprecated
 void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
   _grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
@@ -225,10 +226,8 @@ class GrinderContext {
   String toString() => "Context for ${task}";
 }
 
-/**
- * This class represents a Grinder task. These are created automatically by
- * the [task] function.
- */
+/// Represents a Grinder task. These can be created automatically using the
+/// [Task] and [Depends] annotations.
 class GrinderTask {
   /// The name of the task.
   final String name;
