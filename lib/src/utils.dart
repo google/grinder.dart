@@ -95,3 +95,7 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(LibraryMirror library
   });
   return new UnmodifiableMapView(resolved);
 }
+
+getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
+  decl.metadata.map((mirror) => mirror.reflectee).firstWhere(test,
+      orElse: () => null);

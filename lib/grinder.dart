@@ -259,25 +259,41 @@ class GrinderTask {
   String toString() => "[${name}]";
 }
 
-/**
- * An annotation to define a [GrinderTask].
- *
- * In your grinder entry point file, place this on top-levels which are
- * either [TaskFunction] methods or properties which return [TaskFunction]s.
- */
+/// An annotation to mark a [GrinderTask] definition.
+///
+/// In your grinder entry point file, place this on top-levels which are
+/// either [TaskFunction] methods or properties which return [TaskFunction]s.
+///
+/// Task dependencies can be defined with a co-located [Depends] annotation.
 class Task {
-  /// See [GrinderTask.depends].
-  ///
-  /// Each listed dependency can be either a:
-  /// * link to a [TaskFunction] which is also annotated as a [Task]. Useful
-  ///   for rename refactoring, finding uses, etc.
-  /// * [String]. Useful for referring to programmatically added tasks.
-  final List depends;
-
   /// See [GrinderTask.description].
   final String description;
 
-  const Task({this.depends: const [], this.description});
+  const Task([this.description]);
+}
+
+/// An annotation to define a [Task]'s dependencies.
+///
+/// Each listed dependency can be either a:
+/// * link to a [TaskFunction] which is also annotated as a [Task]. Useful
+///   for rename refactoring, finding uses, etc.
+/// * [String]. Useful for referring to programmatically added tasks.
+class Depends {
+  final dep1;
+  final dep2;
+  final dep3;
+  final dep4;
+  final dep5;
+  final dep6;
+  final dep7;
+  final dep8;
+
+  const Depends(this.dep1, [this.dep2, this.dep3, this.dep4, this.dep5,
+      this.dep6, this.dep7, this.dep8]);
+
+  List get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
+      .takeWhile((dep) => dep != null)
+      .toList();
 }
 
 /**
@@ -287,8 +303,8 @@ class Task {
  * Use this instead of [Task] when defining the default task.
  */
 class DefaultTask extends Task {
-  const DefaultTask({List depends: const [], String description})
-      : super(depends: depends, description: description);
+  const DefaultTask([String description])
+      : super(description);
 }
 
 /**

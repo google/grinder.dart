@@ -8,19 +8,22 @@ import 'package:grinder/grinder.dart';
 export 'external_tasks.dart' show shownMethod, shownVariable;
 export 'external_tasks.dart' hide shownMethod, shownVariable, hidden;
 
-@Task(description: 'method description')
+@Task('method description')
 void method(GrinderContext context) {}
 
-@Task(depends: const [method])
+@Task()
+@Depends(method)
 final variable = (GrinderContext context) {};
 
-@Task(depends: const ['method'])
+@Task()
+@Depends('method')
 get getter => (GrinderContext context) {};
 
 @Task()
 void camelCase(GrinderContext context) {}
 
-@DefaultTask(depends: const [method])
+@DefaultTask()
+@Depends(method)
 void def(GrinderContext context) {}
 
 /// Test that non-[Task]-annotated things are not added.
