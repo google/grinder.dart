@@ -55,7 +55,7 @@ set defaultTask(GrinderTask v) {
  * Any dependencies of the task, that need to run before it, should be passed
  * in via [depends].
  */
-@deprecated
+@Deprecated('Use the task annotations instead.')
 void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
   _grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
