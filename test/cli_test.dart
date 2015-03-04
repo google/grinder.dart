@@ -30,7 +30,7 @@ main() {
     });
   });
 
-  group('interation', () {
+  group('integration', () {
     // TODO: add some integration tests - actually execute real tasks
 
   });

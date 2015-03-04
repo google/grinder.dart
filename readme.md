@@ -48,8 +48,8 @@ deploy(GrinderContext context) {
 ```
 
 Tasks to run are specified on the command line. If a task has dependencies,
-those dependent tasks are run before the specified task.  Specifying no tasks 
-on the command-line will run the default task if one is configured.
+those dependent tasks are run before the specified task. Specifying no tasks on
+the command-line will run the default task if one is configured.
 
 ## Installing
 
