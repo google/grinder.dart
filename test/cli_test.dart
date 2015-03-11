@@ -4,6 +4,7 @@
 library grinder.cli_test;
 
 import 'package:grinder/grinder.dart';
+import 'package:grinder/src/cli.dart';
 import 'package:unittest/unittest.dart';
 
 bool isSetup = false;
@@ -16,14 +17,14 @@ main() {
         isSetup = true;
 
         addTask(new GrinderTask('foo', taskFunction: _fooTask));
-        task('bar', _barTask, ['foo']);
+        addTask(new GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
       }
 
       _clear();
     });
 
     test('all ran', () {
-      return startGrinder(['bar']).then((_) {
+      return handleArgs(['bar']).then((_) {
         expect(ranTasks['foo'], true);
         expect(ranTasks['bar'], true);
       });
