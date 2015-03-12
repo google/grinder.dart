@@ -12,41 +12,30 @@ library grinder;
 
 export 'grinder_files.dart';
 export 'grinder_tools.dart';
+export 'src/cli.dart' show grinderArgs;
 
 import 'dart:async';
-import 'dart:convert' show JSON, UTF8;
-import 'dart:io';
 import 'dart:mirrors';
 
-import 'package:args/args.dart';
-
 import 'src/discover_tasks.dart';
-import 'src/utils.dart';
-
-final Grinder _grinder = new Grinder();
-List<String> _args;
-
-// This version must be updated in tandem with the pubspec version.
-const String _APP_VERSION = '0.6.6+3';
+import 'src/cli.dart';
+import 'src/singleton.dart';
 
 /**
  * Used to define a method body for a task.
  */
 typedef dynamic TaskFunction(GrinderContext context);
 
-List<String> grinderArgs() => _args;
-
-/**
- * Add a new task to the global [Grinder] instance. Some combination of this
- * and [task] should be called before [startGrinder] is invoked.
- */
-void addTask(GrinderTask task) => _grinder.addTask(task);
+/// Programmatically add a [task] to the global [Grinder] instance.
+///
+/// Any calls to this should occur before the call to [grind].
+void addTask(GrinderTask task) => grinder.addTask(task);
 
 /// The default task run when no tasks are specified on the command line.
-GrinderTask get defaultTask => _grinder.defaultTask;
+GrinderTask get defaultTask => grinder.defaultTask;
 
 set defaultTask(GrinderTask v) {
-  _grinder.defaultTask = v;
+  grinder.defaultTask = v;
 }
 
 /**
@@ -57,123 +46,31 @@ set defaultTask(GrinderTask v) {
  */
 @Deprecated('Use the task annotations instead.')
 void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
-  _grinder.addTask(
+  grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
 }
 
+/// Run the grinder file.
+///
+/// First, discovers the tasks declared in your grinder file.  Then, handles
+/// the command-line [args] either by running tasks or responding to
+/// recognized options such as --help.
+///
+/// If a task fails, throw a [GrinderException], runs no further tasks, and
+/// exits with a non-zero exit code.
 Future grind(List<String> args) => new Future(() {
-  discoverTasks(_grinder, currentMirrorSystem().isolate.rootLibrary);
-  return startGrinder(args);
+  discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
+  return handleArgs(args);
 });
 
 /**
  * Start the build process. This should be called at the end of the `main()`
  * method. If there is a task failure, this method will halt task execution and
  * throw a [GrinderException].
- *
- * [startGrinder] should be called once and only once.
  */
+@Deprecated('Use `grind` instead.')
 Future startGrinder(List<String> args) {
-  _args = args == null ? [] : args;
-
-  ArgParser parser = _createArgsParser();
-  ArgResults results = parser.parse(grinderArgs());
-
-  if (results['version']) {
-    const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
-
-    print('grinder version ${_APP_VERSION}');
-
-    return httpGet(pubUrl).then((String str) {
-      List versions = JSON.decode(str)['versions'];
-      if (_APP_VERSION != versions.last) {
-        print("Version ${versions.last} is available! Run `pub global activate"
-            " grinder` to get the latest version.");
-      } else {
-        print('grinder is up to date!');
-      }
-    }).catchError((e) => null);
-  } else if (results['help']) {
-    _printUsage(parser, _grinder);
-  } else if (results['deps']) {
-    _printDeps(_grinder);
-  } else {
-    Future result = _grinder.start(results.rest);
-
-    return result.catchError((e, st) {
-      if (st != null) {
-        print('\n${e}\n${st}');
-      } else {
-        print('\n${e}');
-      }
-      exit(1);
-    });
-  }
-
-  return new Future.value();
-}
-
-// args handling
-
-ArgParser _createArgsParser() {
-  ArgParser parser = new ArgParser();
-  parser.addFlag('version', negatable: false,
-      help: "print the version of grinder");
-  parser.addFlag('help', abbr: 'h', negatable: false,
-      help: "show targets but don't build");
-  parser.addFlag('deps', abbr: 'd', negatable: false,
-      help: "display the dependencies of targets");
-  return parser;
-}
-
-void _printUsage(ArgParser parser, Grinder grinder) {
-  print('usage: dart ${_currentScript()} <options> target1 target2 ...');
-  print('');
-  print('valid options:');
-  print(parser.usage.replaceAll('\n\n', '\n'));
-
-  if (!grinder.tasks.isEmpty) {
-    print('');
-    print('valid targets:');
-
-    List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.forEach((t) {
-      var buffer = new StringBuffer()..write('  $t');
-      if (grinder.defaultTask == t) buffer.write(' (default)');
-      if (t.description != null) buffer.write(' ${t.description}');
-      print(buffer.toString());
-    });
-  }
-}
-
-String _currentScript() {
-  String script = Platform.script.toString();
-  String uriBase = Uri.base.toString();
-  if (script.startsWith(uriBase)) {
-    script = script.substring(uriBase.length);
-  }
-  return script;
-}
-
-void _printDeps(Grinder grinder) {
-  // calculate the dependencies
-  grinder.start([], dontRun: true);
-
-  if (grinder.tasks.isEmpty) {
-    print("no grinder targets defined");
-  } else {
-    print('grinder targets:');
-    print('');
-
-    List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.forEach((GrinderTask t) {
-      t.description == null ? print("${t}") : print("  ${t} ${t.description}");
-
-      if (!grinder.getImmediateDependencies(t).isEmpty) {
-        print("  ${grinder.getAllDependencies(t).join(', ')}");
-      }
-    });
-  }
+  return handleArgs(args);
 }
 
 /**
