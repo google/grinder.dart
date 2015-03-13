@@ -2,37 +2,58 @@
 // governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:grinder/grinder.dart';
 
 main(args) => grind(args);
 
 @Task()
-void init(GrinderContext context) {
-  Pub.get(context);
-}
+void init(GrinderContext context) => defaultInit(context);
 
-@Task() @Depends(init)
+@Task()
+@Depends(init)
 void analyze(GrinderContext context) {
-  Analyzer.analyzePaths(context,
-      ['example/ex1.dart', 'example/ex2.dart']);
+  Analyzer.analyzePaths(context, ['example/grind.dart']);
   Analyzer.analyzePaths(context,
       ['lib/grinder.dart', 'lib/grinder_files.dart', 'lib/grinder_tools.dart']);
 }
 
-@Task() @Depends(init)
+@Task()
+@Depends(init)
 void tests(GrinderContext context) {
   Tests.runCliTests(context);
 }
 
-@Task() @Depends(init)
+@Task()
+@Depends(init)
 Future testsWeb(GrinderContext context) {
   return Tests.runWebTests(context, directory: 'web', htmlFile: 'web.html');
 }
 
-@Task() @Depends(init)
+@Task()
+@Depends(init)
 Future testsBuildWeb(GrinderContext context) {
   return Pub.buildAsync(context, directories: ['web']).then((_) {
     return Tests.runWebTests(context, directory: 'build/web', htmlFile: 'web.html');
   });
+}
+
+@Task('Analyze the generated grind script')
+@Depends(init)
+analyzeInit(GrinderContext context) {
+  final sep = Platform.pathSeparator;
+
+  Directory dir = new Directory('init_temp');
+
+  try {
+    dir.createSync();
+    File pubspec = new File('init_temp${sep}pubspec.yaml');
+    pubspec.writeAsStringSync('name: foo', flush: true);
+    runDartScript(
+        context, '..${sep}bin${sep}init.dart', workingDirectory: 'init_temp');
+    Analyzer.analyzePaths(context, ['init_temp${sep}tool${sep}grind.dart']);
+  } finally {
+    deleteEntity(dir);
+  }
 }
