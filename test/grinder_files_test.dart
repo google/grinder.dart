@@ -136,7 +136,7 @@ main() {
       source.writeAsStringSync('abcdABCD');
 
       Directory targetDir = joinDir(temp, ['targetDir']);
-      copyFile(source, targetDir);
+      copy(source, targetDir);
 
       File expectedFile = joinFile(targetDir, ['${tempFileName}']);
       expect(expectedFile.readAsStringSync(), 'abcdABCD');
@@ -151,12 +151,53 @@ main() {
       joinFile(sourceDir, ['fileC']).writeAsStringSync('1234');
 
       Directory targetDir = joinDir(temp,['target']);
-      copyDirectory(sourceDir, targetDir);
+      copy(sourceDir, targetDir);
 
       String expectedResult = joinFile(targetDir, ['fileA']).readAsStringSync() +
                               joinFile(targetDir, ['fileB']).readAsStringSync() +
                               joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
+    });
+  });
+
+  group('grinder.files Path', () {
+    Directory temp;
+    final String sep = Platform.pathSeparator;
+
+    setUp(() {
+      temp = Directory.systemTemp.createTempSync();
+    });
+
+    tearDown(() {
+      temp.deleteSync(recursive: true);
+    });
+
+    test('Path.entity', () {
+      Path p = new Path(temp);
+      expect(p.exists, true);
+      expect(p.isDirectory, true);
+
+      File tempFile = p.join('temp.txt').returnAsFile();
+      tempFile.writeAsStringSync('foo\n', flush: true);
+
+      Path p2 = new Path(tempFile);
+      expect(p2.exists, true);
+      expect(p2.isDirectory, false);
+      expect(p2.name, 'temp.txt');
+    });
+
+    test('Path.str', () {
+      Path p = new Path.str(temp.path);
+      expect(p.exists, true);
+      expect(p.isDirectory, true);
+
+      File tempFile = p.join('temp.txt').returnAsFile();
+      tempFile.writeAsStringSync('foo\n', flush: true);
+
+      Path p2 = new Path.str(tempFile.path);
+      expect(p2.exists, true);
+      expect(p2.isDirectory, false);
+      expect(p2.name, 'temp.txt');
     });
   });
 }
