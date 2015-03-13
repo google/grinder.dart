@@ -16,6 +16,9 @@ pub global run tuneup check --ignore-infos
 # Run the tests.
 dart test/all.dart
 
+# Verify that the generated grind script analyzes well.
+dart tool/grind.dart analyze-init
+
 # Gather and send coverage data.
 if [ "$REPO_TOKEN" ]; then
   pub global activate dart_coveralls
