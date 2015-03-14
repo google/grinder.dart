@@ -105,6 +105,17 @@ class FileSet {
  * joined, and their name retrieved.
  */
 class Path {
+  /**
+   * Creates a temporary directory in the system temp directory. See
+   * [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
+   * missing or null, the empty string is used for [prefix].
+   */
+  static Path createSystemTemp([String prefix]) {
+    return new Path(Directory.systemTemp.createTempSync(prefix));
+  }
+
+  static Path get cwd => new Path(Directory.current);
+
   final String _path;
 
   /**
@@ -134,8 +145,35 @@ class Path {
     }
   }
 
-  bool get exists =>
-      FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
+  bool get exists {
+    return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
+  }
+
+  /**
+   * Returns the containing [Path]. Returns a non-null value even if this is a
+   * root directory.
+   *
+   * See [FileSystemEntity.parent].
+   */
+  Path get parent {
+    int index = _path.lastIndexOf(_sep);
+
+    // Do string manipulation if there are path separators; otherwise, use the
+    // file system entity information.
+    if (index == 0 || index == -1) {
+      FileSystemEntity e = entity;
+      return e == null ? null : new Path(e.parent);
+    } else {
+      return new Path(_path.substring(0, index));
+    }
+  }
+
+//  /**
+//   * Returns the abolute version of this Path.
+//   */
+//  Path get absolute {
+//    // TODO:
+//  }
 
   bool get isDirectory => FileSystemEntity.isDirectorySync(_path);
   bool get isFile => FileSystemEntity.isFileSync(_path);
@@ -238,10 +276,22 @@ class Path {
     }
   }
 
+  bool operator ==(other) {
+    return other is Path ? path == other.path : false;
+  }
+
+  int get hashCode => path.hashCode;
+
   String toString() => path;
 
   static String _coerce(arg) {
-    if (arg is String) return arg;
+    if (arg is String) {
+      if (arg.length > 1 && arg.endsWith((_sep))) {
+        return arg.substring(0, arg.length - 1);
+      } else {
+        return arg;
+      }
+    }
     if (arg is FileSystemEntity) return arg.path;
     if (arg is Path) return arg.path;
     throw new ArgumentError('expected a FileSystemEntity or a String');
