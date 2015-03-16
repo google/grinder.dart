@@ -75,9 +75,9 @@ Future startGrinder(List<String> args) {
 
 /**
  * A [GrinderContext] is used to given the currently running Grinder task the
- * ability to introspect the running state. It can get the get the current
- * [Grinder] instance and get a reference to the current [GrinderTask] instance
- * as well as the previous and next tasks, if any.
+ * ability to introspect the running state. It can get the current [Grinder]
+ * instance and get a reference to the current [GrinderTask] instance as well as
+ * the previous and next tasks, if any.
  *
  * A [GrinderContext] also allows you to log messages and errors.
  */
