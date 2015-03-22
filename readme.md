@@ -2,11 +2,10 @@
 
 A task based, dependency aware build system.
 
-**Plaform** | **Status**
-------------|------------
+**Platform** | **Status**
+-------------|------------
 Linux | [![Build Status](https://travis-ci.org/google/grinder.dart.svg?branch=master)](https://travis-ci.org/google/grinder.dart)
-OS X | -/-
-Windows | -/-
+Windows | [![Build status](https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true)](https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master)
 
 [![Coverage Status](https://img.shields.io/coveralls/google/grinder.dart.svg)](https://coveralls.io/r/google/grinder.dart)
 
