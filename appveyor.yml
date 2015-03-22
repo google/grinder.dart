@@ -3,7 +3,8 @@
 # license that can be found in the LICENSE file.
 
 install:
-  - ps: .\tool\appveyor.ps1 install
+  - cinst dart-sdk
+  - pub get
 
 build: off
 
