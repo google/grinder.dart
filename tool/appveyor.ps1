@@ -13,21 +13,30 @@ function install {
     start-filedownload https://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-windows-x64-release.zip
     7z.exe x dartsdk-windows-x64-release.zip -oc:\ | select-string "^Extracting" -notmatch
     throw_if_process_failed "could not extract sdk"
+
+    # This works correctly, but prints to the appveyor in red; too distracting.
+    #c:\dart-sdk\bin\dart --version
 }
 
 function test {
-    $env:PATH = "c:\dart-sdk\bin;$env:PATH"
+    # Set up the path.
+    $env:PATH = "c:\dart-sdk\bin;$env:PATH;C:\Users\appveyor\AppData\Roaming\Pub\Cache\bin"
 
-    # Install global tools.
-    pub global activate tuneup
+    # Run pub get.
+    pub get
+
     # Verify that the libraries are error free.
+    pub global activate tuneup
     pub global run tuneup check --ignore-infos
     throw_if_process_failed "libraries have errors"
 
     # Run the tests.
-    dart test/all.dart 
+    dart test\all.dart
+    throw_if_process_failed "tests failed"
+
     # Verify that the generated grind script analyzes well.
-    dart tool/grind.dart analyze-init
+    dart tool\grind.dart analyze-init
+    throw_if_process_failed "error analyzing generated script"
 }
 
 switch ($action) {
