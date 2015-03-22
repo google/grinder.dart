@@ -17,8 +17,13 @@ function install {
 }
 
 function test {
+    cd
+
     # Set up the path.
     $env:PATH = "c:\dart-sdk\bin;$env:PATH;C:\Users\appveyor\AppData\Roaming\Pub\Cache\bin"
+
+    # Run pub get.
+    pub get
 
     # Check for errors or warnings.
     dartanalyzer --fatal-warnings lib\grinder.dart
