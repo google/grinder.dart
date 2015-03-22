@@ -13,9 +13,10 @@ function install {
     start-filedownload https://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-windows-x64-release.zip
     7z.exe x dartsdk-windows-x64-release.zip -oc:\ | select-string "^Extracting" -notmatch
     throw_if_process_failed "could not extract sdk"
+    write-output ""
 
-    # This works correctly, but prints to the appveyor in red; too distracting.
-    #c:\dart-sdk\bin\dart --version
+    # Redirect an coerce into string so that Appveyor doesn't print this in red.
+    "$(c:\dart-sdk\bin\dart --version 2>&1)"
 }
 
 function test {
