@@ -4,8 +4,6 @@
 
 install:
   - cinst dart-sdk
-  - $env:PATH = "c:\tools\dart-sdk\bin;$env:PATH;$env:USERPROFILE\AppData\Roaming\Pub\Cache\bin"
-  - pub get
 
 build: off
 
