@@ -114,15 +114,15 @@ class Path {
     return new Path(Directory.systemTemp.createTempSync(prefix));
   }
 
-  static Path get cwd => new Path(Directory.current);
+  static Path get current => new Path(Directory.current);
 
   final String _path;
 
   /**
-   * Create a new [Path]. The [entity_or_path] parameter can be a
+   * Create a new [Path]. The [entityOrPath] parameter can be a
    * [FileSystemEntity] or a [String].
    */
-  Path(entity_or_path) : _path = _coerce(entity_or_path);
+  Path(entityOrPath) : _path = _coerce(entityOrPath);
 
   String get name {
     int index = _path.lastIndexOf(_sep);
