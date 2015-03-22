@@ -4,9 +4,9 @@
 
 install:
   - cinst dart-sdk
-  - pub get
 
 build: off
 
 test_script:
+  - pub get
   - ps: .\tool\appveyor.ps1 test
