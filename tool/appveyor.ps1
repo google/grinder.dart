@@ -10,12 +10,6 @@ function throw_if_process_failed {
 }
 
 function test {
-    # Set up the path.
-    $env:PATH = "c:\tools\dart-sdk\bin;$env:PATH;C:\Users\appveyor\AppData\Roaming\Pub\Cache\bin"
-
-    # Run pub get.
-    pub get
-
     # Verify that the libraries are error free.
     pub global activate tuneup
     pub global run tuneup check --ignore-infos
