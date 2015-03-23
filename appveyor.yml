@@ -3,9 +3,15 @@
 # license that can be found in the LICENSE file.
 
 install:
-  - ps: .\tool\appveyor.ps1 install
+  - cinst -y dart-sdk
+  - ps: $env:PATH = "$env:PATH;c:\tools\dart-sdk\bin"
+  - ps: $env:PATH = "$env:PATH;c:\Users\appveyor\AppData\Roaming\Pub\Cache\bin"
+  - pub get
 
 build: off
 
 test_script:
-  - ps: .\tool\appveyor.ps1 test
+  - pub global activate tuneup
+  - pub global run tuneup check --ignore-infos
+  - dart test\all.dart
+  - dart tool\grind.dart analyze-init

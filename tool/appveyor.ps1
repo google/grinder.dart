@@ -9,22 +9,7 @@ function throw_if_process_failed {
     if ($LASTEXITCODE -ne 0) { throw $message }
 }
 
-function install {
-    start-filedownload https://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-windows-x64-release.zip
-    7z.exe x dartsdk-windows-x64-release.zip -oc:\ | select-string "^Extracting" -notmatch
-    throw_if_process_failed "could not extract sdk"
-
-    # This works correctly, but prints to the appveyor in red; too distracting.
-    #c:\dart-sdk\bin\dart --version
-}
-
 function test {
-    # Set up the path.
-    $env:PATH = "c:\dart-sdk\bin;$env:PATH;C:\Users\appveyor\AppData\Roaming\Pub\Cache\bin"
-
-    # Run pub get.
-    pub get
-
     # Verify that the libraries are error free.
     pub global activate tuneup
     pub global run tuneup check --ignore-infos
@@ -40,6 +25,5 @@ function test {
 }
 
 switch ($action) {
-    "install" { install }
     "test" { test }
 }
