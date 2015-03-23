@@ -1,7 +1,10 @@
 # grinder.dart changes
 
 ## 0.7.0
-- TODO:
+- Big changes! Task definititions are now primarily annotation based; see the
+  [readme](https://github.com/google/grinder.dart) for more information and an example
+- copyFile and copyDirectory and deprecated in favor of a new `copy` method
+- deleteEntity is deprecated in favor of a new `delete` method
 
 ## 0.6.5 (2015/1/13)
 - added `defaultInit()` and `defaultClean()` methods, for common tasks
