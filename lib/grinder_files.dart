@@ -145,6 +145,8 @@ class Path {
     }
   }
 
+  /// Return whether an entity actually exists for this path. The entity could
+  /// be a [File], [Directory], or [Link].
   bool get exists {
     return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
   }
@@ -179,25 +181,19 @@ class Path {
   bool get isFile => FileSystemEntity.isFileSync(_path);
   bool get isLink => FileSystemEntity.isLinkSync(_path);
 
-  /**
-   * Assume the current file system entity is a [File] and return it as such.
-   * You would call this instead of [entity] when the file system entity does
-   * not yet exist.
-   */
+  /// Assume the current file system entity is a [File] and return it as such.
+  /// You would call this instead of [entity] when the file system entity does
+  /// not yet exist.
   File get asFile => new File(path);
 
-  /**
-   * Assume the current file system entity is a [Directory] and return it as such.
-   * You would call this instead of [entity] when the file system entity does
-   * not yet exist.
-   */
+  /// Assume the current file system entity is a [Directory] and return it as
+  /// such. You would call this instead of [entity] when the file system entity
+  /// does not yet exist.
   Directory get asDirectory => new Directory(path);
 
-  /**
-   * Assume the current file system entity is a [Link] and return it as such.
-   * You would call this instead of [entity] when the file system entity does
-   * not yet exist.
-   */
+  /// Assume the current file system entity is a [Link] and return it as such.
+  /// You would call this instead of [entity] when the file system entity does
+  /// not yet exist.
   Link get asLink => new Link(path);
 
   /**
@@ -214,71 +210,67 @@ class Path {
    */
   void delete() => _deleteImpl(entity);
 
-  /**
-   * Synchronously create the file. See also [File.create].
-   *
-   * If [recursive] is false, the default, the file is created
-   * only if all directories in the path exist. If [recursive] is true, all
-   * non-existing path components are created.
-   */
-  void createFile({bool recursive: false}) {
-    asFile.createSync(recursive: recursive);
+  /// Synchronously create the file. See also [File.createSync].
+  ///
+  /// If [recursive] is false, the default, the file is created only if all
+  /// directories in the path exist. If [recursive] is true, all non-existing
+  /// path components are created.
+  File createFile({bool recursive: false}) {
+    var file = asFile;
+    file.createSync(recursive: recursive);
+    return file;
   }
 
-  /**
-   * Synchronously create the directory. See also [Directory.create].
-   *
-   * If [recursive] is false, the default, the file is created
-   * only if all directories in the path exist. If [recursive] is true, all
-   * non-existing path components are created.
-   */
-  void createDirectory({bool recursive: false}) {
-    asDirectory.createSync(recursive: recursive);
+  /// Synchronously create the directory. See also [Directory.createSync].
+  ///
+  /// If [recursive] is false, the default, the file is created only if all
+  /// directories in the path exist. If [recursive] is true, all non-existing
+  /// path components are created.
+  Directory createDirectory({bool recursive: false}) {
+    var directory = asDirectory;
+    directory.createSync(recursive: recursive);
+    return directory;
   }
 
-  /**
-   * Synchronously create the link. See also [Link.create].
-   *
-   * If [recursive] is false, the default, the file is created
-   * only if all directories in the path exist. If [recursive] is true, all
-   * non-existing path components are created.
-   */
-  void createLink(String target, {bool recursive: false}) {
-    asLink.createSync(target, recursive: recursive);
+  /// Synchronously create the link. See also [Link.createSync].
+  ///
+  /// If [recursive] is false, the default, the file is created only if all
+  /// directories in the path exist. If [recursive] is true, all non-existing
+  /// path components are created.
+  Link createLink(Path target, {bool recursive: false}) {
+    var link = asLink;
+    link.createSync(target.path, recursive: recursive);
+    return link;
   }
 
-  /**
-   * Join the given path elements to this path, and return a new [Path] object.
-   */
+  /// Join the given path elements to this path, and return a new [Path] object.
   Path join([arg0, String arg1, String arg2, String arg3, String arg4,
     String arg5, String arg6, String arg7, String arg8, String arg9]) {
-    List args = [];
+    List paths = [path];
 
     if (arg0 is List) {
-      args = arg0;
+      paths.addAll(arg0);
     } else if (arg0 is String) {
-      _addNonNull(args, arg0);
-      _addNonNull(args, arg1);
-      _addNonNull(args, arg2);
-      _addNonNull(args, arg3);
-      _addNonNull(args, arg4);
-      _addNonNull(args, arg5);
-      _addNonNull(args, arg6);
-      _addNonNull(args, arg7);
-      _addNonNull(args, arg8);
-      _addNonNull(args, arg9);
+      _addNonNull(paths, arg0);
+      _addNonNull(paths, arg1);
+      _addNonNull(paths, arg2);
+      _addNonNull(paths, arg3);
+      _addNonNull(paths, arg4);
+      _addNonNull(paths, arg5);
+      _addNonNull(paths, arg6);
+      _addNonNull(paths, arg7);
+      _addNonNull(paths, arg8);
+      _addNonNull(paths, arg9);
     }
 
-    if (args.isEmpty) {
+    if (paths.length == 1) {
       return this;
     } else {
-      return new Path('${path}${_sep}${args.join(_sep)}');
+      return new Path(paths.join(_sep));
     }
   }
 
-  bool operator ==(other) {
-    return other is Path ? path == other.path : false;
-  }
+  bool operator ==(other) => other is Path && path == other.path;
 
   int get hashCode => path.hashCode;
 
@@ -361,22 +353,21 @@ Directory getDir(String path) {
 }
 
 void copy(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
+  if (context != null) {
+    context.log('copying ${entity.path} to ${destDir.path}');
+  }
   return _copyImpl(entity, destDir, context);
 }
 
 void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
   if (entity is Directory) {
-    if (context != null) {
-      context.log('copying ${entity.path} to ${destDir.path}');
-    }
-
     for (FileSystemEntity entity in entity.listSync()) {
       String name = fileName(entity);
 
       if (entity is File) {
-        copy(entity, destDir);
+        _copyImpl(entity, destDir);
       } else {
-        copy(entity, joinDir(destDir, [name]));
+        _copyImpl(entity, joinDir(destDir, [name]));
       }
     }
   } else if (entity is File) {
@@ -384,9 +375,6 @@ void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext conte
 
     if (!destFile.existsSync() ||
         entity.lastModifiedSync() != destFile.lastModifiedSync()) {
-      if (context != null) {
-        context.log('copying ${entity.path} to ${destDir.path}');
-      }
       destDir.createSync(recursive: true);
       entity.copySync(destFile.path);
     }

@@ -42,18 +42,16 @@ Future testsBuildWeb(GrinderContext context) {
 @Task('Analyze the generated grind script')
 @Depends(init)
 analyzeInit(GrinderContext context) {
-  final sep = Platform.pathSeparator;
-
-  Directory dir = new Directory('init_temp');
+  Path tempProject = Path.createSystemTemp();
 
   try {
-    dir.createSync();
-    File pubspec = new File('init_temp${sep}pubspec.yaml');
+    File pubspec = tempProject.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
-    runDartScript(
-        context, '..${sep}bin${sep}init.dart', workingDirectory: 'init_temp');
-    Analyzer.analyzePaths(context, ['init_temp${sep}tool${sep}grind.dart']);
+    runDartScript(context,
+        Path.current.join('bin', 'init.dart').path,
+        workingDirectory: tempProject.path);
+    Analyzer.analyzePaths(context, [tempProject.join('tool', 'grind.dart').path]);
   } finally {
-    deleteEntity(dir);
+    tempProject.delete();
   }
 }
