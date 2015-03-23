@@ -15,3 +15,8 @@ test_script:
   - pub global run tuneup check --ignore-infos
   - dart test\all.dart
   - dart tool\grind.dart analyze-init
+
+cache:
+  - %APPDATA%\Pub\Cache
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
