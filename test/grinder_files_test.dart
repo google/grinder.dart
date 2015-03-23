@@ -169,7 +169,7 @@ main() {
 
     tearDown(() => temp.delete());
 
-    test('Path.entity', () {
+    test('Path(entity)', () {
       Path dir = new Path(temp.entity);
       expect(dir.exists, true);
       expect(dir.isDirectory, true);
@@ -181,7 +181,7 @@ main() {
       expect(file.name, 'temp.txt');
     });
 
-    test('Path.str', () {
+    test('Path(str)', () {
       Path dir = new Path(temp.path);
       expect(dir.exists, true);
       expect(dir.isDirectory, true);
@@ -195,18 +195,18 @@ main() {
       expect(new Path(dir.path + Platform.pathSeparator).path, dir.path);
     });
 
-    test('cwd', () {
-      expect(Path.cwd, isNotNull);
-      expect(Path.cwd.isDirectory, true);
+    test('current', () {
+      expect(Path.current, isNotNull);
+      expect(Path.current.isDirectory, true);
     });
 
     test('parent', () {
       expect(temp.parent, isNotNull);
       expect(temp.parent.isDirectory, true);
 
-      expect(Path.cwd.parent, isNotNull);
-      expect(Path.cwd.parent.path, isNotEmpty);
-      expect(Path.cwd.parent.parent, isNotNull);
+      expect(Path.current.parent, isNotNull);
+      expect(Path.current.parent.path, isNotEmpty);
+      expect(Path.current.parent.parent, isNotNull);
 
       Path root = new Path('/');
       expect(root.exists, true);
@@ -215,8 +215,8 @@ main() {
     });
 
 //    test('absolute', () {
-//      expect(Path.cwd, notEquals(Path.cwd.absolute));
-//      expect(Path.cwd.absolute.absolute, Path.cwd.absolute);
+//      expect(Path.current, notEquals(Path.current.absolute));
+//      expect(Path.current.absolute.absolute, Path.current.absolute);
 //    });
 
     test('copy', () {
