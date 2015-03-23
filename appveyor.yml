@@ -17,6 +17,6 @@ test_script:
   - dart tool\grind.dart analyze-init
 
 cache:
-  - %APPDATA%\Pub\Cache
+  - C:\Users\appveyor\AppData\Pub\Cache
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
