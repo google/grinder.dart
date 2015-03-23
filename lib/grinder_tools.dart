@@ -152,7 +152,7 @@ void defaultInit(GrinderContext context) {
  */
 void defaultClean(GrinderContext context) {
   // Delete the `build/` dir.
-  deleteEntity(BUILD_DIR, context);
+  delete(BUILD_DIR, context);
 }
 
 /**

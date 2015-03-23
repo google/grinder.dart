@@ -136,7 +136,7 @@ main() {
       source.writeAsStringSync('abcdABCD');
 
       Directory targetDir = joinDir(temp, ['targetDir']);
-      copyFile(source, targetDir);
+      copy(source, targetDir);
 
       File expectedFile = joinFile(targetDir, ['${tempFileName}']);
       expect(expectedFile.readAsStringSync(), 'abcdABCD');
@@ -151,12 +151,89 @@ main() {
       joinFile(sourceDir, ['fileC']).writeAsStringSync('1234');
 
       Directory targetDir = joinDir(temp,['target']);
-      copyDirectory(sourceDir, targetDir);
+      copy(sourceDir, targetDir);
 
       String expectedResult = joinFile(targetDir, ['fileA']).readAsStringSync() +
                               joinFile(targetDir, ['fileB']).readAsStringSync() +
                               joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
+    });
+  });
+
+  group('grinder.files Path', () {
+    Path temp;
+
+    setUp(() {
+      temp = Path.createSystemTemp();
+    });
+
+    tearDown(() => temp.delete());
+
+    test('Path.entity', () {
+      Path dir = new Path(temp.entity);
+      expect(dir.exists, true);
+      expect(dir.isDirectory, true);
+
+      Path file = dir.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      expect(file.exists, true);
+      expect(file.isDirectory, false);
+      expect(file.name, 'temp.txt');
+    });
+
+    test('Path.str', () {
+      Path dir = new Path(temp.path);
+      expect(dir.exists, true);
+      expect(dir.isDirectory, true);
+
+      Path file = dir.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      expect(file.exists, true);
+      expect(file.isDirectory, false);
+      expect(file.name, 'temp.txt');
+
+      expect(new Path(dir.path + Platform.pathSeparator).path, dir.path);
+    });
+
+    test('cwd', () {
+      expect(Path.cwd, isNotNull);
+      expect(Path.cwd.isDirectory, true);
+    });
+
+    test('parent', () {
+      expect(temp.parent, isNotNull);
+      expect(temp.parent.isDirectory, true);
+
+      expect(Path.cwd.parent, isNotNull);
+      expect(Path.cwd.parent.path, isNotEmpty);
+      expect(Path.cwd.parent.parent, isNotNull);
+
+      Path root = new Path('/');
+      expect(root.exists, true);
+      expect(root.parent, isNotNull);
+      expect(root.parent.parent, isNotNull);
+    });
+
+//    test('absolute', () {
+//      expect(Path.cwd, notEquals(Path.cwd.absolute));
+//      expect(Path.cwd.absolute.absolute, Path.cwd.absolute);
+//    });
+
+    test('copy', () {
+      Path file = temp.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      Path childDir = temp.join('child_dir')..createDirectory();
+      Path copied = file.copy(childDir);
+      expect(copied.exists, true);
+      expect(copied.path, endsWith('temp.txt'));
+    });
+
+    test('delete', () {
+      Path file = temp.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      expect(file.exists, true);
+      file.delete();
+      expect(file.exists, false);
     });
   });
 }

@@ -14,6 +14,8 @@ import 'package:glob/glob.dart';
 
 import 'grinder.dart';
 
+final String _sep = Platform.pathSeparator;
+
 // TODO: add files to a set
 
 // TODO: union sets?
@@ -98,12 +100,210 @@ class FileSet {
 }
 
 /**
+ * A class to make it easier to manipulate file system entites. Once paths or
+ * entites are converted into `Path`s, they can be easily copied, deleted,
+ * joined, and their name retrieved.
+ */
+class Path {
+  /**
+   * Creates a temporary directory in the system temp directory. See
+   * [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
+   * missing or null, the empty string is used for [prefix].
+   */
+  static Path createSystemTemp([String prefix]) {
+    return new Path(Directory.systemTemp.createTempSync(prefix));
+  }
+
+  static Path get cwd => new Path(Directory.current);
+
+  final String _path;
+
+  /**
+   * Create a new [Path]. The [entity_or_path] parameter can be a
+   * [FileSystemEntity] or a [String].
+   */
+  Path(entity_or_path) : _path = _coerce(entity_or_path);
+
+  String get name {
+    int index = _path.lastIndexOf(_sep);
+    return index != -1 ? _path.substring(index + 1) : null;
+  }
+
+  String get path => _path;
+
+  FileSystemEntity get entity {
+    final FileSystemEntityType type = FileSystemEntity.typeSync(_path);
+
+    if (type == FileSystemEntityType.FILE) {
+      return new File(_path);
+    } else if (type == FileSystemEntityType.DIRECTORY) {
+      return new Directory(_path);
+    } else if (type == FileSystemEntityType.LINK) {
+      return new Link(_path);
+    } else {
+      return null;
+    }
+  }
+
+  bool get exists {
+    return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
+  }
+
+  /**
+   * Returns the containing [Path]. Returns a non-null value even if this is a
+   * root directory.
+   *
+   * See [FileSystemEntity.parent].
+   */
+  Path get parent {
+    int index = _path.lastIndexOf(_sep);
+
+    // Do string manipulation if there are path separators; otherwise, use the
+    // file system entity information.
+    if (index == 0 || index == -1) {
+      FileSystemEntity e = entity;
+      return e == null ? null : new Path(e.parent);
+    } else {
+      return new Path(_path.substring(0, index));
+    }
+  }
+
+//  /**
+//   * Returns the abolute version of this Path.
+//   */
+//  Path get absolute {
+//    // TODO:
+//  }
+
+  bool get isDirectory => FileSystemEntity.isDirectorySync(_path);
+  bool get isFile => FileSystemEntity.isFileSync(_path);
+  bool get isLink => FileSystemEntity.isLinkSync(_path);
+
+  /**
+   * Assume the current file system entity is a [File] and return it as such.
+   * You would call this instead of [entity] when the file system entity does
+   * not yet exist.
+   */
+  File get asFile => new File(path);
+
+  /**
+   * Assume the current file system entity is a [Directory] and return it as such.
+   * You would call this instead of [entity] when the file system entity does
+   * not yet exist.
+   */
+  Directory get asDirectory => new Directory(path);
+
+  /**
+   * Assume the current file system entity is a [Link] and return it as such.
+   * You would call this instead of [entity] when the file system entity does
+   * not yet exist.
+   */
+  Link get asLink => new Link(path);
+
+  /**
+   * Copy the the entity to the given destination. Return the newly created
+   * [Path].
+   */
+  Path copy(Path destDir) {
+    _copyImpl(entity, destDir.asDirectory);
+    return new Path(destDir).join(name);
+  }
+
+  /**
+   * Delete the entity at the path.
+   */
+  void delete() => _deleteImpl(entity);
+
+  /**
+   * Synchronously create the file. See also [File.create].
+   *
+   * If [recursive] is false, the default, the file is created
+   * only if all directories in the path exist. If [recursive] is true, all
+   * non-existing path components are created.
+   */
+  void createFile({bool recursive: false}) {
+    asFile.createSync(recursive: recursive);
+  }
+
+  /**
+   * Synchronously create the directory. See also [Directory.create].
+   *
+   * If [recursive] is false, the default, the file is created
+   * only if all directories in the path exist. If [recursive] is true, all
+   * non-existing path components are created.
+   */
+  void createDirectory({bool recursive: false}) {
+    asDirectory.createSync(recursive: recursive);
+  }
+
+  /**
+   * Synchronously create the link. See also [Link.create].
+   *
+   * If [recursive] is false, the default, the file is created
+   * only if all directories in the path exist. If [recursive] is true, all
+   * non-existing path components are created.
+   */
+  void createLink(String target, {bool recursive: false}) {
+    asLink.createSync(target, recursive: recursive);
+  }
+
+  /**
+   * Join the given path elements to this path, and return a new [Path] object.
+   */
+  Path join([arg0, String arg1, String arg2, String arg3, String arg4,
+    String arg5, String arg6, String arg7, String arg8, String arg9]) {
+    List args = [];
+
+    if (arg0 is List) {
+      args = arg0;
+    } else if (arg0 is String) {
+      _addNonNull(args, arg0);
+      _addNonNull(args, arg1);
+      _addNonNull(args, arg2);
+      _addNonNull(args, arg3);
+      _addNonNull(args, arg4);
+      _addNonNull(args, arg5);
+      _addNonNull(args, arg6);
+      _addNonNull(args, arg7);
+      _addNonNull(args, arg8);
+      _addNonNull(args, arg9);
+    }
+
+    if (args.isEmpty) {
+      return this;
+    } else {
+      return new Path('${path}${_sep}${args.join(_sep)}');
+    }
+  }
+
+  bool operator ==(other) {
+    return other is Path ? path == other.path : false;
+  }
+
+  int get hashCode => path.hashCode;
+
+  String toString() => path;
+
+  static String _coerce(arg) {
+    if (arg is String) {
+      if (arg.length > 1 && arg.endsWith((_sep))) {
+        return arg.substring(0, arg.length - 1);
+      } else {
+        return arg;
+      }
+    }
+    if (arg is FileSystemEntity) return arg.path;
+    if (arg is Path) return arg.path;
+    throw new ArgumentError('expected a FileSystemEntity or a String');
+  }
+}
+
+/**
  * Return the last segment of the file path.
  */
 String fileName(FileSystemEntity entity) {
   String name = entity.path;
-  int index = name.lastIndexOf(Platform.pathSeparator);
-
+  int index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(index + 1) : name);
 }
 
@@ -122,19 +322,18 @@ String fileExt(FileSystemEntity entity) {
  */
 String baseName(FileSystemEntity entity) {
   String name = entity.path;
-  int index = name.lastIndexOf(Platform.pathSeparator);
-
+  int index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(0, index) : null);
 }
 
 File joinFile(Directory dir, List<String> files) {
-  String pathFragment = files.join(Platform.pathSeparator);
-  return new File("${dir.path}${Platform.pathSeparator}${pathFragment}");
+  String pathFragment = files.join(_sep);
+  return new File("${dir.path}${_sep}${pathFragment}");
 }
 
 Directory joinDir(Directory dir, List<String> files) {
-  String pathFragment = files.join(Platform.pathSeparator);
-  return new Directory("${dir.path}${Platform.pathSeparator}${pathFragment}");
+  String pathFragment = files.join(_sep);
+  return new Directory("${dir.path}${_sep}${pathFragment}");
 }
 
 /**
@@ -142,10 +341,10 @@ Directory joinDir(Directory dir, List<String> files) {
  * given path to a platform dependent path.
  */
 File getFile(String path) {
-  if (Platform.pathSeparator == '/') {
+  if (_sep == '/') {
     return new File(path);
   } else {
-    return new File(path.replaceAll('/', Platform.pathSeparator));
+    return new File(path.replaceAll('/', _sep));
   }
 }
 
@@ -154,43 +353,56 @@ File getFile(String path) {
  * given path to a platform dependent path.
  */
 Directory getDir(String path) {
-  if (Platform.pathSeparator == '/') {
+  if (_sep == '/') {
     return new Directory(path);
   } else {
-    return new Directory(path.replaceAll('/', Platform.pathSeparator));
+    return new Directory(path.replaceAll('/', _sep));
   }
 }
 
-void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
-  File destFile = joinFile(destDir, [fileName(srcFile)]);
+void copy(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
+  return _copyImpl(entity, destDir, context);
+}
 
-  if (!destFile.existsSync() ||
-      srcFile.lastModifiedSync() != destFile.lastModifiedSync()) {
+void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
+  if (entity is Directory) {
     if (context != null) {
-      context.log('copying ${srcFile.path} to ${destDir.path}');
+      context.log('copying ${entity.path} to ${destDir.path}');
     }
-    destDir.createSync(recursive: true);
-    srcFile.copySync(destFile.path);
+
+    for (FileSystemEntity entity in entity.listSync()) {
+      String name = fileName(entity);
+
+      if (entity is File) {
+        copy(entity, destDir);
+      } else {
+        copy(entity, joinDir(destDir, [name]));
+      }
+    }
+  } else if (entity is File) {
+    File destFile = joinFile(destDir, [fileName(entity)]);
+
+    if (!destFile.existsSync() ||
+        entity.lastModifiedSync() != destFile.lastModifiedSync()) {
+      if (context != null) {
+        context.log('copying ${entity.path} to ${destDir.path}');
+      }
+      destDir.createSync(recursive: true);
+      entity.copySync(destFile.path);
+    }
+  } else {
+    throw new StateError('unexpected type: ${entity.runtimeType}');
   }
 }
 
-void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]) {
-  if (context != null) {
-    context.log('copying ${srcDir.path} to ${destDir.path}');
-  }
-
-  for (FileSystemEntity entity in srcDir.listSync()) {
-    String name = fileName(entity);
-
-    if (entity is File) {
-      copyFile(entity, destDir);
-    } else {
-      copyDirectory(entity, joinDir(destDir, [name]));
-    }
-  }
+/**
+ * Delete the given file entity reference.
+ */
+void delete(FileSystemEntity entity, [GrinderContext context]) {
+  _deleteImpl(entity, context);
 }
 
-void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
+void _deleteImpl(FileSystemEntity entity, [GrinderContext context]) {
   if (entity.existsSync()) {
     if (context != null) {
       context.log('deleting ${entity.path}');
@@ -198,4 +410,23 @@ void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
 
     entity.deleteSync(recursive: true);
   }
+}
+
+@Deprecated('deprecated in favor of copy()')
+void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
+  copy(srcFile, destDir, context);
+}
+
+@Deprecated('deprecated in favor of copy()')
+void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]) {
+  copy(srcDir, destDir, context);
+}
+
+@Deprecated('deprecated in favor of delete()')
+void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
+  delete(entity, context);
+}
+
+_addNonNull(List args, String arg) {
+  if (arg != null) args.add(arg);
 }
