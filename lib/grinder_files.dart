@@ -386,16 +386,13 @@ void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext conte
 /**
  * Delete the given file entity reference.
  */
-void delete(FileSystemEntity entity, [GrinderContext context]) {
-  _deleteImpl(entity, context);
+void delete(FileSystemEntity entity, [GrinderContext _context]) {
+  _deleteImpl(entity);
 }
 
-void _deleteImpl(FileSystemEntity entity, [GrinderContext context]) {
+void _deleteImpl(FileSystemEntity entity) {
   if (entity.existsSync()) {
-    if (context != null) {
-      context.log('deleting ${entity.path}');
-    }
-
+    log('deleting ${entity.path}');
     entity.deleteSync(recursive: true);
   }
 }

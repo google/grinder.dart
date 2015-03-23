@@ -139,10 +139,10 @@ Future runProcessAsync(GrinderContext context, String executable,
  * A default implementation of an `init` task. This task verifies that the grind
  * script is executed from the project root.
  */
-void defaultInit(GrinderContext context) {
+void defaultInit([GrinderContext context]) {
   // Verify that we're running in the project root.
   if (!getFile('pubspec.yaml').existsSync()) {
-    context.fail('This script must be run from the project root.');
+    fail('This script must be run from the project root.');
   }
 }
 
@@ -150,9 +150,9 @@ void defaultInit(GrinderContext context) {
  * A default implementation of a `clean` task. This task deletes all generated
  * artifacts in the `build/`.
  */
-void defaultClean(GrinderContext context) {
+void defaultClean([GrinderContext context]) {
   // Delete the `build/` dir.
-  delete(BUILD_DIR, context);
+  delete(BUILD_DIR);
 }
 
 /**

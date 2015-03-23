@@ -160,7 +160,8 @@ main() {
         'def',
         'shown-method',
         'shown-variable',
-        'non-hidden'
+        'non-hidden',
+        'no-context'
       ]));
     });
   });

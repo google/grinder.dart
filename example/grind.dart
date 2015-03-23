@@ -6,18 +6,18 @@ import 'package:grinder/grinder.dart';
 main(args) => grind(args);
 
 @Task('Initialize stuff.')
-init(GrinderContext context) {
-  context.log("Initializing stuff...");
+init() {
+  log("Initializing stuff...");
 }
 
 @Task('Compile stuff.')
 @Depends(init)
-compile(GrinderContext context) {
-  context.log("Compiling stuff...");
+compile() {
+  log("Compiling stuff...");
 }
 
 @DefaultTask('Deploy stuff.')
 @Depends(compile)
-deploy(GrinderContext context) {
-  context.log("Deploying stuff...");
+deploy() {
+  log("Deploying stuff...");
 }

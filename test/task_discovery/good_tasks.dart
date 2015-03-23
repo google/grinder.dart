@@ -22,6 +22,9 @@ get getter => (GrinderContext context) {};
 @Task()
 void camelCase(GrinderContext context) {}
 
+@Task()
+void noContext() {}
+
 @DefaultTask()
 @Depends(method)
 void def(GrinderContext context) {}

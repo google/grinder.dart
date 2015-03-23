@@ -21,9 +21,8 @@ import 'src/discover_tasks.dart';
 import 'src/cli.dart';
 import 'src/singleton.dart';
 
-/**
- * Used to define a method body for a task.
- */
+/// Used to define a method body for a task.
+@Deprecated("task contexts can be read out of the global 'context' variable")
 typedef dynamic TaskFunction(GrinderContext context);
 
 /// Programmatically add a [task] to the global [Grinder] instance.
@@ -45,7 +44,7 @@ set defaultTask(GrinderTask v) {
  * in via [depends].
  */
 @Deprecated('Use the task annotations instead.')
-void task(String name, [TaskFunction taskFunction, List<String> depends = const []]) {
+void task(String name, [Function taskFunction, List<String> depends = const []]) {
   grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
 }
@@ -72,6 +71,17 @@ Future grind(List<String> args) => new Future(() {
 Future startGrinder(List<String> args) {
   return handleArgs(args);
 }
+
+// Zone variables.
+
+/// Get the [GrinderContext] for the currently executing task.
+GrinderContext get context => zonedContext.value;
+
+/// Log an informational message to Grinder's output.
+void log(String message) => context.log(message);
+
+/// Halt task execution; throws an exception with the given error message.
+void fail(String message) => context.fail(message);
 
 /**
  * A [GrinderContext] is used to give the currently running Grinder task the
@@ -129,7 +139,7 @@ class GrinderTask {
   /// The name of the task.
   final String name;
   /// The function to execute when starting this task.
-  final TaskFunction taskFunction;
+  final Function taskFunction;
   /// The list of task dependencies; tasks that must run before this task should
   /// execute.
   final List<String> depends;
@@ -137,19 +147,26 @@ class GrinderTask {
   final String description;
 
   /**
-   * Create a new [GrinderTask]. A name is required; a [description],
-   * [run] to execute when this task is started, and a [depends] list
-   * are optional.
+   * Create a new [GrinderTask]. A name is required; a [description], [run] to
+   * execute when this task is started, and a [depends] list are optional.
    */
   GrinderTask(this.name,
       {this.taskFunction, this.depends : const [], this.description});
 
   /**
    * This method is invoked when the task is started. If a task was created with
-   * a [TaskFunction], that function will be invoked by this method.
+   * a [Function], that function will be invoked by this method.
    */
-  dynamic execute(GrinderContext context) {
-    return (taskFunction != null) ? taskFunction(context) : null;
+  dynamic execute(GrinderContext _context) {
+    if (taskFunction == null) return null;
+
+    if (taskFunction is TaskFunction) {
+      return zonedContext.withValue(_context, () {
+        return taskFunction(context);
+      });
+    } else {
+      return zonedContext.withValue(_context, taskFunction);
+    }
   }
 
   String toString() => "[${name}]";
@@ -157,8 +174,8 @@ class GrinderTask {
 
 /// An annotation to mark a [GrinderTask] definition.
 ///
-/// In your grinder entry point file, place this on top-levels which are
-/// either [TaskFunction] methods or properties which return [TaskFunction]s.
+/// In your grinder entry point file, place this on top-levels which are either
+/// [Function] methods or properties which return [Function]s.
 ///
 /// Task dependencies can be defined with a co-located [Depends] annotation.
 class Task {
@@ -171,8 +188,8 @@ class Task {
 /// An annotation to define a [Task]'s dependencies.
 ///
 /// Each listed dependency can be either a:
-/// * link to a [TaskFunction] which is also annotated as a [Task]. Useful
-///   for rename refactoring, finding uses, etc.
+/// * link to a [Function] which is also annotated as a [Task]. Useful for
+///   rename refactoring, finding uses, etc.
 /// * [String]. Useful for referring to programmatically added tasks.
 class Depends {
   final dep1;
