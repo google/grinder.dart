@@ -383,12 +383,8 @@ void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext conte
   }
 }
 
-/**
- * Delete the given file entity reference.
- */
-void delete(FileSystemEntity entity, [GrinderContext _context]) {
-  _deleteImpl(entity);
-}
+/// Delete the given file entity reference.
+void delete(FileSystemEntity entity) =>_deleteImpl(entity);
 
 void _deleteImpl(FileSystemEntity entity) {
   if (entity.existsSync()) {
@@ -409,7 +405,7 @@ void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]
 
 @Deprecated('deprecated in favor of delete()')
 void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
-  delete(entity, context);
+  delete(entity);
 }
 
 _addNonNull(List args, String arg) {

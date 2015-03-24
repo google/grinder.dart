@@ -21,8 +21,9 @@ import 'src/discover_tasks.dart';
 import 'src/cli.dart';
 import 'src/singleton.dart';
 
-/// Used to define a method body for a task.
-@Deprecated("task contexts can be read out of the global 'context' variable")
+/// Used to define a method body for a task. Note: a task's context is now
+/// available as a global variable ('context'). Your task functions should no
+/// longer be definied with a single `GrinderContext` parameter.
 typedef dynamic TaskFunction(GrinderContext context);
 
 /// Programmatically add a [task] to the global [Grinder] instance.
