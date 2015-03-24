@@ -28,12 +28,6 @@ main() {
       expect(dartVM, isNotNull);
     });
 
-    test('pub version', () {
-      MockGrinderContext context = new MockGrinderContext();
-      Pub.version(context);
-      expect(context.isFailed, false);
-    });
-
     test('dart2js version', () {
       MockGrinderContext context = new MockGrinderContext();
       Dart2js.version(context);
@@ -43,6 +37,26 @@ main() {
     test('analyzer version', () {
       MockGrinderContext context = new MockGrinderContext();
       Analyzer.version(context);
+      expect(context.isFailed, false);
+    });
+  });
+
+  group('grinder.tools.pub', () {
+    test('version', () {
+      MockGrinderContext context = new MockGrinderContext();
+      Pub.version(context);
+      expect(context.isFailed, false);
+    });
+
+    test('global list', () {
+      MockGrinderContext context = new MockGrinderContext();
+      expect(Pub.global.list(), isNotNull);
+      expect(context.isFailed, false);
+    });
+
+    test('isInstalled', () {
+      MockGrinderContext context = new MockGrinderContext();
+      Pub.global.isInstalled('foo');
       expect(context.isFailed, false);
     });
   });
