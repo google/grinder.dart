@@ -66,15 +66,19 @@ class TaskDiscovery {
     }
 
     if (annotation != null) {
-      TaskFunction taskFunction;
+      Function taskFunction;
 
       if (decl is VariableMirror ||
           (decl is MethodMirror && decl.isGetter)) {
         taskFunction = owner.getField(decl.simpleName).reflectee;
       } else if (decl is MethodMirror &&
                  decl.isRegularMethod) {
-        taskFunction = (GrinderContext context) =>
-            owner.invoke(decl.simpleName, [context]);
+        if (decl.parameters.isNotEmpty && !decl.parameters.first.isOptional
+            && !decl.parameters.first.isNamed) {
+          taskFunction = () => owner.invoke(decl.simpleName, [context]);
+        } else {
+          taskFunction = () => owner.invoke(decl.simpleName, []);
+        }
       }
 
       if (taskFunction == null) {
@@ -89,7 +93,7 @@ class TaskDiscovery {
       if (dependsAnnotation != null) {
         depends = dependsAnnotation.depends.map((dep) {
           if (dep is String) return dep;
-          if (dep is TaskFunction) {
+          if (dep is Function) {
             var depMethod = (reflect(dep) as ClosureMirror).function;
             var annotatedMethodTask = discoverDeclaration(depMethod, cache);
             if (annotatedMethodTask == null) {

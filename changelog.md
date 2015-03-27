@@ -3,6 +3,9 @@
 ## 0.7.0
 - Big changes! Task definititions are now primarily annotation based; see the
   [readme](https://github.com/google/grinder.dart) for more information and an example
+- The `GrinderContext` arg is no longer expected in task functions. Instead, the
+  `context` variable (and the `log` and `fail` functions) are available as global
+  variables. They're injected into the zone running the current task.
 - copyFile and copyDirectory and deprecated in favor of a new `copy` method
 - deleteEntity is deprecated in favor of a new `delete` method
 

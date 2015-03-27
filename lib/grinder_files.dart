@@ -99,6 +99,8 @@ class FileSet {
   }
 }
 
+// TODO: refactor to FilePath? The name path is overloaded...
+
 /**
  * A class to make it easier to manipulate file system entites. Once paths or
  * entites are converted into `Path`s, they can be easily copied, deleted,
@@ -383,19 +385,12 @@ void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext conte
   }
 }
 
-/**
- * Delete the given file entity reference.
- */
-void delete(FileSystemEntity entity, [GrinderContext context]) {
-  _deleteImpl(entity, context);
-}
+/// Delete the given file entity reference.
+void delete(FileSystemEntity entity) =>_deleteImpl(entity);
 
-void _deleteImpl(FileSystemEntity entity, [GrinderContext context]) {
+void _deleteImpl(FileSystemEntity entity) {
   if (entity.existsSync()) {
-    if (context != null) {
-      context.log('deleting ${entity.path}');
-    }
-
+    log('deleting ${entity.path}');
     entity.deleteSync(recursive: true);
   }
 }
@@ -412,7 +407,7 @@ void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]
 
 @Deprecated('deprecated in favor of delete()')
 void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
-  delete(entity, context);
+  delete(entity);
 }
 
 _addNonNull(List args, String arg) {

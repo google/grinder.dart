@@ -23,15 +23,13 @@ void main(List<String> args) {
 
   String path = args.first;
 
-  _GrinderContext context = new _GrinderContext();
-
   if (path.endsWith('.dart')) {
     if (path.contains(Platform.pathSeparator)) {
       String directory = path.substring(0, path.indexOf(Platform.pathSeparator));
       path = path.substring(path.indexOf(Platform.pathSeparator) + 1);
-      Tests.runCliTests(context, directory: directory, testFile: path);
+      Tests.runCliTests(directory: directory, testFile: path);
     } else {
-      Tests.runCliTests(context, testFile: path);
+      Tests.runCliTests(testFile: path);
     }
   } else if (path.endsWith('.html')) {
     if (path.contains(Platform.pathSeparator)) {
@@ -42,28 +40,16 @@ void main(List<String> args) {
       }
       String directory = path.substring(0, index);
       path = path.substring(index + 1);
-      Tests.runWebTests(context,directory: directory, htmlFile: path)
+      Tests.runWebTests(directory: directory, htmlFile: path)
           .then((_) => exit(0))
           .catchError((e) => exit(1));
     } else {
-      Tests.runWebTests(context, htmlFile: path)
+      Tests.runWebTests(htmlFile: path)
           .then((_) => exit(0))
           .catchError((e) => exit(1));
     }
   } else {
     print('unhandled file type: ${path}');
-    exit(1);
-  }
-}
-
-class _GrinderContext implements GrinderContext {
-  Grinder get grinder => null;
-  GrinderTask get task => null;
-
-  void log(String message) => print(message);
-
-  void fail(String message) {
-    print(message);
     exit(1);
   }
 }

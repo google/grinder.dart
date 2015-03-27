@@ -45,7 +45,7 @@ File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
 /**
  * Run the given Dart script in a new process.
  */
-void runDartScript(GrinderContext context, String script,
+void runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
     String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
   List<String> args = [];
@@ -65,14 +65,14 @@ void runDartScript(GrinderContext context, String script,
   args.add(script);
   args.addAll(arguments);
 
-  runProcess(context, 'dart', arguments: args, quiet: quiet,
+  runProcess('dart', arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
 }
 
 /**
  * Run the given executable, with optional arguments and working directory.
  */
-void runProcess(GrinderContext context, String executable,
+void runProcess(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory,
@@ -102,7 +102,7 @@ void runProcess(GrinderContext context, String executable,
 /**
  * Run the given executable, with optional arguments and working directory.
  */
-Future runProcessAsync(GrinderContext context, String executable,
+Future runProcessAsync(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory}) {
@@ -139,10 +139,10 @@ Future runProcessAsync(GrinderContext context, String executable,
  * A default implementation of an `init` task. This task verifies that the grind
  * script is executed from the project root.
  */
-void defaultInit(GrinderContext context) {
+void defaultInit([GrinderContext context]) {
   // Verify that we're running in the project root.
   if (!getFile('pubspec.yaml').existsSync()) {
-    context.fail('This script must be run from the project root.');
+    fail('This script must be run from the project root.');
   }
 }
 
@@ -150,9 +150,9 @@ void defaultInit(GrinderContext context) {
  * A default implementation of a `clean` task. This task deletes all generated
  * artifacts in the `build/`.
  */
-void defaultClean(GrinderContext context) {
+void defaultClean([GrinderContext context]) {
   // Delete the `build/` dir.
-  delete(BUILD_DIR, context);
+  delete(BUILD_DIR);
 }
 
 /**
@@ -166,13 +166,12 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static void get(GrinderContext context,
-      {bool force: false, String workingDirectory}) {
+  static void get({bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      _run(context, _execName('get'), workingDirectory: workingDirectory);
+      _run(_execName('get'), workingDirectory: workingDirectory);
     }
   }
 
@@ -181,13 +180,12 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static Future getAsync(GrinderContext context,
-      {bool force: false, String workingDirectory}) {
+  static Future getAsync({bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runProcessAsync(context, _execName('pub'), arguments: ['get'],
+      return runProcessAsync(_execName('pub'), arguments: ['get'],
           workingDirectory: workingDirectory);
     } else {
       return new Future.value();
@@ -197,15 +195,15 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static void upgrade(GrinderContext context, {String workingDirectory}) {
-    _run(context, 'upgrade', workingDirectory: workingDirectory);
+  static void upgrade({String workingDirectory}) {
+    _run('upgrade', workingDirectory: workingDirectory);
   }
 
   /**
    * Run `pub upgrade` on the current project.
    */
-  static Future upgradeAsync(GrinderContext context, {String workingDirectory}) {
-    return runProcessAsync(context, _execName('pub'), arguments: ['upgrade'],
+  static Future upgradeAsync({String workingDirectory}) {
+    return runProcessAsync(_execName('pub'), arguments: ['upgrade'],
         workingDirectory: workingDirectory);
   }
 
@@ -214,15 +212,17 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static void build(GrinderContext context,
-      {String mode, List<String> directories, String workingDirectory,
-       String outputDirectory}) {
+  static void build({
+      String mode,
+      List<String> directories,
+      String workingDirectory,
+      String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runProcess(context, _execName('pub'), arguments: args,
+    runProcess(_execName('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -231,25 +231,26 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static Future buildAsync(GrinderContext context,
-      {String mode, List<String> directories, String workingDirectory,
-       String outputDirectory}) {
+  static Future buildAsync({
+      String mode,
+      List<String> directories,
+      String workingDirectory,
+      String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runProcessAsync(context, _execName('pub'), arguments: args,
+    return runProcessAsync(_execName('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
-  static void version(GrinderContext context) => _run(context, '--version');
+  static void version() => _run('--version');
 
   static PubGlobal get global => _global;
 
-  static void _run(GrinderContext context, String command,
-      {String workingDirectory}) {
-    runProcess(context, _execName('pub'), arguments: [command],
+  static void _run(String command, {String workingDirectory}) {
+    runProcess(_execName('pub'), arguments: [command],
         workingDirectory: workingDirectory);
   }
 }
@@ -259,17 +260,15 @@ class PubGlobal {
   PubGlobal._();
 
   /// Install a new Dart application.
-  void activate(GrinderContext context, String package) {
-    runProcess(context, _execName('pub'),
-        arguments: ['global', 'activate', package]);
+  void activate(String package) {
+    runProcess(_execName('pub'), arguments: ['global', 'activate', package]);
   }
 
   /// Run the given installed Dart application.
-  void run(GrinderContext context, String package,
-      {List<String> arguments, String workingDirectory}) {
+  void run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
-    runProcess(context, _execName('pub'), arguments: args,
+    runProcess(_execName('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -320,7 +319,7 @@ class Dart2js {
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static void compile(GrinderContext context, File sourceFile,
+  static void compile(File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -333,13 +332,13 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    runProcess(context, _execName('dart2js'), arguments: args);
+    runProcess(_execName('dart2js'), arguments: args);
   }
 
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static Future compileAsync(GrinderContext context, File sourceFile,
+  static Future compileAsync(File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -352,13 +351,13 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(context, _execName('dart2js'), arguments: args);
+    return runProcessAsync(_execName('dart2js'), arguments: args);
   }
 
-  static void version(GrinderContext context) => _run(context, '--version');
+  static void version() => _run('--version');
 
-  static void _run(GrinderContext context, String command) {
-    runProcess(context, _execName('dart2js'), arguments: [command]);
+  static void _run(String command) {
+    runProcess(_execName('dart2js'), arguments: [command]);
   }
 }
 
@@ -366,36 +365,36 @@ class Dart2js {
  * Utility tasks for invoking the analyzer.
  */
 class Analyzer {
-  static void analyze(GrinderContext context, File file,
+  static void analyze(File file,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths(context, [file.path], packageRoot: packageRoot,
+    analyzePaths([file.path], packageRoot: packageRoot,
         fatalWarnings: fatalWarnings);
   }
 
-  static void analyzeFiles(GrinderContext context, List<File> files,
+  static void analyzeFiles(List<File> files,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths(context, files.map((f) => f.path).toList(),
+    analyzePaths(files.map((f) => f.path).toList(),
         packageRoot: packageRoot, fatalWarnings: fatalWarnings);
   }
 
-  static void analyzePath(GrinderContext context, String path,
+  static void analyzePath(String path,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths(context, [path], packageRoot: packageRoot,
+    analyzePaths([path], packageRoot: packageRoot,
         fatalWarnings: fatalWarnings);
   }
 
-  static void analyzePaths(GrinderContext context, List<String> paths,
+  static void analyzePaths(List<String> paths,
       {Directory packageRoot, bool fatalWarnings: false}) {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(paths);
 
-    runProcess(context, _execName('dartanalyzer'), arguments: args);
+    runProcess(_execName('dartanalyzer'), arguments: args);
   }
 
-  static void version(GrinderContext context) =>
-      runProcess(context, _execName('dartanalyzer'), arguments: ['--version']);
+  static void version() =>
+      runProcess(_execName('dartanalyzer'), arguments: ['--version']);
 }
 
 /**
@@ -406,19 +405,17 @@ class Tests {
    * Run command-line tests. You can specify the base directory (`test`), and
    * the file to run (`all.dart`).
    */
-  static void runCliTests(GrinderContext context,
-      {String directory: 'test', String testFile: 'all.dart'}) {
+  static void runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
     context.log('running tests: ${file}...');
-    runDartScript(context, file);
+    runDartScript(file);
   }
 
   /**
    * Run web tests in a browser instance. You can specify the base directory
    * (`test`), and the html file to run (`index.html`).
    */
-  static Future runWebTests(GrinderContext context,
-      {String directory: 'test',
+  static Future runWebTests({String directory: 'test',
        String htmlFile: 'index.html',
        Chrome browser}) {
     // Choose a random port to tell the browser to serve debug info to. If we
@@ -458,7 +455,7 @@ class Tests {
        args.addAll(Platform.environment['CHROME_ARGS'].split(' '));
       }
       url = 'http://${server.host}:${server.port}/${htmlFile}';
-      return browser.launchUrl(context, url, args: args);
+      return browser.launchUrl(url, args: args);
     }).then((bi) {
       browserInstance = bi;
 
@@ -557,8 +554,7 @@ class Chrome {
 
   bool get exists => new File(browserPath).existsSync();
 
-  void launchFile(GrinderContext context, String filePath,
-      {bool verbose: false, Map envVars}) {
+  void launchFile(String filePath, {bool verbose: false, Map envVars}) {
     String url;
 
     if (new File(filePath).existsSync()) {
@@ -581,10 +577,10 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     context.log("starting chrome...");
-    runProcess(context, browserPath, arguments: args, environment: envVars);
+    runProcess(browserPath, arguments: args, environment: envVars);
   }
 
-  Future<BrowserInstance> launchUrl(GrinderContext context, String url,
+  Future<BrowserInstance> launchUrl(String url,
       {List<String> args, bool verbose: false, Map envVars}) {
     List<String> _args = [
         '--no-default-browser-check',
