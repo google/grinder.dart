@@ -11,10 +11,10 @@ set -e
 pub global activate tuneup
 
 # Verify that the libraries are error free.
-pub global run tuneup check --ignore-infos
+pub global run tuneup check
 
 # Run the tests.
-dart test/all.dart
+dart -c test/all.dart
 
 # Verify that the generated grind script analyzes well.
 dart tool/grind.dart analyze-init

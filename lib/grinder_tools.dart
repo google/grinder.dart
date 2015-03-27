@@ -255,21 +255,61 @@ class Pub {
   }
 }
 
+/// Access the `pub global` commands.
 class PubGlobal {
   PubGlobal._();
 
+  /// Install a new Dart application.
   void activate(String package) {
-    runProcess(_execName('pub'),
-        arguments: ['global', 'activate', package]);
+    runProcess(_execName('pub'), arguments: ['global', 'activate', package]);
   }
 
-  void run(String package,
-      {List<String> arguments, String workingDirectory}) {
+  /// Run the given installed Dart application.
+  void run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
     runProcess(_execName('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
+
+  /// Return the list of installed applications.
+  List<PubApp> list() {
+    //dart_coveralls 0.1.8
+    //den 0.1.3
+    //discoveryapis_generator 0.6.1
+    //...
+
+    ProcessResult result = Process.runSync(_execName('pub'), ['global', 'list']);
+    if (result.exitCode != 0) {
+      throw new GrinderException(
+          "pub global list failed with a return code of ${result.exitCode}");
+    }
+
+    List<String> lines = result.stdout.trim().split('\n');
+    return lines.map((line) {
+      line = line.trim();
+      if (line.indexOf(' ') != -1) {
+        List l = line.split(' ');
+        return new PubApp(l[0], l[1]);
+      } else {
+        return new PubApp(line);
+      }
+    }).toList();
+  }
+
+  /// Returns whether the given Dart application is installed.
+  bool isInstalled(String packageName) {
+    return list().any((PubApp app) => app.name == packageName);
+  }
+}
+
+class PubApp {
+  final String name;
+  final String version;
+
+  PubApp(this.name, [this.version]);
+
+  String toString() => '${name} ${version}';
 }
 
 /**

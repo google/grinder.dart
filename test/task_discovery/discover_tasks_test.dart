@@ -14,7 +14,6 @@ import 'bad_tasks.dart' as bad;
 import 'external_tasks.dart' as external;
 
 main() {
-
   // Libs which contains annotated tasks (imported above).
   LibraryMirror goodLib;
   LibraryMirror badLib;
@@ -27,6 +26,7 @@ main() {
   good.variable;
   bad.dependsNonExported;
   external.shownVariable;
+  externalLib;
 
   TaskDiscovery discoveryGood;
   TaskDiscovery discoveryBad;
