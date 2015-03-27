@@ -73,7 +73,8 @@ class TaskDiscovery {
         taskFunction = owner.getField(decl.simpleName).reflectee;
       } else if (decl is MethodMirror &&
                  decl.isRegularMethod) {
-        if (decl.parameters.isNotEmpty) {
+        if (decl.parameters.isNotEmpty && !decl.parameters.first.isOptional
+            && !decl.parameters.first.isNamed) {
           taskFunction = () => owner.invoke(decl.simpleName, [context]);
         } else {
           taskFunction = () => owner.invoke(decl.simpleName, []);

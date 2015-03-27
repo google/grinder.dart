@@ -10,14 +10,16 @@ final Grinder grinder = new Grinder();
 
 final ZonedValue zonedContext = new ZonedValue(new _NoopContext());
 
+// TODO: Move to having the default context fast-fail.
+
 class _NoopContext implements GrinderContext {
   Grinder get grinder => null;
 
   GrinderTask get task => null;
 
-  // TODO: implement fail
-  void fail(String message) { }
+  void fail(String message) {
+    throw new GrinderException(message);
+  }
 
-  // TODO: implement log
-  void log(String message) { }
+  void log(String message) => print(message);
 }

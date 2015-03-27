@@ -380,6 +380,7 @@ class Grinder {
       result = new Future.value(result);
     }
 
+    // TODO: whenComplete(), dispose of the context?
     return (result as Future).then((_) {
       log('');
     });

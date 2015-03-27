@@ -30,19 +30,19 @@ main() {
 
     test('pub version', () {
       MockGrinderContext context = new MockGrinderContext();
-      Pub.version(context);
+      Pub.version();
       expect(context.isFailed, false);
     });
 
     test('dart2js version', () {
       MockGrinderContext context = new MockGrinderContext();
-      Dart2js.version(context);
+      Dart2js.version();
       expect(context.isFailed, false);
     });
 
     test('analyzer version', () {
       MockGrinderContext context = new MockGrinderContext();
-      Analyzer.version(context);
+      Analyzer.version();
       expect(context.isFailed, false);
     });
   });

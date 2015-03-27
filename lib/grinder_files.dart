@@ -99,6 +99,8 @@ class FileSet {
   }
 }
 
+// TODO: refactor to FilePath? The name path is overloaded...
+
 /**
  * A class to make it easier to manipulate file system entites. Once paths or
  * entites are converted into `Path`s, they can be easily copied, deleted,

@@ -19,6 +19,7 @@ main() {
   LibraryMirror goodLib;
   LibraryMirror badLib;
   LibraryMirror externalLib;
+  externalLib;
 
   // Dummy calls to avoid "unused import" warnings.
   // TODO: Remove if it becomes unnecessary:
