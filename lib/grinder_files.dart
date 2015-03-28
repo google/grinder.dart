@@ -99,32 +99,24 @@ class FileSet {
   }
 }
 
-// TODO: refactor to FilePath? The name path is overloaded...
-
-/**
- * A class to make it easier to manipulate file system entites. Once paths or
- * entites are converted into `Path`s, they can be easily copied, deleted,
- * joined, and their name retrieved.
- */
-class Path {
-  /**
-   * Creates a temporary directory in the system temp directory. See
-   * [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
-   * missing or null, the empty string is used for [prefix].
-   */
-  static Path createSystemTemp([String prefix]) {
-    return new Path(Directory.systemTemp.createTempSync(prefix));
+/// A class to make it easier to manipulate file system entites. Once paths or
+/// entites are converted into `Path`s, they can be easily copied, deleted,
+/// joined, and their name retrieved.
+class FilePath {
+  /// Creates a temporary directory in the system temp directory. See
+  /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
+   /// missing or null, the empty string is used for [prefix].
+  static FilePath createSystemTemp([String prefix]) {
+    return new FilePath(Directory.systemTemp.createTempSync(prefix));
   }
 
-  static Path get current => new Path(Directory.current);
+  static FilePath get current => new FilePath(Directory.current);
 
   final String _path;
 
-  /**
-   * Create a new [Path]. The [entityOrPath] parameter can be a
-   * [FileSystemEntity] or a [String].
-   */
-  Path(entityOrPath) : _path = _coerce(entityOrPath);
+  /// Create a new [FilePath]. The [entityOrString] parameter can be a
+  /// [FileSystemEntity] or a [String].
+  FilePath(entityOrString) : _path = _coerce(entityOrString);
 
   String get name {
     int index = _path.lastIndexOf(_sep);
@@ -153,29 +145,25 @@ class Path {
     return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
   }
 
-  /**
-   * Returns the containing [Path]. Returns a non-null value even if this is a
-   * root directory.
-   *
-   * See [FileSystemEntity.parent].
-   */
-  Path get parent {
+  /// Returns the containing [Path]. Returns a non-null value even if this is a
+  /// root directory.
+  ///
+  /// See [FileSystemEntity.parent].
+  FilePath get parent {
     int index = _path.lastIndexOf(_sep);
 
     // Do string manipulation if there are path separators; otherwise, use the
     // file system entity information.
     if (index == 0 || index == -1) {
       FileSystemEntity e = entity;
-      return e == null ? null : new Path(e.parent);
+      return e == null ? null : new FilePath(e.parent);
     } else {
-      return new Path(_path.substring(0, index));
+      return new FilePath(_path.substring(0, index));
     }
   }
 
-//  /**
-//   * Returns the abolute version of this Path.
-//   */
-//  Path get absolute {
+//  /// Returns the abolute version of this Path.
+//  FilePath get absolute {
 //    // TODO:
 //  }
 
@@ -198,18 +186,14 @@ class Path {
   /// not yet exist.
   Link get asLink => new Link(path);
 
-  /**
-   * Copy the the entity to the given destination. Return the newly created
-   * [Path].
-   */
-  Path copy(Path destDir) {
+  /// Copy the the entity to the given destination. Return the newly created
+  /// [FilePath].
+  FilePath copy(FilePath destDir) {
     _copyImpl(entity, destDir.asDirectory);
-    return new Path(destDir).join(name);
+    return new FilePath(destDir).join(name);
   }
 
-  /**
-   * Delete the entity at the path.
-   */
+  /// Delete the entity at the path.
   void delete() => _deleteImpl(entity);
 
   /// Synchronously create the file. See also [File.createSync].
@@ -239,14 +223,14 @@ class Path {
   /// If [recursive] is false, the default, the file is created only if all
   /// directories in the path exist. If [recursive] is true, all non-existing
   /// path components are created.
-  Link createLink(Path target, {bool recursive: false}) {
+  Link createLink(FilePath target, {bool recursive: false}) {
     var link = asLink;
     link.createSync(target.path, recursive: recursive);
     return link;
   }
 
-  /// Join the given path elements to this path, and return a new [Path] object.
-  Path join([arg0, String arg1, String arg2, String arg3, String arg4,
+  /// Join the given path elements to this path, and return a new [FilePath] object.
+  FilePath join([arg0, String arg1, String arg2, String arg3, String arg4,
     String arg5, String arg6, String arg7, String arg8, String arg9]) {
     List paths = [path];
 
@@ -268,11 +252,11 @@ class Path {
     if (paths.length == 1) {
       return this;
     } else {
-      return new Path(paths.join(_sep));
+      return new FilePath(paths.join(_sep));
     }
   }
 
-  bool operator ==(other) => other is Path && path == other.path;
+  bool operator ==(other) => other is FilePath && path == other.path;
 
   int get hashCode => path.hashCode;
 
@@ -287,7 +271,7 @@ class Path {
       }
     }
     if (arg is FileSystemEntity) return arg.path;
-    if (arg is Path) return arg.path;
+    if (arg is FilePath) return arg.path;
     throw new ArgumentError('expected a FileSystemEntity or a String');
   }
 }

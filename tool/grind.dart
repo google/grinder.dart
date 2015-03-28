@@ -27,13 +27,13 @@ void test() {
 @Task('Check that the generated init grind script analyzes well')
 @Depends(init)
 checkInit() {
-  Path tempProject = Path.createSystemTemp();
+  FilePath tempProject = FilePath.createSystemTemp();
 
   try {
     File pubspec = tempProject.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
     runDartScript(
-        Path.current.join('bin', 'init.dart').path,
+        FilePath.current.join('bin', 'init.dart').path,
         workingDirectory: tempProject.path);
     Analyzer.analyzePath(tempProject.join('tool', 'grind.dart').path,
         fatalWarnings: true);
