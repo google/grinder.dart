@@ -65,7 +65,7 @@ void runDartScript(String script,
   args.add(script);
   args.addAll(arguments);
 
-  runProcess('dart', arguments: args, quiet: quiet,
+  runProcess(_sdkBin('dart'), arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
 }
 
@@ -345,6 +345,12 @@ class PubApplication {
         workingDirectory: workingDirectory);
   }
 
+  /// Install the application or update it to the lastest version.
+  void update() {
+    Pub.global.activate(appName);
+    _installed = true;
+  }
+
   String toString() => appName;
 }
 
@@ -401,31 +407,20 @@ class Dart2js {
  * Utility tasks for invoking the analyzer.
  */
 class Analyzer {
-  // TODO: Simplify these calls to just one `analyze` method.
-  static void analyze(File file,
+  /// Analyze a single [File] or path ([String]).
+  static void analyze(fileOrPath,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths([file.path], packageRoot: packageRoot,
+    analyzeFiles([fileOrPath], packageRoot: packageRoot,
         fatalWarnings: fatalWarnings);
   }
 
-  static void analyzeFiles(List<File> files,
-      {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths(files.map((f) => f.path).toList(),
-        packageRoot: packageRoot, fatalWarnings: fatalWarnings);
-  }
-
-  static void analyzePath(String path,
-      {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzePaths([path], packageRoot: packageRoot,
-        fatalWarnings: fatalWarnings);
-  }
-
-  static void analyzePaths(List<String> paths,
+  /// Analyze one or more [File]s or paths ([String]).
+  static void analyzeFiles(List files,
       {Directory packageRoot, bool fatalWarnings: false}) {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(paths);
+    args.addAll(files.map((f) => f is File ? f.path : f));
 
     runProcess(_sdkBin('dartanalyzer'), arguments: args);
   }
@@ -706,16 +701,23 @@ class ContentShell extends Chrome {
   ContentShell() : super(_contentShellPath());
 }
 
-String _sdkBin(String name) {
-  // TODO: If `dart` is not visible, we should join the sdk path and `bin/$name`.
-  // This is only necessary in unusual circumstances, like when the script is
-  // run from the Editor on macos.
+bool _sdkOnPath;
 
+String _sdkBin(String name) {
   if (Platform.isWindows) {
     return name == 'dart' ? 'dart.exe' : '${name}.bat';
-  }
+  } else if (Platform.isMacOS) {
+    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
+    // This is only necessary in unusual circumstances, like when the script is
+    // run from the Editor on macos.
+    if (_sdkOnPath == null) {
+      _sdkOnPath = whichSync('dart', orElse: () => null) != null;
+    }
 
-  return name;
+    return _sdkOnPath ? name : '${sdkDir.path}/bin/${name}';
+  } else {
+    return name;
+  }
 }
 
 String _dartiumPath() {

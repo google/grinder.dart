@@ -14,31 +14,25 @@ void init() => defaultInit();
 @Task()
 @Depends(init)
 void analyze() {
-  PubApplication tuneupApp = new PubApplication('tuneup');
-  tuneupApp.run(['check']);
+  new PubApplication('tuneup')..run(['check']);
 }
 
 @Task()
 @Depends(init)
-void test() {
-  Tests.runCliTests();
-}
+void test() => Tests.runCliTests();
 
 @Task('Check that the generated init grind script analyzes well')
 @Depends(init)
 checkInit() {
-  Path tempProject = Path.createSystemTemp();
+  Path temp = Path.createSystemTemp();
 
   try {
-    File pubspec = tempProject.join('pubspec.yaml').createFile();
+    File pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
-    runDartScript(
-        Path.current.join('bin', 'init.dart').path,
-        workingDirectory: tempProject.path);
-    Analyzer.analyzePath(tempProject.join('tool', 'grind.dart').path,
-        fatalWarnings: true);
+    runDartScript(Path.current.join('bin', 'init.dart').path, workingDirectory: temp.path);
+    Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
-    tempProject.delete();
+    temp.delete();
   }
 }
 
@@ -68,9 +62,7 @@ void buildbot() => null;
 
 @Task()
 @Depends(init)
-Future testsWeb() {
-  return Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
-}
+Future testsWeb() =>  Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
 
 @Task()
 @Depends(init)
