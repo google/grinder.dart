@@ -56,7 +56,7 @@ void coverage() {
       'test/all.dart'
     ]);
   } else {
-    log('Skipping coverage task; no environment variable `REPO_TOKEN` found.');
+    log('Skipping coverage task: no environment variable `REPO_TOKEN` found.');
   }
 }
 

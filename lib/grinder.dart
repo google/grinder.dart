@@ -56,8 +56,7 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 /// the command-line [args] either by running tasks or responding to
 /// recognized options such as --help.
 ///
-/// If a task fails, throw a [GrinderException], runs no further tasks, and
-/// exits with a non-zero exit code.
+/// If a task fails, throw a [GrinderException] and runs no further tasks.
 Future grind(List<String> args) => new Future(() {
   discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
   return handleArgs(args);
@@ -106,6 +105,7 @@ class GrinderContext {
   /// Log an informational message to Grinder's output.
   void log(String message) {
     List lines = message.trimRight().split('\n');
+
     lines = lines.expand((line) {
       final int len = 120;
       if (line.length > len) {
@@ -122,6 +122,7 @@ class GrinderContext {
         return [line];
       }
     }).toList();
+
     grinder.log("  ${lines.join('\n  ')}");
   }
 
@@ -281,7 +282,7 @@ class Grinder {
    * cycles in the dependency graph.
    */
   Future start(List<String> targets, {bool dontRun: false}) {
-    if (_taskDeps != null) {
+    if (!dontRun && _taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");
     }
 

@@ -45,8 +45,7 @@ main() {
       ]));
     });
 
-    test('htmlEscape', () {
-      // test that dependency cycles are caught
+    test('test that dependency cycles are caught', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', depends: ['bar']));
       grinder.addTask(new GrinderTask('bar', depends: ['foo']));
@@ -72,8 +71,7 @@ main() {
       ]));
     });
 
-    // Test that we execute tasks in the correct order.
-    test('spark archive', () {
+    test('task execution order 1', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('setup'));
       grinder.addTask(new GrinderTask('mode-notest'));
@@ -94,7 +92,7 @@ main() {
       ]));
     });
 
-    test('spark docs', () {
+    test('task execution order 2', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('setup'));
       grinder.addTask(new GrinderTask('mode-notest'));
@@ -112,7 +110,7 @@ main() {
       ]));
     });
 
-    test('spark docs, archive', () {
+    test('task execution order 3', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('setup'));
       grinder.addTask(new GrinderTask('mode-notest'));
@@ -134,7 +132,7 @@ main() {
       ]));
     });
 
-    test('spark clean', () {
+    test('task execution order 4', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('setup'));
       grinder.addTask(new GrinderTask('mode-notest'));
@@ -181,9 +179,9 @@ main() {
         context.fail('boo');
       }));
 
-      return grinder.start(['i_throw']).then((e) {
-        fail("should throw");
-      }).catchError((e) => null);
+      expect(
+          grinder.start(['i_throw']),
+          throwsA(new isInstanceOf<GrinderException>()));
     });
   });
 }
