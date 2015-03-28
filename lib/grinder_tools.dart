@@ -40,7 +40,7 @@ Directory get sdkDir => getSdkDir(grinderArgs());
  */
 Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
-File get dartVM => joinFile(sdkDir, ['bin', _execName('dart')]);
+File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
 /**
  * Run the given Dart script in a new process.
@@ -171,7 +171,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      _run(_execName('get'), workingDirectory: workingDirectory);
+      _run('get', workingDirectory: workingDirectory);
     }
   }
 
@@ -185,7 +185,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runProcessAsync(_execName('pub'), arguments: ['get'],
+      return runProcessAsync(_sdkBin('pub'), arguments: ['get'],
           workingDirectory: workingDirectory);
     } else {
       return new Future.value();
@@ -203,7 +203,7 @@ class Pub {
    * Run `pub upgrade` on the current project.
    */
   static Future upgradeAsync({String workingDirectory}) {
-    return runProcessAsync(_execName('pub'), arguments: ['upgrade'],
+    return runProcessAsync(_sdkBin('pub'), arguments: ['upgrade'],
         workingDirectory: workingDirectory);
   }
 
@@ -222,7 +222,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runProcess(_execName('pub'), arguments: args,
+    runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -241,7 +241,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runProcessAsync(_execName('pub'), arguments: args,
+    return runProcessAsync(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -250,7 +250,7 @@ class Pub {
   static PubGlobal get global => _global;
 
   static void _run(String command, {String workingDirectory}) {
-    runProcess(_execName('pub'), arguments: [command],
+    runProcess(_sdkBin('pub'), arguments: [command],
         workingDirectory: workingDirectory);
   }
 }
@@ -261,25 +261,25 @@ class PubGlobal {
 
   /// Install a new Dart application.
   void activate(String package) {
-    runProcess(_execName('pub'), arguments: ['global', 'activate', package]);
+    runProcess(_sdkBin('pub'), arguments: ['global', 'activate', package]);
   }
 
   /// Run the given installed Dart application.
   void run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
-    runProcess(_execName('pub'), arguments: args,
+    runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
   /// Return the list of installed applications.
-  List<PubApp> list() {
+  List<AppVersion> list() {
     //dart_coveralls 0.1.8
     //den 0.1.3
     //discoveryapis_generator 0.6.1
     //...
 
-    ProcessResult result = Process.runSync(_execName('pub'), ['global', 'list']);
+    ProcessResult result = Process.runSync(_sdkBin('pub'), ['global', 'list']);
     if (result.exitCode != 0) {
       throw new GrinderException(
           "pub global list failed with a return code of ${result.exitCode}");
@@ -290,26 +290,62 @@ class PubGlobal {
       line = line.trim();
       if (line.indexOf(' ') != -1) {
         List l = line.split(' ');
-        return new PubApp(l[0], l[1]);
+        return new AppVersion(l[0], l[1]);
       } else {
-        return new PubApp(line);
+        return new AppVersion(line);
       }
     }).toList();
   }
 
   /// Returns whether the given Dart application is installed.
   bool isInstalled(String packageName) {
-    return list().any((PubApp app) => app.name == packageName);
+    return list().any((AppVersion app) => app.name == packageName);
   }
 }
 
-class PubApp {
+/// The result of `Pub.global.list()`; a package name and version tuple.
+class AppVersion {
   final String name;
   final String version;
 
-  PubApp(this.name, [this.version]);
+  AppVersion(this.name, [this.version]);
 
   String toString() => '${name} ${version}';
+}
+
+/// A Dart command-line application, installed via `pub global activate`.
+class PubApplication {
+  final String appName;
+
+  bool _installed = false;
+
+  /// Create a new reference to a pub application; [appName] is the same as the
+  /// package name.
+  PubApplication(this.appName);
+
+  bool isInstalled() {
+    if (_installed) return true;
+    _installed = Pub.global.isInstalled(appName);
+    return _installed;
+  }
+
+  /// Install the application (run `pub global activate`).
+  void activate() {
+    if (!_installed) {
+      Pub.global.activate(appName);
+      _installed = true;
+    }
+  }
+
+  /// Run the application. If the application is not installed this command will
+  /// first activate it.
+  void run(List<String> arguments, {String workingDirectory}) {
+    if (!_installed && !isInstalled()) activate();
+    Pub.global.run(appName, arguments: arguments,
+        workingDirectory: workingDirectory);
+  }
+
+  String toString() => appName;
 }
 
 /**
@@ -332,7 +368,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    runProcess(_execName('dart2js'), arguments: args);
+    runProcess(_sdkBin('dart2js'), arguments: args);
   }
 
   /**
@@ -351,13 +387,13 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(_execName('dart2js'), arguments: args);
+    return runProcessAsync(_sdkBin('dart2js'), arguments: args);
   }
 
   static void version() => _run('--version');
 
   static void _run(String command) {
-    runProcess(_execName('dart2js'), arguments: [command]);
+    runProcess(_sdkBin('dart2js'), arguments: [command]);
   }
 }
 
@@ -365,6 +401,7 @@ class Dart2js {
  * Utility tasks for invoking the analyzer.
  */
 class Analyzer {
+  // TODO: Simplify these calls to just one `analyze` method.
   static void analyze(File file,
       {Directory packageRoot, bool fatalWarnings: false}) {
     analyzePaths([file.path], packageRoot: packageRoot,
@@ -390,11 +427,11 @@ class Analyzer {
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(paths);
 
-    runProcess(_execName('dartanalyzer'), arguments: args);
+    runProcess(_sdkBin('dartanalyzer'), arguments: args);
   }
 
   static void version() =>
-      runProcess(_execName('dartanalyzer'), arguments: ['--version']);
+      runProcess(_sdkBin('dartanalyzer'), arguments: ['--version']);
 }
 
 /**
@@ -669,7 +706,11 @@ class ContentShell extends Chrome {
   ContentShell() : super(_contentShellPath());
 }
 
-String _execName(String name) {
+String _sdkBin(String name) {
+  // TODO: If `dart` is not visible, we should join the sdk path and `bin/$name`.
+  // This is only necessary in unusual circumstances, like when the script is
+  // run from the Editor on macos.
+
   if (Platform.isWindows) {
     return name == 'dart' ? 'dart.exe' : '${name}.bat';
   }

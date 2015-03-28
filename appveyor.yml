@@ -11,7 +11,4 @@ install:
 build: off
 
 test_script:
-  - pub global activate tuneup
-  - pub global run tuneup check --ignore-infos
-  - dart -c test\all.dart
-  - dart tool\grind.dart analyze-init
+  - dart tool\grind.dart buildbot

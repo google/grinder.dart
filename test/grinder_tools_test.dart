@@ -59,5 +59,13 @@ main() {
       Pub.global.isInstalled('foo');
       expect(context.isFailed, false);
     });
+
+    test('PubApplication', () {
+      PubApplication grinder = new PubApplication('grinder');
+      if (!grinder.isInstalled()) {
+        grinder.activate();
+        expect(grinder.isInstalled(), true);
+      }
+    });
   });
 }
