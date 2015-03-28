@@ -77,7 +77,7 @@ void runProcess(String executable,
      bool quiet: false,
      String workingDirectory,
      Map<String, String> environment}) {
-  context.log("${executable} ${arguments.join(' ')}");
+  log("${executable} ${arguments.join(' ')}");
 
   ProcessResult result = Process.runSync(
       executable, arguments, workingDirectory: workingDirectory,
@@ -85,12 +85,12 @@ void runProcess(String executable,
 
   if (!quiet) {
     if (result.stdout != null && !result.stdout.isEmpty) {
-      context.log(result.stdout.trim());
+      log(result.stdout.trim());
     }
   }
 
   if (result.stderr != null && !result.stderr.isEmpty) {
-    context.log(result.stderr);
+    log(result.stderr);
   }
 
   if (result.exitCode != 0) {
@@ -106,7 +106,7 @@ Future runProcessAsync(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory}) {
-  context.log("${executable} ${arguments.join(' ')}");
+  log("${executable} ${arguments.join(' ')}");
 
   return Process.start(executable, arguments, workingDirectory: workingDirectory)
       .then((Process process) {
@@ -114,14 +114,14 @@ Future runProcessAsync(String executable,
     process.stdout.listen((List<int> data) {
       if (!quiet) {
         String str = new String.fromCharCodes(data).trimRight();
-        if (str.isNotEmpty) context.log(str);
+        if (str.isNotEmpty) log(str);
       }
     });
 
     // Handle stderr.
     process.stderr.listen((List<int> data) {
       String str = new String.fromCharCodes(data).trimRight();
-      if (str.isNotEmpty) context.log('stderr: $str');
+      if (str.isNotEmpty) log('stderr: $str');
     });
 
     return process.exitCode.then((int code) {
@@ -135,25 +135,14 @@ Future runProcessAsync(String executable,
   });
 }
 
-/**
- * A default implementation of an `init` task. This task verifies that the grind
- * script is executed from the project root.
- */
-void defaultInit([GrinderContext context]) {
-  // Verify that we're running in the project root.
-  if (!getFile('pubspec.yaml').existsSync()) {
-    fail('This script must be run from the project root.');
-  }
-}
+/// A default implementation of an `init` task. This task verifies that the
+/// grind script is executed from the project root.
+@Deprecated('the functionality of this method has been rolled into grinder startup')
+void defaultInit([GrinderContext context]) { }
 
-/**
- * A default implementation of a `clean` task. This task deletes all generated
- * artifacts in the `build/`.
- */
-void defaultClean([GrinderContext context]) {
-  // Delete the `build/` dir.
-  delete(BUILD_DIR);
-}
+/// A default implementation of a `clean` task. This task deletes all generated
+/// artifacts in the `build/`.
+void defaultClean([GrinderContext context]) => delete(BUILD_DIR);
 
 /**
  * Utility tasks for executing pub commands.
@@ -439,7 +428,7 @@ class Tests {
    */
   static void runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
-    context.log('running tests: ${file}...');
+    log('running tests: ${file}...');
     runDartScript(file);
   }
 
@@ -477,10 +466,10 @@ class Tests {
     return MicroServer.start(port: 0, path: directory).then((s) {
       server = s;
 
-      context.log("microserver serving '${server.path}' on ${server.urlBase}");
+      log("microserver serving '${server.path}' on ${server.urlBase}");
 
       // Start the browser.
-      context.log('opening ${browser.browserPath}');
+      log('opening ${browser.browserPath}');
 
       List<String> args = ['--remote-debugging-port=${wip}'];
       if (Platform.environment['CHROME_ARGS'] != null) {
@@ -498,7 +487,7 @@ class Tests {
     }).then((t) {
       tab = t;
 
-      context.log('connected to ${tab}');
+      log('connected to ${tab}');
 
       // Connect via WIP.
       return WipConnection.connect(tab.webSocketDebuggerUrl);
@@ -528,7 +517,7 @@ class Tests {
       sub = connection.console.onMessage.listen(
           (ConsoleMessageEvent event) {
         timer.reset();
-        context.log(event.text);
+        log(event.text);
 
         // 'tests finished - passed' or 'tests finished - failed'.
         if (event.text.contains('tests finished -')) {
@@ -608,7 +597,7 @@ class Chrome {
     args.add(url);
 
     // TODO: This process often won't terminate, so that's a problem.
-    context.log("starting chrome...");
+    log("starting chrome...");
     runProcess(browserPath, arguments: args, environment: envVars);
   }
 
@@ -629,12 +618,12 @@ class Chrome {
         .then((Process process) {
       // Handle stdout.
       process.stdout.listen((List<int> data) {
-        context.log(new String.fromCharCodes(data).trim());
+        log(new String.fromCharCodes(data).trim());
       });
 
       // Handle stderr.
       process.stderr.listen((List<int> data) {
-        context.log('stderr: ${new String.fromCharCodes(data).trim()}');
+        log('stderr: ${new String.fromCharCodes(data).trim()}');
       });
 
       return process;

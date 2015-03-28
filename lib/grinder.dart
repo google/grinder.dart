@@ -56,10 +56,13 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 /// the command-line [args] either by running tasks or responding to
 /// recognized options such as --help.
 ///
+/// If [verifyProjectRoot] is true, grinder will verify that the script is being
+/// run from a project root.
+///
 /// If a task fails, throw a [GrinderException] and runs no further tasks.
-Future grind(List<String> args) => new Future(() {
+Future grind(List<String> args, {bool verifyProjectRoot: true}) => new Future(() {
   discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
-  return handleArgs(args);
+  return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
 });
 
 /**
@@ -68,8 +71,8 @@ Future grind(List<String> args) => new Future(() {
  * throw a [GrinderException].
  */
 @Deprecated('Use `grind` instead.')
-Future startGrinder(List<String> args) {
-  return handleArgs(args);
+Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {
+  return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
 }
 
 // Zone variables.
