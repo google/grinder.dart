@@ -48,7 +48,7 @@ Future handleArgs(List<String> args) {
 
     return result.catchError((e, st) {
       if (st != null) {
-        print('\n${e}\n${st}');
+        print('\n${e}\n${cleanupStackTrace(st)}');
       } else {
         print('\n${e}');
       }
@@ -120,4 +120,22 @@ void printDeps(Grinder grinder) {
       }
     });
   }
+}
+
+String cleanupStackTrace(st) {
+  List<String> lines = '${st}'.trim().split('\n');
+
+  // Remove lines which are not useful to debugging script issues. With our move
+  // to using zones, the exceptions now have stacks 30 frames deep.
+  while (lines.isNotEmpty) {
+    String line = lines.last;
+
+    if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
+      lines.removeLast();
+    } else {
+      break;
+    }
+  }
+
+  return lines.join('\n').trim().replaceAll('<anonymous closure>', '<anon>');
 }

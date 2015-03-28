@@ -82,7 +82,10 @@ GrinderContext get context => zonedContext.value;
 void log(String message) => context.log(message);
 
 /// Halt task execution; throws an exception with the given error message.
-void fail(String message) => context.fail(message);
+void fail(String message) {
+  log('failed: ${message}');
+  throw new GrinderException(message);
+}
 
 /**
  * A [GrinderContext] is used to give the currently running Grinder task the
@@ -124,11 +127,8 @@ class GrinderContext {
 
   /// Halt task execution; throws an exception with the given error message.
   void fail(String message) {
-    log('');
     log('failed: ${message}');
-    log('      : ${_getLocation()}');
-
-    throw new _FailException(message);
+    throw new GrinderException(message);
   }
 
   String toString() => "Context for ${task}";
@@ -162,9 +162,7 @@ class GrinderTask {
     if (taskFunction == null) return null;
 
     if (taskFunction is TaskFunction) {
-      return zonedContext.withValue(_context, () {
-        return taskFunction(context);
-      });
+      return zonedContext.withValue(_context, () => taskFunction(context));
     } else {
       return zonedContext.withValue(_context, taskFunction);
     }
@@ -349,10 +347,6 @@ class Grinder {
       }).then((_) {
         Duration elapsed = new DateTime.now().difference(startTime);
         log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
-      }).catchError((e, st) {
-        if (e is! _FailException) {
-          return new Future.error(e, st);
-        }
       });
     } else {
       return new Future.value();
@@ -417,24 +411,4 @@ class GrinderException implements Exception {
   GrinderException(this.message);
 
   String toString() => "GrinderException: ${message}";
-}
-
-class _FailException extends GrinderException {
-  _FailException(String message) : super(message);
-}
-
-String _getLocation() {
-  try {
-    throw 'foo';
-  } catch (e, st) {
-    List<String> lines = '${st}'.split('\n');
-    if (lines.length < 3) {
-      return null;
-    }
-    String line = lines[2];
-    if (line.length > 5 && line[4] == ' ') {
-      line = line.substring(4);
-    }
-    return line.trim().replaceAll('<anonymous closure>', '<anon>');
-  }
 }
