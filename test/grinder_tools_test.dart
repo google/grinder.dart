@@ -8,7 +8,7 @@ import 'dart:io';
 import 'package:grinder/grinder.dart';
 import 'package:unittest/unittest.dart';
 
-import 'test_utils.dart';
+import 'utils.dart';
 
 main() {
   group('grinder.tools', () {

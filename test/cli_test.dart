@@ -5,6 +5,7 @@ library grinder.cli_test;
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/cli.dart';
+import 'package:grinder/src/singleton.dart';
 import 'package:unittest/unittest.dart';
 
 bool isSetup = false;
@@ -15,7 +16,6 @@ main() {
     setUp(() {
       if (!isSetup) {
         isSetup = true;
-
         addTask(new GrinderTask('foo', taskFunction: _fooTask));
         addTask(new GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
       }
@@ -29,16 +29,25 @@ main() {
         expect(ranTasks['bar'], true);
       });
     });
-  });
 
-  group('integration', () {
-    // TODO: add some integration tests - actually execute real tasks
+    test('printUsage', () {
+      printUsage(createArgsParser(), grinder);
+    });
 
+    test('printDeps', () {
+      printDeps(grinder);
+    });
   });
 }
 
 void _clear() => ranTasks.clear();
 
-_fooTask(GrinderContext context) => ranTasks['foo'] = true;
+_fooTask() {
+  ranTasks['foo'] = true;
+  log('ran _fooTask');
+}
 
-_barTask(GrinderContext context) => ranTasks['bar'] = true;
+_barTask(GrinderContext context) {
+  ranTasks['bar'] = true;
+  log('ran _barTask\n${context}');
+}
