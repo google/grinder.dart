@@ -1,6 +1,6 @@
 name: grinder
 # This version must be updated in tandem with the lib/src/cli.dart version.
-version: 0.6.6+3
+version: 0.7.0-dev.1
 description: Grinder - a task based, dependency aware build system.
 
 homepage: https://github.com/google/grinder.dart
