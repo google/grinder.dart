@@ -355,9 +355,7 @@ Directory getDir(String path) {
 }
 
 void copy(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
-  if (context != null) {
-    context.log('copying ${entity.path} to ${destDir.path}');
-  }
+  log('copying ${entity.path} to ${destDir.path}');
   return _copyImpl(entity, destDir, context);
 }
 
@@ -386,7 +384,7 @@ void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext conte
 }
 
 /// Delete the given file entity reference.
-void delete(FileSystemEntity entity) =>_deleteImpl(entity);
+void delete(FileSystemEntity entity) => _deleteImpl(entity);
 
 void _deleteImpl(FileSystemEntity entity) {
   if (entity.existsSync()) {

@@ -9,23 +9,17 @@ import 'package:grinder/grinder.dart';
 main(args) => grind(args);
 
 @Task()
-void init() => defaultInit();
-
-@Task()
-@Depends(init)
 void analyze() {
   PubApplication tuneupApp = new PubApplication('tuneup');
   tuneupApp.run(['check']);
 }
 
 @Task()
-@Depends(init)
 void test() {
   Tests.runCliTests();
 }
 
 @Task('Check that the generated init grind script analyzes well')
-@Depends(init)
 checkInit() {
   Path tempProject = Path.createSystemTemp();
 
@@ -43,7 +37,6 @@ checkInit() {
 }
 
 @Task('Gather and send coverage data.')
-@Depends(init)
 void coverage() {
   final String coverageToken = Platform.environment['REPO_TOKEN'];
 
@@ -67,13 +60,11 @@ void buildbot() => null;
 // These tasks require a frame buffer to run.
 
 @Task()
-@Depends(init)
 Future testsWeb() {
   return Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
 }
 
 @Task()
-@Depends(init)
 Future testsBuildWeb() {
   return Pub.buildAsync(directories: ['web']).then((_) {
     return Tests.runWebTests(directory: 'build/web', htmlFile: 'web.html');

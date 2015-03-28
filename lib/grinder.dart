@@ -57,9 +57,9 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 /// recognized options such as --help.
 ///
 /// If a task fails, throw a [GrinderException] and runs no further tasks.
-Future grind(List<String> args) => new Future(() {
+Future grind(List<String> args, {bool verifyLocation: true}) => new Future(() {
   discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
-  return handleArgs(args);
+  return handleArgs(args, verifyLocation: verifyLocation);
 });
 
 /**
@@ -68,8 +68,8 @@ Future grind(List<String> args) => new Future(() {
  * throw a [GrinderException].
  */
 @Deprecated('Use `grind` instead.')
-Future startGrinder(List<String> args) {
-  return handleArgs(args);
+Future startGrinder(List<String> args, {bool verifyLocation: true}) {
+  return handleArgs(args, verifyLocation: verifyLocation);
 }
 
 // Zone variables.

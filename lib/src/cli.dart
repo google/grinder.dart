@@ -19,7 +19,7 @@ const String APP_VERSION = '0.6.6+3';
 List<String> grinderArgs() => _args;
 List<String> _args;
 
-Future handleArgs(List<String> args) {
+Future handleArgs(List<String> args, {bool verifyLocation: true}) {
   _args = args == null ? [] : args;
 
   ArgParser parser = createArgsParser();
@@ -44,6 +44,13 @@ Future handleArgs(List<String> args) {
   } else if (results['deps']) {
     printDeps(grinder);
   } else {
+    if (verifyLocation) {
+      // Verify that we're running from the project root.
+      if (!getFile('pubspec.yaml').existsSync()) {
+        fail('This script must be run from the project root.');
+      }
+    }
+
     Future result = grinder.start(results.rest);
 
     return result.catchError((e, st) {
