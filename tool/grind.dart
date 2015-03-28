@@ -10,29 +10,23 @@ main(args) => grind(args);
 
 @Task()
 void analyze() {
-  PubApplication tuneupApp = new PubApplication('tuneup');
-  tuneupApp.run(['check']);
+  new PubApplication('tuneup')..run(['check']);
 }
 
 @Task()
-void test() {
-  Tests.runCliTests();
-}
+void test() => Tests.runCliTests();
 
 @Task('Check that the generated init grind script analyzes well')
 checkInit() {
-  FilePath tempProject = FilePath.createSystemTemp();
+  FilePath temp = FilePath.createSystemTemp();
 
   try {
-    File pubspec = tempProject.join('pubspec.yaml').createFile();
+    File pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
-    runDartScript(
-        FilePath.current.join('bin', 'init.dart').path,
-        workingDirectory: tempProject.path);
-    Analyzer.analyzePath(tempProject.join('tool', 'grind.dart').path,
-        fatalWarnings: true);
+    runDartScript(FilePath.current.join('bin', 'init.dart').path, workingDirectory: temp.path);
+    Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
-    tempProject.delete();
+    temp.delete();
   }
 }
 
@@ -60,9 +54,7 @@ void buildbot() => null;
 // These tasks require a frame buffer to run.
 
 @Task()
-Future testsWeb() {
-  return Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
-}
+Future testsWeb() =>  Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
 
 @Task()
 Future testsBuildWeb() {
