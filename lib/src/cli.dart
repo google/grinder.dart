@@ -61,6 +61,8 @@ Future handleArgs(List<String> args) {
 
 ArgParser createArgsParser() {
   ArgParser parser = new ArgParser();
+  parser.addOption('dart-sdk',
+      help: 'set the location of the Dart SDK');
   parser.addFlag('version', negatable: false,
       help: "print the version of grinder");
   parser.addFlag('help', abbr: 'h', negatable: false,

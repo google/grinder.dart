@@ -37,14 +37,14 @@ import 'package:grinder/grinder.dart';
 main(args) => grind(args);
 
 @Task()
-init(GrinderContext context) => defaultInit(context);
+init() => defaultInit();
 
 @DefaultTask()
 @Depends(init)
-build(GrinderContext context) {
-  Pub.build(context);
+build() {
+  Pub.build();
 }
 
 @Task()
-clean(GrinderContext context) => defaultClean(context);
+clean() => defaultClean();
 ''';
