@@ -14,12 +14,18 @@ Build files are entirely specified in Dart code. This allows you to write and
 debug your build files with the same tools you use for the rest of your project
 source.
 
+## Installing
+
+To install, run:
+
+    pub global activate grinder
+
 ## Getting Started
 
 Your grinder build file should reside at `tool/grind.dart`. You can use grinder
 to create a simple, starting build script. To do this, run:
 
-    pub run grinder:init
+    pub global run grinder:init
 
 This will create a starting script in `tool/grind.dart`.
 
@@ -52,14 +58,8 @@ Tasks to run are specified on the command line. If a task has dependencies,
 those dependent tasks are run before the specified task. Specifying no tasks on
 the command-line will run the default task if one is configured.
 
-## Installing
-
-To install, run:
-
-    pub global activate grinder
-
 ## Command-line usage
-    usage: dart grind.dart <options> target1 target2 ...
+    usage: grind <options> target1 target2 ...
 
     valid options:
     -h, --help    show targets but don't build
