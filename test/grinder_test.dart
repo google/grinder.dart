@@ -175,15 +175,15 @@ main() {
       });
     });
 
-    test('Dont throw on fail', () {
+    test('throw on fail', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('i_throw', taskFunction: (GrinderContext context) {
         context.fail('boo');
       }));
 
-      return grinder.start(['i_throw']).catchError((e) {
-        fail("shouldn't throw");
-      });
+      return grinder.start(['i_throw']).then((e) {
+        fail("should throw");
+      }).catchError((e) => null);
     });
   });
 }
