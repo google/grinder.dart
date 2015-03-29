@@ -9,7 +9,7 @@
 - `copyFile` and `copyDirectory` and deprecated in favor of a new `copy` method
 - `deleteEntity` is deprecated in favor of a new `delete` method
 - Added a wrapper class around `pub global activate` applications - `PubApplication`
-- Grinder can now create a simple starter script for a project - run `pub global run grinder:init`
+- Grinder can now create a simple starter script for a project - run `pub run grinder:init`
 
 ## 0.6.5 (2015/1/13)
 - added `defaultInit()` and `defaultClean()` methods, for common tasks
