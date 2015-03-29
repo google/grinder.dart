@@ -14,7 +14,7 @@ import 'utils.dart';
 import '../grinder.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String APP_VERSION = '0.6.6+3';
+const String APP_VERSION = '0.7.0-dev.1';
 
 List<String> grinderArgs() => _args;
 List<String> _args;
