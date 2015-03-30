@@ -54,7 +54,7 @@ void buildbot() => null;
 // These tasks require a frame buffer to run.
 
 @Task()
-Future testsWeb() =>  Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
+Future testsWeb() => Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
 
 @Task()
 Future testsBuildWeb() {
