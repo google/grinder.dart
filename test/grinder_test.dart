@@ -45,6 +45,14 @@ main() {
       ]));
     });
 
+    test('throws when overwriting default task', () {
+      Grinder grinder = new Grinder();
+      grinder.defaultTask = new GrinderTask('foo');
+      expect(() {
+        grinder.defaultTask = new GrinderTask('bar');
+      }, throwsA(new isInstanceOf<GrinderException>()));
+    });
+
     test('test that dependency cycles are caught', () {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', depends: ['bar']));

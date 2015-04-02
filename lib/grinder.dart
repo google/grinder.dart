@@ -242,7 +242,10 @@ class Grinder {
   GrinderTask get defaultTask => _defaultTask;
 
   set defaultTask(GrinderTask v) {
-    // TODO: Throw when overwriting an existing default task?
+    if (_defaultTask != null) {
+      throw new GrinderException('Cannot overwrite existing default task '
+          '$_defaultTask with task $v.');
+    }
     addTask(v);
     _defaultTask = v;
   }
