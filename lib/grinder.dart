@@ -156,7 +156,12 @@ class GrinderTask {
    * execute when this task is started, and a [depends] list are optional.
    */
   GrinderTask(this.name,
-      {this.taskFunction, this.depends : const [], this.description});
+      {this.taskFunction, this.depends : const [], this.description}) {
+    if (taskFunction == null && depends.isEmpty) {
+      throw new GrinderException('GrinderTasks must have a task function or '
+          'dependencies.');
+    }
+  }
 
   /**
    * This method is invoked when the task is started. If a task was created with
