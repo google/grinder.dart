@@ -53,7 +53,7 @@ main() {
 
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method];
-      var annotated = new AnnotatedTask(new GrinderTask('method'), false);
+      var annotated = new AnnotatedTask(new GrinderTask('method', taskFunction: () {}), false);
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
