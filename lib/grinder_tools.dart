@@ -234,6 +234,17 @@ class Pub {
         workingDirectory: workingDirectory);
   }
 
+  /// Run `pub run` on the given [package] and [script].
+  ///
+  /// If [script] is null it defaults to the same value as [package].
+      String script}) {
+    var scriptArg = script == null ? package : '$package:$script';
+    List args = ['run', scriptArg];
+    if (arguments != null) args.addAll(arguments);
+    runProcess(_sdkBin('pub'), arguments: args,
+        workingDirectory: workingDirectory);
+  }
+
   static void version() => _run('--version');
 
   static PubGlobal get global => _global;
