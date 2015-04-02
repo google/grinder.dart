@@ -237,6 +237,7 @@ class Pub {
   /// Run `pub run` on the given [package] and [script].
   ///
   /// If [script] is null it defaults to the same value as [package].
+  static void run(String package, {List<String> arguments, String workingDirectory,
       String script}) {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
