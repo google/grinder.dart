@@ -59,7 +59,7 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 /// If [verifyProjectRoot] is true, grinder will verify that the script is being
 /// run from a project root.
 ///
-/// If a task fails, throw a [GrinderException] and runs no further tasks.
+/// If a task fails, throws an exception and runs no further tasks.
 Future grind(List<String> args, {bool verifyProjectRoot: true}) => new Future(() {
   discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
   return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
@@ -68,7 +68,7 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) => new Future(()
 /**
  * Start the build process. This should be called at the end of the `main()`
  * method. If there is a task failure, this method will halt task execution and
- * throw a [GrinderException].
+ * throw an exception.
  */
 @Deprecated('Use `grind` instead.')
 Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {

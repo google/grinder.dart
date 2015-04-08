@@ -14,7 +14,9 @@ void analyze() {
 }
 
 @Task()
-void test() => Tests.runCliTests();
+void test() {
+  Tests.runCliTests();
+}
 
 @Task('Check that the generated init grind script analyzes well')
 checkInit() {
