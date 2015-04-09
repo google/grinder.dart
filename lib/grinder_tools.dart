@@ -8,6 +8,7 @@
 library grinder.tools;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -42,10 +43,10 @@ Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
-/**
- * Run the given Dart script in a new process.
- */
-void runDartScript(String script,
+/// Run a dart [script] using [runProcess].
+///
+/// Returns the stdout.
+String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
     String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
   List<String> args = [];
@@ -65,14 +66,18 @@ void runDartScript(String script,
   args.add(script);
   args.addAll(arguments);
 
-  runProcess(_sdkBin('dart'), arguments: args, quiet: quiet,
+  return runProcess(_sdkBin('dart'), arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
 }
 
-/**
- * Run the given executable, with optional arguments and working directory.
- */
-void runProcess(String executable,
+/// Synchronously run an [executable].
+///
+/// If [quiet] is false, [log]s the stdout.  The stderr is always logged.
+///
+/// Returns the stdout.
+///
+/// All other optional parameters are forwarded to [Process.runSync].
+String runProcess(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory,
@@ -84,53 +89,65 @@ void runProcess(String executable,
       environment: environment);
 
   if (!quiet) {
-    if (result.stdout != null && !result.stdout.isEmpty) {
+    if (result.stdout != null && result.stdout.isNotEmpty) {
       log(result.stdout.trim());
     }
   }
 
-  if (result.stderr != null && !result.stderr.isEmpty) {
+  if (result.stderr != null && result.stderr.isNotEmpty) {
     log(result.stderr);
   }
 
   if (result.exitCode != 0) {
-    throw new GrinderException(
-        "${executable} failed with a return code of ${result.exitCode}");
+    throw new ProcessException._(executable, result.exitCode, result.stdout,
+        result.stderr);
   }
+
+  return result.stdout;
 }
 
-/**
- * Run the given executable, with optional arguments and working directory.
- */
-Future runProcessAsync(String executable,
+/// Asynchronously run an [executable].
+///
+/// If [quiet] is false, [log]s the stdout as line breaks are encountered.
+/// The stderr is always logged.
+///
+/// Returns a future for the stdout.
+///
+/// All other optional parameters are forwarded to [Process.start].
+Future<String> runProcessAsync(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
      String workingDirectory}) {
-  log("${executable} ${arguments.join(' ')}");
+
+  if (!quiet) log("$executable ${arguments.join(' ')}");
+
+  List<int> stdout = [], stderr = [];
 
   return Process.start(executable, arguments, workingDirectory: workingDirectory)
       .then((Process process) {
+
     // Handle stdout.
-    process.stdout.listen((List<int> data) {
-      if (!quiet) {
-        String str = new String.fromCharCodes(data).trimRight();
-        if (str.isNotEmpty) log(str);
-      }
-    });
+    var broadcastStdout = process.stdout.asBroadcastStream();
+    var stdoutLines = _toLineStream(broadcastStdout);
+    broadcastStdout.listen((List<int> data) => stdout.addAll(data));
+    if (!quiet) {
+      stdoutLines.listen(_logStdout);
+    }
 
     // Handle stderr.
-    process.stderr.listen((List<int> data) {
-      String str = new String.fromCharCodes(data).trimRight();
-      if (str.isNotEmpty) log('stderr: $str');
-    });
+    var broadcastStderr = process.stderr.asBroadcastStream();
+    var stderrLines = _toLineStream(broadcastStderr);
+    broadcastStderr.listen((List<int> data) => stderr.addAll(data));
+    stderrLines.listen(_logStderr);
 
     return process.exitCode.then((int code) {
-      if (code == 0) {
-        return new Future.value();
-      } else {
-        throw new GrinderException(
-            "${executable} failed with a return code of ${code}");
+      var stdoutString = SYSTEM_ENCODING.decode(stdout);
+
+      if (code != 0) {
+        throw new ProcessException._(executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
       }
+
+      return stdoutString;
     });
   });
 }
@@ -175,10 +192,10 @@ class Pub {
 
     if (force || !publock.upToDate(pubspec)) {
       return runProcessAsync(_sdkBin('pub'), arguments: ['get'],
-          workingDirectory: workingDirectory);
-    } else {
-      return new Future.value();
+          workingDirectory: workingDirectory).then((_) => null);
     }
+
+    return new Future.value();
   }
 
   /**
@@ -193,7 +210,7 @@ class Pub {
    */
   static Future upgradeAsync({String workingDirectory}) {
     return runProcessAsync(_sdkBin('pub'), arguments: ['upgrade'],
-        workingDirectory: workingDirectory);
+        workingDirectory: workingDirectory).then((_) => null);
   }
 
   /**
@@ -231,27 +248,28 @@ class Pub {
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     return runProcessAsync(_sdkBin('pub'), arguments: args,
-        workingDirectory: workingDirectory);
+        workingDirectory: workingDirectory).then((_) => null);
   }
 
   /// Run `pub run` on the given [package] and [script].
   ///
   /// If [script] is null it defaults to the same value as [package].
-  static void run(String package, {List<String> arguments, String workingDirectory,
+  static String run(String package, {List<String> arguments, String workingDirectory,
       String script}) {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    runProcess(_sdkBin('pub'), arguments: args,
+    return runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
-  static void version() => _run('--version');
+  static String version({bool quiet: false}) => AppVersion.parse(
+      _run('--version', quiet: quiet)).version;
 
   static PubGlobal get global => _global;
 
-  static void _run(String command, {String workingDirectory}) {
-    runProcess(_sdkBin('pub'), arguments: [command],
+  static String _run(String command, {bool quiet: false, String workingDirectory}) {
+    return runProcess(_sdkBin('pub'), quiet: quiet, arguments: [command],
         workingDirectory: workingDirectory);
   }
 }
@@ -266,10 +284,10 @@ class PubGlobal {
   }
 
   /// Run the given installed Dart application.
-  void run(String package, {List<String> arguments, String workingDirectory}) {
+  String run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
-    runProcess(_sdkBin('pub'), arguments: args,
+    return runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -280,21 +298,14 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    ProcessResult result = Process.runSync(_sdkBin('pub'), ['global', 'list']);
-    if (result.exitCode != 0) {
-      throw new GrinderException(
-          "pub global list failed with a return code of ${result.exitCode}");
-    }
+    var stdout = runProcess(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
-    List<String> lines = result.stdout.trim().split('\n');
+    var lines = stdout.trim().split('\n');
     return lines.map((line) {
       line = line.trim();
-      if (line.indexOf(' ') != -1) {
-        List l = line.split(' ');
-        return new AppVersion(l[0], l[1]);
-      } else {
-        return new AppVersion(line);
-      }
+      if (!line.contains(' ')) return new AppVersion._(line);
+      var parts = line.split(' ');
+      return new AppVersion._(parts.first, parts[1]);
     }).toList();
   }
 
@@ -302,16 +313,6 @@ class PubGlobal {
   bool isInstalled(String packageName) {
     return list().any((AppVersion app) => app.name == packageName);
   }
-}
-
-/// The result of `Pub.global.list()`; a package name and version tuple.
-class AppVersion {
-  final String name;
-  final String version;
-
-  AppVersion(this.name, [this.version]);
-
-  String toString() => '${name} ${version}';
 }
 
 /// A Dart command-line application, installed via `pub global activate`.
@@ -340,9 +341,9 @@ class PubApplication {
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
-  void run(List<String> arguments, {String workingDirectory}) {
+  String run(List<String> arguments, {String workingDirectory}) {
     if (!_installed && !isInstalled()) activate();
-    Pub.global.run(appName, arguments: arguments,
+    return Pub.global.run(appName, arguments: arguments,
         workingDirectory: workingDirectory);
   }
 
@@ -394,14 +395,15 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(_sdkBin('dart2js'), arguments: args);
+    return runProcessAsync(_sdkBin('dart2js'), arguments: args)
+        .then((_) => null);
   }
 
-  static void version() => _run('--version');
+  static String version({bool quiet: false}) =>
+      AppVersion.parse(_run('--version', quiet: quiet)).version;
 
-  static void _run(String command) {
-    runProcess(_sdkBin('dart2js'), arguments: [command]);
-  }
+  static String _run(String command, {bool quiet: false}) =>
+      runProcess(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
 }
 
 /**
@@ -426,8 +428,8 @@ class Analyzer {
     runProcess(_sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static void version() =>
-      runProcess(_sdkBin('dartanalyzer'), arguments: ['--version']);
+  static String version({bool quiet: false}) => AppVersion.parse(runProcess(
+      _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
 }
 
 /**
@@ -629,17 +631,13 @@ class Chrome {
     return Process.start(browserPath, _args, environment: envVars)
         .then((Process process) {
       // Handle stdout.
-      process.stdout.listen((List<int> data) {
-        log(new String.fromCharCodes(data).trim());
-      });
+      var stdoutLines = _toLineStream(process.stdout);
+      stdoutLines.listen(_logStdout);
 
       // Handle stderr.
-      process.stderr.listen((List<int> data) {
-        log('stderr: ${new String.fromCharCodes(data).trim()}');
-      });
+      var stderrLines = _toLineStream(process.stderr);
+      stderrLines.listen(_logStderr);
 
-      return process;
-    }).then((process) {
       return new BrowserInstance(this, process);
     });
   }
@@ -787,4 +785,54 @@ String _chromiumPath() {
   }
 
   return null;
+}
+
+/// A version/app name pair.
+class AppVersion {
+  final String name;
+  final String version;
+
+  AppVersion._(this.name, [this.version]);
+
+  static AppVersion parse(String output) {
+    var lastSpace = output.lastIndexOf(' ');
+    if (lastSpace == -1) return new AppVersion._(output);
+    return new AppVersion._(output.substring(0, lastSpace),
+        output.substring(lastSpace + 1));
+  }
+
+  String toString() => '$name $version';
+}
+
+/// An exception from a process which exited with a non-zero exit code.
+class ProcessException {
+  final String executable;
+  final int exitCode;
+  final String stdout;
+  final String stderr;
+
+  ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
+
+  String toString() => """
+$executable failed with:
+exit code: $exitCode
+
+stdout:
+
+$stdout
+
+stderr:
+
+$stderr""";
+}
+
+Stream<String> _toLineStream(Stream<List<int>> s) =>
+    s.transform(UTF8.decoder).transform(const LineSplitter());
+
+_logStdout(String line) {
+  log(line);
+}
+
+_logStderr(String line) {
+  log('stderr: $line');
 }
