@@ -321,7 +321,7 @@ class PubApplication {
   }
 
   /// Install the application (run `pub global activate`).
-  ProcessResult activate() {
+  String activate() {
     if (!_installed) {
       var result = Pub.global.activate(appName);
       _installed = true;
@@ -339,7 +339,7 @@ class PubApplication {
   }
 
   /// Install the application or update it to the lastest version.
-  ProcessResult update() {
+  String update() {
     var result = Pub.global.activate(appName);
     _installed = true;
     return result;
