@@ -43,9 +43,9 @@ Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
-/**
- * Run the given Dart script in a new process.
- */
+/// Run a dart [script] using [runProcess].
+///
+/// Returns the stdout.
 String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
     String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
@@ -70,9 +70,13 @@ String runDartScript(String script,
       workingDirectory: workingDirectory);
 }
 
-/// Run the given [executable], with optional [arguments] and [workingDirectory].
+/// Synchronously run an [executable].
+///
+/// If [quiet] is false, [log]s the stdout.  The stderr is always logged.
 ///
 /// Returns the stdout.
+///
+/// All other optional parameters are forwarded to [Process.runSync].
 String runProcess(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
@@ -95,15 +99,21 @@ String runProcess(String executable,
   }
 
   if (result.exitCode != 0) {
-    throw new ProcessException(executable, result.exitCode, result.stderr);
+    throw new ProcessException._(executable, result.exitCode, result.stdout,
+        result.stderr);
   }
 
   return result.stdout;
 }
 
-/// Run the given [executable], with optional [arguments] and [workingDirectory].
+/// Asynchronously run an [executable].
+///
+/// If [quiet] is false, [log]s the stdout as line breaks are encountered.
+/// The stderr is always logged.
 ///
 /// Returns a future for the stdout.
+///
+/// All other optional parameters are forwarded to [Process.start].
 Future<String> runProcessAsync(String executable,
     {List<String> arguments : const [],
      bool quiet: false,
@@ -131,11 +141,13 @@ Future<String> runProcessAsync(String executable,
     stderrLines.listen(_logStderr);
 
     return process.exitCode.then((int code) {
+      var stdoutString = SYSTEM_ENCODING.decode(stdout);
+
       if (code != 0) {
-        throw new ProcessException(executable, code, SYSTEM_ENCODING.decode(stderr));
+        throw new ProcessException._(executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
       }
 
-      return SYSTEM_ENCODING.decode(stdout);
+      return stdoutString;
     });
   });
 }
@@ -160,15 +172,13 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static String get({bool force: false, String workingDirectory}) {
+  static void get({bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return _run('get', workingDirectory: workingDirectory);
+      _run('get', workingDirectory: workingDirectory);
     }
-
-    return null;
   }
 
   /**
@@ -176,13 +186,13 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static Future<String> getAsync({bool force: false, String workingDirectory}) {
+  static Future getAsync({bool force: false, String workingDirectory}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       return runProcessAsync(_sdkBin('pub'), arguments: ['get'],
-          workingDirectory: workingDirectory);
+          workingDirectory: workingDirectory).then((_) => null);
     }
 
     return new Future.value();
@@ -191,16 +201,16 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static String upgrade({String workingDirectory}) {
-    return _run('upgrade', workingDirectory: workingDirectory);
+  static void upgrade({String workingDirectory}) {
+    _run('upgrade', workingDirectory: workingDirectory);
   }
 
   /**
    * Run `pub upgrade` on the current project.
    */
-  static Future<String> upgradeAsync({String workingDirectory}) {
+  static Future upgradeAsync({String workingDirectory}) {
     return runProcessAsync(_sdkBin('pub'), arguments: ['upgrade'],
-        workingDirectory: workingDirectory);
+        workingDirectory: workingDirectory).then((_) => null);
   }
 
   /**
@@ -208,7 +218,7 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static String build({
+  static void build({
       String mode,
       List<String> directories,
       String workingDirectory,
@@ -218,7 +228,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runProcess(_sdkBin('pub'), arguments: args,
+    runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -227,7 +237,7 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static Future<String> buildAsync({
+  static Future buildAsync({
       String mode,
       List<String> directories,
       String workingDirectory,
@@ -238,18 +248,18 @@ class Pub {
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     return runProcessAsync(_sdkBin('pub'), arguments: args,
-        workingDirectory: workingDirectory);
+        workingDirectory: workingDirectory).then((_) => null);
   }
 
   /// Run `pub run` on the given [package] and [script].
   ///
   /// If [script] is null it defaults to the same value as [package].
-  static void run(String package, {List<String> arguments, String workingDirectory,
+  static String run(String package, {List<String> arguments, String workingDirectory,
       String script}) {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    runProcess(_sdkBin('pub'), arguments: args,
+    return runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -269,8 +279,9 @@ class PubGlobal {
   PubGlobal._();
 
   /// Install a new Dart application.
-  String activate(String package) =>
-      runProcess(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+  void activate(String package) {
+    runProcess(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+  }
 
   /// Run the given installed Dart application.
   String run(String package, {List<String> arguments, String workingDirectory}) {
@@ -321,13 +332,11 @@ class PubApplication {
   }
 
   /// Install the application (run `pub global activate`).
-  String activate() {
+  void activate() {
     if (!_installed) {
-      var result = Pub.global.activate(appName);
+      Pub.global.activate(appName);
       _installed = true;
-      return result;
     }
-    return null;
   }
 
   /// Run the application. If the application is not installed this command will
@@ -339,10 +348,9 @@ class PubApplication {
   }
 
   /// Install the application or update it to the lastest version.
-  String update() {
-    var result = Pub.global.activate(appName);
+  void update() {
+    Pub.global.activate(appName);
     _installed = true;
-    return result;
   }
 
   String toString() => appName;
@@ -355,7 +363,7 @@ class Dart2js {
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static String compile(File sourceFile,
+  static void compile(File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -368,13 +376,13 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcess(_sdkBin('dart2js'), arguments: args);
+    runProcess(_sdkBin('dart2js'), arguments: args);
   }
 
   /**
    * Invoke a dart2js compile with the given [sourceFile] as input.
    */
-  static Future<String> compileAsync(File sourceFile,
+  static Future compileAsync(File sourceFile,
       {Directory outDir, bool minify: false, bool csp: false}) {
     if (outDir == null) outDir = sourceFile.parent;
     File outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -387,7 +395,8 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(_sdkBin('dart2js'), arguments: args);
+    return runProcessAsync(_sdkBin('dart2js'), arguments: args)
+        .then((_) => null);
   }
 
   static String version({bool quiet: false}) =>
@@ -402,21 +411,21 @@ class Dart2js {
  */
 class Analyzer {
   /// Analyze a single [File] or path ([String]).
-  static String analyze(fileOrPath,
+  static void analyze(fileOrPath,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    return analyzeFiles([fileOrPath], packageRoot: packageRoot,
+    analyzeFiles([fileOrPath], packageRoot: packageRoot,
         fatalWarnings: fatalWarnings);
   }
 
   /// Analyze one or more [File]s or paths ([String]).
-  static String analyzeFiles(List files,
+  static void analyzeFiles(List files,
       {Directory packageRoot, bool fatalWarnings: false}) {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(files.map((f) => f is File ? f.path : f));
 
-    return runProcess(_sdkBin('dartanalyzer'), arguments: args);
+    runProcess(_sdkBin('dartanalyzer'), arguments: args);
   }
 
   static String version({bool quiet: false}) => AppVersion.parse(runProcess(
@@ -431,10 +440,10 @@ class Tests {
    * Run command-line tests. You can specify the base directory (`test`), and
    * the file to run (`all.dart`).
    */
-  static String runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
+  static void runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
     log('running tests: ${file}...');
-    return runDartScript(file);
+    runDartScript(file);
   }
 
   /**
@@ -799,12 +808,21 @@ class AppVersion {
 class ProcessException {
   final String executable;
   final int exitCode;
+  final String stdout;
   final String stderr;
 
-  ProcessException(this.executable, this.exitCode, this.stderr);
+  ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
 
   String toString() => """
-$executable failed with exit code $exitCode and stderr:
+$executable failed with:
+exit code: $exitCode
+
+stdout:
+
+$stdout
+
+stderr:
+
 $stderr""";
 }
 
