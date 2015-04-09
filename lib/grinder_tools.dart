@@ -8,7 +8,6 @@
 library grinder.tools;
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -16,9 +15,13 @@ import 'package:cli_util/cli_util.dart' as cli_util;
 import 'package:which/which.dart';
 
 import 'grinder.dart';
+import 'src/run.dart' as r;
+import 'src/run_utils.dart';
 import 'src/utils.dart';
 import 'src/_mserve.dart';
 import 'src/_wip.dart';
+
+export 'src/run.dart';
 
 final Directory BIN_DIR = new Directory('bin');
 final Directory BUILD_DIR = new Directory('build');
@@ -43,9 +46,10 @@ Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
-/// Run a dart [script] using [runProcess].
+/// Run a dart [script] using [r.run].
 ///
 /// Returns the stdout.
+@Deprecated('Use `Dart.run` instead.')
 String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
     String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
@@ -66,90 +70,8 @@ String runDartScript(String script,
   args.add(script);
   args.addAll(arguments);
 
-  return runProcess(_sdkBin('dart'), arguments: args, quiet: quiet,
+  return r.run(_sdkBin('dart'), arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
-}
-
-/// Synchronously run an [executable].
-///
-/// If [quiet] is false, [log]s the stdout.  The stderr is always logged.
-///
-/// Returns the stdout.
-///
-/// All other optional parameters are forwarded to [Process.runSync].
-String runProcess(String executable,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory,
-     Map<String, String> environment}) {
-  log("${executable} ${arguments.join(' ')}");
-
-  ProcessResult result = Process.runSync(
-      executable, arguments, workingDirectory: workingDirectory,
-      environment: environment);
-
-  if (!quiet) {
-    if (result.stdout != null && result.stdout.isNotEmpty) {
-      log(result.stdout.trim());
-    }
-  }
-
-  if (result.stderr != null && result.stderr.isNotEmpty) {
-    log(result.stderr);
-  }
-
-  if (result.exitCode != 0) {
-    throw new ProcessException._(executable, result.exitCode, result.stdout,
-        result.stderr);
-  }
-
-  return result.stdout;
-}
-
-/// Asynchronously run an [executable].
-///
-/// If [quiet] is false, [log]s the stdout as line breaks are encountered.
-/// The stderr is always logged.
-///
-/// Returns a future for the stdout.
-///
-/// All other optional parameters are forwarded to [Process.start].
-Future<String> runProcessAsync(String executable,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory}) {
-
-  if (!quiet) log("$executable ${arguments.join(' ')}");
-
-  List<int> stdout = [], stderr = [];
-
-  return Process.start(executable, arguments, workingDirectory: workingDirectory)
-      .then((Process process) {
-
-    // Handle stdout.
-    var broadcastStdout = process.stdout.asBroadcastStream();
-    var stdoutLines = _toLineStream(broadcastStdout);
-    broadcastStdout.listen((List<int> data) => stdout.addAll(data));
-    if (!quiet) {
-      stdoutLines.listen(_logStdout);
-    }
-
-    // Handle stderr.
-    var broadcastStderr = process.stderr.asBroadcastStream();
-    var stderrLines = _toLineStream(broadcastStderr);
-    broadcastStderr.listen((List<int> data) => stderr.addAll(data));
-    stderrLines.listen(_logStderr);
-
-    return process.exitCode.then((int code) {
-      var stdoutString = SYSTEM_ENCODING.decode(stdout);
-
-      if (code != 0) {
-        throw new ProcessException._(executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
-      }
-
-      return stdoutString;
-    });
-  });
 }
 
 /// A default implementation of an `init` task. This task verifies that the
@@ -191,7 +113,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runProcessAsync(_sdkBin('pub'), arguments: ['get'],
+      return r.runAsync(_sdkBin('pub'), arguments: ['get'],
           workingDirectory: workingDirectory).then((_) => null);
     }
 
@@ -209,7 +131,7 @@ class Pub {
    * Run `pub upgrade` on the current project.
    */
   static Future upgradeAsync({String workingDirectory}) {
-    return runProcessAsync(_sdkBin('pub'), arguments: ['upgrade'],
+    return r.runAsync(_sdkBin('pub'), arguments: ['upgrade'],
         workingDirectory: workingDirectory).then((_) => null);
   }
 
@@ -228,7 +150,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runProcess(_sdkBin('pub'), arguments: args,
+    r.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -247,7 +169,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runProcessAsync(_sdkBin('pub'), arguments: args,
+    return r.runAsync(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory).then((_) => null);
   }
 
@@ -259,7 +181,7 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runProcess(_sdkBin('pub'), arguments: args,
+    return r.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -269,7 +191,7 @@ class Pub {
   static PubGlobal get global => _global;
 
   static String _run(String command, {bool quiet: false, String workingDirectory}) {
-    return runProcess(_sdkBin('pub'), quiet: quiet, arguments: [command],
+    return r.run(_sdkBin('pub'), quiet: quiet, arguments: [command],
         workingDirectory: workingDirectory);
   }
 }
@@ -280,14 +202,14 @@ class PubGlobal {
 
   /// Install a new Dart application.
   void activate(String package) {
-    runProcess(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+    r.run(_sdkBin('pub'), arguments: ['global', 'activate', package]);
   }
 
   /// Run the given installed Dart application.
   String run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
-    return runProcess(_sdkBin('pub'), arguments: args,
+    return r.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -298,7 +220,7 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    var stdout = runProcess(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+    var stdout = r.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
@@ -356,6 +278,46 @@ class PubApplication {
   String toString() => appName;
 }
 
+/// Utility tasks for invoking dart.
+class Dart {
+
+  /// Run a dart [script] using [r.run].
+  ///
+  /// Returns the stdout.
+  static String run(String script,
+      {List<String> arguments : const [], bool quiet: false,
+       String packageRoot, String workingDirectory, int vmNewGenHeapMB,
+       int vmOldGenHeapMB}) {
+    List<String> args = [];
+
+    if (packageRoot != null) {
+      args.add('--package-root=${packageRoot}');
+    }
+
+    if (vmNewGenHeapMB != null) {
+      args.add('--new_gen_heap_size=${vmNewGenHeapMB}');
+    }
+
+    if (vmOldGenHeapMB != null) {
+      args.add('--old_gen_heap_size=${vmOldGenHeapMB}');
+    }
+
+    args.add(script);
+    args.addAll(arguments);
+
+    return r.run(_sdkBin('dart'), arguments: args, quiet: quiet,
+        workingDirectory: workingDirectory);
+  }
+
+  static String version({bool quiet: false}) {
+    r.run(_sdkBin('dart'), arguments: ['--version'],
+        quiet: quiet);
+    // The stdout does not have a stable documented format, so use the provided
+    // metadata instead.
+    return Platform.version.substring(0, Platform.version.indexOf(' '));
+  }
+}
+
 /**
  * Utility tasks for invoking dart2js.
  */
@@ -376,7 +338,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    runProcess(_sdkBin('dart2js'), arguments: args);
+    r.run(_sdkBin('dart2js'), arguments: args);
   }
 
   /**
@@ -395,7 +357,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return runProcessAsync(_sdkBin('dart2js'), arguments: args)
+    return r.runAsync(_sdkBin('dart2js'), arguments: args)
         .then((_) => null);
   }
 
@@ -403,7 +365,7 @@ class Dart2js {
       AppVersion.parse(_run('--version', quiet: quiet)).version;
 
   static String _run(String command, {bool quiet: false}) =>
-      runProcess(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
+      r.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
 }
 
 /**
@@ -425,10 +387,10 @@ class Analyzer {
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(files.map((f) => f is File ? f.path : f));
 
-    runProcess(_sdkBin('dartanalyzer'), arguments: args);
+    r.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet: false}) => AppVersion.parse(runProcess(
+  static String version({bool quiet: false}) => AppVersion.parse(r.run(
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
 }
 
@@ -443,7 +405,7 @@ class Tests {
   static void runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
     log('running tests: ${file}...');
-    runDartScript(file);
+    Dart.run(file);
   }
 
   /**
@@ -612,7 +574,7 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     log("starting chrome...");
-    runProcess(browserPath, arguments: args, environment: envVars);
+    r.run(browserPath, arguments: args, environment: envVars);
   }
 
   Future<BrowserInstance> launchUrl(String url,
@@ -631,12 +593,12 @@ class Chrome {
     return Process.start(browserPath, _args, environment: envVars)
         .then((Process process) {
       // Handle stdout.
-      var stdoutLines = _toLineStream(process.stdout);
-      stdoutLines.listen(_logStdout);
+      var stdoutLines = toLineStream(process.stdout);
+      stdoutLines.listen(logStdout);
 
       // Handle stderr.
-      var stderrLines = _toLineStream(process.stderr);
-      stderrLines.listen(_logStderr);
+      var stderrLines = toLineStream(process.stderr);
+      stderrLines.listen(logStderr);
 
       return new BrowserInstance(this, process);
     });
@@ -802,37 +764,4 @@ class AppVersion {
   }
 
   String toString() => '$name $version';
-}
-
-/// An exception from a process which exited with a non-zero exit code.
-class ProcessException {
-  final String executable;
-  final int exitCode;
-  final String stdout;
-  final String stderr;
-
-  ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
-
-  String toString() => """
-$executable failed with:
-exit code: $exitCode
-
-stdout:
-
-$stdout
-
-stderr:
-
-$stderr""";
-}
-
-Stream<String> _toLineStream(Stream<List<int>> s) =>
-    s.transform(UTF8.decoder).transform(const LineSplitter());
-
-_logStdout(String line) {
-  log(line);
-}
-
-_logStderr(String line) {
-  log('stderr: $line');
 }
