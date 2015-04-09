@@ -54,7 +54,7 @@ main() {
 
     test('throws when overwriting default task', () {
       Grinder grinder = new Grinder();
-      grinder.defaultTask = new GrinderTask('foo');
+      grinder.defaultTask = new GrinderTask('foo', taskFunction: () {});
       expect(() {
         grinder.defaultTask = new GrinderTask('bar');
       }, throwsA(new isInstanceOf<GrinderException>()));
