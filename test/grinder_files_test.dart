@@ -235,5 +235,12 @@ main() {
       file.delete();
       expect(file.exists, false);
     });
+
+    test('length', () {
+      expect(temp.length, 0);
+      FilePath file = temp.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      expect(file.length, 4);
+    });
   });
 }
