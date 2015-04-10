@@ -56,7 +56,7 @@ main() {
 
     test('isActivated', () {
       MockGrinderContext context = new MockGrinderContext();
-      Pub.global.isActivated('foo');
+      expect(Pub.global.isActivated('foo'), false);
       expect(context.isFailed, false);
     });
 

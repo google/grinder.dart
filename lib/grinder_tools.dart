@@ -276,11 +276,16 @@ class Pub {
 
 /// Access the `pub global` commands.
 class PubGlobal {
+  Set<String> _activatedPackages;
+
   PubGlobal._();
 
   /// Install a new Dart application.
-  void activate(String package) {
-    runProcess(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+  void activate(String packageName, {bool force: false}) {
+    if (force || !isActivated(packageName)) {
+      runProcess(_sdkBin('pub'), arguments: ['global', 'activate', packageName]);
+      _activatedPackages.add(packageName);
+    }
   }
 
   /// Run the given installed Dart application.
@@ -313,7 +318,15 @@ class PubGlobal {
 
   /// Returns whether the given Dart application is installed.
   bool isActivated(String packageName) {
-    return list().any((AppVersion app) => app.name == packageName);
+    if (_activatedPackages == null) _initActivated();
+    return _activatedPackages.contains(packageName);
+  }
+
+  void _initActivated() {
+    if (_activatedPackages == null) {
+      _activatedPackages = new Set();
+      _activatedPackages.addAll(list().map((appVer) => appVer.name));
+    }
   }
 }
 
@@ -335,11 +348,10 @@ abstract class PubApp {
 
   bool get isActivated;
 
-  /// Install the application (run `pub global activate`).
-  void activate();
-
-  /// Install the application or update it to the lastest version.
-  void update();
+  /// Install the application (run `pub global activate`). Setting [force] to
+  /// try will force the activation of the package even if it is already
+  /// installed.
+  void activate({bool force: false});
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
@@ -353,32 +365,18 @@ abstract class PubApp {
 }
 
 class _PubGlobalApp extends PubApp {
-  bool _activated = false;
-
   _PubGlobalApp(String packageName) : super._(packageName);
 
   bool get isGlobal => true;
 
-  bool get isActivated {
-    if (_activated) return true;
-    _activated = Pub.global.isActivated(packageName);
-    return _activated;
-  }
+  bool get isActivated => Pub.global.isActivated(packageName);
 
-  void activate() {
-    if (!_activated) {
-      Pub.global.activate(packageName);
-      _activated = true;
-    }
-  }
-
-  void update() {
-    Pub.global.activate(packageName);
-    _activated = true;
-  }
+  void activate({bool force: false}) =>
+      Pub.global.activate(packageName, force: force);
 
   String run(List<String> arguments, {String script, String workingDirectory}) {
-    if (!_activated && !isActivated) activate();
+    activate();
+
     return Pub.global.run(packageName,
         script: script,
         arguments: arguments,
@@ -387,18 +385,14 @@ class _PubGlobalApp extends PubApp {
 }
 
 class _PubLocalApp extends PubApp {
-  bool _activated = false;
-
   _PubLocalApp(String packageName) : super._(packageName);
 
   bool get isGlobal => false;
 
-  // TODO: Implement.
+  // TODO: Implement: call a `Pub.isActivated/Pub.isInstalled`.
   bool get isActivated => throw new UnsupportedError('unimplemented');
 
-  void activate() { }
-
-  void update() { }
+  void activate({bool force: false}) { }
 
   String run(List<String> arguments, {String script, String workingDirectory}) {
     return Pub.run(packageName,
