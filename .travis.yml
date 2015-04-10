@@ -1,2 +1,3 @@
 language: dart
 script: dart tool/grind.dart buildbot
+sudo: false
