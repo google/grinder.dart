@@ -254,8 +254,8 @@ class Pub {
   /// Run `pub run` on the given [package] and [script].
   ///
   /// If [script] is null it defaults to the same value as [package].
-  static String run(String package, {List<String> arguments, String workingDirectory,
-      String script}) {
+  static String run(String package,
+      {List<String> arguments, String workingDirectory, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
@@ -284,8 +284,10 @@ class PubGlobal {
   }
 
   /// Run the given installed Dart application.
-  String run(String package, {List<String> arguments, String workingDirectory}) {
-    List args = ['global', 'run', package];
+  String run(String package,
+      {List<String> arguments, String workingDirectory, String script}) {
+    var scriptArg = script == null ? package : '$package:$script';
+    List args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runProcess(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
@@ -317,17 +319,17 @@ class PubGlobal {
 
 /// A Dart command-line application, installed via `pub global activate`.
 abstract class PubApp {
-  final String appName;
+  final String packageName;
 
-  PubApp._(this.appName);
+  PubApp._(this.packageName);
 
-  /// Create a new reference to a pub application; [appName] is the same as the
+  /// Create a new reference to a pub application; [packageName] is the same as the
   /// package name.
-  factory PubApp.global(String appName) => new _PubGlobalApp(appName);
+  factory PubApp.global(String packageName) => new _PubGlobalApp(packageName);
 
-  /// Create a new reference to a pub application; [appName] is the same as the
+  /// Create a new reference to a pub application; [packageName] is the same as the
   /// package name.
-  factory PubApp.local(String appName) => new _PubLocalApp(appName);
+  factory PubApp.local(String packageName) => new _PubLocalApp(packageName);
 
   bool get isGlobal;
 
@@ -347,37 +349,38 @@ abstract class PubApp {
   /// `grinder:init`.
   String run(List<String> arguments, {String script, String workingDirectory});
 
-  String toString() => appName;
+  String toString() => packageName;
 }
 
 class _PubGlobalApp extends PubApp {
   bool _activated = false;
 
-  _PubGlobalApp(String appName) : super._(appName);
+  _PubGlobalApp(String packageName) : super._(packageName);
 
   bool get isGlobal => true;
 
   bool get isActivated {
     if (_activated) return true;
-    _activated = Pub.global.isActivated(appName);
+    _activated = Pub.global.isActivated(packageName);
     return _activated;
   }
 
   void activate() {
     if (!_activated) {
-      Pub.global.activate(appName);
+      Pub.global.activate(packageName);
       _activated = true;
     }
   }
 
   void update() {
-    Pub.global.activate(appName);
+    Pub.global.activate(packageName);
     _activated = true;
   }
 
   String run(List<String> arguments, {String script, String workingDirectory}) {
     if (!_activated && !isActivated) activate();
-    return Pub.global.run(script == null ? appName : '${appName}:${script}',
+    return Pub.global.run(packageName,
+        script: script,
         arguments: arguments,
         workingDirectory: workingDirectory);
   }
@@ -386,19 +389,20 @@ class _PubGlobalApp extends PubApp {
 class _PubLocalApp extends PubApp {
   bool _activated = false;
 
-  _PubLocalApp(String appName) : super._(appName);
+  _PubLocalApp(String packageName) : super._(packageName);
 
   bool get isGlobal => false;
 
-  // TODO: For now, assume that local apps are installed?
-  bool get isActivated => true;
+  // TODO: Implement.
+  bool get isActivated => throw new UnsupportedError('unimplemented');
 
   void activate() { }
 
   void update() { }
 
   String run(List<String> arguments, {String script, String workingDirectory}) {
-    return Pub.run(script == null ? appName : '${appName}:${script}',
+    return Pub.run(packageName,
+        script: script,
         arguments: arguments,
         workingDirectory: workingDirectory);
   }
