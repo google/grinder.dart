@@ -11,7 +11,7 @@
 - Renamed `runProcess`/`runProcessAsync`/`runDartScript` to `run`/`runAsync`/`Dart.run`.
   Process result info (stdout, stderr, exitCode) is now exposed by these
   methods and some others which call them.
-- Added a wrapper class around `pub global activate` applications - `PubApplication`
+- Added a wrapper class around `pub global activate` applications - `PubApp`
 - Grinder can now create a simple starter script for a project - run `pub run grinder:init`
 
 ## 0.6.5 (2015/1/13)
