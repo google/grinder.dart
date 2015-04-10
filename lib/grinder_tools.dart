@@ -310,50 +310,98 @@ class PubGlobal {
   }
 
   /// Returns whether the given Dart application is installed.
-  bool isInstalled(String packageName) {
+  bool isActivated(String packageName) {
     return list().any((AppVersion app) => app.name == packageName);
   }
 }
 
 /// A Dart command-line application, installed via `pub global activate`.
-class PubApplication {
+abstract class PubApp {
   final String appName;
 
-  bool _installed = false;
+  PubApp._(this.appName);
 
   /// Create a new reference to a pub application; [appName] is the same as the
   /// package name.
-  PubApplication(this.appName);
+  factory PubApp.global(String appName) => new _PubGlobalApp(appName);
 
-  bool isInstalled() {
-    if (_installed) return true;
-    _installed = Pub.global.isInstalled(appName);
-    return _installed;
-  }
+  /// Create a new reference to a pub application; [appName] is the same as the
+  /// package name.
+  factory PubApp.local(String appName) => new _PubLocalApp(appName);
+
+  bool get isGlobal;
+
+  bool get isActivated;
 
   /// Install the application (run `pub global activate`).
-  void activate() {
-    if (!_installed) {
-      Pub.global.activate(appName);
-      _installed = true;
-    }
-  }
+  void activate();
+
+  /// Install the application or update it to the lastest version.
+  void update();
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
-  String run(List<String> arguments, {String workingDirectory}) {
-    if (!_installed && !isInstalled()) activate();
-    return Pub.global.run(appName, arguments: arguments,
-        workingDirectory: workingDirectory);
-  }
-
-  /// Install the application or update it to the lastest version.
-  void update() {
-    Pub.global.activate(appName);
-    _installed = true;
-  }
+  ///
+  /// If [script] is provided, the sub-script will be run. So
+  /// `new PubApp.global('grinder').run(script: 'init');` will run
+  /// `grinder:init`.
+  String run(List<String> arguments, {String script, String workingDirectory});
 
   String toString() => appName;
+}
+
+class _PubGlobalApp extends PubApp {
+  bool _activated = false;
+
+  _PubGlobalApp(String appName) : super._(appName);
+
+  bool get isGlobal => true;
+
+  bool get isActivated {
+    if (_activated) return true;
+    _activated = Pub.global.isActivated(appName);
+    return _activated;
+  }
+
+  void activate() {
+    if (!_activated) {
+      Pub.global.activate(appName);
+      _activated = true;
+    }
+  }
+
+  void update() {
+    Pub.global.activate(appName);
+    _activated = true;
+  }
+
+  String run(List<String> arguments, {String script, String workingDirectory}) {
+    if (!_activated && !isActivated) activate();
+    return Pub.global.run(script == null ? appName : '${appName}:${script}',
+        arguments: arguments,
+        workingDirectory: workingDirectory);
+  }
+}
+
+class _PubLocalApp extends PubApp {
+  bool _activated = false;
+
+  _PubLocalApp(String appName) : super._(appName);
+
+  bool get isGlobal => false;
+
+  // TODO: For now, assume that local apps are installed?
+  bool get isActivated => true;
+
+  void activate() { }
+
+  void update() { }
+
+  String run(List<String> arguments, {String script, String workingDirectory}) {
+    return Pub.run(script == null ? appName : '${appName}:${script}',
+        arguments: arguments,
+        workingDirectory: workingDirectory);
+  }
 }
 
 /**

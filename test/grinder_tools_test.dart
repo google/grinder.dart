@@ -54,18 +54,23 @@ main() {
       expect(context.isFailed, false);
     });
 
-    test('isInstalled', () {
+    test('isActivated', () {
       MockGrinderContext context = new MockGrinderContext();
-      Pub.global.isInstalled('foo');
+      Pub.global.isActivated('foo');
       expect(context.isFailed, false);
     });
 
-    test('PubApplication', () {
-      PubApplication grinder = new PubApplication('grinder');
-      if (!grinder.isInstalled()) {
+    test('PubApp.global', () {
+      PubApp grinder = new PubApp.global('grinder');
+      if (!grinder.isActivated) {
         grinder.activate();
-        expect(grinder.isInstalled(), true);
+        expect(grinder.isActivated, true);
       }
+    });
+
+    test('PubApp.local', () {
+      PubApp grinder = new PubApp.local('grinder');
+      expect(grinder.isActivated, true);
     });
   });
 }

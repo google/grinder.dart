@@ -10,7 +10,7 @@ main(args) => grind(args);
 
 @Task()
 void analyze() {
-  new PubApplication('tuneup')..run(['check']);
+  new PubApp.global('tuneup')..run(['check']);
 }
 
 @Task()
@@ -37,7 +37,7 @@ void coverage() {
   final String coverageToken = Platform.environment['REPO_TOKEN'];
 
   if (coverageToken != null) {
-    PubApplication coverallsApp = new PubApplication('dart_coveralls');
+    PubApp coverallsApp = new PubApp.global('dart_coveralls');
     coverallsApp.run(['report',
       '--token', coverageToken,
       '--retry', '2',
