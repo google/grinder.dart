@@ -176,8 +176,8 @@ class Pub {
   /// Run `pub run` on the given [package] and [script].
   ///
   /// If [script] is null it defaults to the same value as [package].
-  static String run(String package, {List<String> arguments, String workingDirectory,
-      String script}) {
+  static String run(String package,
+      {List<String> arguments, String workingDirectory, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
@@ -198,16 +198,23 @@ class Pub {
 
 /// Access the `pub global` commands.
 class PubGlobal {
+  Set<String> _activatedPackages;
+
   PubGlobal._();
 
   /// Install a new Dart application.
-  void activate(String package) {
-    run_lib.run(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+  void activate(String packageName, {bool force: false}) {
+    if (force || !isActivated(packageName)) {
+      run_lib.run(_sdkBin('pub'), arguments: ['global', 'activate', packageName]);
+      _activatedPackages.add(packageName);
+    }
   }
 
   /// Run the given installed Dart application.
-  String run(String package, {List<String> arguments, String workingDirectory}) {
-    List args = ['global', 'run', package];
+  String run(String package,
+      {List<String> arguments, String workingDirectory, String script}) {
+    var scriptArg = script == null ? package : '$package:$script';
+    List args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return run_lib.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
@@ -232,50 +239,89 @@ class PubGlobal {
   }
 
   /// Returns whether the given Dart application is installed.
-  bool isInstalled(String packageName) {
-    return list().any((AppVersion app) => app.name == packageName);
+  bool isActivated(String packageName) {
+    if (_activatedPackages == null) _initActivated();
+    return _activatedPackages.contains(packageName);
+  }
+
+  void _initActivated() {
+    if (_activatedPackages == null) {
+      _activatedPackages = new Set();
+      _activatedPackages.addAll(list().map((appVer) => appVer.name));
+    }
   }
 }
 
 /// A Dart command-line application, installed via `pub global activate`.
-class PubApplication {
-  final String appName;
+abstract class PubApp {
+  final String packageName;
 
-  bool _installed = false;
+  PubApp._(this.packageName);
 
-  /// Create a new reference to a pub application; [appName] is the same as the
+  /// Create a new reference to a pub application; [packageName] is the same as the
   /// package name.
-  PubApplication(this.appName);
+  factory PubApp.global(String packageName) => new _PubGlobalApp(packageName);
 
-  bool isInstalled() {
-    if (_installed) return true;
-    _installed = Pub.global.isInstalled(appName);
-    return _installed;
-  }
+  /// Create a new reference to a pub application; [packageName] is the same as the
+  /// package name.
+  factory PubApp.local(String packageName) => new _PubLocalApp(packageName);
 
-  /// Install the application (run `pub global activate`).
-  void activate() {
-    if (!_installed) {
-      Pub.global.activate(appName);
-      _installed = true;
-    }
-  }
+  bool get isGlobal;
+
+  bool get isActivated;
+
+  /// Install the application (run `pub global activate`). Setting [force] to
+  /// try will force the activation of the package even if it is already
+  /// installed.
+  void activate({bool force: false});
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
-  String run(List<String> arguments, {String workingDirectory}) {
-    if (!_installed && !isInstalled()) activate();
-    return Pub.global.run(appName, arguments: arguments,
+  ///
+  /// If [script] is provided, the sub-script will be run. So
+  /// `new PubApp.global('grinder').run(script: 'init');` will run
+  /// `grinder:init`.
+  String run(List<String> arguments, {String script, String workingDirectory});
+
+  String toString() => packageName;
+}
+
+class _PubGlobalApp extends PubApp {
+  _PubGlobalApp(String packageName) : super._(packageName);
+
+  bool get isGlobal => true;
+
+  bool get isActivated => Pub.global.isActivated(packageName);
+
+  void activate({bool force: false}) =>
+      Pub.global.activate(packageName, force: force);
+
+  String run(List<String> arguments, {String script, String workingDirectory}) {
+    activate();
+
+    return Pub.global.run(packageName,
+        script: script,
+        arguments: arguments,
         workingDirectory: workingDirectory);
   }
+}
 
-  /// Install the application or update it to the lastest version.
-  void update() {
-    Pub.global.activate(appName);
-    _installed = true;
+class _PubLocalApp extends PubApp {
+  _PubLocalApp(String packageName) : super._(packageName);
+
+  bool get isGlobal => false;
+
+  // TODO: Implement: call a `Pub.isActivated/Pub.isInstalled`.
+  bool get isActivated => throw new UnsupportedError('unimplemented');
+
+  void activate({bool force: false}) { }
+
+  String run(List<String> arguments, {String script, String workingDirectory}) {
+    return Pub.run(packageName,
+        script: script,
+        arguments: arguments,
+        workingDirectory: workingDirectory);
   }
-
-  String toString() => appName;
 }
 
 /// Utility tasks for invoking dart.
