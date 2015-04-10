@@ -15,7 +15,7 @@ import 'package:cli_util/cli_util.dart' as cli_util;
 import 'package:which/which.dart';
 
 import 'grinder.dart';
-import 'src/run.dart' as r;
+import 'src/run.dart' as run_lib;
 import 'src/run_utils.dart';
 import 'src/utils.dart';
 import 'src/_mserve.dart';
@@ -46,7 +46,7 @@ Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
-/// Run a dart [script] using [r.run].
+/// Run a dart [script] using [run_lib.run].
 ///
 /// Returns the stdout.
 @Deprecated('Use `Dart.run` instead.')
@@ -70,7 +70,7 @@ String runDartScript(String script,
   args.add(script);
   args.addAll(arguments);
 
-  return r.run(_sdkBin('dart'), arguments: args, quiet: quiet,
+  return run_lib.run(_sdkBin('dart'), arguments: args, quiet: quiet,
       workingDirectory: workingDirectory);
 }
 
@@ -113,7 +113,7 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return r.runAsync(_sdkBin('pub'), arguments: ['get'],
+      return run_lib.runAsync(_sdkBin('pub'), arguments: ['get'],
           workingDirectory: workingDirectory).then((_) => null);
     }
 
@@ -131,7 +131,7 @@ class Pub {
    * Run `pub upgrade` on the current project.
    */
   static Future upgradeAsync({String workingDirectory}) {
-    return r.runAsync(_sdkBin('pub'), arguments: ['upgrade'],
+    return run_lib.runAsync(_sdkBin('pub'), arguments: ['upgrade'],
         workingDirectory: workingDirectory).then((_) => null);
   }
 
@@ -150,7 +150,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    r.run(_sdkBin('pub'), arguments: args,
+    run_lib.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -169,7 +169,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return r.runAsync(_sdkBin('pub'), arguments: args,
+    return run_lib.runAsync(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory).then((_) => null);
   }
 
@@ -181,7 +181,7 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return r.run(_sdkBin('pub'), arguments: args,
+    return run_lib.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -191,7 +191,7 @@ class Pub {
   static PubGlobal get global => _global;
 
   static String _run(String command, {bool quiet: false, String workingDirectory}) {
-    return r.run(_sdkBin('pub'), quiet: quiet, arguments: [command],
+    return run_lib.run(_sdkBin('pub'), quiet: quiet, arguments: [command],
         workingDirectory: workingDirectory);
   }
 }
@@ -202,14 +202,14 @@ class PubGlobal {
 
   /// Install a new Dart application.
   void activate(String package) {
-    r.run(_sdkBin('pub'), arguments: ['global', 'activate', package]);
+    run_lib.run(_sdkBin('pub'), arguments: ['global', 'activate', package]);
   }
 
   /// Run the given installed Dart application.
   String run(String package, {List<String> arguments, String workingDirectory}) {
     List args = ['global', 'run', package];
     if (arguments != null) args.addAll(arguments);
-    return r.run(_sdkBin('pub'), arguments: args,
+    return run_lib.run(_sdkBin('pub'), arguments: args,
         workingDirectory: workingDirectory);
   }
 
@@ -220,7 +220,7 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    var stdout = r.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+    var stdout = run_lib.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
@@ -281,7 +281,7 @@ class PubApplication {
 /// Utility tasks for invoking dart.
 class Dart {
 
-  /// Run a dart [script] using [r.run].
+  /// Run a dart [script] using [run_lib.run].
   ///
   /// Returns the stdout.
   static String run(String script,
@@ -305,12 +305,12 @@ class Dart {
     args.add(script);
     args.addAll(arguments);
 
-    return r.run(_sdkBin('dart'), arguments: args, quiet: quiet,
+    return run_lib.run(_sdkBin('dart'), arguments: args, quiet: quiet,
         workingDirectory: workingDirectory);
   }
 
   static String version({bool quiet: false}) {
-    r.run(_sdkBin('dart'), arguments: ['--version'],
+    run_lib.run(_sdkBin('dart'), arguments: ['--version'],
         quiet: quiet);
     // The stdout does not have a stable documented format, so use the provided
     // metadata instead.
@@ -338,7 +338,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    r.run(_sdkBin('dart2js'), arguments: args);
+    run_lib.run(_sdkBin('dart2js'), arguments: args);
   }
 
   /**
@@ -357,7 +357,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return r.runAsync(_sdkBin('dart2js'), arguments: args)
+    return run_lib.runAsync(_sdkBin('dart2js'), arguments: args)
         .then((_) => null);
   }
 
@@ -365,7 +365,7 @@ class Dart2js {
       AppVersion.parse(_run('--version', quiet: quiet)).version;
 
   static String _run(String command, {bool quiet: false}) =>
-      r.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
+      run_lib.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
 }
 
 /**
@@ -387,10 +387,10 @@ class Analyzer {
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(files.map((f) => f is File ? f.path : f));
 
-    r.run(_sdkBin('dartanalyzer'), arguments: args);
+    run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet: false}) => AppVersion.parse(r.run(
+  static String version({bool quiet: false}) => AppVersion.parse(run_lib.run(
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
 }
 
@@ -574,7 +574,7 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     log("starting chrome...");
-    r.run(browserPath, arguments: args, environment: envVars);
+    run_lib.run(browserPath, arguments: args, environment: envVars);
   }
 
   Future<BrowserInstance> launchUrl(String url,
