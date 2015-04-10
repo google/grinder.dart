@@ -62,6 +62,7 @@ main() {
 
     test('PubApp.global', () {
       PubApp grinder = new PubApp.global('grinder');
+      expect(grinder.isGlobal, true);
       if (!grinder.isActivated) {
         grinder.activate();
         expect(grinder.isActivated, true);
@@ -70,7 +71,7 @@ main() {
 
     test('PubApp.local', () {
       PubApp grinder = new PubApp.local('grinder');
-      expect(grinder.isActivated, true);
+      expect(grinder.isGlobal, false);
     });
   });
 }
