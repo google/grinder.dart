@@ -227,7 +227,8 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    var stdout = run_lib.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+    var stdout = run_lib.run(
+        _sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
