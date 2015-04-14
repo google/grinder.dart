@@ -21,7 +21,7 @@ String run(String executable,
      bool quiet: false,
      String workingDirectory,
      Map<String, String> environment}) {
-  log("${executable} ${arguments.join(' ')}");
+  if (!quiet) log("${executable} ${arguments.join(' ')}");
 
   ProcessResult result = Process.runSync(
       executable, arguments, workingDirectory: workingDirectory,
@@ -99,7 +99,8 @@ Future<String> runAsync(String executable,
       var stdoutString = SYSTEM_ENCODING.decode(stdout);
 
       if (code != 0) {
-        throw new ProcessException._(executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
+        throw new ProcessException._(executable, code, stdoutString,
+            SYSTEM_ENCODING.decode(stderr));
       }
 
       return stdoutString;
