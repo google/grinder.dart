@@ -67,9 +67,10 @@ the command-line will run the default task if one is configured.
 
 or:
 
-    pub global run grind <args>
+    pub global run grinder <args>
 
-will run the `tool/grind.dart` script with the supplied arguments.
+will run the `tool/grind.dart` script with the supplied arguments. For for Dart
+SDK 1.10.0, `pub run grinder` will also work.
 
 ## API documentation
 
