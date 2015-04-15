@@ -8,6 +8,8 @@ install:
   - set PATH=%PATH%;%APPDATA%\Pub\Cache\bin
   - pub get
 
+clone_depth: 1
+
 build: off
 
 test_script:
