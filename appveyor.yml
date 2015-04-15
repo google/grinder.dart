@@ -11,4 +11,4 @@ install:
 build: off
 
 test_script:
-  - dart tool\grind.dart buildbot
+  - pub run grinder:grinder

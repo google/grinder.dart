@@ -6,12 +6,14 @@
 - The `GrinderContext` arg is no longer expected in task functions. Instead, the
   `context` variable (and the `log` and `fail` functions) are available as global
   variables. They're injected into the zone running the current task.
+- `pub [global] run grinder:grind` no longer work, use
+  `pub [global] run grinder` instead.  Add `:grinder` if using `pub run` in Dart SDK < 1.10.
 - `copyFile` and `copyDirectory` and deprecated in favor of a new `copy` method
 - `deleteEntity` is deprecated in favor of a new `delete` method
 - Renamed `runProcess`/`runProcessAsync`/`runDartScript` to `run`/`runAsync`/`Dart.run`.
   Process result info (stdout, stderr, exitCode) is now exposed by these
   methods and some others which call them.
-- Added a wrapper class around `pub global activate` applications - `PubApp`
+- Added a wrapper class around `pub global activate/run`/`pub run` applications - `PubApp`
 - Grinder can now create a simple starter script for a project - run `pub run grinder:init`
 
 ## 0.6.5 (2015/1/13)
