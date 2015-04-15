@@ -1,7 +1,7 @@
 # Grinder for Dart
 
-Grinder consists of a library to define project tasks (e.g. `test`,
-`build`, `doc`), and a tool to run them.
+Grinder consists of a library to define project tasks (e.g. test, build, doc),
+and a command-line tool to run them.
 
 [![Build Status](https://travis-ci.org/google/grinder.dart.svg?branch=master)](https://travis-ci.org/google/grinder.dart)
 [![Build status](https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true)](https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master)
@@ -17,9 +17,7 @@ Tasks are defined entirely by Dart code allowing you to take advantage of
 the whole Dart ecosystem to write and debug them.  Task definitions reside
 in a `tool/grind.dart` script. To create a simple grinder script, run:
 
-```shell
-pub run grinder:init
-```
+    pub run grinder:init
 
 In general, grinder scripts look something like this:
 
@@ -55,28 +53,20 @@ Grinder contains a variety of convenience APIs for common task definitions, such
 
 First install the `grind` executable:
 
-```shell
-pub global activate grinder
-```
+    pub global activate grinder
 
 then use it to run desired tasks:
 
-```shell
-grind test
-grind build doc
-```
+    grind test
+    grind build doc
 
 or to run a default task (see `@DefaultTask` above):
 
-```shell
-grind
-```
+    grind
 
 or to display a list of available tasks:
 
-```shell
-grind -h
-```
+    grind -h
 
 You can also bypass installing `grind` and replace it in any of the above
 with `pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129), simply `pub run grinder`.
