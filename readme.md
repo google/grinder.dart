@@ -1,79 +1,85 @@
 # Grinder for Dart
 
-A task based, dependency aware build system.
+Grinder consists of a library to define project tasks (e.g. `test`,
+`build`, `doc`), and a tool to run them.
 
 [![Build Status](https://travis-ci.org/google/grinder.dart.svg?branch=master)](https://travis-ci.org/google/grinder.dart)
 [![Build status](https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true)](https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master)
 [![Coverage Status](https://img.shields.io/coveralls/google/grinder.dart.svg)](https://coveralls.io/r/google/grinder.dart)
 
-## Intro
-
-Grinder is a library and tool to drive a command-line build.
-
-Build files are entirely specified in Dart code. This allows you to write and
-debug your build files with the same tools you use for the rest of your project
-source.
-
-## Installing
-
-To install, run:
-
-    pub global activate grinder
-
 ## Getting Started
 
-Your grinder build file should reside at `tool/grind.dart`. You can use grinder
-to create a simple, starting build script. To do this, run:
+To start using `grinder`, add it to your [dev_dependencies](https://www.dartlang.org/tools/pub/dependencies.html#dev-dependencies).
 
-    pub global run grinder:init
+### Defining Tasks
 
-This will create a starting script in `tool/grind.dart`.
+Tasks are defined entirely by Dart code allowing you to take advantage of
+the whole Dart ecosystem to write and debug them.  Task definitions reside
+in a `tool/grind.dart` script. To create a simple grinder script, run:
 
-In general, your build script will look something like this:
+```shell
+pub run grinder:init
+```
+
+In general, grinder scripts look something like this:
 
 ```dart
 import 'package:grinder/grinder.dart';
 
 main(args) => grind(args);
 
-@Task('Initialize stuff.')
-init() {
-  log("Initializing stuff...");
+@Task('Test stuff.')
+test() {
+  new PubApp.local('test').run([]);
 }
 
-@Task('Compile stuff.')
-@Depends(init)
-compile() {
-  log("Compiling stuff...");
+@DefaultTask('Build the project.')
+@Depends(test)
+build() {
+  log("Building...");
 }
 
-@DefaultTask('Deploy stuff.')
-@Depends(compile)
-deploy() {
-  log("Deploying stuff...");
+@Task('Generate docs.')
+@Depends(test)
+doc() {
+  log("Generating docs...");
 }
 ```
 
-Tasks to run are specified on the command line. If a task has dependencies,
-those dependent tasks are run before the specified task. Specifying no tasks on
-the command-line will run the default task if one is configured.
+Any task dependencies (see `@Depends` above), are run before the dependent task.
 
-## Command-line usage
-    usage: grind <options> target1 target2 ...
+Grinder contains a variety of convenience APIs for common task definitions, such as
+`PubApp` referenced above.  See the [API Documentation](http://www.dartdocs.org/documentation/grinder/latest) for full details.
 
-    valid options:
-    -h, --help    show targets but don't build
-    -d, --deps    display the dependencies of targets
+### Running Tasks
 
-or:
+First install the `grind` executable:
 
-    pub global run grind <args>
+```shell
+pub global activate grinder
+```
 
-will run the `tool/grind.dart` script with the supplied arguments.
+then use it to run desired tasks:
 
-## API documentation
+```shell
+grind test
+grind build doc
+```
 
-Documentation is available [here](http://www.dartdocs.org/documentation/grinder/latest).
+or to run a default task (see `@DefaultTask` above):
+
+```shell
+grind
+```
+
+or to display a list of available tasks:
+
+```shell
+grind -h
+```
+
+You can also bypass installing `grind` and replace it in any of the above
+with `pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129), simply `pub run grinder`.
 
 ## Disclaimer
 
