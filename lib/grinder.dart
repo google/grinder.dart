@@ -24,6 +24,8 @@ import 'src/singleton.dart';
 /// Used to define a method body for a task. Note: a task's context is now
 /// available as a global variable ('context'). Your task functions should no
 /// longer be definied with a single `GrinderContext` parameter.
+@Deprecated('''Use a nullary function instead.  A task's context can now be
+accessed via the top-level `context` getter.''')
 typedef dynamic TaskFunction(GrinderContext context);
 
 /// Programmatically add a [task] to the global [Grinder] instance.
