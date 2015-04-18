@@ -1,5 +1,7 @@
 # Grinder for Dart
 
+> All your darty work, automated.
+
 Grinder consists of a library to define project tasks (e.g. test, build, doc),
 and a command-line tool to run them.
 

@@ -1,24 +1,18 @@
 name: grinder
-# This version must be updated in tandem with the lib/src/cli.dart version.
 version: 0.7.0-dev.2
-description: Grinder - a task based, dependency aware build system.
-
-homepage: https://github.com/google/grinder.dart
 author: Devon Carew <devoncarew@google.com>
-
+description: All your darty work, automated.
+homepage: https://github.com/google/grinder.dart
 environment:
   sdk: '>=1.0.0 <2.0.0'
-
 dependencies:
   args: '>=0.10.0 <0.14.0'
   cli_util: '>=0.0.1 <0.1.0'
   glob: '>=1.0.0 <2.0.0'
   http_server: '>=0.9.0 <0.10.0'
   which: '>=0.1.2 <0.2.0'
-
 dev_dependencies:
   browser: any
   unittest: any
-
 executables:
   grind: grinder
