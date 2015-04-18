@@ -1,4 +1,4 @@
-# Grinder for Dart.
+# Grinder for Dart
 
 > All your darty work, automated.
 
