@@ -3,6 +3,7 @@
 Grinder consists of a library to define project tasks (e.g. test, build, doc),
 and a command-line tool to run them.
 
+[![pub package](https://img.shields.io/pub/v/grinder.svg)](https://pub.dartlang.org/packages/grinder)
 [![Build Status](https://travis-ci.org/google/grinder.dart.svg?branch=master)](https://travis-ci.org/google/grinder.dart)
 [![Build status](https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true)](https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master)
 [![Coverage Status](https://img.shields.io/coveralls/google/grinder.dart.svg)](https://coveralls.io/r/google/grinder.dart)
