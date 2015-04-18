@@ -2,7 +2,7 @@
 // governed by a BSD-style license that can be found in the LICENSE file.
 
 /**
- * A task based, dependency aware build system.
+ * All your darty work, automated.
  *
  * See the [README][] for detailed usage information.
  *
