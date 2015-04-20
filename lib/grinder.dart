@@ -2,7 +2,7 @@
 // governed by a BSD-style license that can be found in the LICENSE file.
 
 /**
- * Dart workflows automated.
+ * Dart workflows, automated.
  *
  * See the [README][] for detailed usage information.
  *

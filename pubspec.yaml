@@ -1,7 +1,7 @@
 name: grinder
 # This version must be updated in tandem with the lib/src/cli.dart version.
 version: 0.7.0-dev.2
-description: Dart workflows automated.
+description: Dart workflows, automated.
 
 homepage: https://github.com/google/grinder.dart
 author: Devon Carew <devoncarew@google.com>

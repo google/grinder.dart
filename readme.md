@@ -1,6 +1,6 @@
 # Grinder
 
-> Dart workflows automated.
+> Dart workflows, automated.
 
 Grinder consists of a library to define project tasks (e.g. test, build, doc),
 and a command-line tool to run them.
