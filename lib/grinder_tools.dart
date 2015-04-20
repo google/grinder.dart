@@ -185,7 +185,7 @@ class Pub {
         workingDirectory: workingDirectory);
   }
 
-  static String version({bool quiet: false}) => AppVersion.parse(
+  static String version({bool quiet: false}) => _AppVersion.parse(
       _run('--version', quiet: quiet)).version;
 
   static PubGlobal get global => _global;
@@ -221,7 +221,7 @@ class PubGlobal {
   }
 
   /// Return the list of installed applications.
-  List<AppVersion> list() {
+  List<_AppVersion> _list() {
     //dart_coveralls 0.1.8
     //den 0.1.3
     //discoveryapis_generator 0.6.1
@@ -233,9 +233,9 @@ class PubGlobal {
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
       line = line.trim();
-      if (!line.contains(' ')) return new AppVersion._(line);
+      if (!line.contains(' ')) return new _AppVersion(line);
       var parts = line.split(' ');
-      return new AppVersion._(parts.first, parts[1]);
+      return new _AppVersion(parts.first, parts[1]);
     }).toList();
   }
 
@@ -248,7 +248,7 @@ class PubGlobal {
   void _initActivated() {
     if (_activatedPackages == null) {
       _activatedPackages = new Set();
-      _activatedPackages.addAll(list().map((appVer) => appVer.name));
+      _activatedPackages.addAll(_list().map((appVer) => appVer.name));
     }
   }
 }
@@ -409,7 +409,7 @@ class Dart2js {
   }
 
   static String version({bool quiet: false}) =>
-      AppVersion.parse(_run('--version', quiet: quiet)).version;
+      _AppVersion.parse(_run('--version', quiet: quiet)).version;
 
   static String _run(String command, {bool quiet: false}) =>
       run_lib.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
@@ -437,7 +437,7 @@ class Analyzer {
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet: false}) => AppVersion.parse(run_lib.run(
+  static String version({bool quiet: false}) => _AppVersion.parse(run_lib.run(
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
 }
 
@@ -797,16 +797,16 @@ String _chromiumPath() {
 }
 
 /// A version/app name pair.
-class AppVersion {
+class _AppVersion {
   final String name;
   final String version;
 
-  AppVersion._(this.name, [this.version]);
+  _AppVersion(this.name, [this.version]);
 
-  static AppVersion parse(String output) {
+  static _AppVersion parse(String output) {
     var lastSpace = output.lastIndexOf(' ');
-    if (lastSpace == -1) return new AppVersion._(output);
-    return new AppVersion._(output.substring(0, lastSpace),
+    if (lastSpace == -1) return new _AppVersion(output);
+    return new _AppVersion(output.substring(0, lastSpace),
         output.substring(lastSpace + 1));
   }
 
