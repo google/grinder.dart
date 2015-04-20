@@ -48,11 +48,12 @@ main() {
       expect(context.isFailed, false);
     });
 
-    test('global list', () {
-      MockGrinderContext context = new MockGrinderContext();
-      expect(Pub.global.list(), isNotNull);
-      expect(context.isFailed, false);
-    });
+    // See #166.
+//    test('global list', () {
+//      MockGrinderContext context = new MockGrinderContext();
+//      expect(Pub.global._list(), isNotNull);
+//      expect(context.isFailed, false);
+//    });
 
     test('isActivated', () {
       MockGrinderContext context = new MockGrinderContext();
