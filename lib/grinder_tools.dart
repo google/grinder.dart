@@ -50,47 +50,6 @@ void defaultInit([GrinderContext context]) { }
 /// artifacts in the `build/`.
 void defaultClean([GrinderContext context]) => delete(BUILD_DIR);
 
-/// Utility tasks for invoking dart.
-class Dart {
-
-  /// Run a dart [script] using [run_lib.run].
-  ///
-  /// Returns the stdout.
-  static String run(String script,
-      {List<String> arguments : const [], bool quiet: false,
-       String packageRoot, String workingDirectory, int vmNewGenHeapMB,
-       int vmOldGenHeapMB}) {
-    List<String> args = [];
-
-    if (packageRoot != null) {
-      args.add('--package-root=${packageRoot}');
-    }
-
-    if (vmNewGenHeapMB != null) {
-      args.add('--new_gen_heap_size=${vmNewGenHeapMB}');
-    }
-
-    if (vmOldGenHeapMB != null) {
-      args.add('--old_gen_heap_size=${vmOldGenHeapMB}');
-    }
-
-    args.add(script);
-    args.addAll(arguments);
-
-    return run_lib.run(_sdkBin('dart'), arguments: args, quiet: quiet,
-        workingDirectory: workingDirectory);
-  }
-
-  static String version({bool quiet: false}) {
-    // TODO: We may want to run `dart --version` in order to know the version
-    // of the SDK that grinder has located.
-    //run_lib.run(_sdkBin('dart'), arguments: ['--version'], quiet: quiet);
-    // The stdout does not have a stable documented format, so use the provided
-    // metadata instead.
-    return Platform.version.substring(0, Platform.version.indexOf(' '));
-  }
-}
-
 /**
  * A utility class to run tests for your project.
  */
@@ -358,27 +317,6 @@ class ContentShell extends Chrome {
 
   ContentShell() : super(_contentShellPath());
 }
-
-// TODO: Remove. This is only duplicated (from grinder_sdk.dart) temporarily.
-bool _sdkOnPath;
-
-String _sdkBin(String name) {
-  if (Platform.isWindows) {
-    return name == 'dart' ? 'dart.exe' : '${name}.bat';
-  } else if (Platform.isMacOS) {
-    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
-    // This is only necessary in unusual circumstances, like when the script is
-    // run from the Editor on macos.
-    if (_sdkOnPath == null) {
-      _sdkOnPath = whichSync('dart', orElse: () => null) != null;
-    }
-
-    return _sdkOnPath ? name : '${sdkDir.path}/bin/${name}';
-  } else {
-    return name;
-  }
-}
-// TODO: remove
 
 String _dartiumPath() {
   final Map m = {

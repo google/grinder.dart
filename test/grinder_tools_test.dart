@@ -8,10 +8,6 @@ import 'package:unittest/unittest.dart';
 
 main() {
   group('grinder.tools', () {
-    test('Dart.version', () {
-      expect(Dart.version(quiet: true), isNotEmpty);
-    });
-
     test('Chrome.getBestInstalledChrome', () {
       Chrome chrome = Chrome.getBestInstalledChrome();
       // Expect that we can always locate a Chrome, even on the bots.
