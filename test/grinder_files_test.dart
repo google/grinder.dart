@@ -8,6 +8,8 @@ import 'dart:io';
 import 'package:grinder/grinder.dart';
 import 'package:unittest/unittest.dart';
 
+final String _sep = Platform.pathSeparator;
+
 main() {
   group('grinder.files FileSet', () {
     Directory temp;
@@ -15,17 +17,15 @@ main() {
     File fileB;
 
     setUp(() {
-      final String sep = Platform.pathSeparator;
-
       temp = Directory.systemTemp.createTempSync();
 
-      fileB = new File('${temp.path}${sep}b.txt');
+      fileB = new File('${temp.path}${_sep}b.txt');
       fileB.writeAsStringSync('b');
 
-      fileA = new File('${temp.path}${sep}a.txt');
+      fileA = new File('${temp.path}${_sep}a.txt');
       fileA.writeAsStringSync('a');
 
-      File subFile = new File('${temp.path}${sep}foo${sep}sub.txt');
+      File subFile = new File('${temp.path}${_sep}foo${_sep}sub.txt');
       subFile.createSync(recursive: true);
       subFile.writeAsStringSync('sub');
     });
@@ -81,7 +81,6 @@ main() {
 
   group('grinder.files', () {
     Directory temp;
-    final String sep = Platform.pathSeparator;
 
     setUp(() {
       temp = Directory.systemTemp.createTempSync();
@@ -93,39 +92,39 @@ main() {
 
     test('fileName', () {
       final String tempFileName = "temp.txt";
-      File tempFile = new File('${temp.path}${sep}tempdir${sep}${tempFileName}');
+      File tempFile = new File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
       expect(fileName(tempFile), tempFileName);
     });
 
     test('fileExt', () {
       final String extension = 'txt';
       final String fileName = 'temp' + '.' + extension;
-      File tempFile = new File('${temp.path}${sep}tempdir${sep}${fileName}');
+      File tempFile = new File('${temp.path}${_sep}tempdir${_sep}${fileName}');
       expect(fileExt(tempFile), extension);
 
       final fileNameEmptyExt = 'temp.';
-      tempFile = new File('${temp.path}${sep}tempdir${sep}${fileNameEmptyExt}');
+      tempFile = new File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
       expect(fileExt(tempFile), '');
     });
 
     test('fileExt null', () {
       String fileNameNoExt = 'temp';
       File tempFile =
-        new File('${temp.path}${sep}tempdir${sep}${fileNameNoExt}');
+        new File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
       expect(fileExt(tempFile), null);
     });
 
     test('joinFile', () {
       File tempFile = joinFile(Directory.current, ['dir','test']);
       File expectedFile =
-        new File('${Directory.current.path}${sep}dir${sep}test');
+        new File('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempFile.path, expectedFile.path);
     });
 
     test('joinDir', () {
       Directory tempDirectory = joinDir(Directory.current, ['dir','test']);
       Directory expectedDir =
-        new Directory('${Directory.current.path}${sep}dir${sep}test');
+        new Directory('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempDirectory.path, expectedDir.path);
     });
 
@@ -192,7 +191,15 @@ main() {
       expect(file.isDirectory, false);
       expect(file.name, 'temp.txt');
 
-      expect(new FilePath(dir.path + Platform.pathSeparator).path, dir.path);
+      expect(new FilePath(dir.path + _sep).path, dir.path);
+    });
+
+    test('FilePath(str) platform independent', () {
+      FilePath file = temp.join('temp.txt');
+      file.asFile.writeAsStringSync('foo\n', flush: true);
+      expect(file.exists, true);
+      FilePath file2 = new FilePath(file.path.replaceAll(_sep, '/'));
+      expect(file2.exists, true);
     });
 
     test('current', () {

@@ -115,7 +115,8 @@ class FilePath {
   final String _path;
 
   /// Create a new [FilePath]. The [entityOrString] parameter can be a
-  /// [FileSystemEntity] or a [String].
+  /// [FileSystemEntity] or a [String]. If a [String], this method converts the
+  /// given path from a platform independent one to a platform dependent path.
   FilePath(entityOrString) : _path = _coerce(entityOrString);
 
   String get name {
@@ -267,6 +268,8 @@ class FilePath {
 
   static String _coerce(arg) {
     if (arg is String) {
+      if (_sep != '/') arg = arg.replaceAll('/', _sep);
+
       if (arg.length > 1 && arg.endsWith((_sep))) {
         return arg.substring(0, arg.length - 1);
       } else {
