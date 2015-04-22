@@ -19,7 +19,7 @@ main() {
     });
 
     test('Dartium', () {
-      Chrome dartium = new Dartium();
+      /*Chrome dartium =*/ new Dartium();
       // This may not always be true; assert that we can create Dartium.
       //expect(dartium.exists, true);
     });
