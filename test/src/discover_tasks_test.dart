@@ -9,9 +9,9 @@ import 'package:grinder/grinder.dart';
 import 'package:grinder/src/discover_tasks.dart';
 import 'package:unittest/unittest.dart';
 
-import 'good_tasks.dart' as good;
-import 'bad_tasks.dart' as bad;
-import 'external_tasks.dart' as external;
+import '../task_discovery/good_tasks.dart' as good;
+import '../task_discovery/bad_tasks.dart' as bad;
+import '../task_discovery/external_tasks.dart' as external;
 
 main() {
   // Libs which contains annotated tasks (imported above).

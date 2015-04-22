@@ -30,12 +30,8 @@ main() {
       });
     });
 
-    test('printUsage', () {
-      printUsage(createArgsParser(), grinder);
-    });
-
-    test('printDeps', () {
-      printDeps(grinder);
+    test('printUsageAndDeps', () {
+      printUsageAndDeps(createArgsParser(), grinder);
     });
   });
 }
