@@ -18,7 +18,7 @@ void test() {
   Tests.runCliTests();
 }
 
-@Task('Check that the generated init grind script analyzes well')
+@Task('Check that the generated `init` grind script analyzes well.')
 checkInit() {
   FilePath temp = FilePath.createSystemTemp();
 

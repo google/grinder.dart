@@ -4,7 +4,8 @@
 library all_test;
 
 import 'src/cli_test.dart' as src_cli_test;
-import 'task_discovery/discover_tasks_test.dart' as discover_tasks_test;
+import 'src/discover_tasks_test.dart' as src_discover_tasks_test;
+import 'src/utils_test.dart' as src_utils_test;
 import 'cli_test.dart' as cli_test;
 import 'grinder_test.dart' as grinder_test;
 import 'grinder_files_test.dart' as grinder_files_test;
@@ -12,7 +13,8 @@ import 'grinder_tools_test.dart' as grinder_tools_test;
 
 main() {
   src_cli_test.main();
-  discover_tasks_test.main();
+  src_discover_tasks_test.main();
+  src_utils_test.main();
   cli_test.main();
   grinder_test.main();
   grinder_files_test.main();

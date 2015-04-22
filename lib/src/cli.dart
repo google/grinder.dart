@@ -39,10 +39,11 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: true}) {
         print('grinder is up to date!');
       }
     }).catchError((e) => null);
-  } else if (results['help']) {
-    printUsage(parser, grinder);
-  } else if (results['deps']) {
-    printDeps(grinder);
+  } else if (results['help'] || results['deps']) {
+    // TODO: Remove `deps` options post 0.7.0.
+    printUsageAndDeps(parser, grinder);
+  } else if (results.rest.isEmpty && !grinder.hasDefaultTask){
+    printUsageAndDeps(parser, grinder);
   } else {
     if (verifyProjectRoot) {
       // Verify that we're running from the project root.
@@ -74,28 +75,40 @@ ArgParser createArgsParser() {
       help: "print the version of grinder");
   parser.addFlag('help', abbr: 'h', negatable: false,
       help: "show targets but don't build");
-  parser.addFlag('deps', abbr: 'd', negatable: false,
+  // TODO: Deprecated; remove post 0.7.0.
+  parser.addFlag('deps', abbr: 'd', negatable: false, hide: true,
       help: "display the dependencies of targets");
   return parser;
 }
 
-void printUsage(ArgParser parser, Grinder grinder) {
+void printUsageAndDeps(ArgParser parser, Grinder grinder) {
   print('usage: dart ${currentScript()} <options> target1 target2 ...');
   print('');
   print('valid options:');
   print(parser.usage.replaceAll('\n\n', '\n'));
 
-  if (!grinder.tasks.isEmpty) {
+  if (grinder.tasks.isEmpty) {
     print('');
-    print('valid targets:');
+    print('no current grinder targets');
+  } else {
+    // calculate the dependencies
+    grinder.start([], dontRun: true);
+
+    print('');
+    print('targets:');
+    print('');
 
     List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.forEach((t) {
-      var buffer = new StringBuffer()..write('  $t');
-      if (grinder.defaultTask == t) buffer.write(' (default)');
-      if (t.description != null) buffer.write(' ${t.description}');
-      print(buffer.toString());
-    });
+    print(tasks.map((task) {
+      bool isDefault = grinder.defaultTask == task;
+      Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
+
+      String str = '${task}\n';
+      if (isDefault) str += '  @DefaultTask\n';
+      if (task.description != null) str += '  ${task.description}\n';
+      if (deps.isNotEmpty) str += '  @Depends: ${deps.map((t) => t.toString()).join(' ')}\n';
+      return str;
+    }).join('\n'));
   }
 }
 
@@ -106,27 +119,6 @@ String currentScript() {
     script = script.substring(uriBase.length);
   }
   return script;
-}
-
-void printDeps(Grinder grinder) {
-  // calculate the dependencies
-  grinder.start([], dontRun: true);
-
-  if (grinder.tasks.isEmpty) {
-    print("no grinder targets defined");
-  } else {
-    print('grinder targets:');
-    print('');
-
-    List<GrinderTask> tasks = grinder.tasks.toList();
-    tasks.forEach((GrinderTask t) {
-      t.description == null ? print("${t}") : print("  ${t} ${t.description}");
-
-      if (!grinder.getImmediateDependencies(t).isEmpty) {
-        print("  ${grinder.getAllDependencies(t).join(', ')}");
-      }
-    });
-  }
 }
 
 String cleanupStackTrace(st) {

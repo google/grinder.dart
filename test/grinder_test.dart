@@ -10,7 +10,6 @@ import 'package:unittest/unittest.dart';
 
 main() {
   group('grinder', () {
-
     test('tasks must have a task function or dependencies', () {
       expect(() {
         new GrinderTask('foo', taskFunction: null, depends: []);

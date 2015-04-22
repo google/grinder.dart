@@ -12,6 +12,12 @@ import 'utils.dart';
 
 main() {
   group('grinder.tools', () {
+    MockGrinderContext mockContext;
+
+    setUp(() {
+      mockContext = new MockGrinderContext();
+    });
+
     test('sdkDir', () {
       if (Platform.environment['DART_SDK'] != null) {
         expect(sdkDir, isNotNull);
@@ -29,36 +35,48 @@ main() {
     });
 
     test('dart2js version', () {
-      MockGrinderContext context = new MockGrinderContext();
-      Dart2js.version();
-      expect(context.isFailed, false);
+      return mockContext.runZoned(() {
+        expect(Dart2js.version(), isNotNull);
+      }).then((_) {
+        expect(mockContext.logBuffer, isNotEmpty);
+        expect(mockContext.isFailed, false);
+      });
     });
 
     test('analyzer version', () {
-      MockGrinderContext context = new MockGrinderContext();
-      Analyzer.version();
-      expect(context.isFailed, false);
+      return mockContext.runZoned(() {
+        expect(Analyzer.version(), isNotNull);
+      }).then((_) {
+        expect(mockContext.logBuffer, isNotEmpty);
+        expect(mockContext.isFailed, false);
+      });
     });
-  });
 
-  group('grinder.tools.pub', () {
-    test('version', () {
-      MockGrinderContext context = new MockGrinderContext();
-      Pub.version();
-      expect(context.isFailed, false);
+    test('Pub.version', () {
+      return mockContext.runZoned(() {
+        expect(Pub.version(), isNotNull);
+      }).then((_) {
+        expect(mockContext.logBuffer, isNotEmpty);
+        expect(mockContext.isFailed, false);
+      });
     });
 
     // See #166.
-//    test('global list', () {
-//      MockGrinderContext context = new MockGrinderContext();
-//      expect(Pub.global._list(), isNotNull);
-//      expect(context.isFailed, false);
+//    test('Pub.list', () {
+//      return mockContext.runZoned(() {
+//        expect(Pub.global._list(), isNotNull);
+//      }).then((_) {
+//        expect(mockContext.logBuffer, isNotEmpty);
+//        expect(mockContext.isFailed, false);
+//      });
 //    });
 
-    test('isActivated', () {
-      MockGrinderContext context = new MockGrinderContext();
-      expect(Pub.global.isActivated('foo'), false);
-      expect(context.isFailed, false);
+    test('Pub.isActivated', () {
+      return mockContext.runZoned(() {
+        expect(Pub.global.isActivated('foo'), false);
+      }).then((_) {
+        expect(mockContext.isFailed, false);
+      });
     });
 
     test('PubApp.global', () {

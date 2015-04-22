@@ -16,6 +16,7 @@ export 'src/cli.dart' show grinderArgs;
 
 import 'dart:async';
 import 'dart:mirrors';
+import 'dart:io';
 
 import 'src/discover_tasks.dart';
 import 'src/cli.dart';
@@ -66,10 +67,19 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 /// run from a project root.
 ///
 /// If a task fails, it throws and runs no further tasks.
-Future grind(List<String> args, {bool verifyProjectRoot: true}) => new Future(() {
-  discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
-  return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
-});
+Future grind(List<String> args, {bool verifyProjectRoot: true}) {
+  try {
+    discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
+    return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
+  } catch (e) {
+    if (e is GrinderException) {
+      stdout.writeln(e.message);
+      exit(1);
+    } else {
+      return new Future.error(e);
+    }
+  }
+}
 
 /**
  * Start the build process. This should be called at the end of the `main()`
@@ -261,6 +271,9 @@ class Grinder {
     _defaultTask = v;
   }
 
+  /// Return whether this grinder instance has a default task set.
+  bool get hasDefaultTask => _defaultTask != null;
+
   GrinderTask _defaultTask;
 
   /// Get the list of all the Grinder tasks.
@@ -309,9 +322,9 @@ class Grinder {
       if (defaultTask != null) {
         targets = [defaultTask.name];
       } else {
-        log('no tasks specified, and no default task defined');
+        if (!dontRun) log('no tasks specified, and no default task defined');
       }
-      log('run `grinder -h` for help and a list of valid tasks');
+      if (!dontRun) log('run `grinder -h` for help and a list of valid tasks\n');
       if (targets.isEmpty) return new Future.value();
     }
 

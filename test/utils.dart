@@ -3,7 +3,10 @@
 
 library grinder_test_utils;
 
+import 'dart:async';
+
 import 'package:grinder/grinder.dart';
+import 'package:grinder/src/singleton.dart';
 
 class MockGrinderContext implements GrinderContext {
   Grinder grinder;
@@ -14,6 +17,11 @@ class MockGrinderContext implements GrinderContext {
 
   bool get isFailed => failBuffer.isNotEmpty;
 
-  void log(String message) => logBuffer.write(message);
-  void fail(String message) => failBuffer.write(message);
+  void log(String message) => logBuffer.write('${message}\n');
+  void fail(String message) => failBuffer.write('${message}\n');
+
+  Future runZoned(Function f) {
+    var result = zonedContext.withValue(this, f);
+    return result is Future ? result : new Future.value();
+  }
 }
