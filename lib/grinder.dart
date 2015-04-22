@@ -11,6 +11,7 @@
 library grinder;
 
 export 'grinder_files.dart';
+export 'grinder_sdk.dart';
 export 'grinder_tools.dart';
 export 'src/cli.dart' show grinderArgs;
 

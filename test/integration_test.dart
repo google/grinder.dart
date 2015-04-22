@@ -1,18 +1,21 @@
 // Copyright 2014 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.cli_test;
+library grinder.integration_test;
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/cli.dart';
 import 'package:grinder/src/singleton.dart';
 import 'package:unittest/unittest.dart';
 
-bool isSetup = false;
 Map ranTasks = {};
 
+// TODO: I'm not sure these tests add a lot of value.
+
 main() {
-  group('cli', () {
+  group('integration', () {
+    bool isSetup = false;
+
     setUp(() {
       if (!isSetup) {
         isSetup = true;
