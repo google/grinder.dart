@@ -67,7 +67,7 @@ or to run a default task (see `@DefaultTask` above):
 
     grind
 
-or to display a list of available tasks:
+or to display a list of available tasks and their dependencies:
 
     grind -h
 

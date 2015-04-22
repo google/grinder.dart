@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.7.1
+-
+
 ## 0.7.0
 - Big changes! Task definititions are now primarily annotation based; see the
   [readme](https://github.com/google/grinder.dart) for more information and an example

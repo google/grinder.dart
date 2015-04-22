@@ -103,10 +103,9 @@ void printUsageAndDeps(ArgParser parser, Grinder grinder) {
       bool isDefault = grinder.defaultTask == task;
       Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
 
-      String str = '${task}\n';
-      if (isDefault) str += '  @DefaultTask\n';
+      String str = '${task}${isDefault ? ' (default)' : ''}\n';
       if (task.description != null) str += '  ${task.description}\n';
-      if (deps.isNotEmpty) str += '  @Depends: ${deps.map((t) => t.toString()).join(' ')}\n';
+      if (deps.isNotEmpty) str += '  depends on: ${deps.map((t) => t.toString()).join(' ')}\n';
       return str;
     }).join('\n'));
   }
