@@ -124,15 +124,15 @@ Future<String> runProcessAsync(String executable,
        quiet: quiet, workingDirectory: workingDirectory);
 
 /// An exception from a process which exited with a non-zero exit code.
-class ProcessException {
-final String executable;
-final int exitCode;
-final String stdout;
-final String stderr;
+class ProcessException implements Exception {
+  final String executable;
+  final int exitCode;
+  final String stdout;
+  final String stderr;
 
-ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
+  ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
 
-String toString() => """
+  String toString() => """
 $executable failed with:
 exit code: $exitCode
 
