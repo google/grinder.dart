@@ -33,13 +33,9 @@ Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
 File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
-/// Utility tasks for for getting information about the Dart SDK and invoking
-/// dart applications.
+/// Utility tasks for for getting information about the Dart VM and for running
+/// Dart applications.
 class Dart {
-  /// Return the path to the current Dart SDK. This will return `null` if we are
-  /// unable to locate the Dart SDK.
-  static Directory get location => sdkDir;
-
   /// Run a dart [script] using [run_lib.run].
   ///
   /// Returns the stdout.
@@ -77,6 +73,12 @@ class Dart {
     return Platform.version.substring(0, Platform.version.indexOf(' '));
   }
 }
+
+//class DartSdk {
+//  /// Return the path to the current Dart SDK. This will return `null` if we are
+//  /// unable to locate the Dart SDK.
+//  static Directory get location => sdkDir;
+//}
 
 /**
  * Utility tasks for executing pub commands.
