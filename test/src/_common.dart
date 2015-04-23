@@ -7,6 +7,16 @@ import 'dart:async';
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/singleton.dart';
+import 'package:unittest/unittest.dart';
+
+typedef TestVerification(MockGrinderContext ctx);
+
+void grinderTest(String name, Function setup, TestVerification verify) {
+  test(name, () {
+    MockGrinderContext ctx = new MockGrinderContext();
+    return ctx.runZoned(() => setup()).then((_) => verify(ctx));
+  });
+}
 
 class MockGrinderContext implements GrinderContext {
   Grinder grinder;

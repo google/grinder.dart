@@ -60,9 +60,9 @@ void task(String name, [Function taskFunction, List<String> depends = const []])
 
 /// Run the grinder file.
 ///
-/// First, discovers the tasks declared in your grinder file.  Then, handles
-/// the command-line [args] either by running tasks or responding to
-/// recognized options such as --help.
+/// First, discovers the tasks declared in your grinder file. Then, handles the
+/// command-line [args] either by running tasks or responding to recognized
+/// options such as --help.
 ///
 /// If [verifyProjectRoot] is true, grinder will verify that the script is being
 /// run from a project root.
@@ -74,8 +74,7 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) {
     return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
   } catch (e) {
     if (e is GrinderException) {
-      stdout.writeln(e.message);
-      exit(1);
+      fail(e.message);
     } else {
       return new Future.error(e);
     }
@@ -101,10 +100,7 @@ GrinderContext get context => zonedContext.value;
 void log(String message) => context.log(message);
 
 /// Halt task execution; throws an exception with the given error message.
-void fail(String message) {
-  log('failed: ${message}');
-  throw new GrinderException(message);
-}
+void fail(String message) => context.fail(message);
 
 /**
  * A [GrinderContext] is used to give the currently running Grinder task the

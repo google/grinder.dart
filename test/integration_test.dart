@@ -8,9 +8,9 @@ import 'package:grinder/src/cli.dart';
 import 'package:grinder/src/singleton.dart';
 import 'package:unittest/unittest.dart';
 
-Map ranTasks = {};
+import 'src/_common.dart';
 
-// TODO: I'm not sure these tests add a lot of value.
+Map ranTasks = {};
 
 main() {
   group('integration', () {
@@ -26,15 +26,12 @@ main() {
       _clear();
     });
 
-    test('all ran', () {
-      return handleArgs(['bar']).then((_) {
-        expect(ranTasks['foo'], true);
-        expect(ranTasks['bar'], true);
-      });
-    });
-
-    test('printUsageAndDeps', () {
-      printUsageAndDeps(createArgsParser(), grinder);
+    grinderTest('all ran', () {
+      return handleArgs(['bar']);
+    }, (ctx) {
+      expect(ctx.isFailed, false);
+      expect(ranTasks['foo'], true);
+      expect(ranTasks['bar'], true);
     });
   });
 }

@@ -3,6 +3,8 @@
 
 library grinder.src.singleton;
 
+import 'dart:io';
+
 import '../grinder.dart';
 import 'utils.dart';
 
@@ -10,15 +12,14 @@ final Grinder grinder = new Grinder();
 
 final ZonedValue zonedContext = new ZonedValue(new _NoopContext());
 
-// TODO: Move to having the default context fast-fail.
-
 class _NoopContext implements GrinderContext {
   Grinder get grinder => null;
 
   GrinderTask get task => null;
 
   void fail(String message) {
-    throw new GrinderException(message);
+    stderr.writeln(message);
+    exit(1);
   }
 
   void log(String message) => print(message);
