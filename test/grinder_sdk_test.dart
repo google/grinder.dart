@@ -12,12 +12,6 @@ import 'src/_common.dart';
 
 main() {
   group('grinder.sdk', () {
-    MockGrinderContext mockContext;
-
-    setUp(() {
-      mockContext = new MockGrinderContext();
-    });
-
     test('sdkDir', () {
       if (Platform.environment['DART_SDK'] != null) {
         expect(sdkDir, isNotNull);
@@ -42,31 +36,25 @@ main() {
       expect(Dart.version(quiet: true), isNotEmpty);
     });
 
-    test('dart2js version', () {
-      return mockContext.runZoned(() {
-        expect(Dart2js.version(), isNotNull);
-      }).then((_) {
-        expect(mockContext.logBuffer, isNotEmpty);
-        expect(mockContext.isFailed, false);
-      });
+    grinderTest('dart2js version', () {
+      expect(Dart2js.version(), isNotNull);
+    }, (MockGrinderContext ctx) {
+      expect(ctx.logBuffer, isNotEmpty);
+      expect(ctx.isFailed, false);
     });
 
-    test('analyzer version', () {
-      return mockContext.runZoned(() {
-        expect(Analyzer.version(), isNotNull);
-      }).then((_) {
-        expect(mockContext.logBuffer, isNotEmpty);
-        expect(mockContext.isFailed, false);
-      });
+    grinderTest('analyzer version', () {
+      expect(Analyzer.version(), isNotNull);
+    }, (MockGrinderContext ctx) {
+      expect(ctx.logBuffer, isNotEmpty);
+      expect(ctx.isFailed, false);
     });
 
-    test('Pub.version', () {
-      return mockContext.runZoned(() {
-        expect(Pub.version(), isNotNull);
-      }).then((_) {
-        expect(mockContext.logBuffer, isNotEmpty);
-        expect(mockContext.isFailed, false);
-      });
+    grinderTest('Pub.version', () {
+      expect(Pub.version(), isNotNull);
+    }, (ctx) {
+      expect(ctx.logBuffer, isNotEmpty);
+      expect(ctx.isFailed, false);
     });
 
     // See #166.
@@ -79,12 +67,10 @@ main() {
 //      });
 //    });
 
-    test('Pub.isActivated', () {
-      return mockContext.runZoned(() {
-        expect(Pub.global.isActivated('foo'), false);
-      }).then((_) {
-        expect(mockContext.isFailed, false);
-      });
+    grinderTest('Pub.isActivated', () {
+      expect(Pub.global.isActivated('foo'), false);
+    }, (ctx) {
+      expect(ctx.isFailed, false);
     });
 
     test('PubApp.global', () {

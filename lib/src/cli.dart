@@ -28,15 +28,15 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: true}) {
   if (results['version']) {
     const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
-    print('grinder version ${APP_VERSION}');
+    log('grinder version ${APP_VERSION}');
 
     return httpGet(pubUrl).then((String str) {
       List versions = JSON.decode(str)['versions'];
       if (APP_VERSION != versions.last) {
-        print("Version ${versions.last} is available! Run `pub global activate"
+        log("Version ${versions.last} is available! Run `pub global activate"
             " grinder` to get the latest version.");
       } else {
-        print('grinder is up to date!');
+        log('grinder is up to date!');
       }
     }).catchError((e) => null);
   } else if (results['help'] || results['deps']) {
@@ -55,12 +55,13 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: true}) {
     Future result = grinder.start(results.rest);
 
     return result.catchError((e, st) {
+      String message;
       if (st != null) {
-        print('\n${e}\n${cleanupStackTrace(st)}');
+        message = '\n${e}\n${cleanupStackTrace(st)}';
       } else {
-        print('\n${e}');
+        message = '\n${e}';
       }
-      exit(1);
+      fail(message);
     });
   }
 
@@ -82,24 +83,24 @@ ArgParser createArgsParser() {
 }
 
 void printUsageAndDeps(ArgParser parser, Grinder grinder) {
-  print('usage: dart ${currentScript()} <options> target1 target2 ...');
-  print('');
-  print('valid options:');
-  print(parser.usage.replaceAll('\n\n', '\n'));
+  log('usage: dart ${currentScript()} <options> target1 target2 ...');
+  log('');
+  log('valid options:');
+  log(parser.usage.replaceAll('\n\n', '\n'));
 
   if (grinder.tasks.isEmpty) {
-    print('');
-    print('no current grinder targets');
+    log('');
+    log('no current grinder targets');
   } else {
     // calculate the dependencies
     grinder.start([], dontRun: true);
 
-    print('');
-    print('targets:');
-    print('');
+    log('');
+    log('targets:');
+    log('');
 
     List<GrinderTask> tasks = grinder.tasks.toList();
-    print(tasks.map((task) {
+    log(tasks.map((task) {
       bool isDefault = grinder.defaultTask == task;
       Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
 

@@ -4,12 +4,22 @@
 library grinder.src.cli_test;
 
 import 'package:grinder/src/cli.dart';
+import 'package:grinder/src/singleton.dart';
 import 'package:unittest/unittest.dart';
+
+import '_common.dart';
 
 main() {
   group('cli', () {
     test('cleanupStackTrace', () {
       expect(cleanupStackTrace(_st), _stExpected);
+    });
+
+    grinderTest('printUsageAndDeps', () {
+      printUsageAndDeps(createArgsParser(), grinder);
+    }, (ctx) {
+      expect(ctx.logBuffer.toString(), contains('valid options:'));
+      expect(ctx.isFailed, false);
     });
   });
 }
