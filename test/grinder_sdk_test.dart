@@ -34,6 +34,14 @@ main() {
       expect(dartVM, isNotNull);
     });
 
+//    test('DartSdk.location', () {
+//      expect(DartSdk.location, isNotNull);
+//    });
+
+    test('Dart.version', () {
+      expect(Dart.version(quiet: true), isNotEmpty);
+    });
+
     test('dart2js version', () {
       return mockContext.runZoned(() {
         expect(Dart2js.version(), isNotNull);
@@ -91,6 +99,39 @@ main() {
     test('PubApp.local', () {
       PubApp grinder = new PubApp.local('grinder');
       expect(grinder.isGlobal, false);
+    });
+  });
+
+  group('grinder.sdk DartFmt', () {
+    FilePath temp;
+    File file;
+
+    setUp(() {
+      temp = FilePath.createSystemTemp();
+      file = temp.join('foo.dart').asFile;
+      file.writeAsStringSync('void main() {}');
+    });
+
+    tearDown(() {
+      temp.delete();
+    });
+
+    test('dryRun', () {
+      // TODO: Re-enable this test on windows when our bot has a 1.9.3 SDK on it.
+      if (Platform.isWindows) return;
+
+      bool wouldChange = DartFmt.dryRun(file);
+      expect(wouldChange, true);
+    });
+
+    test('format', () {
+      // TODO: Re-enable this test on windows when our bot has a 1.9.3 SDK on it.
+      if (Platform.isWindows) return;
+
+      String originalText = file.readAsStringSync();
+      DartFmt.format(file);
+      String newText = file.readAsStringSync();
+      expect(newText, isNot(equals(originalText)));
     });
   });
 }
