@@ -125,6 +125,9 @@ main() {
     });
 
     test('format', () {
+      // TODO: Re-enable this test on windows when our bot has a 1.9.3 SDK on it.
+      if (Platform.isWindows) return;
+
       String originalText = file.readAsStringSync();
       DartFmt.format(file);
       String newText = file.readAsStringSync();

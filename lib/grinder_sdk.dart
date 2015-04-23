@@ -269,7 +269,8 @@ class Analyzer {
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
 }
 
-/// Utility class for invoking `dartfmt` from the SDK.
+/// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
+/// the `dartfmt` from SDK 1.9 and greater.
 class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format any files
   /// in place.
