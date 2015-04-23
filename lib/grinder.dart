@@ -17,7 +17,6 @@ export 'src/cli.dart' show grinderArgs;
 
 import 'dart:async';
 import 'dart:mirrors';
-import 'dart:io';
 
 import 'src/discover_tasks.dart';
 import 'src/cli.dart';
