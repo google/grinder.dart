@@ -117,6 +117,8 @@ class FilePath {
   /// Create a new [FilePath]. The [entityOrString] parameter can be a
   /// [FileSystemEntity] or a [String]. If a [String], this method converts the
   /// given path from a platform independent one to a platform dependent path.
+  /// This conversion will work for relative paths but wouldn't make sense to
+  /// use for absolute ones.
   FilePath(entityOrString) : _path = _coerce(entityOrString);
 
   String get name {
