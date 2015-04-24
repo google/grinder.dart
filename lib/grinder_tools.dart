@@ -21,10 +21,7 @@ export 'src/run.dart';
 
 final Directory binDir = new Directory('bin');
 final Directory buildDir = new Directory('build');
-final Directory exampleDir = new Directory('example');
 final Directory libDir = new Directory('lib');
-final Directory testDir = new Directory('test');
-final Directory toolDir = new Directory('tool');
 final Directory webDir = new Directory('web');
 
 @Deprecated('See binDir') Directory get BIN_DIR => binDir;
