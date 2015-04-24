@@ -19,10 +19,15 @@ import 'src/_wip.dart';
 
 export 'src/run.dart';
 
-final Directory BIN_DIR = new Directory('bin');
-final Directory BUILD_DIR = new Directory('build');
-final Directory LIB_DIR = new Directory('lib');
-final Directory WEB_DIR = new Directory('web');
+final Directory binDir = new Directory('bin');
+final Directory buildDir = new Directory('build');
+final Directory libDir = new Directory('lib');
+final Directory webDir = new Directory('web');
+
+@Deprecated('See binDir') Directory get BIN_DIR => binDir;
+@Deprecated('See buildDir') Directory get BUILD_DIR => buildDir;
+@Deprecated('See libDir') Directory get LIB_DIR => libDir;
+@Deprecated('See webDir') Directory get WEB_DIR => webDir;
 
 /// Run a dart [script] using [run_lib.run].
 ///
@@ -48,7 +53,7 @@ void defaultInit([GrinderContext context]) { }
 
 /// A default implementation of a `clean` task. This task deletes all generated
 /// artifacts in the `build/`.
-void defaultClean([GrinderContext context]) => delete(BUILD_DIR);
+void defaultClean([GrinderContext context]) => delete(buildDir);
 
 /**
  * A utility class to run tests for your project.
