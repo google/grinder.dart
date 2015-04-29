@@ -5,11 +5,12 @@ library grinder.src.cli;
 
 import 'dart:async';
 import 'dart:convert' show JSON, UTF8;
-import 'dart:io';
+import 'dart:math';
 
-import 'package:args/args.dart';
+import 'package:ansicolor/ansicolor.dart';
+import 'package:unscripted/unscripted.dart';
 
-import 'singleton.dart';
+import 'singleton.dart' as singleton;
 import 'utils.dart';
 import '../grinder.dart';
 
@@ -18,41 +19,55 @@ const String APP_VERSION = '0.7.0';
 
 List<String> grinderArgs() => _args;
 List<String> _args;
+bool _verifyProjectRoot;
 
-Future handleArgs(List<String> args, {bool verifyProjectRoot: true}) {
+Future handleArgs(List<String> args, {bool verifyProjectRoot}) {
   _args = args == null ? [] : args;
+  _verifyProjectRoot = verifyProjectRoot;
+  return script.execute(grinderArgs());
+}
 
-  ArgParser parser = createArgsParser();
-  ArgResults results = parser.parse(grinderArgs());
+@Command(help: 'Dart workflows, automated.', plugins: const [const Completion()])
+cli(
+    @Rest(help: getTaskHelp, allowed: allowedTasks)
+    List<String> tasks,
+    {
+     @Flag(help: 'Print the version of grinder.')
+     bool version,
+     @Option(help: 'Set the location of the Dart SDK.')
+     String dartSdk,
+     @Deprecated('Task dependencies are now available via --help.')
+     @Flag(hide:true, abbr: 'd', help: 'Display the dependencies of tasks.')
+     bool deps
+    }) {
 
-  if (results['version']) {
+  if (version) {
     const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
-    log('grinder version ${APP_VERSION}');
+    print('grinder version ${APP_VERSION}');
 
     return httpGet(pubUrl).then((String str) {
       List versions = JSON.decode(str)['versions'];
       if (APP_VERSION != versions.last) {
-        log("Version ${versions.last} is available! Run `pub global activate"
+        print("Version ${versions.last} is available! Run `pub global activate"
             " grinder` to get the latest version.");
       } else {
-        log('grinder is up to date!');
+        print('grinder is up to date!');
       }
     }).catchError((e) => null);
-  } else if (results['help'] || results['deps']) {
-    // TODO: Remove `deps` options post 0.7.0.
-    printUsageAndDeps(parser, grinder);
-  } else if (results.rest.isEmpty && !grinder.hasDefaultTask){
-    printUsageAndDeps(parser, grinder);
+  } else if (tasks.isEmpty && !singleton.grinder.hasDefaultTask) {
+    // Support this directly in `unscripted`.
+    print('No default task defined.');
+    return script.execute(['-h']);
   } else {
-    if (verifyProjectRoot) {
+    if (_verifyProjectRoot) {
       // Verify that we're running from the project root.
       if (!getFile('pubspec.yaml').existsSync()) {
         fail('This script must be run from the project root.');
       }
     }
 
-    Future result = grinder.start(results.rest);
+    Future result = singleton.grinder.start(tasks);
 
     return result.catchError((e, st) {
       String message;
@@ -68,57 +83,63 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: true}) {
   return new Future.value();
 }
 
-ArgParser createArgsParser() {
-  ArgParser parser = new ArgParser();
-  parser.addOption('dart-sdk',
-      help: 'set the location of the Dart SDK');
-  parser.addFlag('version', negatable: false,
-      help: "print the version of grinder");
-  parser.addFlag('help', abbr: 'h', negatable: false,
-      help: "show targets but don't build");
-  // TODO: Deprecated; remove post 0.7.0.
-  parser.addFlag('deps', abbr: 'd', negatable: false, hide: true,
-      help: "display the dependencies of targets");
-  return parser;
-}
+var script = new Script(cli);
 
-void printUsageAndDeps(ArgParser parser, Grinder grinder) {
-  log('usage: dart ${currentScript()} <options> target1 target2 ...');
-  log('');
-  log('valid options:');
-  log(parser.usage.replaceAll('\n\n', '\n'));
+
+String getTaskHelp({Grinder grinder, bool useColor}) {
+  if (grinder == null) grinder = singleton.grinder;
+
+  var positionalPen = new AnsiPen()..green();
+  var textPen = new AnsiPen()..gray(level: 0.5);
+
+  var originalColorDisabled = color_disabled;
+  if (useColor != null) color_disabled = !useColor;
 
   if (grinder.tasks.isEmpty) {
-    log('');
-    log('no current grinder targets');
-  } else {
-    // calculate the dependencies
-    grinder.start([], dontRun: true);
-
-    log('');
-    log('targets:');
-
-    List<GrinderTask> tasks = grinder.tasks.toList();
-    log(tasks.map((task) {
-      bool isDefault = grinder.defaultTask == task;
-      Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
-
-      String str = '  ${task}${isDefault ? ' (default)' : ''}\n';
-      if (task.description != null) str += '    ${task.description}\n';
-      if (deps.isNotEmpty) str += '    depends on: ${deps.map((t) => t.toString()).join(' ')}\n';
-      return str;
-    }).join());
+    return '\n\n  No tasks defined.\n';
   }
+
+  // Calculate the dependencies.
+  grinder.start([], dontRun: true);
+
+  List<GrinderTask> tasks = grinder.tasks.toList();
+
+  var firstColMap = tasks.fold({}, (map, task) {
+    map[task] = '$task${grinder.defaultTask == task ? ' (default)' : ''}';
+    return map;
+  });
+
+  var firstColMax = firstColMap.values.fold(0, (width, next) => max(width, next.length));
+  var padding = 4;
+  var firstColWidth = firstColMax + padding;
+
+  var ret = '\n\n' + tasks.map((GrinderTask task) {
+    Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
+
+    var buffer = new StringBuffer();
+    buffer.write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
+    var desc = task.description == null ? '' : task.description;
+    var depText = '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
+    if (desc.isNotEmpty) {
+      buffer.writeln(textPen(task.description));
+      if (deps.isNotEmpty) {
+        buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
+      }
+    } else {
+      if (deps.isNotEmpty) buffer.write(depText);
+      buffer.writeln();
+    }
+
+    return buffer.toString();
+  }).join();
+
+  if (useColor != null) color_disabled = originalColorDisabled;
+
+  return ret;
 }
 
-String currentScript() {
-  String script = Platform.script.toString();
-  String uriBase = Uri.base.toString();
-  if (script.startsWith(uriBase)) {
-    script = script.substring(uriBase.length);
-  }
-  return script;
-}
+List<String> allowedTasks() =>
+    singleton.grinder.tasks.map((task) => task.name).toList();
 
 String cleanupStackTrace(st) {
   List<String> lines = '${st}'.trim().split('\n');

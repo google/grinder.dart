@@ -4,10 +4,8 @@
 library grinder.src.cli_test;
 
 import 'package:grinder/src/cli.dart';
-import 'package:grinder/src/singleton.dart';
 import 'package:unittest/unittest.dart';
-
-import '_common.dart';
+import 'package:grinder/grinder.dart';
 
 main() {
   group('cli', () {
@@ -15,11 +13,39 @@ main() {
       expect(cleanupStackTrace(_st), _stExpected);
     });
 
-    grinderTest('printUsageAndDeps', () {
-      printUsageAndDeps(createArgsParser(), grinder);
-    }, (ctx) {
-      expect(ctx.logBuffer.toString(), contains('valid options:'));
-      expect(ctx.isFailed, false);
+    group('getTaskHelp', () {
+
+      test('with tasks', () {
+        var grinder = new Grinder();
+        grinder.addTask(new GrinderTask('a', description: '1', taskFunction: () {}));
+        grinder.addTask(new GrinderTask('b', description: '2', taskFunction: () {}));
+        grinder.addTask(new GrinderTask('ab', description: '', depends: ['a', 'b']));
+        grinder.addTask(new GrinderTask('abc', description: '123', depends: ['ab']));
+
+        var help = getTaskHelp(grinder: grinder, useColor: false);
+
+        expect(help, '''
+
+
+  [a]      1
+  [b]      2
+  [ab]     (depends on [a] [b])
+  [abc]    123
+           (depends on [ab])
+''');
+      });
+
+      test('without tasks', () {
+        var grinder = new Grinder();
+
+        var help = getTaskHelp(grinder: grinder, useColor: false);
+
+        expect(help, '''
+
+
+  No tasks defined.
+''');
+      });
     });
   });
 }
