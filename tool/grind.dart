@@ -50,7 +50,9 @@ void coverage() {
 }
 
 @DefaultTask()
-@Depends(analyze, test, checkInit, coverage)
+// TODO: Uncomment once https://github.com/google/tuneup.dart/issues/30 is
+// fixed.
+@Depends(/*analyze, */test, checkInit, coverage)
 void buildbot() => null;
 
 // These tasks require a frame buffer to run.
