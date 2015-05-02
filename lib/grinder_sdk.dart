@@ -35,6 +35,9 @@ File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
 
 /// Utility tasks for for getting information about the Dart VM and for running
 /// Dart applications.
+///
+/// The custom named parameters (e.g. vmNewGenHeapMB) will override
+/// args set in `vmArgs`.
 class Dart {
   /// Run a dart [script] using [run_lib.run].
   ///
@@ -42,8 +45,10 @@ class Dart {
   static String run(String script,
       {List<String> arguments : const [], bool quiet: false,
        String packageRoot, String workingDirectory, int vmNewGenHeapMB,
-       int vmOldGenHeapMB}) {
+       int vmOldGenHeapMB, List<String> vmArgs : const []}) {
     List<String> args = [];
+
+    args.addAll(vmArgs);
 
     if (packageRoot != null) {
       args.add('--package-root=${packageRoot}');
