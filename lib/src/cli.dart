@@ -27,7 +27,10 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot}) {
   return script.execute(grinderArgs());
 }
 
-@Command(help: 'Dart workflows, automated.', plugins: const [const Completion()])
+// TODO: Re-inline this variable once the fix for http://dartbug.com/23354
+//       is released.
+const _completion = const Completion();
+@Command(help: 'Dart workflows, automated.', plugins: const [_completion])
 cli(
     @Rest(help: getTaskHelp, allowed: allowedTasks)
     List<String> tasks,
