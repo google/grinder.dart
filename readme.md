@@ -71,8 +71,19 @@ or to display a list of available tasks and their dependencies:
 
     grind -h
 
-You can also bypass installing `grind` and replace it in any of the above
-with `pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129), simply `pub run grinder`.
+or to tab-complete your tasks (thanks to [unscripted](https://github.com/seaneagan/unscripted)):
+
+    grind --completion install
+    . ~/.bashrc
+    
+    grind [TAB][TAB]
+    build  test   doc
+    
+    grind b[TAB]
+    grind build
+
+You can also bypass installing `grind`, and instead use
+`pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129), simply `pub run grinder`.
 
 ## Disclaimer
 

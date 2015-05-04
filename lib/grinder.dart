@@ -317,10 +317,9 @@ class Grinder {
     if (targets.isEmpty) {
       if (defaultTask != null) {
         targets = [defaultTask.name];
-      } else {
-        if (!dontRun) log('no tasks specified, and no default task defined');
+      } else if (!dontRun) {
+        throw new GrinderException('Tried to call non-existent default task.');
       }
-      if (!dontRun) log('run `grinder -h` for help and a list of valid tasks\n');
       if (targets.isEmpty) return new Future.value();
     }
 
