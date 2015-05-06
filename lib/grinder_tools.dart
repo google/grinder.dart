@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:webkit_inspection_protocol/webkit_inspection_protocol.dart';
 import 'package:which/which.dart';
 
 import 'grinder.dart';
@@ -15,7 +16,6 @@ import 'src/run.dart' as run_lib;
 import 'src/run_utils.dart';
 import 'src/utils.dart';
 import 'src/_mserve.dart';
-import 'src/_wip.dart';
 
 export 'src/run.dart';
 
