@@ -138,6 +138,21 @@ class Pub {
   }
 
   /**
+   * Run `pub downgrade` on the current project.
+   */
+  static void downgrade({String workingDirectory}) {
+    _run('downgrade', workingDirectory: workingDirectory);
+  }
+
+  /**
+   * Run `pub downgrade` on the current project.
+   */
+  static Future downgradeAsync({String workingDirectory}) {
+    return run_lib.runAsync(_sdkBin('pub'), arguments: ['downgrade'],
+        workingDirectory: workingDirectory).then((_) => null);
+  }
+
+  /**
    * Run `pub build` on the current project.
    *
    * The valid values for [mode] are `release` and `debug`.
