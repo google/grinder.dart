@@ -10,9 +10,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.dartlang.tools.dartBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>com.google.dart.tools.core.dartNature</nature>
+		<nature>org.dartlang.tools.dartNature</nature>
 	</natures>
 	<filteredResources>
 		<filter>

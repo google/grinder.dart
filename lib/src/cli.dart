@@ -35,14 +35,13 @@ cli(
     @Rest(help: getTaskHelp, allowed: allowedTasks)
     List<String> tasks,
     {
-     @Flag(help: 'Print the version of grinder.', defaultsTo: false)
-     bool version,
+     @Flag(help: 'Print the version of grinder.')
+     bool version: false,
      @Option(help: 'Set the location of the Dart SDK.')
      String dartSdk,
      @Deprecated('Task dependencies are now available via --help.')
-     @Flag(hide:true, abbr: 'd', defaultsTo: false,
-         help: 'Display the dependencies of tasks.')
-     bool deps
+     @Flag(hide:true, abbr: 'd', help: 'Display the dependencies of tasks.')
+     bool deps: false
     }) {
 
   if (version) {
