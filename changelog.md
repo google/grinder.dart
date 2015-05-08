@@ -2,6 +2,7 @@
 
 ## 0.7.1
 - `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
+- Added `downgrade` method do `Pub`.
 
 ## 0.7.0
 - Big changes! Task definititions are now primarily annotation based; see the
