@@ -3,7 +3,7 @@
 # license that can be found in the LICENSE file.
 
 install:
-  - cinst -y dart-sdk
+  - choco install -y dart-sdk -version 1.10.0
   - set PATH=%PATH%;C:\tools\dart-sdk\bin
   - set PATH=%PATH%;%APPDATA%\Pub\Cache\bin
   - pub get

@@ -103,17 +103,11 @@ main() {
     });
 
     test('dryRun', () {
-      // TODO: Re-enable this test on windows when our bot has a 1.9.3 SDK on it.
-      if (Platform.isWindows) return;
-
       bool wouldChange = DartFmt.dryRun(file);
       expect(wouldChange, true);
     });
 
     test('format', () {
-      // TODO: Re-enable this test on windows when our bot has a 1.9.3 SDK on it.
-      if (Platform.isWindows) return;
-
       String originalText = file.readAsStringSync();
       DartFmt.format(file);
       String newText = file.readAsStringSync();
