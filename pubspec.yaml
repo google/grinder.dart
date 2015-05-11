@@ -4,7 +4,9 @@ version: 0.7.0
 description: Dart workflows, automated.
 
 homepage: https://github.com/google/grinder.dart
-author: Devon Carew <devoncarew@google.com>
+authors:
+- Devon Carew <devoncarew@google.com>
+- Sean Eagan <seaneagan1@gmail.com>
 
 environment:
   sdk: '>=1.0.0 <2.0.0'
