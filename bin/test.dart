@@ -13,10 +13,8 @@ import 'package:grinder/grinder.dart';
  */
 void main(List<String> args) {
   if (args.length != 1) {
-    print(
-        'usage: pub global run grinder:test <filepath>');
-    print(
-        '  where <filepath> is either a .dart file (for CLI tests), '
+    print('usage: pub global run grinder:test <filepath>');
+    print('  where <filepath> is either a .dart file (for CLI tests), '
         'or an .html file (for web tests).');
     exit(1);
   }
@@ -25,7 +23,8 @@ void main(List<String> args) {
 
   if (path.endsWith('.dart')) {
     if (path.contains(Platform.pathSeparator)) {
-      String directory = path.substring(0, path.indexOf(Platform.pathSeparator));
+      String directory =
+          path.substring(0, path.indexOf(Platform.pathSeparator));
       path = path.substring(path.indexOf(Platform.pathSeparator) + 1);
       Tests.runCliTests(directory: directory, testFile: path);
     } else {
@@ -40,11 +39,13 @@ void main(List<String> args) {
       }
       String directory = path.substring(0, index);
       path = path.substring(index + 1);
-      Tests.runWebTests(directory: directory, htmlFile: path)
+      Tests
+          .runWebTests(directory: directory, htmlFile: path)
           .then((_) => exit(0))
           .catchError((e) => exit(1));
     } else {
-      Tests.runWebTests(htmlFile: path)
+      Tests
+          .runWebTests(htmlFile: path)
           .then((_) => exit(0))
           .catchError((e) => exit(1));
     }

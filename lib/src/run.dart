@@ -8,6 +8,7 @@ import 'dart:io';
 
 import '../grinder.dart';
 import 'run_utils.dart';
+import 'dart:convert';
 
 /// Synchronously run an [executable].
 ///
@@ -16,16 +17,20 @@ import 'run_utils.dart';
 /// Returns the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
-String run(String executable,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory,
-     Map<String, String> environment}) {
+String run(String executable, {List<String> arguments: const [],
+    RunOptions runOptions, bool quiet: false}) {
   if (!quiet) log("${executable} ${arguments.join(' ')}");
+  if (runOptions == null) {
+    runOptions = new RunOptions();
+  }
 
-  ProcessResult result = Process.runSync(
-      executable, arguments, workingDirectory: workingDirectory,
-      environment: environment);
+  ProcessResult result = Process.runSync(executable, arguments,
+      workingDirectory: runOptions.workingDirectory,
+      environment: runOptions.environment,
+      includeParentEnvironment: runOptions.includeParentEnvironment,
+      runInShell: runOptions.runInShell,
+      stdoutEncoding: runOptions.stdoutEncoding,
+      stderrEncoding: runOptions.stderrEncoding);
 
   if (!quiet) {
     if (result.stdout != null && result.stdout.isNotEmpty) {
@@ -38,8 +43,8 @@ String run(String executable,
   }
 
   if (result.exitCode != 0) {
-    throw new ProcessException._(executable, result.exitCode, result.stdout,
-        result.stderr);
+    throw new ProcessException._(
+        executable, result.exitCode, result.stdout, result.stderr);
   }
 
   return result.stdout;
@@ -53,13 +58,9 @@ String run(String executable,
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
 @Deprecated('Use `run` instead.')
-String runProcess(String executable,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory,
-     Map<String, String> environment}) => run(executable, arguments: arguments,
-         quiet: quiet, workingDirectory: workingDirectory,
-         environment: environment);
+String runProcess(String executable, {List<String> arguments: const [],
+        RunOptions runOptions, bool quiet: false}) =>
+    run(executable, arguments: arguments, runOptions: runOptions, quiet: quiet);
 
 /// Asynchronously run an [executable].
 ///
@@ -69,16 +70,20 @@ String runProcess(String executable,
 /// Returns a future for the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.start].
-Future<String> runAsync(String executable,
-    {List<String> arguments : const [],
-     bool quiet: false,
-     String workingDirectory}) {
-
+Future<String> runAsync(String executable, {List<String> arguments: const [],
+    RunAsyncOptions runOptions, bool quiet: false}) {
   if (!quiet) log("$executable ${arguments.join(' ')}");
+  if (runOptions == null) runOptions = new RunAsyncOptions();
+  List<int> stdout = [],
+      stderr = [];
 
-  List<int> stdout = [], stderr = [];
-
-  return Process.start(executable, arguments, workingDirectory: workingDirectory)
+  return Process
+      .start(executable, arguments,
+          workingDirectory: runOptions.workingDirectory,
+          environment: runOptions.environment,
+          includeParentEnvironment: runOptions.includeParentEnvironment,
+          runInShell: runOptions.runInShell,
+          mode: runOptions.mode)
       .then((Process process) {
 
     // Handle stdout.
@@ -99,8 +104,8 @@ Future<String> runAsync(String executable,
       var stdoutString = SYSTEM_ENCODING.decode(stdout);
 
       if (code != 0) {
-        throw new ProcessException._(executable, code, stdoutString,
-            SYSTEM_ENCODING.decode(stderr));
+        throw new ProcessException._(
+            executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
       }
 
       return stdoutString;
@@ -118,10 +123,9 @@ Future<String> runAsync(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-  {List<String> arguments : const [],
-   bool quiet: false,
-   String workingDirectory}) => runAsync(executable, arguments: arguments,
-       quiet: quiet, workingDirectory: workingDirectory);
+    {List<String> arguments: const [], RunAsyncOptions runOptions,
+    bool quiet: false}) => runAsync(executable,
+        arguments: arguments, quiet: quiet, runOptions: runOptions);
 
 /// An exception from a process which exited with a non-zero exit code.
 class ProcessException implements Exception {
@@ -143,4 +147,56 @@ $stdout
 stderr:
 
 $stderr""";
+}
+
+/// Arguments passed to [Process.run] .
+/// See [Process.run] for more details.
+class RunOptions {
+  String workingDirectory;
+  Map<String, String> environment;
+  bool includeParentEnvironment;
+  bool runInShell;
+  Encoding stdoutEncoding;
+  Encoding stderrEncoding;
+
+  RunOptions({this.workingDirectory, this.environment,
+      this.includeParentEnvironment: true, this.runInShell: false,
+      this.stdoutEncoding: SYSTEM_ENCODING,
+      this.stderrEncoding: SYSTEM_ENCODING});
+
+  /// Create a clone when it's necessary to modify the passed runOptions to
+  /// avoid modifying the argument.
+  RunOptions clone() {
+    return new RunOptions(
+        workingDirectory: workingDirectory,
+        environment: environment == null ? null : new Map.from(environment),
+        includeParentEnvironment: includeParentEnvironment,
+        runInShell: runInShell,
+        stdoutEncoding: stdoutEncoding,
+        stderrEncoding: stderrEncoding);
+  }
+}
+
+/// Arguments passed to [Process.start] .
+/// See [Process.start] for more details.
+class RunAsyncOptions {
+  String workingDirectory;
+  Map<String, String> environment;
+  bool includeParentEnvironment;
+  bool runInShell;
+  ProcessStartMode mode;
+  RunAsyncOptions({this.workingDirectory, this.environment,
+      this.includeParentEnvironment: true, this.runInShell: false,
+      this.mode: ProcessStartMode.NORMAL});
+
+  /// Create a clone when it's necessary to modify the passed runOptions to
+  /// avoid modifying the argument.
+  RunAsyncOptions clone() {
+    return new RunAsyncOptions(
+        workingDirectory: workingDirectory,
+        environment: environment == null ? null : new Map.from(environment),
+        includeParentEnvironment: includeParentEnvironment,
+        runInShell: runInShell,
+        mode: mode);
+  }
 }

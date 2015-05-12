@@ -82,8 +82,10 @@ class FileSet {
 
   // TODO: have a refresh method?
 
-  static void _collect(List<File> files, Directory dir, Glob glob, bool recurse) {
-    for (FileSystemEntity entity in dir.listSync(recursive: false, followLinks: false)) {
+  static void _collect(
+      List<File> files, Directory dir, Glob glob, bool recurse) {
+    for (FileSystemEntity entity
+        in dir.listSync(recursive: false, followLinks: false)) {
       String name = fileName(entity);
 
       if (entity is File) {
@@ -105,7 +107,7 @@ class FileSet {
 class FilePath {
   /// Creates a temporary directory in the system temp directory. See
   /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
-   /// missing or null, the empty string is used for [prefix].
+  /// missing or null, the empty string is used for [prefix].
   static FilePath createSystemTemp([String prefix]) {
     return new FilePath(Directory.systemTemp.createTempSync(prefix));
   }
@@ -237,7 +239,7 @@ class FilePath {
 
   /// Join the given path elements to this path, and return a new [FilePath] object.
   FilePath join([arg0, String arg1, String arg2, String arg3, String arg4,
-    String arg5, String arg6, String arg7, String arg8, String arg9]) {
+      String arg5, String arg6, String arg7, String arg8, String arg9]) {
     List paths = [path];
 
     if (arg0 is List) {
@@ -346,12 +348,14 @@ Directory getDir(String path) {
   }
 }
 
-void copy(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
+void copy(FileSystemEntity entity, Directory destDir,
+    [GrinderContext context]) {
   log('copying ${entity.path} to ${destDir.path}');
   return _copyImpl(entity, destDir, context);
 }
 
-void _copyImpl(FileSystemEntity entity, Directory destDir, [GrinderContext context]) {
+void _copyImpl(FileSystemEntity entity, Directory destDir,
+    [GrinderContext context]) {
   if (entity is Directory) {
     for (FileSystemEntity entity in entity.listSync()) {
       String name = fileName(entity);
@@ -391,7 +395,8 @@ void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
 }
 
 @Deprecated('deprecated in favor of copy()')
-void copyDirectory(Directory srcDir, Directory destDir, [GrinderContext context]) {
+void copyDirectory(Directory srcDir, Directory destDir,
+    [GrinderContext context]) {
   copy(srcDir, destDir, context);
 }
 

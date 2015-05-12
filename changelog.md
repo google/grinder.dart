@@ -1,5 +1,10 @@
 # grinder.dart changes
 
+## UNRELEASED
+- Introduce `RunOptions`/`RunAsyncOptions` to support all `Process.run`/`Process.start` 
+  parameters. This is a breaking change because it replaces the `workingDirectory` 
+  parameter in several methods.
+
 ## 0.7.1
 - `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
 - Added `downgrade` method do `Pub`.

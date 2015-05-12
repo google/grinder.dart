@@ -14,13 +14,16 @@ main() {
     });
 
     group('getTaskHelp', () {
-
       test('with tasks', () {
         var grinder = new Grinder();
-        grinder.addTask(new GrinderTask('a', description: '1', taskFunction: () {}));
-        grinder.addTask(new GrinderTask('b', description: '2', taskFunction: () {}));
-        grinder.addTask(new GrinderTask('ab', description: '', depends: ['a', 'b']));
-        grinder.addTask(new GrinderTask('abc', description: '123', depends: ['ab']));
+        grinder.addTask(
+            new GrinderTask('a', description: '1', taskFunction: () {}));
+        grinder.addTask(
+            new GrinderTask('b', description: '2', taskFunction: () {}));
+        grinder.addTask(
+            new GrinderTask('ab', description: '', depends: ['a', 'b']));
+        grinder.addTask(
+            new GrinderTask('abc', description: '123', depends: ['ab']));
 
         var help = getTaskHelp(grinder: grinder, useColor: false);
 

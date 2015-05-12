@@ -22,7 +22,6 @@ void discoverTasks(Grinder grinder, LibraryMirror buildLibrary) {
 }
 
 class TaskDiscovery {
-
   final LibraryMirror library;
 
   Map<Symbol, DeclarationMirror> get resolvedDeclarations {
@@ -39,16 +38,16 @@ class TaskDiscovery {
   /// Returns tasks for all [Task]-annotated declarations in [library].
   Iterable<AnnotatedTask> discover() {
     final Map<DeclarationMirror, AnnotatedTask> cache = {};
-    return resolvedDeclarations.values.map((decl) =>
-        discoverDeclaration(decl, cache)).where((task) => task != null);
+    return resolvedDeclarations.values
+        .map((decl) => discoverDeclaration(decl, cache))
+        .where((task) => task != null);
   }
 
   /// Extract a task from a [Task]-annotated [decl].
   ///
   /// Returns `null` if [decl] is not [Task]-annotated.
   AnnotatedTask discoverDeclaration(
-      DeclarationMirror decl,
-      Map<DeclarationMirror, AnnotatedTask> cache) {
+      DeclarationMirror decl, Map<DeclarationMirror, AnnotatedTask> cache) {
     if (cache.containsKey(decl)) {
       return cache[decl];
     }
@@ -56,8 +55,8 @@ class TaskDiscovery {
     var owner = decl.owner as LibraryMirror;
     var methodName = MirrorSystem.getName(decl.simpleName);
     Task annotation = getFirstMatchingAnnotation(decl, (a) => a is Task);
-    Depends dependsAnnotation = getFirstMatchingAnnotation(decl,
-        (a) => a is Depends);
+    Depends dependsAnnotation =
+        getFirstMatchingAnnotation(decl, (a) => a is Depends);
 
     if (annotation == null && dependsAnnotation != null) {
       throw new GrinderException(
@@ -68,13 +67,12 @@ class TaskDiscovery {
     if (annotation != null) {
       Function taskFunction;
 
-      if (decl is VariableMirror ||
-          (decl is MethodMirror && decl.isGetter)) {
+      if (decl is VariableMirror || (decl is MethodMirror && decl.isGetter)) {
         taskFunction = owner.getField(decl.simpleName).reflectee;
-      } else if (decl is MethodMirror &&
-                 decl.isRegularMethod) {
-        if (decl.parameters.isNotEmpty && !decl.parameters.first.isOptional
-            && !decl.parameters.first.isNamed) {
+      } else if (decl is MethodMirror && decl.isRegularMethod) {
+        if (decl.parameters.isNotEmpty &&
+            !decl.parameters.first.isOptional &&
+            !decl.parameters.first.isNamed) {
           taskFunction = () => owner.invoke(decl.simpleName, [context]);
         } else {
           taskFunction = () => owner.invoke(decl.simpleName, []);
@@ -102,8 +100,8 @@ class TaskDiscovery {
                   'Task `$name` references invalid task method '
                   '`$depMethodName` as a dependency');
             }
-            if (!resolvedDeclarations.values.any(
-                (decl) => declarationsEqual(decl, depMethod))) {
+            if (!resolvedDeclarations.values
+                .any((decl) => declarationsEqual(decl, depMethod))) {
               var depName = annotatedMethodTask.task.name;
               var depLib = MirrorSystem.getName(depMethod.owner.qualifiedName);
               throw new GrinderException(
@@ -119,7 +117,8 @@ class TaskDiscovery {
       }
 
       var task = new GrinderTask(name,
-          taskFunction: taskFunction, depends: depends,
+          taskFunction: taskFunction,
+          depends: depends,
           description: annotation.description);
       var annotated = new AnnotatedTask(task, annotation is DefaultTask);
 

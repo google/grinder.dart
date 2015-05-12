@@ -42,7 +42,6 @@ main() {
   });
 
   group('discoverDeclaration', () {
-
     test('should set cache', () {
       var cache = {};
       var methodDecl = goodLib.declarations[#method];
@@ -53,15 +52,16 @@ main() {
 
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method];
-      var annotated = new AnnotatedTask(new GrinderTask('method', taskFunction: () {}), false);
+      var annotated = new AnnotatedTask(
+          new GrinderTask('method', taskFunction: () {}), false);
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
     });
 
     test('should discover task from regular method', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#method], {});
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#method], {});
       expect(annotated.isDefault, isFalse);
       var task = annotated.task;
       expect(task.name, 'method');
@@ -77,8 +77,8 @@ main() {
     });
 
     test('should discover task from getter', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#getter], {});
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
       var task = annotated.task;
       expect(task.name, 'getter');
       expect(task.depends, ['method']);
@@ -91,8 +91,8 @@ main() {
     });
 
     test('should discover a default task', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#def], {});
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#def], {});
       expect(annotated.isDefault, isTrue);
       var task = annotated.task;
       expect(task.name, 'def');
@@ -100,14 +100,14 @@ main() {
     });
 
     test('should return null for non-Task-annotated declarations', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#nonTask], {});
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#nonTask], {});
       expect(annotated, isNull);
     });
 
     test('should throw when variable task is null', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#nullTask], {});
+      f() =>
+          discoveryBad.discoverDeclaration(badLib.declarations[#nullTask], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -118,8 +118,7 @@ main() {
     });
 
     test('should throw when task is wront type of declaration', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#Class], {});
+      f() => discoveryBad.discoverDeclaration(badLib.declarations[#Class], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -149,7 +148,6 @@ main() {
   });
 
   group('discover', () {
-
     test('should discover all exported tasks', () {
       var tasks = discoveryGood.discover();
 
