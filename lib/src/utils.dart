@@ -44,10 +44,8 @@ String camelToDashes(String input) {
   var segment = new RegExp(r'.[^A-Z]*');
   var matches = segment.allMatches(input);
   return matches
-      .map((Match match) =>
-          withCapitalization(
-              match.input.substring(match.start, match.end),
-              false))
+      .map((Match match) => withCapitalization(
+          match.input.substring(match.start, match.end), false))
       .join('-');
 }
 
@@ -55,9 +53,8 @@ String camelToDashes(String input) {
 String withCapitalization(String s, bool capitalized) {
   if (s.isEmpty || capitalized == null) return s;
   var firstLetter = s[0];
-  firstLetter = capitalized ?
-     firstLetter.toUpperCase() :
-     firstLetter.toLowerCase();
+  firstLetter =
+      capitalized ? firstLetter.toUpperCase() : firstLetter.toLowerCase();
   return firstLetter + s.substring(1);
 }
 
@@ -65,12 +62,13 @@ String withCapitalization(String s, bool capitalized) {
 //       http://dartbug.com/22601
 declarationsEqual(DeclarationMirror decl1, decl2) =>
     decl2 is DeclarationMirror &&
-    decl1.owner == decl2.owner &&
-    decl1.simpleName == decl2.simpleName;
+        decl1.owner == decl2.owner &&
+        decl1.simpleName == decl2.simpleName;
 
 // TODO: Remove if this becomes supported by `dart:mirrors`:
 //       http://dartbug.com/22591
-Map<Symbol, DeclarationMirror> resolveExportedDeclarations(LibraryMirror library) {
+Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
+    LibraryMirror library) {
   var resolved = {}..addAll(library.declarations);
   library.libraryDependencies.forEach((dependency) {
     if (dependency.isExport) {
@@ -97,8 +95,9 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(LibraryMirror library
 }
 
 getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
-  decl.metadata.map((mirror) => mirror.reflectee).firstWhere(test,
-      orElse: () => null);
+    decl.metadata
+        .map((mirror) => mirror.reflectee)
+        .firstWhere(test, orElse: () => null);
 
 /// A simple way to expose a default value that can be overridden within zones.
 class ZonedValue<T> {
@@ -108,14 +107,11 @@ class ZonedValue<T> {
 
   ZonedValue(T rootValue) : _rootValue = rootValue;
 
-  withValue(T value, f(), { bool isFinal: false}) {
+  withValue(T value, f(), {bool isFinal: false}) {
     if (this.isFinal) {
       throw new StateError('Cannot override final zoned value');
     }
-    return runZoned(f, zoneValues: {
-      _valueKey: value,
-      _finalKey: isFinal
-    });
+    return runZoned(f, zoneValues: {_valueKey: value, _finalKey: isFinal});
   }
 
   bool get isFinal {

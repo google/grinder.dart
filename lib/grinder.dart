@@ -52,7 +52,8 @@ set defaultTask(GrinderTask v) {
  * in via [depends].
  */
 @Deprecated('Use the task annotations instead.')
-void task(String name, [Function taskFunction, List<String> depends = const []]) {
+void task(String name,
+    [Function taskFunction, List<String> depends = const []]) {
   grinder.addTask(
       new GrinderTask(name, taskFunction: taskFunction, depends: depends));
 }
@@ -168,7 +169,7 @@ class GrinderTask {
    * execute when this task is started, and a [depends] list are optional.
    */
   GrinderTask(this.name,
-      {this.taskFunction, this.depends : const [], this.description}) {
+      {this.taskFunction, this.depends: const [], this.description}) {
     if (taskFunction == null && depends.isEmpty) {
       throw new GrinderException('GrinderTasks must have a task function or '
           'dependencies.');
@@ -224,9 +225,16 @@ class Depends {
   const Depends(this.dep1, [this.dep2, this.dep3, this.dep4, this.dep5,
       this.dep6, this.dep7, this.dep8]);
 
-  List get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
-      .takeWhile((dep) => dep != null)
-      .toList();
+  List get depends => [
+    dep1,
+    dep2,
+    dep3,
+    dep4,
+    dep5,
+    dep6,
+    dep7,
+    dep8
+  ].takeWhile((dep) => dep != null).toList();
 }
 
 /**
@@ -236,8 +244,7 @@ class Depends {
  * Use this instead of [Task] when defining the default task.
  */
 class DefaultTask extends Task {
-  const DefaultTask([String description])
-      : super(description);
+  const DefaultTask([String description]) : super(description);
 }
 
 /**
@@ -414,7 +421,8 @@ class Grinder {
     }
   }
 
-  Set<GrinderTask> _calcDependencies(GrinderTask task, Set<GrinderTask> foundTasks) {
+  Set<GrinderTask> _calcDependencies(
+      GrinderTask task, Set<GrinderTask> foundTasks) {
     for (GrinderTask childTask in getImmediateDependencies(task)) {
       bool contains = foundTasks.contains(childTask);
       foundTasks.add(childTask);

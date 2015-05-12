@@ -42,10 +42,9 @@ class Dart {
   /// Run a dart [script] using [run_lib.run].
   ///
   /// Returns the stdout.
-  static String run(String script,
-      {List<String> arguments : const [], bool quiet: false,
-       String packageRoot, RunOptions runOptions, int vmNewGenHeapMB,
-       int vmOldGenHeapMB, List<String> vmArgs : const []}) {
+  static String run(String script, {List<String> arguments: const [],
+      bool quiet: false, String packageRoot, RunOptions runOptions,
+      int vmNewGenHeapMB, int vmOldGenHeapMB, List<String> vmArgs: const []}) {
     List<String> args = [];
 
     args.addAll(vmArgs);
@@ -65,8 +64,8 @@ class Dart {
     args.add(script);
     args.addAll(arguments);
 
-    return run_lib.run(_sdkBin('dart'), arguments: args, quiet: quiet,
-        runOptions: runOptions);
+    return run_lib.run(_sdkBin('dart'),
+        arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
   static String version({bool quiet: false}) {
@@ -115,8 +114,9 @@ class Pub {
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return run_lib.runAsync(_sdkBin('pub'), arguments: ['get'],
-      runOptions: runOptions).then((_) => null);
+      return run_lib
+          .runAsync(_sdkBin('pub'), arguments: ['get'], runOptions: runOptions)
+          .then((_) => null);
     }
 
     return new Future.value();
@@ -133,8 +133,10 @@ class Pub {
    * Run `pub upgrade` on the current project.
    */
   static Future upgradeAsync({RunAsyncOptions runOptions}) {
-    return run_lib.runAsync(_sdkBin('pub'), arguments: ['upgrade'],
-        runOptions: runOptions).then((_) => null);
+    return run_lib
+        .runAsync(_sdkBin('pub'),
+            arguments: ['upgrade'], runOptions: runOptions)
+        .then((_) => null);
   }
 
   /**
@@ -148,8 +150,10 @@ class Pub {
    * Run `pub downgrade` on the current project.
    */
   static Future downgradeAsync({RunAsyncOptions runOptions}) {
-    return run_lib.runAsync(_sdkBin('pub'), arguments: ['downgrade'],
-        runOptions: runOptions).then((_) => null);
+    return run_lib
+        .runAsync(_sdkBin('pub'),
+            arguments: ['downgrade'], runOptions: runOptions)
+        .then((_) => null);
   }
 
   /**
@@ -157,18 +161,14 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static void build({
-      String mode,
-      List<String> directories,
-      RunOptions runOptions,
-      String outputDirectory}) {
+  static void build({String mode, List<String> directories,
+      RunOptions runOptions, String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    run_lib.run(_sdkBin('pub'), arguments: args,
-    runOptions: runOptions);
+    run_lib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
   /**
@@ -176,18 +176,16 @@ class Pub {
    *
    * The valid values for [mode] are `release` and `debug`.
    */
-  static Future buildAsync({
-      String mode,
-      List<String> directories,
-      RunAsyncOptions runOptions,
-      String outputDirectory}) {
+  static Future buildAsync({String mode, List<String> directories,
+      RunAsyncOptions runOptions, String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return run_lib.runAsync(_sdkBin('pub'), arguments: args,
-        runOptions: runOptions).then((_) => null);
+    return run_lib
+        .runAsync(_sdkBin('pub'), arguments: args, runOptions: runOptions)
+        .then((_) => null);
   }
 
   /// Run `pub run` on the given [package] and [script].
@@ -198,18 +196,18 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return run_lib.run(_sdkBin('pub'), arguments: args,
-    runOptions: runOptions);
+    return run_lib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
-  static String version({bool quiet: false}) => _AppVersion.parse(
-      _run('--version', quiet: quiet)).version;
+  static String version({bool quiet: false}) =>
+      _AppVersion.parse(_run('--version', quiet: quiet)).version;
 
   static PubGlobal get global => _global;
 
-  static String _run(String command, {bool quiet: false, RunOptions runOptions}) {
-    return run_lib.run(_sdkBin('pub'), quiet: quiet, arguments: [command],
-        runOptions: runOptions);
+  static String _run(String command,
+      {bool quiet: false, RunOptions runOptions}) {
+    return run_lib.run(_sdkBin('pub'),
+        quiet: quiet, arguments: [command], runOptions: runOptions);
   }
 }
 
@@ -252,7 +250,8 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    return run_lib.runAsync(_sdkBin('dart2js'), arguments: args)
+    return run_lib
+        .runAsync(_sdkBin('dart2js'), arguments: args)
         .then((_) => null);
   }
 
@@ -270,8 +269,8 @@ class Analyzer {
   /// Analyze a single [File] or path ([String]).
   static void analyze(fileOrPath,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzeFiles([fileOrPath], packageRoot: packageRoot,
-        fatalWarnings: fatalWarnings);
+    analyzeFiles([fileOrPath],
+        packageRoot: packageRoot, fatalWarnings: fatalWarnings);
   }
 
   /// Analyze one or more [File]s or paths ([String]).
@@ -308,7 +307,8 @@ class DartFmt {
   }
 
   static String _run(String option, String target, {bool quiet: false}) =>
-      run_lib.run(_sdkBin('dartfmt'), quiet: quiet, arguments: [option, target]);
+      run_lib.run(_sdkBin('dartfmt'),
+          quiet: quiet, arguments: [option, target]);
 }
 
 /// Access the `pub global` commands.
@@ -320,7 +320,8 @@ class PubGlobal {
   /// Install a new Dart application.
   void activate(String packageName, {bool force: false}) {
     if (force || !isActivated(packageName)) {
-      run_lib.run(_sdkBin('pub'), arguments: ['global', 'activate', packageName]);
+      run_lib.run(_sdkBin('pub'),
+          arguments: ['global', 'activate', packageName]);
       _activatedPackages.add(packageName);
     }
   }
@@ -331,8 +332,7 @@ class PubGlobal {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return run_lib.run(_sdkBin('pub'), arguments: args,
-        runOptions: runOptions);
+    return run_lib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
   /// Return the list of installed applications.
@@ -342,8 +342,8 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    var stdout = run_lib.run(
-        _sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+    var stdout =
+        run_lib.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
@@ -429,8 +429,8 @@ class _AppVersion {
   static _AppVersion parse(String output) {
     var lastSpace = output.lastIndexOf(' ');
     if (lastSpace == -1) return new _AppVersion(output);
-    return new _AppVersion(output.substring(0, lastSpace),
-        output.substring(lastSpace + 1));
+    return new _AppVersion(
+        output.substring(0, lastSpace), output.substring(lastSpace + 1));
   }
 
   String toString() => '$name $version';
@@ -450,9 +450,7 @@ class _PubGlobalApp extends PubApp {
     activate();
 
     return Pub.global.run(packageName,
-        script: script,
-        arguments: arguments,
-        runOptions: runOptions);
+        script: script, arguments: arguments, runOptions: runOptions);
   }
 }
 
@@ -464,12 +462,10 @@ class _PubLocalApp extends PubApp {
   // TODO: Implement: call a `Pub.isActivated/Pub.isInstalled`.
   bool get isActivated => throw new UnsupportedError('unimplemented');
 
-  void activate({bool force: false}) { }
+  void activate({bool force: false}) {}
 
   String run(List<String> arguments, {String script, RunOptions runOptions}) {
     return Pub.run(packageName,
-        script: script,
-        arguments: arguments,
-        runOptions: runOptions);
+        script: script, arguments: arguments, runOptions: runOptions);
   }
 }

@@ -19,7 +19,8 @@ main() {
       if (!isSetup) {
         isSetup = true;
         addTask(new GrinderTask('foo', taskFunction: _fooTask));
-        addTask(new GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
+        addTask(
+            new GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
       }
 
       _clear();

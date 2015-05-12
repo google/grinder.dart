@@ -25,7 +25,8 @@ checkInit() {
   try {
     File pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
-    Dart.run(FilePath.current.join('bin', 'init.dart').path, runOptions: new RunOptions(workingDirectory: temp.path));
+    Dart.run(FilePath.current.join('bin', 'init.dart').path,
+        runOptions: new RunOptions(workingDirectory: temp.path));
     Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
     temp.delete();
@@ -38,9 +39,12 @@ void coverage() {
 
   if (coverageToken != null) {
     PubApp coverallsApp = new PubApp.global('dart_coveralls');
-    coverallsApp.run(['report',
-      '--token', coverageToken,
-      '--retry', '2',
+    coverallsApp.run([
+      'report',
+      '--token',
+      coverageToken,
+      '--retry',
+      '2',
       '--exclude-test-files',
       'test/all.dart'
     ]);

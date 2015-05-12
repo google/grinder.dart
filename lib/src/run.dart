@@ -17,22 +17,20 @@ import 'dart:convert';
 /// Returns the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
-String run(String executable,
-    {List<String> arguments : const [], RunOptions runOptions,
-     bool quiet: false}) {
+String run(String executable, {List<String> arguments: const [],
+    RunOptions runOptions, bool quiet: false}) {
   if (!quiet) log("${executable} ${arguments.join(' ')}");
-  if(runOptions == null) {
+  if (runOptions == null) {
     runOptions = new RunOptions();
   }
 
   ProcessResult result = Process.runSync(executable, arguments,
-        workingDirectory: runOptions.workingDirectory,
-        environment: runOptions.environment,
-        includeParentEnvironment: runOptions.includeParentEnvironment,
-        runInShell: runOptions.runInShell,
-        stdoutEncoding: runOptions.stdoutEncoding,
-      stderrEncoding: runOptions.stderrEncoding
-  );
+      workingDirectory: runOptions.workingDirectory,
+      environment: runOptions.environment,
+      includeParentEnvironment: runOptions.includeParentEnvironment,
+      runInShell: runOptions.runInShell,
+      stdoutEncoding: runOptions.stdoutEncoding,
+      stderrEncoding: runOptions.stderrEncoding);
 
   if (!quiet) {
     if (result.stdout != null && result.stdout.isNotEmpty) {
@@ -45,8 +43,8 @@ String run(String executable,
   }
 
   if (result.exitCode != 0) {
-    throw new ProcessException._(executable, result.exitCode, result.stdout,
-        result.stderr);
+    throw new ProcessException._(
+        executable, result.exitCode, result.stdout, result.stderr);
   }
 
   return result.stdout;
@@ -60,10 +58,9 @@ String run(String executable,
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
 @Deprecated('Use `run` instead.')
-String runProcess(String executable,
-    {List<String> arguments : const [], RunOptions runOptions,
-     bool quiet: false}) => run(executable, arguments: arguments, runOptions: runOptions,
-         quiet: quiet);
+String runProcess(String executable, {List<String> arguments: const [],
+        RunOptions runOptions, bool quiet: false}) =>
+    run(executable, arguments: arguments, runOptions: runOptions, quiet: quiet);
 
 /// Asynchronously run an [executable].
 ///
@@ -73,21 +70,20 @@ String runProcess(String executable,
 /// Returns a future for the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.start].
-Future<String> runAsync(String executable,
-    {List<String> arguments : const [], RunAsyncOptions runOptions,
-     bool quiet: false}) {
-
+Future<String> runAsync(String executable, {List<String> arguments: const [],
+    RunAsyncOptions runOptions, bool quiet: false}) {
   if (!quiet) log("$executable ${arguments.join(' ')}");
-  if(runOptions == null) runOptions = new RunAsyncOptions();
-  List<int> stdout = [], stderr = [];
+  if (runOptions == null) runOptions = new RunAsyncOptions();
+  List<int> stdout = [],
+      stderr = [];
 
-  return Process.start(executable, arguments,
-    workingDirectory: runOptions.workingDirectory,
-    environment: runOptions.environment,
-    includeParentEnvironment: runOptions.includeParentEnvironment,
-    runInShell: runOptions.runInShell,
-    mode: runOptions.mode
-  )
+  return Process
+      .start(executable, arguments,
+          workingDirectory: runOptions.workingDirectory,
+          environment: runOptions.environment,
+          includeParentEnvironment: runOptions.includeParentEnvironment,
+          runInShell: runOptions.runInShell,
+          mode: runOptions.mode)
       .then((Process process) {
 
     // Handle stdout.
@@ -108,8 +104,8 @@ Future<String> runAsync(String executable,
       var stdoutString = SYSTEM_ENCODING.decode(stdout);
 
       if (code != 0) {
-        throw new ProcessException._(executable, code, stdoutString,
-            SYSTEM_ENCODING.decode(stderr));
+        throw new ProcessException._(
+            executable, code, stdoutString, SYSTEM_ENCODING.decode(stderr));
       }
 
       return stdoutString;
@@ -127,9 +123,9 @@ Future<String> runAsync(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-  {List<String> arguments : const [], RunAsyncOptions runOptions,
-   bool quiet: false}) => runAsync(executable, arguments: arguments,
-       quiet: quiet,runOptions: runOptions);
+    {List<String> arguments: const [], RunAsyncOptions runOptions,
+    bool quiet: false}) => runAsync(executable,
+        arguments: arguments, quiet: quiet, runOptions: runOptions);
 
 /// An exception from a process which exited with a non-zero exit code.
 class ProcessException implements Exception {
@@ -152,7 +148,6 @@ stderr:
 
 $stderr""";
 }
-
 
 /// Arguments passed to [Process.run] .
 /// See [Process.run] for more details.
@@ -190,7 +185,7 @@ class RunAsyncOptions {
   final bool includeParentEnvironment;
   final bool runInShell;
   final ProcessStartMode mode;
-  RunAsyncOptions({ this.workingDirectory, this.environment,
+  RunAsyncOptions({this.workingDirectory, this.environment,
       this.includeParentEnvironment: true, this.runInShell: false,
       this.mode: ProcessStartMode.NORMAL});
 

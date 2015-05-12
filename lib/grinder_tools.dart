@@ -33,11 +33,10 @@ final Directory webDir = new Directory('web');
 ///
 /// Returns the stdout.
 @Deprecated('Use `Dart.run` instead.')
-String runDartScript(String script,
-    {List<String> arguments : const [], bool quiet: false, String packageRoot,
-    RunOptions runOptions, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
-  return Dart.run(
-      script,
+String runDartScript(String script, {List<String> arguments: const [],
+    bool quiet: false, String packageRoot, RunOptions runOptions,
+    int vmNewGenHeapMB, int vmOldGenHeapMB}) {
+  return Dart.run(script,
       arguments: arguments,
       quiet: quiet,
       packageRoot: packageRoot,
@@ -48,8 +47,9 @@ String runDartScript(String script,
 
 /// A default implementation of an `init` task. This task verifies that the
 /// grind script is executed from the project root.
-@Deprecated('the functionality of this method has been rolled into grinder startup')
-void defaultInit([GrinderContext context]) { }
+@Deprecated(
+    'the functionality of this method has been rolled into grinder startup')
+void defaultInit([GrinderContext context]) {}
 
 /// A default implementation of a `clean` task. This task deletes all generated
 /// artifacts in the `build/`.
@@ -63,7 +63,8 @@ class Tests {
    * Run command-line tests. You can specify the base directory (`test`), and
    * the file to run (`all.dart`).
    */
-  static void runCliTests({String directory: 'test', String testFile: 'all.dart'}) {
+  static void runCliTests(
+      {String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
     log('running tests: ${file}...');
     Dart.run(file);
@@ -74,8 +75,7 @@ class Tests {
    * (`test`), and the html file to run (`index.html`).
    */
   static Future runWebTests({String directory: 'test',
-       String htmlFile: 'index.html',
-       Chrome browser}) {
+      String htmlFile: 'index.html', Chrome browser}) {
     // Choose a random port to tell the browser to serve debug info to. If we
     // specify a fixed port the browser may fail to connect, but we'll still try
     // and create a debug connection to the port.
@@ -110,7 +110,7 @@ class Tests {
 
       List<String> args = ['--remote-debugging-port=${wip}'];
       if (Platform.environment['CHROME_ARGS'] != null) {
-       args.addAll(Platform.environment['CHROME_ARGS'].split(' '));
+        args.addAll(Platform.environment['CHROME_ARGS'].split(' '));
       }
       url = 'http://${server.host}:${server.port}/${htmlFile}';
       return browser.launchUrl(url, args: args);
@@ -151,8 +151,7 @@ class Tests {
         }
       });
 
-      sub = connection.console.onMessage.listen(
-          (ConsoleMessageEvent event) {
+      sub = connection.console.onMessage.listen((ConsoleMessageEvent event) {
         timer.reset();
         log(event.text);
 
@@ -222,9 +221,9 @@ class Chrome {
     }
 
     List<String> args = [
-        '--no-default-browser-check',
-        '--no-first-run',
-        '--user-data-dir=${_tempDir.path}'
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--user-data-dir=${_tempDir.path}'
     ];
 
     if (verbose) {
@@ -235,15 +234,16 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     log("starting chrome...");
-    run_lib.run(browserPath, arguments: args, runOptions: new RunOptions(environment: envVars));
+    run_lib.run(browserPath,
+        arguments: args, runOptions: new RunOptions(environment: envVars));
   }
 
   Future<BrowserInstance> launchUrl(String url,
       {List<String> args, bool verbose: false, Map envVars}) {
     List<String> _args = [
-        '--no-default-browser-check',
-        '--no-first-run',
-        '--user-data-dir=${_tempDir.path}'
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--user-data-dir=${_tempDir.path}'
     ];
 
     if (verbose) _args.addAll(['--enable-logging=stderr', '--v=1']);
@@ -251,7 +251,8 @@ class Chrome {
 
     _args.add(url);
 
-    return Process.start(browserPath, _args, environment: envVars)
+    return Process
+        .start(browserPath, _args, environment: envVars)
         .then((Process process) {
       // Handle stdout.
       var stdoutLines = toLineStream(process.stdout);

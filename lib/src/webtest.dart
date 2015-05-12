@@ -49,7 +49,7 @@ class WebTestConfiguration extends HtmlConfiguration {
   }
 
   void onSummary(int passed, int failed, int errors, List<TestCase> results,
-        String uncaughtError) {
+      String uncaughtError) {
     _log('\nTest summary\n------------');
 
     results.forEach((TestCase result) {
