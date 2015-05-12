@@ -35,13 +35,13 @@ final Directory webDir = new Directory('web');
 @Deprecated('Use `Dart.run` instead.')
 String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
-    String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
+    RunOptions runOptions, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
   return Dart.run(
       script,
       arguments: arguments,
       quiet: quiet,
       packageRoot: packageRoot,
-      workingDirectory: workingDirectory,
+      runOptions: runOptions,
       vmNewGenHeapMB: vmNewGenHeapMB,
       vmOldGenHeapMB: vmOldGenHeapMB);
 }
@@ -235,7 +235,7 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     log("starting chrome...");
-    run_lib.run(browserPath, arguments: args, environment: envVars);
+    run_lib.run(browserPath, arguments: args, runOptions: new RunOptions(environment: envVars));
   }
 
   Future<BrowserInstance> launchUrl(String url,

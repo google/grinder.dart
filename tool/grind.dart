@@ -25,7 +25,7 @@ checkInit() {
   try {
     File pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
-    Dart.run(FilePath.current.join('bin', 'init.dart').path, workingDirectory: temp.path);
+    Dart.run(FilePath.current.join('bin', 'init.dart').path, runOptions: new RunOptions(workingDirectory: temp.path));
     Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
     temp.delete();
