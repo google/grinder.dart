@@ -152,12 +152,12 @@ $stderr""";
 /// Arguments passed to [Process.run] .
 /// See [Process.run] for more details.
 class RunOptions {
-  final String workingDirectory;
-  final Map<String, String> environment;
-  final bool includeParentEnvironment;
-  final bool runInShell;
-  final Encoding stdoutEncoding;
-  final Encoding stderrEncoding;
+  String workingDirectory;
+  Map<String, String> environment;
+  bool includeParentEnvironment;
+  bool runInShell;
+  Encoding stdoutEncoding;
+  Encoding stderrEncoding;
 
   RunOptions({this.workingDirectory, this.environment,
       this.includeParentEnvironment: true, this.runInShell: false,
@@ -180,11 +180,11 @@ class RunOptions {
 /// Arguments passed to [Process.start] .
 /// See [Process.start] for more details.
 class RunAsyncOptions {
-  final String workingDirectory;
-  final Map<String, String> environment;
-  final bool includeParentEnvironment;
-  final bool runInShell;
-  final ProcessStartMode mode;
+  String workingDirectory;
+  Map<String, String> environment;
+  bool includeParentEnvironment;
+  bool runInShell;
+  ProcessStartMode mode;
   RunAsyncOptions({this.workingDirectory, this.environment,
       this.includeParentEnvironment: true, this.runInShell: false,
       this.mode: ProcessStartMode.NORMAL});
