@@ -1,7 +1,7 @@
 # grinder.dart changes
 
 ## UNRELEASED
-- Introduce `RunOptions`/`RunAsyncOptions` to support all `Process.run`/`Process.start` 
+- Introduce `RunOptions` to support all `Process.run`/`Process.start` 
   parameters. This is a breaking change because it replaces the `workingDirectory` 
   parameter in several methods.
 
