@@ -105,7 +105,7 @@ class FileSet {
 class FilePath {
   /// Creates a temporary directory in the system temp directory. See
   /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
-   /// missing or null, the empty string is used for [prefix].
+  /// missing or null, the empty string is used for [prefix].
   static FilePath createSystemTemp([String prefix]) {
     return new FilePath(Directory.systemTemp.createTempSync(prefix));
   }

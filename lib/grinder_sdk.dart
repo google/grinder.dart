@@ -97,8 +97,9 @@ class Pub {
    * pubspec.yaml file.
    */
   static void get({bool force: false, String workingDirectory}) {
-    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+    final prefix = workingDirectory == null ? '' : '${workingDirectory}/';
+    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       _run('get', workingDirectory: workingDirectory);
@@ -111,8 +112,9 @@ class Pub {
    * pubspec.yaml file.
    */
   static Future getAsync({bool force: false, String workingDirectory}) {
-    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+    final prefix = workingDirectory == null ? '' : '${workingDirectory}/';
+    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       return run_lib.runAsync(_sdkBin('pub'), arguments: ['get'],
