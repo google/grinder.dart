@@ -21,9 +21,7 @@ String run(String executable,
     {List<String> arguments : const [], RunOptions runOptions,
      bool quiet: false}) {
   if (!quiet) log("${executable} ${arguments.join(' ')}");
-  if(runOptions == null) {
-    runOptions = new RunOptions();
-  }
+  if(runOptions == null) runOptions = new RunOptions();
 
   ProcessResult result = Process.runSync(executable, arguments,
         workingDirectory: runOptions.workingDirectory,
@@ -74,19 +72,18 @@ String runProcess(String executable,
 ///
 /// All other optional parameters are forwarded to [Process.start].
 Future<String> runAsync(String executable,
-    {List<String> arguments : const [], RunAsyncOptions runOptions,
+    {List<String> arguments : const [], RunOptions runOptions,
      bool quiet: false}) {
 
   if (!quiet) log("$executable ${arguments.join(' ')}");
-  if(runOptions == null) runOptions = new RunAsyncOptions();
+  if(runOptions == null) runOptions = new RunOptions();
   List<int> stdout = [], stderr = [];
 
   return Process.start(executable, arguments,
     workingDirectory: runOptions.workingDirectory,
     environment: runOptions.environment,
     includeParentEnvironment: runOptions.includeParentEnvironment,
-    runInShell: runOptions.runInShell,
-    mode: runOptions.mode
+    runInShell: runOptions.runInShell
   )
       .then((Process process) {
 
@@ -104,12 +101,14 @@ Future<String> runAsync(String executable,
     broadcastStderr.listen((List<int> data) => stderr.addAll(data));
     stderrLines.listen(logStderr);
 
+    var encoding = runOptions.stdoutEncoding != null
+        ? runOptions.stdoutEncoding : SYSTEM_ENCODING;
     return process.exitCode.then((int code) {
-      var stdoutString = SYSTEM_ENCODING.decode(stdout);
+      var stdoutString = encoding.decode(stdout);
 
       if (code != 0) {
         throw new ProcessException._(executable, code, stdoutString,
-            SYSTEM_ENCODING.decode(stderr));
+            encoding.decode(stderr));
       }
 
       return stdoutString;
@@ -127,7 +126,7 @@ Future<String> runAsync(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-  {List<String> arguments : const [], RunAsyncOptions runOptions,
+  {List<String> arguments : const [], RunOptions runOptions,
    bool quiet: false}) => runAsync(executable, arguments: arguments,
        quiet: quiet,runOptions: runOptions);
 
@@ -157,12 +156,12 @@ $stderr""";
 /// Arguments passed to [Process.run] .
 /// See [Process.run] for more details.
 class RunOptions {
-  final String workingDirectory;
-  final Map<String, String> environment;
-  final bool includeParentEnvironment;
-  final bool runInShell;
-  final Encoding stdoutEncoding;
-  final Encoding stderrEncoding;
+  String workingDirectory;
+  Map<String, String> environment;
+  bool includeParentEnvironment;
+  bool runInShell;
+  Encoding stdoutEncoding;
+  Encoding stderrEncoding;
 
   RunOptions({this.workingDirectory, this.environment,
       this.includeParentEnvironment: true, this.runInShell: false,
@@ -179,29 +178,5 @@ class RunOptions {
         runInShell: runInShell,
         stdoutEncoding: stdoutEncoding,
         stderrEncoding: stderrEncoding);
-  }
-}
-
-/// Arguments passed to [Process.start] .
-/// See [Process.start] for more details.
-class RunAsyncOptions {
-  final String workingDirectory;
-  final Map<String, String> environment;
-  final bool includeParentEnvironment;
-  final bool runInShell;
-  final ProcessStartMode mode;
-  RunAsyncOptions({ this.workingDirectory, this.environment,
-      this.includeParentEnvironment: true, this.runInShell: false,
-      this.mode: ProcessStartMode.NORMAL});
-
-  /// Create a clone when it's necessary to modify the passed runOptions to
-  /// avoid modifying the argument.
-  RunAsyncOptions clone() {
-    return new RunAsyncOptions(
-        workingDirectory: workingDirectory,
-        environment: environment == null ? null : new Map.from(environment),
-        includeParentEnvironment: includeParentEnvironment,
-        runInShell: runInShell,
-        mode: mode);
   }
 }

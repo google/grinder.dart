@@ -110,7 +110,7 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static Future getAsync({bool force: false, RunAsyncOptions runOptions}) {
+  static Future getAsync({bool force: false, RunOptions runOptions}) {
     FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
     FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
 
@@ -132,7 +132,7 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static Future upgradeAsync({RunAsyncOptions runOptions}) {
+  static Future upgradeAsync({RunOptions runOptions}) {
     return run_lib.runAsync(_sdkBin('pub'), arguments: ['upgrade'],
         runOptions: runOptions).then((_) => null);
   }
@@ -147,7 +147,7 @@ class Pub {
   /**
    * Run `pub downgrade` on the current project.
    */
-  static Future downgradeAsync({RunAsyncOptions runOptions}) {
+  static Future downgradeAsync({RunOptions runOptions}) {
     return run_lib.runAsync(_sdkBin('pub'), arguments: ['downgrade'],
         runOptions: runOptions).then((_) => null);
   }
@@ -179,7 +179,7 @@ class Pub {
   static Future buildAsync({
       String mode,
       List<String> directories,
-      RunAsyncOptions runOptions,
+      RunOptions runOptions,
       String outputDirectory}) {
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
