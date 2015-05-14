@@ -10,7 +10,7 @@ main(args) => grind(args);
 
 @Task()
 void analyze() {
-  new PubApp.global('tuneup')..run(['check']);
+  new PubApp.global('tuneup')..run(['check', '--ignore-infos']);
 }
 
 @Task()

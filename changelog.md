@@ -1,13 +1,11 @@
 # grinder.dart changes
 
 ## UNRELEASED
+- `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
+- Added `downgrade` method do `Pub`.
 - Introduce `RunOptions` to support all `Process.run`/`Process.start` 
   parameters. The `workingDirectory` parameter is now deprecated in all methods, 
   use `RunOptions.workingDirectory` instead.
-
-## 0.7.1
-- `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
-- Added `downgrade` method do `Pub`.
 
 ## 0.7.0
 - Big changes! Task definititions are now primarily annotation based; see the
