@@ -19,7 +19,10 @@ import 'dart:convert';
 /// All other optional parameters are forwarded to [Process.runSync].
 String run(String executable,
     {List<String> arguments : const [], RunOptions runOptions,
-     bool quiet: false}) {
+     bool quiet: false,
+     @Deprecated('Use RunOptions.workingDirectory instead.')
+     String workingDirectory}) {
+  runOptions = mergeRunOptions(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
   if(runOptions == null) runOptions = new RunOptions();
 
@@ -60,8 +63,13 @@ String run(String executable,
 @Deprecated('Use `run` instead.')
 String runProcess(String executable,
     {List<String> arguments : const [], RunOptions runOptions,
-     bool quiet: false}) => run(executable, arguments: arguments, runOptions: runOptions,
-         quiet: quiet);
+     bool quiet: false,
+     @Deprecated('Use RunOptions.workingDirectory instead.')
+     String workingDirectory}) {
+  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  return run(executable, arguments: arguments, runOptions: runOptions,
+      quiet: quiet);
+}
 
 /// Asynchronously run an [executable].
 ///
@@ -73,8 +81,10 @@ String runProcess(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 Future<String> runAsync(String executable,
     {List<String> arguments : const [], RunOptions runOptions,
-     bool quiet: false}) {
-
+     bool quiet: false,
+     @Deprecated('Use RunOptions.workingDirectory instead.')
+     String workingDirectory}) {
+  runOptions = mergeRunOptions(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   if(runOptions == null) runOptions = new RunOptions();
   List<int> stdout = [], stderr = [];
@@ -126,9 +136,13 @@ Future<String> runAsync(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-  {List<String> arguments : const [], RunOptions runOptions,
-   bool quiet: false}) => runAsync(executable, arguments: arguments,
+    {List<String> arguments : const [], RunOptions runOptions,
+    @Deprecated('Use RunOptions.workingDirectory instead.')
+    String workingDirectory, bool quiet: false}) {
+  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  return runAsync(executable, arguments: arguments,
        quiet: quiet,runOptions: runOptions);
+}
 
 /// An exception from a process which exited with a non-zero exit code.
 class ProcessException implements Exception {
@@ -153,30 +167,64 @@ $stderr""";
 }
 
 
-/// Arguments passed to [Process.run] .
+/// Arguments passed to [Process.run] or [Process.start].
 /// See [Process.run] for more details.
 class RunOptions {
-  String workingDirectory;
-  Map<String, String> environment;
-  bool includeParentEnvironment;
-  bool runInShell;
-  Encoding stdoutEncoding;
-  Encoding stderrEncoding;
+  final String workingDirectory;
+  final Map<String, String> environment;
+  final bool includeParentEnvironment;
+  final bool runInShell;
+  final Encoding stdoutEncoding;
+  final Encoding stderrEncoding;
 
   RunOptions({this.workingDirectory, this.environment,
       this.includeParentEnvironment: true, this.runInShell: false,
       this.stdoutEncoding: SYSTEM_ENCODING,
       this.stderrEncoding: SYSTEM_ENCODING});
 
-  /// Create a clone when it's necessary to modify the passed runOptions to
-  /// avoid modifying the argument.
-  RunOptions clone() {
+  /// Create a clone with updated values in one step.
+  /// For omitted parameters values of the original instance are copied.
+  RunOptions clone({
+      String workingDirectory,
+      Map<String,String> environment,
+      bool includeParentEnvironment,
+      bool runInShell,
+      Encoding stdoutEncoding,
+      Encoding stderrEncoding}) {
+    Map<String,String> env;
+    if(environment != null) {
+       env = new Map.from(environment);
+    } else {
+      env = this.environment != null ? new Map.from(this.environment) : {};
+    }
     return new RunOptions(
-        workingDirectory: workingDirectory,
-        environment: environment == null ? null : new Map.from(environment),
-        includeParentEnvironment: includeParentEnvironment,
-        runInShell: runInShell,
-        stdoutEncoding: stdoutEncoding,
-        stderrEncoding: stderrEncoding);
+        workingDirectory: workingDirectory != null
+            ? workingDirectory : this.workingDirectory,
+        environment: env,
+        includeParentEnvironment: includeParentEnvironment != null
+            ? includeParentEnvironment : this.includeParentEnvironment,
+        runInShell: runInShell != null
+            ? runInShell : this.runInShell,
+        stdoutEncoding: stdoutEncoding != null
+            ? stdoutEncoding : this.stdoutEncoding,
+        stderrEncoding: stderrEncoding != null
+            ? stderrEncoding : this.stderrEncoding);
   }
+}
+
+/// Helper for methods which support the deprecated [workingDirectory] and the
+/// new [runOptions] to create a [RunOptions] instance which contains the values
+/// of the passed [runOptions] and the passed [workingDirectory].
+/// If both [workingDirectory] and [runOptions.workingDirectory] are passed
+/// an AssertionError is thrown. Only one of both may be used at one
+/// time.
+/// This function can probably be removed when the deprecated `workingDirectory`
+/// arguments are finally removed.
+RunOptions mergeRunOptions(String workingDirectory, RunOptions runOptions) {
+  if (workingDirectory != null) {
+    assert(runOptions == null || runOptions.workingDirectory == null);
+  }
+  return runOptions == null
+      ? new RunOptions(workingDirectory: workingDirectory)
+      : runOptions.clone(workingDirectory: workingDirectory);
 }

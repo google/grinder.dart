@@ -2,8 +2,8 @@
 
 ## UNRELEASED
 - Introduce `RunOptions` to support all `Process.run`/`Process.start` 
-  parameters. This is a breaking change because it replaces the `workingDirectory` 
-  parameter in several methods.
+  parameters. The `workingDirectory` parameter is now deprecated in all methods, 
+  use `RunOptions.workingDirectory` instead.
 
 ## 0.7.1
 - `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
