@@ -22,7 +22,7 @@ String run(String executable,
      bool quiet: false,
      @Deprecated('Use RunOptions.workingDirectory instead.')
      String workingDirectory}) {
-  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
   if(runOptions == null) runOptions = new RunOptions();
 
@@ -66,7 +66,7 @@ String runProcess(String executable,
      bool quiet: false,
      @Deprecated('Use RunOptions.workingDirectory instead.')
      String workingDirectory}) {
-  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return run(executable, arguments: arguments, runOptions: runOptions,
       quiet: quiet);
 }
@@ -84,7 +84,7 @@ Future<String> runAsync(String executable,
      bool quiet: false,
      @Deprecated('Use RunOptions.workingDirectory instead.')
      String workingDirectory}) {
-  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   if(runOptions == null) runOptions = new RunOptions();
   List<int> stdout = [], stderr = [];
@@ -99,7 +99,7 @@ Future<String> runAsync(String executable,
 
     // Handle stdout.
     var broadcastStdout = process.stdout.asBroadcastStream();
-    var stdoutLines = toLineStream(broadcastStdout);
+    var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
     broadcastStdout.listen((List<int> data) => stdout.addAll(data));
     if (!quiet) {
       stdoutLines.listen(logStdout);
@@ -107,7 +107,7 @@ Future<String> runAsync(String executable,
 
     // Handle stderr.
     var broadcastStderr = process.stderr.asBroadcastStream();
-    var stderrLines = toLineStream(broadcastStderr);
+    var stderrLines = toLineStream(broadcastStderr, runOptions.stderrEncoding);
     broadcastStderr.listen((List<int> data) => stderr.addAll(data));
     stderrLines.listen(logStderr);
 
@@ -139,7 +139,7 @@ Future<String> runProcessAsync(String executable,
     {List<String> arguments : const [], RunOptions runOptions,
     @Deprecated('Use RunOptions.workingDirectory instead.')
     String workingDirectory, bool quiet: false}) {
-  runOptions = mergeRunOptions(workingDirectory, runOptions);
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return runAsync(executable, arguments: arguments,
        quiet: quiet,runOptions: runOptions);
 }
@@ -220,11 +220,29 @@ class RunOptions {
 /// time.
 /// This function can probably be removed when the deprecated `workingDirectory`
 /// arguments are finally removed.
-RunOptions mergeRunOptions(String workingDirectory, RunOptions runOptions) {
+RunOptions mergeWorkingDirectory(String workingDirectory, RunOptions runOptions) {
   if (workingDirectory != null) {
     assert(runOptions == null || runOptions.workingDirectory == null);
   }
   return runOptions == null
       ? new RunOptions(workingDirectory: workingDirectory)
       : runOptions.clone(workingDirectory: workingDirectory);
+}
+
+/// Helper for methods which support the deprecated [envVar] and the
+/// new [runOptions] to create a [RunOptions] instance which contains the values
+/// of the passed [runOptions] and the passed [envVar].
+/// If both [envVar] and [runOptions.environment] are passed
+/// an AssertionError is thrown. Only one of both may be used at one
+/// time.
+/// This function can probably be removed when the deprecated `envVar`
+/// arguments are finally removed.
+RunOptions mergeEnvironment(Map<String,String> environment, RunOptions runOptions) {
+  if (environment != null) {
+    assert(runOptions == null || runOptions.environment == null
+        || runOptions.environment.isEmpty);
+  }
+  return runOptions == null
+      ? new RunOptions(environment: environment)
+      : runOptions.clone(environment: environment);
 }
