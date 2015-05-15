@@ -46,8 +46,10 @@ class Dart {
   static String run(String script, {List<String> arguments : const [],
       bool quiet: false, String packageRoot, RunOptions runOptions,
       @Deprecated('Use RunOptions.workingDirectory instead.')
-      String workingDirectory, int vmNewGenHeapMB,
-       int vmOldGenHeapMB, List<String> vmArgs : const []}) {
+      String workingDirectory,
+      @deprecated int vmNewGenHeapMB,
+      @deprecated int vmOldGenHeapMB,
+      List<String> vmArgs : const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List<String> args = [];
 
@@ -55,14 +57,6 @@ class Dart {
 
     if (packageRoot != null) {
       args.add('--package-root=${packageRoot}');
-    }
-
-    if (vmNewGenHeapMB != null) {
-      args.add('--new_gen_heap_size=${vmNewGenHeapMB}');
-    }
-
-    if (vmOldGenHeapMB != null) {
-      args.add('--old_gen_heap_size=${vmOldGenHeapMB}');
     }
 
     args.add(script);
