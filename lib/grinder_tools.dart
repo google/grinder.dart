@@ -35,7 +35,9 @@ final Directory webDir = new Directory('web');
 @Deprecated('Use `Dart.run` instead.')
 String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
-    RunOptions runOptions, int vmNewGenHeapMB, int vmOldGenHeapMB,
+    RunOptions runOptions,
+    @deprecated int vmNewGenHeapMB,
+    @deprecated int vmOldGenHeapMB,
     @Deprecated('Use RunOptions.workingDirectory instead.')
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
