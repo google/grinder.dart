@@ -16,8 +16,9 @@ void main(List<String> args) {
     'x2': io.Platform.executableArguments,
   };
   print(JSON.encode(json));
+
   var exitCode = io.Platform.environment['USE_EXIT_CODE'];
-  if(exitCode != null && exitCode.isNotEmpty) {
+  if (exitCode != null && exitCode.isNotEmpty) {
     io.exit(int.parse(exitCode));
   }
 }
