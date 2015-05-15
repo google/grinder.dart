@@ -59,14 +59,14 @@ main() {
     test(
         'should throw when workingDirectory and runOptions.workingDirectory are passed',
         () {
-
       bool isCheckedMode = false;
       assert(() => isCheckedMode = true);
-      if(isCheckedMode) {
-      expect(() => run('dart',
-          arguments: [runScriptName],
-          workingDirectory: runScriptPath,
-          runOptions: new RunOptions(workingDirectory: runScriptPath)), throws);
+      if (isCheckedMode) {
+        expect(() => run('dart',
+                arguments: [runScriptName],
+                workingDirectory: runScriptPath,
+                runOptions: new RunOptions(workingDirectory: runScriptPath)),
+            throws);
       }
     });
 
@@ -84,7 +84,11 @@ main() {
     });
 
     test('should pass includeParentEnvironment setting', () {
-      const environment = const {'TESTENV1': 'value1', 'TESTENV2': 'value2'};
+      final environment = {
+        'TESTENV1': 'value1',
+        'TESTENV2': 'value2',
+        'PATH': io.Platform.environment['PATH']
+      };
 
       String output = run('dart',
           arguments: [runScript],
@@ -95,7 +99,7 @@ main() {
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
-      expect(json['environment'].length, 2);
+      expect(json['environment'].keys, unorderedEquals(environment.keys));
     });
 
     test('should pass runInShell setting', () {
