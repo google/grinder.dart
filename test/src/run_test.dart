@@ -99,7 +99,10 @@ main() {
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
-      expect(json['environment'].keys, unorderedEquals(environment.keys));
+      // Filter out __CF_USER_TEXT_ENCODING.
+      expect(
+          json['environment'].keys.where((str) => !str.startsWith('__')),
+          unorderedEquals(environment.keys));
     });
 
     test('should pass runInShell setting', () {

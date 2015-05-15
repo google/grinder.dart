@@ -103,8 +103,10 @@ class Pub {
       @Deprecated('Use RunOptions.workingDirectory instead.')
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+    final prefix = runOptions.workingDirectory == null
+        ? '' : '${runOptions.workingDirectory}/';
+    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       _run('get', runOptions: runOptions);
@@ -120,8 +122,10 @@ class Pub {
       @Deprecated('Use RunOptions.workingDirectory instead.')
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    FileSet pubspec = new FileSet.fromFile(new File('pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(new File('pubspec.lock'));
+    final prefix = runOptions.workingDirectory == null
+        ? '' : '${runOptions.workingDirectory}/';
+    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       return run_lib.runAsync(_sdkBin('pub'), arguments: ['get'],
