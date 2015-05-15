@@ -6,6 +6,7 @@
 - Introduce `RunOptions` to support all `Process.run`/`Process.start` 
   parameters. The `workingDirectory` parameter is now deprecated in all methods, 
   use `RunOptions.workingDirectory` instead.
+- Added `PubApp.runAsync`.
 - In `Dart.run`, deprecate the vmNewGenHeapMB and vmOldGenHeapMB options.
 
 ## 0.7.0

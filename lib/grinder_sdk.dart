@@ -226,8 +226,19 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return run_lib.run(_sdkBin('pub'), arguments: args,
-    runOptions: runOptions);
+    return run_lib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
+  }
+
+  /// Run `pub run` on the given [package] and [script].
+  ///
+  /// If [script] is null it defaults to the same value as [package].
+  static Future<String> runAsync(String package,
+      {List<String> arguments, RunOptions runOptions, String script}) {
+    var scriptArg = script == null ? package : '$package:$script';
+    List args = ['run', scriptArg];
+    if (arguments != null) args.addAll(arguments);
+    return run_lib.runAsync(_sdkBin('pub'), arguments: args,
+        runOptions: runOptions);
   }
 
   static String version({bool quiet: false}) => _AppVersion.parse(
@@ -366,6 +377,16 @@ class PubGlobal {
         runOptions: runOptions);
   }
 
+  /// Run the given installed Dart application.
+  Future<String> runAsync(String package,
+      {List<String> arguments, RunOptions runOptions, String script}) {
+    var scriptArg = script == null ? package : '$package:$script';
+    List args = ['global', 'run', scriptArg];
+    if (arguments != null) args.addAll(arguments);
+    return run_lib.runAsync(_sdkBin('pub'), arguments: args,
+        runOptions: runOptions);
+  }
+
   /// Return the list of installed applications.
   List<_AppVersion> _list() {
     //dart_coveralls 0.1.8
@@ -432,6 +453,15 @@ abstract class PubApp {
       @Deprecated('Use RunOptions.workingDirectory instead.')
       String workingDirectory});
 
+  /// Run the application. If the application is not installed this command will
+  /// first activate it.
+  ///
+  /// If [script] is provided, the sub-script will be run. So
+  /// `new PubApp.global('grinder').runAsync(script: 'init');` will run
+  /// `grinder:init`.
+  Future<String> runAsync(List<String> arguments, {String script,
+    RunOptions runOptions});
+
   String toString() => packageName;
 }
 
@@ -490,6 +520,16 @@ class _PubGlobalApp extends PubApp {
         arguments: arguments,
         runOptions: runOptions);
   }
+
+  Future<String> runAsync(List<String> arguments, {String script,
+      RunOptions runOptions}) {
+    activate();
+
+    return Pub.global.runAsync(packageName,
+        script: script,
+        arguments: arguments,
+        runOptions: runOptions);
+  }
 }
 
 class _PubLocalApp extends PubApp {
@@ -507,6 +547,14 @@ class _PubLocalApp extends PubApp {
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return Pub.run(packageName,
+        script: script,
+        arguments: arguments,
+        runOptions: runOptions);
+  }
+
+  Future<String> runAsync(List<String> arguments, {String script,
+      RunOptions runOptions}) {
+    return Pub.runAsync(packageName,
         script: script,
         arguments: arguments,
         runOptions: runOptions);
