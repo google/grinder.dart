@@ -21,7 +21,7 @@ List<String> grinderArgs() => _args;
 List<String> _args;
 bool _verifyProjectRoot;
 
-Future handleArgs(List<String> args, {bool verifyProjectRoot}) {
+Future handleArgs(List<String> args, {bool verifyProjectRoot : false}) {
   _args = args == null ? [] : args;
   _verifyProjectRoot = verifyProjectRoot;
   return script.execute(grinderArgs());

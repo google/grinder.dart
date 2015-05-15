@@ -218,7 +218,7 @@ class Chrome {
   void launchFile(String filePath, {bool verbose: false,
         @Deprecated('Use RunOptions.environment instead.') Map envVars,
         run_lib.RunOptions runOptions}) {
-    run_lib.mergeEnvironment(envVars, runOptions);
+    mergeEnvironment(envVars, runOptions);
     String url;
 
     if (new File(filePath).existsSync()) {
@@ -249,7 +249,7 @@ class Chrome {
       {List<String> args, bool verbose: false,
       @Deprecated('Use RunOptions.environment instead.')
       Map envVars, run_lib.RunOptions runOptions}) {
-    run_lib.mergeEnvironment(envVars, runOptions);
+    mergeEnvironment(envVars, runOptions);
     List<String> _args = [
         '--no-default-browser-check',
         '--no-first-run',

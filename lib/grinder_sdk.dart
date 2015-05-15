@@ -12,6 +12,7 @@ import 'package:which/which.dart';
 
 import 'grinder.dart';
 import 'src/run.dart' as run_lib;
+import 'src/run_utils.dart';
 
 bool _sdkOnPath;
 
