@@ -12,7 +12,7 @@ import 'dart:convert' show Converter, Encoding, JSON;
 
 final String sep = io.Platform.pathSeparator;
 const runScriptName = 'run_script.dart';
-const runScriptPath = 'test/src';
+final runScriptPath = 'test${sep}src';
 final runScript = '$runScriptPath$sep$runScriptName';
 
 main() {
@@ -122,7 +122,7 @@ main() {
       }
       // TODO(zoechi) verify if this works in Windows or find a better way to
       // verify that `runInShell: true` is applied.
-      expect(json['environment'].length, greaterThan(2));
+      expect(json['environment'].length, greaterThan(3));
     });
 
     test('should use stdoutEncoding', () {
