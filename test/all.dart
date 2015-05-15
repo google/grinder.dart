@@ -11,6 +11,7 @@ import 'integration_test.dart' as integration_test;
 import 'src/cli_test.dart' as src_cli_test;
 import 'src/discover_tasks_test.dart' as src_discover_tasks_test;
 import 'src/utils_test.dart' as src_utils_test;
+import 'src/run_test.dart' as src_run_test;
 
 main() {
   grinder_test.main();
@@ -21,4 +22,5 @@ main() {
   src_cli_test.main();
   src_discover_tasks_test.main();
   src_utils_test.main();
+  src_run_test.main();
 }

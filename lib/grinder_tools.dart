@@ -35,13 +35,16 @@ final Directory webDir = new Directory('web');
 @Deprecated('Use `Dart.run` instead.')
 String runDartScript(String script,
     {List<String> arguments : const [], bool quiet: false, String packageRoot,
-    String workingDirectory, int vmNewGenHeapMB, int vmOldGenHeapMB}) {
+    RunOptions runOptions, int vmNewGenHeapMB, int vmOldGenHeapMB,
+    @Deprecated('Use RunOptions.workingDirectory instead.')
+    String workingDirectory}) {
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return Dart.run(
       script,
       arguments: arguments,
       quiet: quiet,
       packageRoot: packageRoot,
-      workingDirectory: workingDirectory,
+      runOptions: runOptions,
       vmNewGenHeapMB: vmNewGenHeapMB,
       vmOldGenHeapMB: vmOldGenHeapMB);
 }
@@ -212,7 +215,10 @@ class Chrome {
 
   bool get exists => new File(browserPath).existsSync();
 
-  void launchFile(String filePath, {bool verbose: false, Map envVars}) {
+  void launchFile(String filePath, {bool verbose: false,
+        @Deprecated('Use RunOptions.environment instead.') Map envVars,
+        run_lib.RunOptions runOptions}) {
+    mergeEnvironment(envVars, runOptions);
     String url;
 
     if (new File(filePath).existsSync()) {
@@ -235,11 +241,15 @@ class Chrome {
 
     // TODO: This process often won't terminate, so that's a problem.
     log("starting chrome...");
-    run_lib.run(browserPath, arguments: args, environment: envVars);
+    run_lib.run(browserPath, arguments: args,
+        runOptions: runOptions);
   }
 
   Future<BrowserInstance> launchUrl(String url,
-      {List<String> args, bool verbose: false, Map envVars}) {
+      {List<String> args, bool verbose: false,
+      @Deprecated('Use RunOptions.environment instead.')
+      Map envVars, run_lib.RunOptions runOptions}) {
+    mergeEnvironment(envVars, runOptions);
     List<String> _args = [
         '--no-default-browser-check',
         '--no-first-run',
@@ -251,14 +261,18 @@ class Chrome {
 
     _args.add(url);
 
-    return Process.start(browserPath, _args, environment: envVars)
+    return Process.start(browserPath, _args,
+        workingDirectory: runOptions.workingDirectory,
+        environment: runOptions.environment,
+        includeParentEnvironment: runOptions.includeParentEnvironment,
+        runInShell: runOptions.runInShell)
         .then((Process process) {
       // Handle stdout.
-      var stdoutLines = toLineStream(process.stdout);
+      var stdoutLines = toLineStream(process.stdout, runOptions.stdoutEncoding);
       stdoutLines.listen(logStdout);
 
       // Handle stderr.
-      var stderrLines = toLineStream(process.stderr);
+      var stderrLines = toLineStream(process.stderr, runOptions.stderrEncoding);
       stderrLines.listen(logStderr);
 
       return new BrowserInstance(this, process);
