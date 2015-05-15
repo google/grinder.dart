@@ -103,7 +103,11 @@ main() {
     });
 
     test('should pass runInShell setting', () {
-      const environment = const {'TESTENV1': 'value1', 'TESTENV2': 'value2'};
+      final environment = {
+        'TESTENV1': 'value1',
+        'TESTENV2': 'value2',
+        'PATH': io.Platform.environment['PATH']
+      };
 
       String output = run('dart',
           arguments: [runScript],
