@@ -18,8 +18,8 @@ import 'dart:convert';
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
 String run(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, @Deprecated(
-        'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+    RunOptions runOptions, bool quiet: false, //
+    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
   if (runOptions == null) runOptions = new RunOptions();
@@ -59,8 +59,8 @@ String run(String executable, {List<String> arguments: const [],
 /// All other optional parameters are forwarded to [Process.runSync].
 @Deprecated('Use `run` instead.')
 String runProcess(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, @Deprecated(
-        'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+    RunOptions runOptions, bool quiet: false, //
+    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return run(executable,
       arguments: arguments, runOptions: runOptions, quiet: quiet);
@@ -75,8 +75,8 @@ String runProcess(String executable, {List<String> arguments: const [],
 ///
 /// All other optional parameters are forwarded to [Process.start].
 Future<String> runAsync(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, @Deprecated(
-        'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+    RunOptions runOptions, bool quiet: false, //
+    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   if (runOptions == null) runOptions = new RunOptions();
@@ -131,8 +131,8 @@ Future<String> runAsync(String executable, {List<String> arguments: const [],
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-    {List<String> arguments: const [], RunOptions runOptions, @Deprecated(
-        'Use RunOptions.workingDirectory instead.') String workingDirectory,
+    {List<String> arguments: const [], RunOptions runOptions, //
+    @Deprecated('see RunOptions.workingDirectory') String workingDirectory,
     bool quiet: false}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return runAsync(executable,

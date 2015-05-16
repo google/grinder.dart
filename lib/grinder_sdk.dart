@@ -44,9 +44,10 @@ class Dart {
   ///
   /// Returns the stdout.
   static String run(String script, {List<String> arguments: const [],
-      bool quiet: false, String packageRoot, RunOptions runOptions, @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory,
-      @deprecated int vmNewGenHeapMB, @deprecated int vmOldGenHeapMB,
+      bool quiet: false, String packageRoot, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory, //
+      @deprecated int vmNewGenHeapMB, //
+      @deprecated int vmOldGenHeapMB, //
       List<String> vmArgs: const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List<String> args = [];
@@ -91,8 +92,8 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static void get({bool force: false, RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static void get({bool force: false, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -110,8 +111,8 @@ class Pub {
    * even if the pubspec.lock file is up-to-date with respect to the
    * pubspec.yaml file.
    */
-  static Future getAsync({bool force: false, RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static Future getAsync({bool force: false, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -131,8 +132,8 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static void upgrade({RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static void upgrade({RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     _run('upgrade', runOptions: runOptions);
   }
@@ -140,8 +141,8 @@ class Pub {
   /**
    * Run `pub upgrade` on the current project.
    */
-  static Future upgradeAsync({RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static Future upgradeAsync({RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return run_lib
         .runAsync(_sdkBin('pub'),
@@ -152,8 +153,8 @@ class Pub {
   /**
    * Run `pub downgrade` on the current project.
    */
-  static void downgrade({RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static void downgrade({RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     _run('downgrade', runOptions: runOptions);
   }
@@ -161,8 +162,8 @@ class Pub {
   /**
    * Run `pub downgrade` on the current project.
    */
-  static Future downgradeAsync({RunOptions runOptions, @Deprecated(
-      'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  static Future downgradeAsync({RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return run_lib
         .runAsync(_sdkBin('pub'),
@@ -176,8 +177,8 @@ class Pub {
    * The valid values for [mode] are `release` and `debug`.
    */
   static void build({String mode, List<String> directories,
-      RunOptions runOptions, String outputDirectory, @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+      RunOptions runOptions, String outputDirectory, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -193,8 +194,8 @@ class Pub {
    * The valid values for [mode] are `release` and `debug`.
    */
   static Future buildAsync({String mode, List<String> directories,
-      RunOptions runOptions, String outputDirectory, @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+      RunOptions runOptions, String outputDirectory, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -210,8 +211,8 @@ class Pub {
   ///
   /// If [script] is null it defaults to the same value as [package].
   static String run(String package, {List<String> arguments,
-      RunOptions runOptions, String script, @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+      RunOptions runOptions, String script, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
@@ -360,8 +361,8 @@ class PubGlobal {
 
   /// Run the given installed Dart application.
   String run(String package, {List<String> arguments, RunOptions runOptions,
-      String script, @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+      String script, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['global', 'run', scriptArg];
@@ -441,9 +442,8 @@ abstract class PubApp {
   /// If [script] is provided, the sub-script will be run. So
   /// `new PubApp.global('grinder').run(script: 'init');` will run
   /// `grinder:init`.
-  String run(List<String> arguments, {String script, RunOptions runOptions,
-      @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory});
+  String run(List<String> arguments, {String script, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory});
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
@@ -501,9 +501,8 @@ class _PubGlobalApp extends PubApp {
   void activate({bool force: false}) =>
       Pub.global.activate(packageName, force: force);
 
-  String run(List<String> arguments, {String script, RunOptions runOptions,
-      @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  String run(List<String> arguments, {String script, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     activate();
 
@@ -530,9 +529,8 @@ class _PubLocalApp extends PubApp {
 
   void activate({bool force: false}) {}
 
-  String run(List<String> arguments, {String script, RunOptions runOptions,
-      @Deprecated(
-          'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+  String run(List<String> arguments, {String script, RunOptions runOptions, //
+      @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return Pub.run(packageName,
         script: script, arguments: arguments, runOptions: runOptions);
