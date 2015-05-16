@@ -68,3 +68,14 @@ Future testsBuildWeb() {
     return Tests.runWebTests(directory: 'build/web', htmlFile: 'web.html');
   });
 }
+
+const sourceDirectories = const [
+  'bin',
+  'example',
+  'lib',
+  'test',
+  'tool',
+  'web'
+];
+@Task('Apply dartformat oo all Dart source files')
+format() => DartFmt.format(sourceDirectories);
