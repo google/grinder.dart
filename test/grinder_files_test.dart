@@ -92,7 +92,8 @@ main() {
 
     test('fileName', () {
       final String tempFileName = "temp.txt";
-      File tempFile = new File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
+      File tempFile =
+          new File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
       expect(fileName(tempFile), tempFileName);
     });
 
@@ -103,28 +104,29 @@ main() {
       expect(fileExt(tempFile), extension);
 
       final fileNameEmptyExt = 'temp.';
-      tempFile = new File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
+      tempFile =
+          new File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
       expect(fileExt(tempFile), '');
     });
 
     test('fileExt null', () {
       String fileNameNoExt = 'temp';
       File tempFile =
-        new File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
+          new File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
       expect(fileExt(tempFile), null);
     });
 
     test('joinFile', () {
-      File tempFile = joinFile(Directory.current, ['dir','test']);
+      File tempFile = joinFile(Directory.current, ['dir', 'test']);
       File expectedFile =
-        new File('${Directory.current.path}${_sep}dir${_sep}test');
+          new File('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempFile.path, expectedFile.path);
     });
 
     test('joinDir', () {
-      Directory tempDirectory = joinDir(Directory.current, ['dir','test']);
+      Directory tempDirectory = joinDir(Directory.current, ['dir', 'test']);
       Directory expectedDir =
-        new Directory('${Directory.current.path}${_sep}dir${_sep}test');
+          new Directory('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempDirectory.path, expectedDir.path);
     });
 
@@ -149,12 +151,13 @@ main() {
       joinFile(sourceDir, ['fileB']).writeAsStringSync('efgh');
       joinFile(sourceDir, ['fileC']).writeAsStringSync('1234');
 
-      Directory targetDir = joinDir(temp,['target']);
+      Directory targetDir = joinDir(temp, ['target']);
       copy(sourceDir, targetDir);
 
-      String expectedResult = joinFile(targetDir, ['fileA']).readAsStringSync() +
-                              joinFile(targetDir, ['fileB']).readAsStringSync() +
-                              joinFile(targetDir, ['fileC']).readAsStringSync();
+      String expectedResult = joinFile(targetDir, ['fileA'])
+              .readAsStringSync() +
+          joinFile(targetDir, ['fileB']).readAsStringSync() +
+          joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
     });
   });

@@ -9,7 +9,7 @@ import 'dart:convert';
 import '../grinder.dart';
 
 Stream<String> toLineStream(Stream<List<int>> s, Encoding encoding) =>
-  s.transform(encoding.decoder).transform(const LineSplitter());
+    s.transform(encoding.decoder).transform(const LineSplitter());
 
 logStdout(String line) {
   log(line);
@@ -27,7 +27,8 @@ logStderr(String line) {
 /// time.
 /// This function can probably be removed when the deprecated `workingDirectory`
 /// arguments are finally removed.
-RunOptions mergeWorkingDirectory(String workingDirectory, RunOptions runOptions) {
+RunOptions mergeWorkingDirectory(
+    String workingDirectory, RunOptions runOptions) {
   if (workingDirectory != null) {
     assert(runOptions == null || runOptions.workingDirectory == null);
   }
@@ -44,10 +45,12 @@ RunOptions mergeWorkingDirectory(String workingDirectory, RunOptions runOptions)
 /// time.
 /// This function can probably be removed when the deprecated `envVar`
 /// arguments are finally removed.
-RunOptions mergeEnvironment(Map<String,String> environment, RunOptions runOptions) {
+RunOptions mergeEnvironment(
+    Map<String, String> environment, RunOptions runOptions) {
   if (environment != null) {
-    assert(runOptions == null || runOptions.environment == null
-        || runOptions.environment.isEmpty);
+    assert(runOptions == null ||
+        runOptions.environment == null ||
+        runOptions.environment.isEmpty);
   }
   return runOptions == null
       ? new RunOptions(environment: environment)

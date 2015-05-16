@@ -45,10 +45,8 @@ main() {
       grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
       grinder.defaultTask = new GrinderTask('bar', depends: ['foo']);
       grinder.start([], dontRun: true);
-      expect(grinder.getBuildOrder(), orderedEquals([
-        grinder.getTask('foo'),
-        grinder.getTask('bar')
-      ]));
+      expect(grinder.getBuildOrder(),
+          orderedEquals([grinder.getTask('foo'), grinder.getTask('bar')]));
     });
 
     test('throws when overwriting default task', () {
@@ -77,11 +75,11 @@ main() {
       grinder.addTask(new GrinderTask('e', depends: ['a', 'c']));
       grinder.start(['e'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('b'),
-          grinder.getTask('a'),
-          grinder.getTask('d'),
-          grinder.getTask('c'),
-          grinder.getTask('e')
+        grinder.getTask('b'),
+        grinder.getTask('a'),
+        grinder.getTask('d'),
+        grinder.getTask('c'),
+        grinder.getTask('e')
       ]));
     });
 
@@ -91,18 +89,22 @@ main() {
       grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
       grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
-      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
-      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(
+          new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(
+          new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
       grinder.addTask(new GrinderTask('docs', depends: ['setup']));
-      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
-      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
       grinder.start(['archive'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('mode-notest'),
-          grinder.getTask('setup'),
-          grinder.getTask('compile'),
-          grinder.getTask('archive')
+        grinder.getTask('mode-notest'),
+        grinder.getTask('setup'),
+        grinder.getTask('compile'),
+        grinder.getTask('archive')
       ]));
     });
 
@@ -112,16 +114,19 @@ main() {
       grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
       grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
-      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
-      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(
+          new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(
+          new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
       grinder.addTask(new GrinderTask('docs', depends: ['setup']));
-      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
-      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
       grinder.start(['docs'], dontRun: true);
-      expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('setup'), grinder.getTask('docs')
-      ]));
+      expect(grinder.getBuildOrder(),
+          orderedEquals([grinder.getTask('setup'), grinder.getTask('docs')]));
     });
 
     test('task execution order 3', () {
@@ -130,19 +135,23 @@ main() {
       grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
       grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
-      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
-      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(
+          new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(
+          new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
       grinder.addTask(new GrinderTask('docs', depends: ['setup']));
-      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
-      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
       grinder.start(['docs', 'archive'], dontRun: true);
       expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('setup'),
-          grinder.getTask('docs'),
-          grinder.getTask('mode-notest'),
-          grinder.getTask('compile'),
-          grinder.getTask('archive')
+        grinder.getTask('setup'),
+        grinder.getTask('docs'),
+        grinder.getTask('mode-notest'),
+        grinder.getTask('compile'),
+        grinder.getTask('archive')
       ]));
     });
 
@@ -152,18 +161,21 @@ main() {
       grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
       grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
-      grinder.addTask(new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
-      grinder.addTask(new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
+      grinder.addTask(
+          new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
+      grinder.addTask(
+          new GrinderTask('deploy-test', depends: ['setup', 'mode-test']));
       grinder.addTask(new GrinderTask('docs', depends: ['setup']));
-      grinder.addTask(new GrinderTask('archive', depends: ['mode-notest', 'compile']));
-      grinder.addTask(new GrinderTask('release', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('archive', depends: ['mode-notest', 'compile']));
+      grinder.addTask(
+          new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
       grinder.addTask(new GrinderTask('clean', taskFunction: () {}));
 
       grinder.start(['clean'], dontRun: true);
-      expect(grinder.getBuildOrder(), orderedEquals([
-          grinder.getTask('clean')
-      ]));
+      expect(
+          grinder.getBuildOrder(), orderedEquals([grinder.getTask('clean')]));
     });
 
     test('returns future', () {
@@ -189,12 +201,12 @@ main() {
 
     test('throw on fail', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('i_throw', taskFunction: (GrinderContext context) {
+      grinder.addTask(new GrinderTask('i_throw',
+          taskFunction: (GrinderContext context) {
         context.fail('boo');
       }));
 
-      expect(
-          grinder.start(['i_throw']),
+      expect(grinder.start(['i_throw']),
           throwsA(new isInstanceOf<GrinderException>()));
     });
   });

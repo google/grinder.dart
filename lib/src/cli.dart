@@ -21,7 +21,7 @@ List<String> grinderArgs() => _args;
 List<String> _args;
 bool _verifyProjectRoot;
 
-Future handleArgs(List<String> args, {bool verifyProjectRoot : false}) {
+Future handleArgs(List<String> args, {bool verifyProjectRoot: false}) {
   _args = args == null ? [] : args;
   _verifyProjectRoot = verifyProjectRoot;
   return script.execute(grinderArgs());
@@ -31,19 +31,13 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot : false}) {
 //       is released.
 const _completion = const Completion();
 @Command(help: 'Dart workflows, automated.', plugins: const [_completion])
-cli(
-    @Rest(help: getTaskHelp, allowed: allowedTasks)
-    List<String> tasks,
-    {
-     @Flag(help: 'Print the version of grinder.')
-     bool version: false,
-     @Option(help: 'Set the location of the Dart SDK.')
-     String dartSdk,
-     @Deprecated('Task dependencies are now available via --help.')
-     @Flag(hide:true, abbr: 'd', help: 'Display the dependencies of tasks.')
-     bool deps: false
-    }) {
-
+cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
+        help: 'Print the version of grinder.') bool version: false, @Option(
+        help: 'Set the location of the Dart SDK.') String dartSdk,
+    @Deprecated('Task dependencies are now available via --help.') @Flag(
+        hide: true,
+        abbr: 'd',
+        help: 'Display the dependencies of tasks.') bool deps: false}) {
   if (version) {
     const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
@@ -88,7 +82,6 @@ cli(
 
 var script = new Script(cli);
 
-
 String getTaskHelp({Grinder grinder, bool useColor}) {
   if (grinder == null) grinder = singleton.grinder;
 
@@ -112,7 +105,8 @@ String getTaskHelp({Grinder grinder, bool useColor}) {
     return map;
   });
 
-  var firstColMax = firstColMap.values.fold(0, (width, next) => max(width, next.length));
+  var firstColMax =
+      firstColMap.values.fold(0, (width, next) => max(width, next.length));
   var padding = 4;
   var firstColWidth = firstColMax + padding;
 
@@ -120,9 +114,11 @@ String getTaskHelp({Grinder grinder, bool useColor}) {
     Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
 
     var buffer = new StringBuffer();
-    buffer.write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
+    buffer
+        .write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
     var desc = task.description == null ? '' : task.description;
-    var depText = '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
+    var depText =
+        '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
     if (desc.isNotEmpty) {
       buffer.writeln(textPen(task.description));
       if (deps.isNotEmpty) {

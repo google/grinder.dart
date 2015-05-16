@@ -9,10 +9,9 @@ import 'package:grinder/src/_mserve.dart';
 void main(List<String> args) {
   ArgParser parser = new ArgParser();
 
-  parser.addOption('port', defaultsTo: '8000', abbr: 'p',
-      help: 'the port to serve on');
-  parser.addFlag('help', abbr: 'h', negatable: false,
-      help: "show help");
+  parser.addOption('port',
+      defaultsTo: '8000', abbr: 'p', help: 'the port to serve on');
+  parser.addFlag('help', abbr: 'h', negatable: false, help: "show help");
 
   ArgResults results = parser.parse(args);
 

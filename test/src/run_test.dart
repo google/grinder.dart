@@ -100,8 +100,7 @@ main() {
         expect(json['environment'][k], environment[k]);
       }
       // Filter out __CF_USER_TEXT_ENCODING.
-      expect(
-          json['environment'].keys.where((str) => !str.startsWith('__')),
+      expect(json['environment'].keys.where((str) => !str.startsWith('__')),
           unorderedEquals(environment.keys));
     });
 
