@@ -77,5 +77,5 @@ const sourceDirectories = const [
   'tool',
   'web'
 ];
-@Task('Apply dartformat oo all Dart source files')
+@Task('Apply dartformat to all Dart source files')
 format() => DartFmt.format(sourceDirectories);
