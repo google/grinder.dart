@@ -326,28 +326,17 @@ class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
   static void format(fileOrPath) {
-    if (fileOrPath is File) {
-      fileOrPath = fileOrPath.path;
-    }
-    if (fileOrPath is List) {
-      _run('--overwrite', fileOrPath);
-    } else {
-      _run('--overwrite', [fileOrPath]);
-    }
+    if (fileOrPath is File) fileOrPath = fileOrPath.path;
+    if (fileOrPath is! List) fileOrPath = [fileOrPath];
+    _run('--overwrite', fileOrPath);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath) {
-    String results;
-    if (fileOrPath is File) {
-      fileOrPath = fileOrPath.path;
-    }
-    if (fileOrPath is List) {
-      results = _run('--dry-run', fileOrPath);
-    } else {
-      results = _run('--dry-run', [fileOrPath]);
-    }
+    if (fileOrPath is File) fileOrPath = fileOrPath.path;
+    if (fileOrPath is! List) fileOrPath = [fileOrPath];
+    String results = _run('--dry-run', fileOrPath);
     return results.trim().isNotEmpty;
   }
 
