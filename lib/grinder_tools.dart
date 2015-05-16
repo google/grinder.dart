@@ -35,8 +35,9 @@ final Directory webDir = new Directory('web');
 @Deprecated('Use `Dart.run` instead.')
 String runDartScript(String script, {List<String> arguments: const [],
     bool quiet: false, String packageRoot, RunOptions runOptions,
-    @deprecated int vmNewGenHeapMB, @deprecated int vmOldGenHeapMB, @Deprecated(
-        'Use RunOptions.workingDirectory instead.') String workingDirectory}) {
+    @deprecated int vmNewGenHeapMB, //
+    @deprecated int vmOldGenHeapMB, //
+    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return Dart.run(script,
       arguments: arguments,
@@ -214,7 +215,7 @@ class Chrome {
   bool get exists => new File(browserPath).existsSync();
 
   void launchFile(String filePath, {bool verbose: false,
-      @Deprecated('Use RunOptions.environment instead.') Map envVars,
+      @Deprecated('see RunOptions.environment') Map envVars,
       run_lib.RunOptions runOptions}) {
     mergeEnvironment(envVars, runOptions);
     String url;
@@ -244,7 +245,7 @@ class Chrome {
 
   Future<BrowserInstance> launchUrl(String url, {List<String> args,
       bool verbose: false,
-      @Deprecated('Use RunOptions.environment instead.') Map envVars,
+      @Deprecated('see RunOptions.environment') Map envVars,
       run_lib.RunOptions runOptions}) {
     mergeEnvironment(envVars, runOptions);
     List<String> _args = [
