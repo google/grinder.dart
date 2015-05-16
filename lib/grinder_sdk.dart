@@ -324,10 +324,11 @@ class Analyzer {
 /// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
 /// the `dartfmt` from SDK 1.9 and greater.
 class DartFmt {
-  /// Run the `dartfmt` command with the `--overwrite` option. Format any files
-  /// in place.
+  /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
+  /// directory or a list of files or directories in place.
   static void format(fileOrPath) {
     if (fileOrPath is File) fileOrPath = fileOrPath.path;
+    if (fileOrPath is! List) fileOrPath = [fileOrPath];
     _run('--overwrite', fileOrPath);
   }
 
@@ -335,13 +336,14 @@ class DartFmt {
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath) {
     if (fileOrPath is File) fileOrPath = fileOrPath.path;
+    if (fileOrPath is! List) fileOrPath = [fileOrPath];
     String results = _run('--dry-run', fileOrPath);
     return results.trim().isNotEmpty;
   }
 
-  static String _run(String option, String target, {bool quiet: false}) =>
-      run_lib.run(_sdkBin('dartfmt'),
-          quiet: quiet, arguments: [option, target]);
+  static String _run(String option, List<String> targets,
+      {bool quiet: false}) => run_lib.run(_sdkBin('dartfmt'),
+          quiet: quiet, arguments: [option]..addAll(targets));
 }
 
 /// Access the `pub global` commands.

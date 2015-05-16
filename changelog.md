@@ -8,6 +8,7 @@
   use `RunOptions.workingDirectory` instead.
 - Added `PubApp.runAsync`.
 - In `Dart.run`, deprecate the vmNewGenHeapMB and vmOldGenHeapMB options.
+- Support for passing lists of files or directories to `DartFmt.format()`
 
 ## 0.7.0
 - Big changes! Task definititions are now primarily annotation based; see the
