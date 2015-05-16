@@ -8,10 +8,11 @@
   use `RunOptions.workingDirectory` instead.
 - Added `PubApp.runAsync`.
 - In `Dart.run`, deprecate the vmNewGenHeapMB and vmOldGenHeapMB options.
-- Support for passing lists of files or directories to `DartFmt.format()`
+- Added support for passing lists of files or directories to `DartFmt.format()`.
+- `Analyzer.analyzeFiles` is deprecated in favor of `Analyzer.analyze`.
 
-## 0.7.0
-- Big changes! Task definititions are now primarily annotation based; see the
+## 0.7.0 (2015/4/20)
+- Big changes! Task definitions are now primarily annotation based; see the
   [readme](https://github.com/google/grinder.dart) for more information and an example
 - The `GrinderContext` arg is no longer expected in task functions. Instead, the
   `context` variable (and the `log` and `fail` functions) are available as global

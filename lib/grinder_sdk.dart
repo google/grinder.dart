@@ -299,20 +299,24 @@ class Dart2js {
  * Utility tasks for invoking the analyzer.
  */
 class Analyzer {
-  /// Analyze a single [File] or path ([String]).
-  static void analyze(fileOrPath,
+  /// Analyze a file, a directory or a list of files or directories.
+  static void analyze(fileOrPaths,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    analyzeFiles([fileOrPath],
-        packageRoot: packageRoot, fatalWarnings: fatalWarnings);
+    List args = [];
+    if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
+    if (fatalWarnings) args.add('--fatal-warnings');
+    args.addAll(_coerceToPathList(fileOrPaths));
+    run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
   /// Analyze one or more [File]s or paths ([String]).
+  @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
       {Directory packageRoot, bool fatalWarnings: false}) {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(files.map((f) => f is File ? f.path : f));
+    args.addAll(_coerceToPathList(files));
 
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
@@ -327,17 +331,13 @@ class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
   static void format(fileOrPath) {
-    if (fileOrPath is File) fileOrPath = fileOrPath.path;
-    if (fileOrPath is! List) fileOrPath = [fileOrPath];
-    _run('--overwrite', fileOrPath);
+    _run('--overwrite', _coerceToPathList(fileOrPath));
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath) {
-    if (fileOrPath is File) fileOrPath = fileOrPath.path;
-    if (fileOrPath is! List) fileOrPath = [fileOrPath];
-    String results = _run('--dry-run', fileOrPath);
+    String results = _run('--dry-run', _coerceToPathList(fileOrPath));
     return results.trim().isNotEmpty;
   }
 
@@ -543,4 +543,13 @@ class _PubLocalApp extends PubApp {
     return Pub.runAsync(packageName,
         script: script, arguments: arguments, runOptions: runOptions);
   }
+}
+
+List<String> _coerceToPathList(filesOrPaths) {
+  if (filesOrPaths is! List) filesOrPaths = [filesOrPaths];
+  return filesOrPaths.map((item) {
+    if (item is String) return item;
+    if (item is File) return item.path;
+    return '${item}';
+  }).toList();
 }

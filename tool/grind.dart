@@ -14,9 +14,10 @@ void analyze() {
 }
 
 @Task()
-void test() {
-  Tests.runCliTests();
-}
+test() => Tests.runCliTests();
+
+@Task('Apply dartfmt to all Dart source files')
+format() => DartFmt.format(['bin', 'example', 'lib', 'test', 'tool', 'web']);
 
 @Task('Check that the generated `init` grind script analyzes well.')
 checkInit() {
@@ -68,14 +69,3 @@ Future testsBuildWeb() {
     return Tests.runWebTests(directory: 'build/web', htmlFile: 'web.html');
   });
 }
-
-const sourceDirectories = const [
-  'bin',
-  'example',
-  'lib',
-  'test',
-  'tool',
-  'web'
-];
-@Task('Apply dartformat to all Dart source files')
-format() => DartFmt.format(sourceDirectories);
