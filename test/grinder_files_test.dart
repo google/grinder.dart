@@ -6,7 +6,7 @@ library grinder.files_test;
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 final String _sep = Platform.pathSeparator;
 

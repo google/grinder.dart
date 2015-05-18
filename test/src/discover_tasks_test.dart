@@ -7,7 +7,7 @@ import 'dart:mirrors';
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/discover_tasks.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 import 'task_discovery/good_tasks.dart' as good;
 import 'task_discovery/bad_tasks.dart' as bad;

@@ -6,7 +6,7 @@ library grinder_test;
 import 'dart:async';
 
 import 'package:grinder/grinder.dart' hide fail;
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 main() {
   group('grinder', () {

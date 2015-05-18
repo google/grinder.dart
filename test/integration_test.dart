@@ -5,7 +5,7 @@ library grinder.integration_test;
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/cli.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 import 'src/_common.dart';
 

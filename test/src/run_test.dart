@@ -5,10 +5,11 @@ library grinder.test.src.run;
 
 import 'dart:io' as io;
 
+import 'dart:convert' show Converter, Encoding, JSON;
+
 import 'package:grinder/grinder.dart';
 import 'package:grinder/grinder_tools.dart';
-import 'package:unittest/unittest.dart';
-import 'dart:convert' show Converter, Encoding, JSON;
+import 'package:test/test.dart';
 
 final String sep = io.Platform.pathSeparator;
 const runScriptName = 'run_script.dart';
