@@ -299,7 +299,7 @@ class Dart2js {
  * Utility tasks for invoking the analyzer.
  */
 class Analyzer {
-  /// Analyze a file, a directory or a list of files or directories.
+  /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
       {Directory packageRoot, bool fatalWarnings: false}) {
     List args = [];
