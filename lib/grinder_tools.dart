@@ -195,7 +195,7 @@ class Test {
   /// pub serve instance serving `test/`.
   void test({String name, String plainName, List<String> platforms,
       int concurrency, int pubServe, RunOptions runOptions}) {
-    List<String>args = ['--reporter=expanded'];
+    List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
     if (platforms != null) args.add('--platform=${platforms.join(',')}');
@@ -217,7 +217,7 @@ class Test {
   /// output uses ANSI colors.
   Future testAsync({String name, String plainName, List<String> platforms,
       int concurrency, int pubServe, bool color, RunOptions runOptions}) {
-    List<String>args = ['--reporter=expanded'];
+    List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
     if (platforms != null) args.add('--platform=${platforms.join(',')}');
