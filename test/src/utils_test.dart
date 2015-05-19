@@ -3,6 +3,8 @@
 
 library grinder.src.utils_test;
 
+import 'dart:io';
+
 import 'package:grinder/src/utils.dart';
 import 'package:test/test.dart';
 
@@ -23,6 +25,14 @@ main() {
       expect(timer.isActive, true);
       timer.cancel();
       expect(timer.isActive, false);
+    });
+
+    test('coerceToPathList', () {
+      expect(coerceToPathList([]), isEmpty);
+      expect(coerceToPathList('foo'), ['foo']);
+      expect(coerceToPathList(new File('foo')), ['foo']);
+      expect(coerceToPathList(['a', 'b']), ['a', 'b']);
+      expect(coerceToPathList([new File('a'), new File('b')]), ['a', 'b']);
     });
   });
 }

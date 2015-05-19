@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.7.1+1 (2015/5/19)
+- Add a `files` param to `TestRunner.test`.
+
 ## 0.7.1 (2015/5/19)
 - `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
 - Added `downgrade` method do `Pub`.
