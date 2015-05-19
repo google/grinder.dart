@@ -61,7 +61,7 @@ void defaultClean([GrinderContext context]) => delete(buildDir);
 /**
  * A utility class to run tests for your project.
  */
-@Deprecated('see `Test`')
+@Deprecated('see [TestRunner]')
 class Tests {
   /**
    * Run command-line tests. You can specify the base directory (`test`), and
@@ -178,53 +178,64 @@ class Tests {
 
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
-class Test {
+class TestRunner {
   final PubApp _test = new PubApp.local('test');
 
-  Test();
+  TestRunner();
 
-  /// Run the tests in the current package. See
-  /// https://pub.dartlang.org/packages/test.
+  /// Run the tests in the current package. See the
+  /// [test package](https://pub.dartlang.org/packages/test).
   ///
   /// [name] is substring of the name of the test to run. Regular expression
   /// syntax is supported. [plainName] is a plain-text substring of the name of
-  /// the test to run. [platform] is the platform(s) on which to run the tests.
-  /// Available values are `vm` (default), `dartium`, `content-shell`, `chrome`,
-  /// `phantomjs`, `firefox`, `safari`. [concurrency] controls the number of
-  /// concurrent test suites run (defaults to 4). [pubServe] is the port of a
-  /// pub serve instance serving `test/`.
-  void test({String name, String plainName, List<String> platforms,
+  /// the test to run. [platformSelector] is the platform(s) on which to run the
+  /// tests. This parameter can be a String or a List.
+  /// [Available values](https://github.com/dart-lang/test#platform-selector-syntax)
+  /// are `vm` (default), `dartium`, `content-shell`, `chrome`, `phantomjs`,
+  /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
+  /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
+  /// serving `test/`.
+  void test({String name, String plainName, dynamic platformSelector,
       int concurrency, int pubServe, RunOptions runOptions}) {
-    List<String> args = ['--reporter=expanded'];
-    if (name != null) args.add('--name=${name}');
-    if (plainName != null) args.add('--plain-name=${plainName}');
-    if (platforms != null) args.add('--platform=${platforms.join(',')}');
-    if (concurrency != null) args.add('--concurrency=${concurrency}');
-    if (pubServe != null) args.add('--pub-serve=${pubServe}');
-    _test.run(args, script: 'test', runOptions: runOptions);
+    _test.run(
+        _buildArgs(name: name, plainName: plainName, platformSelector: platformSelector,
+                   concurrency: concurrency, pubServe: pubServe),
+        script: 'test', runOptions: runOptions);
   }
 
-  /// Run the tests in the current package. See
-  /// https://pub.dartlang.org/packages/test.
+  /// Run the tests in the current package. See the
+  /// [test package](https://pub.dartlang.org/packages/test).
   ///
   /// [name] is substring of the name of the test to run. Regular expression
   /// syntax is supported. [plainName] is a plain-text substring of the name of
-  /// the test to run. [platform] is the platform(s) on which to run the tests.
-  /// Available values are `vm` (default), `dartium`, `content-shell`, `chrome`,
-  /// `phantomjs`, `firefox`, `safari`. [concurrency] controls the number of
-  /// concurrent test suites run (defaults to 4). [pubServe] is the port of a
-  /// pub serve instance serving `test/`. [color] controls whether the test
-  /// output uses ANSI colors.
-  Future testAsync({String name, String plainName, List<String> platforms,
-      int concurrency, int pubServe, bool color, RunOptions runOptions}) {
+  /// the test to run. [platformSelector] is the platform(s) on which to run the
+  /// tests. This parameter can be a String or a List.
+  /// [Available values](https://github.com/dart-lang/test#platform-selector-syntax)
+  /// are `vm` (default), `dartium`, `content-shell`, `chrome`, `phantomjs`,
+  /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
+  /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
+  /// serving `test/`.
+  Future testAsync({String name, String plainName, dynamic platformSelector,
+      int concurrency, int pubServe, RunOptions runOptions}) {
+    return _test.runAsync(
+        _buildArgs(name: name, plainName: plainName, platformSelector: platformSelector,
+                   concurrency: concurrency, pubServe: pubServe),
+        script: 'test', runOptions: runOptions);
+  }
+
+  List<String> _buildArgs({String name, String plainName,
+      dynamic platformSelector, int concurrency, int pubServe}) {
     List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
-    if (platforms != null) args.add('--platform=${platforms.join(',')}');
+    if (platformSelector != null) {
+      if (platformSelector is List) platformSelector = platformSelector.join('||');
+      args.add('--platform=${platformSelector}');
+    }
     if (concurrency != null) args.add('--concurrency=${concurrency}');
     if (pubServe != null) args.add('--pub-serve=${pubServe}');
-    if (color != null) args.add(color ? '--color' : '--no-color');
-    return _test.runAsync(args, script: 'test', runOptions: runOptions);
+    // TODO: Pass in --color based on a global property: #243.
+    return args;
   }
 }
 

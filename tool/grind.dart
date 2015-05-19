@@ -12,7 +12,7 @@ main(args) => grind(args);
 analyze() => new PubApp.global('tuneup')..runAsync(['check', '--ignore-infos']);
 
 @Task()
-test() => new Test().testAsync();
+test() => new TestRunner().testAsync();
 
 @Task('Apply dartfmt to all Dart source files')
 format() => DartFmt.format(['bin', 'example', 'lib', 'test', 'tool', 'web']);
