@@ -197,10 +197,12 @@ class TestRunner {
   /// serving `test/`.
   void test({String name, String plainName, dynamic platformSelector,
       int concurrency, int pubServe, RunOptions runOptions}) {
-    _test.run(
-        _buildArgs(name: name, plainName: plainName, platformSelector: platformSelector,
-                   concurrency: concurrency, pubServe: pubServe),
-        script: 'test', runOptions: runOptions);
+    _test.run(_buildArgs(
+        name: name,
+        plainName: plainName,
+        selector: platformSelector,
+        concurrency: concurrency,
+        pubServe: pubServe), script: 'test', runOptions: runOptions);
   }
 
   /// Run the tests in the current package. See the
@@ -217,20 +219,22 @@ class TestRunner {
   /// serving `test/`.
   Future testAsync({String name, String plainName, dynamic platformSelector,
       int concurrency, int pubServe, RunOptions runOptions}) {
-    return _test.runAsync(
-        _buildArgs(name: name, plainName: plainName, platformSelector: platformSelector,
-                   concurrency: concurrency, pubServe: pubServe),
-        script: 'test', runOptions: runOptions);
+    return _test.runAsync(_buildArgs(
+        name: name,
+        plainName: plainName,
+        selector: platformSelector,
+        concurrency: concurrency,
+        pubServe: pubServe), script: 'test', runOptions: runOptions);
   }
 
-  List<String> _buildArgs({String name, String plainName,
-      dynamic platformSelector, int concurrency, int pubServe}) {
+  List<String> _buildArgs({String name, String plainName, dynamic selector,
+      int concurrency, int pubServe}) {
     List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
-    if (platformSelector != null) {
-      if (platformSelector is List) platformSelector = platformSelector.join('||');
-      args.add('--platform=${platformSelector}');
+    if (selector != null) {
+      if (selector is List) selector = selector.join('||');
+      args.add('--platform=${selector}');
     }
     if (concurrency != null) args.add('--concurrency=${concurrency}');
     if (pubServe != null) args.add('--pub-serve=${pubServe}');
