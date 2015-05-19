@@ -10,6 +10,7 @@
 - In `Dart.run`, deprecate the vmNewGenHeapMB and vmOldGenHeapMB options.
 - Added support for passing lists of files or directories to `DartFmt.format()`.
 - `Analyzer.analyzeFiles` is deprecated in favor of `Analyzer.analyze`.
+- Added a `Pub.global.list()` method to list the installed applications.
 - added a `TestRunner` class - a wrapper around the new `test` package.
 
 ## 0.7.0 (2015/4/20)

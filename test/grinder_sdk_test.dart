@@ -57,15 +57,12 @@ main() {
       expect(ctx.isFailed, false);
     });
 
-    // See #166.
-//    test('Pub.list', () {
-//      return mockContext.runZoned(() {
-//        expect(Pub.global._list(), isNotNull);
-//      }).then((_) {
-//        expect(mockContext.logBuffer, isNotEmpty);
-//        expect(mockContext.isFailed, false);
-//      });
-//    });
+    grinderTest('Pub.list', () {
+      expect(Pub.global.list(), isNotNull);
+    }, (ctx) {
+      expect(ctx.logBuffer, isEmpty);
+      expect(ctx.isFailed, false);
+    });
 
     grinderTest('Pub.isActivated', () {
       expect(Pub.global.isActivated('foo'), false);
