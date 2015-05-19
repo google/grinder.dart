@@ -233,7 +233,7 @@ class Pub {
   }
 
   static String version({bool quiet: false}) =>
-      _AppVersion.parse(_run('--version', quiet: quiet)).version;
+      _parseVersion(_run('--version', quiet: quiet));
 
   static PubGlobal get global => _global;
 
@@ -289,7 +289,7 @@ class Dart2js {
   }
 
   static String version({bool quiet: false}) =>
-      _AppVersion.parse(_run('--version', quiet: quiet)).version;
+      _parseVersion(_run('--version', quiet: quiet));
 
   static String _run(String command, {bool quiet: false}) =>
       run_lib.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
@@ -321,8 +321,8 @@ class Analyzer {
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet: false}) => _AppVersion.parse(run_lib.run(
-      _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version'])).version;
+  static String version({bool quiet: false}) => _parseVersion(run_lib.run(
+      _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
 }
 
 /// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
@@ -383,7 +383,7 @@ class PubGlobal {
   }
 
   /// Return the list of installed applications.
-  List<_AppVersion> _list() {
+  List<PubApp> list() {
     //dart_coveralls 0.1.8
     //den 0.1.3
     //discoveryapis_generator 0.6.1
@@ -395,9 +395,8 @@ class PubGlobal {
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
       line = line.trim();
-      if (!line.contains(' ')) return new _AppVersion(line);
-      var parts = line.split(' ');
-      return new _AppVersion(parts.first, parts[1]);
+      if (!line.contains(' ')) return new PubApp.global(line);
+      return new PubApp.global(line.split(' ').first);
     }).toList();
   }
 
@@ -410,7 +409,7 @@ class PubGlobal {
   void _initActivated() {
     if (_activatedPackages == null) {
       _activatedPackages = new Set();
-      _activatedPackages.addAll(_list().map((appVer) => appVer.name));
+      _activatedPackages.addAll(list().map((app) => app.packageName));
     }
   }
 }
@@ -476,21 +475,13 @@ String _sdkBin(String name) {
   }
 }
 
-/// A version/app name pair.
-class _AppVersion {
-  final String name;
-  final String version;
-
-  _AppVersion(this.name, [this.version]);
-
-  static _AppVersion parse(String output) {
-    var lastSpace = output.lastIndexOf(' ');
-    if (lastSpace == -1) return new _AppVersion(output);
-    return new _AppVersion(
-        output.substring(0, lastSpace), output.substring(lastSpace + 1));
-  }
-
-  String toString() => '$name $version';
+/// Parse the version out of strings like:
+///
+///     dart_coveralls 0.1.11
+///     pub_cache 0.0.1 at path "/Users/foobar/projects/pub_cache"
+String _parseVersion(String output) {
+  List<String> tokens = output.split(' ');
+  return tokens.length < 2 ? null : tokens[1];
 }
 
 class _PubGlobalApp extends PubApp {
