@@ -7,7 +7,7 @@ import 'dart:async';
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/singleton.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 typedef TestVerification(MockGrinderContext ctx);
 

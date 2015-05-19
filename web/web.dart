@@ -6,7 +6,7 @@ library grinder.web_test;
 import 'dart:async';
 
 import 'package:grinder/src/webtest.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 void main() {
   // Set up the test environment.

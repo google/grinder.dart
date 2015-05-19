@@ -6,7 +6,7 @@ library grinder.sdk_test;
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 import 'src/_common.dart';
 

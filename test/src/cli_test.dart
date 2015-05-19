@@ -3,9 +3,9 @@
 
 library grinder.src.cli_test;
 
-import 'package:grinder/src/cli.dart';
-import 'package:unittest/unittest.dart';
 import 'package:grinder/grinder.dart';
+import 'package:grinder/src/cli.dart';
+import 'package:test/test.dart';
 
 main() {
   group('cli', () {

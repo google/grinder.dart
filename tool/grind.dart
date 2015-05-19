@@ -9,12 +9,10 @@ import 'package:grinder/grinder.dart';
 main(args) => grind(args);
 
 @Task()
-void analyze() {
-  new PubApp.global('tuneup')..run(['check', '--ignore-infos']);
-}
+analyze() => new PubApp.global('tuneup')..runAsync(['check', '--ignore-infos']);
 
 @Task()
-test() => Tests.runCliTests();
+test() => new TestRunner().testAsync();
 
 @Task('Apply dartfmt to all Dart source files')
 format() => DartFmt.format(['bin', 'example', 'lib', 'test', 'tool', 'web']);

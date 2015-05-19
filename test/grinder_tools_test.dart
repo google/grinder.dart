@@ -4,7 +4,7 @@
 library grinder.tools_test;
 
 import 'package:grinder/grinder.dart';
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 main() {
   group('grinder.tools', () {
