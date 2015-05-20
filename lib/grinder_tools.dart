@@ -186,27 +186,8 @@ class TestRunner {
   /// Run the tests in the current package. See the
   /// [test package](https://pub.dartlang.org/packages/test).
   ///
-  /// [name] is substring of the name of the test to run. Regular expression
-  /// syntax is supported. [plainName] is a plain-text substring of the name of
-  /// the test to run. [platformSelector] is the platform(s) on which to run the
-  /// tests. This parameter can be a String or a List.
-  /// [Available values](https://github.com/dart-lang/test#platform-selector-syntax)
-  /// are `vm` (default), `dartium`, `content-shell`, `chrome`, `phantomjs`,
-  /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
-  /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
-  /// serving `test/`.
-  void test({String name, String plainName, dynamic platformSelector,
-      int concurrency, int pubServe, RunOptions runOptions}) {
-    _test.run(_buildArgs(
-        name: name,
-        plainName: plainName,
-        selector: platformSelector,
-        concurrency: concurrency,
-        pubServe: pubServe), script: 'test', runOptions: runOptions);
-  }
-
-  /// Run the tests in the current package. See the
-  /// [test package](https://pub.dartlang.org/packages/test).
+  /// [files] - the files or directories to test. This can a path ([String]),
+  /// [File], or list of paths or files.
   ///
   /// [name] is substring of the name of the test to run. Regular expression
   /// syntax is supported. [plainName] is a plain-text substring of the name of
@@ -217,9 +198,11 @@ class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  Future testAsync({String name, String plainName, dynamic platformSelector,
-      int concurrency, int pubServe, RunOptions runOptions}) {
-    return _test.runAsync(_buildArgs(
+  void test({dynamic files, String name, String plainName,
+      dynamic platformSelector, int concurrency, int pubServe,
+      RunOptions runOptions}) {
+    _test.run(_buildArgs(
+        files: files,
         name: name,
         plainName: plainName,
         selector: platformSelector,
@@ -227,8 +210,35 @@ class TestRunner {
         pubServe: pubServe), script: 'test', runOptions: runOptions);
   }
 
-  List<String> _buildArgs({String name, String plainName, dynamic selector,
-      int concurrency, int pubServe}) {
+  /// Run the tests in the current package. See the
+  /// [test package](https://pub.dartlang.org/packages/test).
+  ///
+  /// [files] - the files or directories to test. This can a path ([String]),
+  /// [File], or list of paths or files.
+  ///
+  /// [name] is substring of the name of the test to run. Regular expression
+  /// syntax is supported. [plainName] is a plain-text substring of the name of
+  /// the test to run. [platformSelector] is the platform(s) on which to run the
+  /// tests. This parameter can be a String or a List.
+  /// [Available values](https://github.com/dart-lang/test#platform-selector-syntax)
+  /// are `vm` (default), `dartium`, `content-shell`, `chrome`, `phantomjs`,
+  /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
+  /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
+  /// serving `test/`.
+  Future testAsync({dynamic files, String name, String plainName,
+      dynamic platformSelector, int concurrency, int pubServe,
+      RunOptions runOptions}) {
+    return _test.runAsync(_buildArgs(
+        files: files,
+        name: name,
+        plainName: plainName,
+        selector: platformSelector,
+        concurrency: concurrency,
+        pubServe: pubServe), script: 'test', runOptions: runOptions);
+  }
+
+  List<String> _buildArgs({dynamic files, String name, String plainName,
+      dynamic selector, int concurrency, int pubServe}) {
     List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
@@ -238,6 +248,7 @@ class TestRunner {
     }
     if (concurrency != null) args.add('--concurrency=${concurrency}');
     if (pubServe != null) args.add('--pub-serve=${pubServe}');
+    if (files != null) args.addAll(coerceToPathList(files));
     // TODO: Pass in --color based on a global property: #243.
     return args;
   }

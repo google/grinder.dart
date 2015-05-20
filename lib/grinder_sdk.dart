@@ -13,6 +13,7 @@ import 'package:which/which.dart';
 import 'grinder.dart';
 import 'src/run.dart' as run_lib;
 import 'src/run_utils.dart';
+import 'src/utils.dart';
 
 bool _sdkOnPath;
 
@@ -305,7 +306,7 @@ class Analyzer {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(_coerceToPathList(fileOrPaths));
+    args.addAll(coerceToPathList(fileOrPaths));
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
@@ -316,7 +317,7 @@ class Analyzer {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(_coerceToPathList(files));
+    args.addAll(coerceToPathList(files));
 
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
@@ -331,13 +332,13 @@ class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
   static void format(fileOrPath) {
-    _run('--overwrite', _coerceToPathList(fileOrPath));
+    _run('--overwrite', coerceToPathList(fileOrPath));
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath) {
-    String results = _run('--dry-run', _coerceToPathList(fileOrPath));
+    String results = _run('--dry-run', coerceToPathList(fileOrPath));
     return results.trim().isNotEmpty;
   }
 
@@ -534,13 +535,4 @@ class _PubLocalApp extends PubApp {
     return Pub.runAsync(packageName,
         script: script, arguments: arguments, runOptions: runOptions);
   }
-}
-
-List<String> _coerceToPathList(filesOrPaths) {
-  if (filesOrPaths is! List) filesOrPaths = [filesOrPaths];
-  return filesOrPaths.map((item) {
-    if (item is String) return item;
-    if (item is File) return item.path;
-    return '${item}';
-  }).toList();
 }
