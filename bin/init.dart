@@ -37,12 +37,10 @@ import 'package:grinder/grinder.dart';
 main(args) => grind(args);
 
 @Task()
-init() {
-  log('perform init tasks...');
-}
+test() => new TestRunner().testAsync();
 
 @DefaultTask()
-@Depends(init)
+@Depends(test)
 build() {
   Pub.build();
 }
