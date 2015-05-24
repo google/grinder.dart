@@ -85,6 +85,23 @@ main() {
     });
   });
 
+  group('grinder.sdk Dart', () {
+    FilePath temp;
+    File file;
+
+    setUp(() {
+      temp = FilePath.createSystemTemp();
+      file = temp.join('runAsync.dart').asFile;
+      // TODO: should this be checked in somewhere?
+      file.writeAsStringSync('void main() {print("hello from runAsync");}');
+    });
+
+    test('runAsync', () async {
+      String result = await Dart.runAsync(file.path);
+      expect(result, equals("hello from runAsync\n"));
+    });
+  });
+
   group('grinder.sdk DartFmt', () {
     FilePath temp;
     File file;
