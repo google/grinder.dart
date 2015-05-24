@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.7.1+3 (2015/5/24)
+- Fix bug with Dart.run/runAsync. Args were swapped.
+
 ## 0.7.1+2 (2015/5/24)
 - Add a `Dart.runAsync` static method.
 

@@ -75,8 +75,8 @@ class Dart {
     return Platform.version.substring(0, Platform.version.indexOf(' '));
   }
 
-  static List<String> _buildArgs(String script, List<String> vmArgs,
-      String packageRoot, List<String> arguments) {
+  static List<String> _buildArgs(String script, List<String> arguments,
+         String packageRoot, List<String> vmArgs) {
     List<String> args = [];
 
     if (vmArgs != null) {
