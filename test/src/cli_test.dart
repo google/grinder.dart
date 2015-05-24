@@ -29,7 +29,6 @@ main() {
 
         expect(help, '''
 
-
   [a]      1
   [b]      2
   [ab]     (depends on [a] [b])
@@ -44,7 +43,6 @@ main() {
         var help = getTaskHelp(grinder: grinder, useColor: false);
 
         expect(help, '''
-
 
   No tasks defined.
 ''');

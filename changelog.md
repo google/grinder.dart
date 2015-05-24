@@ -12,8 +12,8 @@
 - Improved `grind -h` (help) output.
 - `Dart.run` now takes an optional `vmArgs`, a list of arguments passed to the Dart VM.
 - Added `downgrade` method do `Pub`.
-- Introduce `RunOptions` to support all `Process.run`/`Process.start` 
-  parameters. The `workingDirectory` parameter is now deprecated in all methods, 
+- Introduce `RunOptions` to support all `Process.run`/`Process.start`
+  parameters. The `workingDirectory` parameter is now deprecated in all methods,
   use `RunOptions.workingDirectory` instead.
 - Added `PubApp.runAsync`.
 - In `Dart.run`, deprecate the vmNewGenHeapMB and vmOldGenHeapMB options.
