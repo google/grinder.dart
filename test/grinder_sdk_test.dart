@@ -98,7 +98,7 @@ main() {
 
     test('runAsync', () async {
       String result = await Dart.runAsync(file.path);
-      expect(result, equals("hello from runAsync\n"));
+      expect(result, startsWith("hello from runAsync"));
     });
   });
 
