@@ -26,26 +26,18 @@ main() {
             new GrinderTask('abc', description: '123', depends: ['ab']));
 
         var help = getTaskHelp(grinder: grinder, useColor: false);
-
-        expect(help, '''
-
-  [a]      1
+        expect(help.trim(), '''[a]      1
   [b]      2
   [ab]     (depends on [a] [b])
   [abc]    123
-           (depends on [ab])
-''');
+           (depends on [ab])''');
       });
 
       test('without tasks', () {
         var grinder = new Grinder();
 
         var help = getTaskHelp(grinder: grinder, useColor: false);
-
-        expect(help, '''
-
-  No tasks defined.
-''');
+        expect(help.trim(), 'No tasks defined.');
       });
     });
   });
