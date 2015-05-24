@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.7.1+2 (2015/5/24)
+- Add a `Dart.runAsync` static method.
+
 ## 0.7.1+1 (2015/5/19)
 - Add a `files` param to `TestRunner.test`.
 
