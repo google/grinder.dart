@@ -51,18 +51,18 @@ class Dart {
       @deprecated int vmOldGenHeapMB, //
       List<String> vmArgs: const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List<String> args = [];
-
-    args.addAll(vmArgs);
-
-    if (packageRoot != null) {
-      args.add('--package-root=${packageRoot}');
-    }
-
-    args.add(script);
-    args.addAll(arguments);
+    List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
     return run_lib.run(_sdkBin('dart'),
+        arguments: args, quiet: quiet, runOptions: runOptions);
+  }
+
+  static Future<String> runAsync(String script, {List<String> arguments: const [],
+      bool quiet: false, String packageRoot, RunOptions runOptions, //
+      List<String> vmArgs: const []}) {
+    List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
+
+    return run_lib.runAsync(_sdkBin('dart'),
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
@@ -73,6 +73,23 @@ class Dart {
     // The stdout does not have a stable documented format, so use the provided
     // metadata instead.
     return Platform.version.substring(0, Platform.version.indexOf(' '));
+  }
+
+  static List<String> _buildArgs(String script, List<String> vmArgs,
+      String packageRoot, List<String> arguments) {
+    List<String> args = [];
+
+    if (vmArgs != null) {
+      args.addAll(vmArgs);
+    }
+
+    if (packageRoot != null) {
+      args.add('--package-root=${packageRoot}');
+    }
+
+    return args
+      ..add(script)
+      ..addAll(arguments);
   }
 }
 
