@@ -129,10 +129,10 @@ class ZonedValue<T> {
 /// Given a [String], [File], or list of strings or files, coerce the
 /// [filesOrPaths] param into a list of strings.
 List<String> coerceToPathList(filesOrPaths) {
-  if (filesOrPaths is! List) filesOrPaths = [filesOrPaths];
+  if (filesOrPaths is! Iterable) filesOrPaths = [filesOrPaths];
   return filesOrPaths.map((item) {
     if (item is String) return item;
-    if (item is File) return item.path;
+    if (item is FileSystemEntity) return item.path;
     return '${item}';
   }).toList();
 }

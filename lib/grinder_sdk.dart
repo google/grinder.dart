@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cli_util/cli_util.dart' as cli_util;
+import 'package:path/path.dart' as path;
 import 'package:which/which.dart';
 
 import 'grinder.dart';
@@ -16,6 +17,17 @@ import 'src/run_utils.dart';
 import 'src/utils.dart';
 
 bool _sdkOnPath;
+
+// Returns the common top-level directories which usually contain Dart source
+// and which actually exist in the current project.
+Set<String> get defaultSourceDirectories => [
+  'bin',
+  'example',
+  'lib',
+  'test',
+  'tool',
+  'web'
+].where((e) => new Directory(e).existsSync()).toSet();
 
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
@@ -57,8 +69,9 @@ class Dart {
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static Future<String> runAsync(String script, {List<String> arguments: const [],
-      bool quiet: false, String packageRoot, RunOptions runOptions, //
+  static Future<String> runAsync(String script,
+      {List<String> arguments: const [], bool quiet: false, String packageRoot,
+      RunOptions runOptions, //
       List<String> vmArgs: const []}) {
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
@@ -76,7 +89,7 @@ class Dart {
   }
 
   static List<String> _buildArgs(String script, List<String> arguments,
-         String packageRoot, List<String> vmArgs) {
+      String packageRoot, List<String> vmArgs) {
     List<String> args = [];
 
     if (vmArgs != null) {
@@ -323,7 +336,7 @@ class Analyzer {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(coerceToPathList(fileOrPaths));
+    args.addAll(_expandDirectoriesToDartFiles(coerceToPathList(fileOrPaths)));
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
@@ -338,6 +351,41 @@ class Analyzer {
 
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
+
+  static List<String> _expandDirectoriesToDartFiles(List<String> paths) {
+    List<String> files = [];
+
+    paths.forEach((p) {
+      if (FileSystemEntity.typeSync(p) == FileSystemEntityType.DIRECTORY) {
+        files.addAll(_collectDartFiles(new Directory(p)));
+      } else {
+        files.add(p);
+      }
+    });
+    return files;
+  }
+
+  static List<String> _collectDartFiles(Directory directory) {
+    var files = <String>[];
+    if (directory.existsSync()) {
+      for (var entry
+          in directory.listSync(recursive: true, followLinks: false)) {
+        //var relative = path.relative(entry.path, from: directory.path);
+
+        if (_isDartFileName(entry.path) && !_isInHiddenDir(directory.path)) {
+          files.add(entry.path);
+        }
+      }
+    }
+    return files;
+  }
+
+  /// Returns [:true:] if this [fileName] is a Dart file.
+  static bool _isDartFileName(String fileName) => fileName.endsWith('.dart');
+
+  /// Returns [:true:] if this relative path is a hidden directory.
+  static bool _isInHiddenDir(String relative) =>
+      path.split(relative).any((part) => part.startsWith("."));
 
   static String version({bool quiet: false}) => _parseVersion(run_lib.run(
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));

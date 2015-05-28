@@ -128,4 +128,46 @@ main() {
       expect(newText, isNot(equals(originalText)));
     });
   });
+
+  group('grinder.sdk Analyzer', () {
+    test('should throw on non-existing file',
+        () => expect(() => Analyzer.analyze('xyz'), throws));
+
+    test('should analyze a single file path', () => expect(
+        () => Analyzer.analyze('test/grinder_sdk_test.dart'), isNot(throws)));
+
+    test('should analyze a single file', () => expect(
+        () => Analyzer.analyze(new File('test/grinder_sdk_test.dart')),
+        isNot(throws)));
+
+    test('should analyze a list of file paths', () => expect(() =>
+            Analyzer.analyze(['test/grinder_sdk_test.dart', 'tool/grind.dart']),
+        isNot(throws)));
+
+    test('should analyze a list of files', () => expect(() => Analyzer.analyze([
+      new File('test/grinder_sdk_test.dart'),
+      new File('tool/grind.dart')
+    ]), isNot(throws)));
+
+    test('should analyze a directory path',
+        () => expect(() => Analyzer.analyze('test'), isNot(throws)));
+
+    test('should analyze a directory', () =>
+        expect(() => Analyzer.analyze(new Directory('test')), isNot(throws)));
+
+    test('should analyze a list of directory paths', () => expect(
+        () => Analyzer.analyze(defaultSourceDirectories.take(2)), isNot(throws)));
+
+    test('should analyze a list of directories', () => expect(
+        () => Analyzer.analyze([new Directory('test'), new Directory('tool')]),
+        isNot(throws)));
+
+    test('should analyze a list of mixed entries', () => expect(() => Analyzer
+        .analyze([
+      'test/grinder_sdk_test.dart',
+      new File('test/grinder_sdk_test.dart'),
+      'test',
+      new Directory('test')
+    ]), isNot(throws)));
+  });
 }
