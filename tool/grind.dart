@@ -15,7 +15,7 @@ analyze() => new PubApp.global('tuneup')..runAsync(['check', '--ignore-infos']);
 test() => new TestRunner().testAsync();
 
 @Task('Apply dartfmt to all Dart source files')
-format() => DartFmt.format(['bin', 'example', 'lib', 'test', 'tool', 'web']);
+format() => DartFmt.format(existingSourceDirs);
 
 @Task('Check that the generated `init` grind script analyzes well.')
 checkInit() {

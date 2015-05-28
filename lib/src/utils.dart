@@ -8,6 +8,7 @@ import 'dart:collection';
 import 'dart:convert' show UTF8;
 import 'dart:mirrors';
 import 'dart:io';
+import 'package:path/path.dart' as path;
 
 Future<String> httpGet(String url) {
   HttpClient client = new HttpClient();
@@ -129,10 +130,47 @@ class ZonedValue<T> {
 /// Given a [String], [File], or list of strings or files, coerce the
 /// [filesOrPaths] param into a list of strings.
 List<String> coerceToPathList(filesOrPaths) {
-  if (filesOrPaths is! List) filesOrPaths = [filesOrPaths];
+  if (filesOrPaths is! Iterable) filesOrPaths = [filesOrPaths];
   return filesOrPaths.map((item) {
     if (item is String) return item;
-    if (item is File) return item.path;
+    if (item is FileSystemEntity) return item.path;
     return '${item}';
   }).toList();
+}
+
+/// Takes a list of paths and if an element is a directory it expands it to
+/// the Dart source files contained by this directory, otherwise the element is
+/// added to the result unchanged.
+Set<String> findDartSourceFiles(Iterable<String> paths) {
+  /// Returns `true` if this [fileName] is a Dart file.
+  bool _isDartFileName(String fileName) => fileName.endsWith('.dart');
+
+  /// Returns `true` if this relative path is a hidden directory.
+  bool _isInHiddenDir(String relative) =>
+      path.split(relative).any((part) => part.startsWith("."));
+
+  Set<String> _findDartSourceFiles(Directory directory) {
+    var files = new Set<String>();
+    if (directory.existsSync()) {
+      for (var entry
+          in directory.listSync(recursive: true, followLinks: false)) {
+        var relative = path.relative(entry.path, from: directory.path);
+        if (_isDartFileName(entry.path) && !_isInHiddenDir(relative)) {
+          files.add(entry.path);
+        }
+      }
+    }
+    return files;
+  }
+
+  var files = new Set<String>();
+
+  paths.forEach((p) {
+    if (FileSystemEntity.typeSync(p) == FileSystemEntityType.DIRECTORY) {
+      files.addAll(_findDartSourceFiles(new Directory(p)));
+    } else {
+      files.add(p);
+    }
+  });
+  return files;
 }

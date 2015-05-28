@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cli_util/cli_util.dart' as cli_util;
+import 'package:path/path.dart' as path;
 import 'package:which/which.dart';
 
 import 'grinder.dart';
@@ -16,6 +17,26 @@ import 'src/run_utils.dart';
 import 'src/utils.dart';
 
 bool _sdkOnPath;
+
+/// A set of common top-level directories according to the Pub package layout
+/// convention which usually contain Dart source code.
+final Set<Directory> sourceDirs = [
+  'bin',
+  'example',
+  'lib',
+  'test',
+  'tool',
+  'web'
+].map((path) => new Directory(path)).toSet();
+
+/// The subset of directories in [sourceDirs] which actually exist in the
+/// current working directory.
+Set<Directory> get existingSourceDirs => Directory.current
+    .listSync()
+    .where((f) => f is Directory)
+    .map((d) => new Directory(path.relative(d.path)))
+    .where((d) => sourceDirs.any((sd) => sd.path == d.path))
+    .toSet();
 
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
@@ -57,8 +78,9 @@ class Dart {
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static Future<String> runAsync(String script, {List<String> arguments: const [],
-      bool quiet: false, String packageRoot, RunOptions runOptions, //
+  static Future<String> runAsync(String script,
+      {List<String> arguments: const [], bool quiet: false, String packageRoot,
+      RunOptions runOptions, //
       List<String> vmArgs: const []}) {
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
@@ -76,7 +98,7 @@ class Dart {
   }
 
   static List<String> _buildArgs(String script, List<String> arguments,
-         String packageRoot, List<String> vmArgs) {
+      String packageRoot, List<String> vmArgs) {
     List<String> args = [];
 
     if (vmArgs != null) {
@@ -323,7 +345,7 @@ class Analyzer {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(coerceToPathList(fileOrPaths));
+    args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 

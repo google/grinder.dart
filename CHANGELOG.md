@@ -1,5 +1,12 @@
 # grinder.dart changes
 
+## UNRELEASED
+- Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart 
+  source files using the added method `findDartSourceFiles()`.
+- Add tests for `Analyzer.analyze()` task.
+- Add `sourceDirs` and `existingSourceDirs` to return the projects top-level 
+  directories usually containing Dart source files.
+
 ## 0.7.1+3 (2015/5/24)
 - Fix bug with Dart.run/runAsync. Args were swapped.
 
@@ -8,7 +15,7 @@
 
 ## 0.7.1+1 (2015/5/19)
 - Add a `files` param to `TestRunner.test`.
-
+                                                                
 ## 0.7.1 (2015/5/19)
 - Added `grind --completion install` command to install tab-completion for task names
   and options in `grind`.
