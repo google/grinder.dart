@@ -18,7 +18,9 @@ import 'src/utils.dart';
 
 bool _sdkOnPath;
 
-Set<Directory> sourceDirs = [
+/// A set of common top-level directories according to the Pub package layout
+/// convention which usually contain Dart source code.
+final Set<Directory> sourceDirs = [
   'bin',
   'example',
   'lib',
@@ -26,6 +28,9 @@ Set<Directory> sourceDirs = [
   'tool',
   'web'
 ].map((path) => new Directory(path)).toSet();
+
+/// The subset of directories in [sourceDirs] which actually exist in the
+/// current working directory.
 Set<Directory> get existingSourceDirs => Directory.current
     .listSync()
     .where((f) => f is Directory)
