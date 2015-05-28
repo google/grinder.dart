@@ -18,16 +18,20 @@ import 'src/utils.dart';
 
 bool _sdkOnPath;
 
-// Returns the common top-level directories which usually contain Dart source
-// and which actually exist in the current project.
-Set<String> get defaultSourceDirectories => [
+Set<Directory> sourceDirs = [
   'bin',
   'example',
   'lib',
   'test',
   'tool',
   'web'
-].where((e) => new Directory(e).existsSync()).toSet();
+].map((path) => new Directory(path)).toSet();
+Set<Directory> get existingSourceDirs => Directory.current
+    .listSync()
+    .where((f) => f is Directory)
+    .map((d) => new Directory(path.relative(d.path)))
+    .where((d) => sourceDirs.any((sd) => sd.path == d.path))
+    .toSet();
 
 /**
  * Return the path to the current Dart SDK. This will return `null` if we are
@@ -336,7 +340,7 @@ class Analyzer {
     List args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(_expandDirectoriesToDartFiles(coerceToPathList(fileOrPaths)));
+    args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
 
@@ -351,41 +355,6 @@ class Analyzer {
 
     run_lib.run(_sdkBin('dartanalyzer'), arguments: args);
   }
-
-  static List<String> _expandDirectoriesToDartFiles(List<String> paths) {
-    List<String> files = [];
-
-    paths.forEach((p) {
-      if (FileSystemEntity.typeSync(p) == FileSystemEntityType.DIRECTORY) {
-        files.addAll(_collectDartFiles(new Directory(p)));
-      } else {
-        files.add(p);
-      }
-    });
-    return files;
-  }
-
-  static List<String> _collectDartFiles(Directory directory) {
-    var files = <String>[];
-    if (directory.existsSync()) {
-      for (var entry
-          in directory.listSync(recursive: true, followLinks: false)) {
-        //var relative = path.relative(entry.path, from: directory.path);
-
-        if (_isDartFileName(entry.path) && !_isInHiddenDir(directory.path)) {
-          files.add(entry.path);
-        }
-      }
-    }
-    return files;
-  }
-
-  /// Returns [:true:] if this [fileName] is a Dart file.
-  static bool _isDartFileName(String fileName) => fileName.endsWith('.dart');
-
-  /// Returns [:true:] if this relative path is a hidden directory.
-  static bool _isInHiddenDir(String relative) =>
-      path.split(relative).any((part) => part.startsWith("."));
 
   static String version({bool quiet: false}) => _parseVersion(run_lib.run(
       _sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));

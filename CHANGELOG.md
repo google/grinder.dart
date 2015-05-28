@@ -2,12 +2,13 @@
 
 ## UNRELEASED
 - Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart 
-  source files in `coerceToPathList()` to accept `Iterable` instead of `List` 
+  source files using the added method `findDartSourceFiles()`.
+- Modified `coerceToPathList()` to accept `Iterable` instead of `List` 
   and also now, in addition to `File`) converts a `FileSystemEntity` (especially 
   `Directory`) to a path.
 - Add tests for `Analyzer.analyze()` task.
-- Add defaultSourceDirectories to return the directories usually containing 
-  Dart source files.
+- Add `sourceDirs` and `existingSourceDirs` to return the projects top-level 
+  directories usually containing Dart source files.
 
 ## 0.7.1+3 (2015/5/24)
 - Fix bug with Dart.run/runAsync. Args were swapped.
