@@ -10,7 +10,6 @@ import 'dart:mirrors';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-
 Future<String> httpGet(String url) {
   HttpClient client = new HttpClient();
   return client.getUrl(Uri.parse(url)).then((HttpClientRequest request) {
@@ -139,7 +138,6 @@ List<String> coerceToPathList(filesOrPaths) {
   }).toList();
 }
 
-
 /// Takes a list of paths and if an element is a directory it expands it to
 /// the Dart source files contained by this directory, otherwise the element is
 /// added to the result unchanged.
@@ -156,7 +154,8 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
     if (directory.existsSync()) {
       for (var entry
           in directory.listSync(recursive: true, followLinks: false)) {
-        if (_isDartFileName(entry.path) && !_isInHiddenDir(entry.path)) {
+        var relative = path.relative(entry.path, from: directory.path);
+        if (_isDartFileName(entry.path) && !_isInHiddenDir(relative)) {
           files.add(entry.path);
         }
       }
@@ -175,4 +174,3 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
   });
   return files;
 }
-
