@@ -403,6 +403,9 @@ class Grinder {
     GrinderContext context = new GrinderContext._(this, task);
     var result = task.execute(context);
 
+    if (result is InstanceMirror) {
+      result = (result as InstanceMirror).reflectee;
+    }
     if (!(result is Future)) {
       result = new Future.value(result);
     }
