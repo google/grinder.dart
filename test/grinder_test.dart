@@ -219,13 +219,11 @@ main() {
             .then((_) {
           expect(callCount, 0);
           callCount++;
-          return 1;
         });
       };
       startTask = () {
         expect(callCount, 1);
         callCount++;
-        return 2;
       };
 
       Grinder grinder = new Grinder();
