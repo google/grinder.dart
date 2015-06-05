@@ -4,8 +4,10 @@
 library grinder_test;
 
 import 'dart:async';
+import 'dart:mirrors';
 
 import 'package:grinder/grinder.dart' hide fail;
+import 'package:grinder/src/discover_tasks.dart';
 import 'package:test/test.dart';
 
 main() {
@@ -209,5 +211,35 @@ main() {
       expect(grinder.start(['i_throw']),
           throwsA(new isInstanceOf<GrinderException>()));
     });
+
+    test('handle function references properly', () async {
+      int callCount = 0;
+      someAsyncTask = () {
+        return new Future.delayed(const Duration(milliseconds: 20), () {})
+            .then((_) {
+          expect(callCount, 0);
+          callCount++;
+        });
+      };
+      startTask = () {
+        expect(callCount, 1);
+        callCount++;
+      };
+
+      Grinder grinder = new Grinder();
+      discoverTasks(grinder, currentMirrorSystem().findLibrary(#grinder_test));
+      await grinder.start(['start']);
+    });
   });
 }
+
+Function someAsyncTask;
+
+@Task('someAsync')
+someAsync() => someAsyncTask();
+
+Function startTask;
+
+@Task('start')
+@Depends(someAsync)
+start() => startTask();
