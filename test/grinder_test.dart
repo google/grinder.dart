@@ -225,7 +225,7 @@ main() {
       startTask = () {
         expect(callCount, 1);
         callCount++;
-        return 1;
+        return 2;
       };
 
       Grinder grinder = new Grinder();
