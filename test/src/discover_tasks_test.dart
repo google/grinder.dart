@@ -152,33 +152,25 @@ main() {
     grinderTest('task from method', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#method], {});
-      var task = annotated.task;
-      expect(task.name, 'method');
-      expect(task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx), 'someValue');
     });
 
     grinderTest('task from method no-context', () {}, (MockGrinderContext ctx) {
       var annotated = discoveryGood.discoverDeclaration(
           goodLib.declarations[#noContext], {});
-      var task = annotated.task;
-      expect(task.name, 'no-context');
-      expect(task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx), 'someValue');
     });
 
     grinderTest('task from variable', () {}, (MockGrinderContext ctx) {
       var annotated = discoveryGood.discoverDeclaration(
           goodLib.declarations[#variable], {});
-      var task = annotated.task;
-      expect(task.name, 'variable');
-      expect(task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx), 'someValue');
     });
 
     grinderTest('task from getter', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
-      var task = annotated.task;
-      expect(task.name, 'getter');
-      expect(task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx), 'someValue');
     });
   });
 
