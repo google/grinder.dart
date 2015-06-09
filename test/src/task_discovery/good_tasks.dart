@@ -9,21 +9,21 @@ export 'external_tasks.dart' show shownMethod, shownVariable;
 export 'external_tasks.dart' hide shownMethod, shownVariable, hidden;
 
 @Task('method description')
-void method(GrinderContext context) {}
+String method(GrinderContext context) => 'someValue';
 
 @Task()
 @Depends(method)
-final variable = (GrinderContext context) {};
+final variable = (GrinderContext context) => 'someValue';
 
 @Task()
 @Depends('method')
-get getter => (GrinderContext context) {};
+get getter => (GrinderContext context) => 'someValue';
 
 @Task()
 void camelCase(GrinderContext context) {}
 
 @Task()
-void noContext() {}
+String noContext() => 'someValue';
 
 @DefaultTask()
 @Depends(method)
