@@ -12,6 +12,7 @@ import 'package:test/test.dart';
 import 'task_discovery/good_tasks.dart' as good;
 import 'task_discovery/bad_tasks.dart' as bad;
 import 'task_discovery/external_tasks.dart' as external;
+import '_common.dart';
 
 main() {
   // Libs which contains annotated tasks (imported above).
@@ -144,6 +145,32 @@ main() {
       f() => discoveryBad.discoverDeclaration(
           badLib.declarations[#dependsWithoutTask], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
+    });
+  });
+
+  group('execute returns value', () {
+    grinderTest('task from method', () {}, (MockGrinderContext ctx) {
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#method], {});
+      expect(annotated.task.execute(ctx), 'someValue');
+    });
+
+    grinderTest('task from method no-context', () {}, (MockGrinderContext ctx) {
+      var annotated = discoveryGood.discoverDeclaration(
+          goodLib.declarations[#noContext], {});
+      expect(annotated.task.execute(ctx), 'someValue');
+    });
+
+    grinderTest('task from variable', () {}, (MockGrinderContext ctx) {
+      var annotated = discoveryGood.discoverDeclaration(
+          goodLib.declarations[#variable], {});
+      expect(annotated.task.execute(ctx), 'someValue');
+    });
+
+    grinderTest('task from getter', () {}, (MockGrinderContext ctx) {
+      var annotated =
+          discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
+      expect(annotated.task.execute(ctx), 'someValue');
     });
   });
 

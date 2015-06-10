@@ -73,9 +73,10 @@ class TaskDiscovery {
         if (decl.parameters.isNotEmpty &&
             !decl.parameters.first.isOptional &&
             !decl.parameters.first.isNamed) {
-          taskFunction = () => owner.invoke(decl.simpleName, [context]);
+          taskFunction =
+              () => owner.invoke(decl.simpleName, [context]).reflectee;
         } else {
-          taskFunction = () => owner.invoke(decl.simpleName, []);
+          taskFunction = () => owner.invoke(decl.simpleName, []).reflectee;
         }
       }
 
