@@ -58,7 +58,7 @@ void defaultClean([GrinderContext context]) => delete(buildDir);
 class Tests {
   /// Run command-line tests. You can specify the base directory (`test`), and
   /// the file to run (`all.dart`).
-   @Deprecated('see [TestRunner]')
+  @Deprecated('see [TestRunner]')
   static void runCliTests(
       {String directory: 'test', String testFile: 'all.dart'}) {
     String file = '${directory}/${testFile}';
