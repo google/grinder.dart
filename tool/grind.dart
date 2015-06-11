@@ -1,7 +1,6 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
@@ -55,15 +54,3 @@ void coverage() {
 @DefaultTask()
 @Depends(analyze, test, checkInit, coverage)
 void buildbot() => null;
-
-// These tasks require a frame buffer to run.
-
-@Task()
-Future testsWeb() => Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
-
-@Task()
-Future testsBuildWeb() {
-  return Pub.buildAsync(directories: ['web']).then((_) {
-    return Tests.runWebTests(directory: 'build/web', htmlFile: 'web.html');
-  });
-}
