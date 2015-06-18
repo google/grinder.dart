@@ -33,21 +33,21 @@ checkInit() {
 
 @Task('Gather and send coverage data.')
 void coverage() {
-  final String coverageToken = Platform.environment['REPO_TOKEN'];
+  final String coverageToken = Platform.environment['COVERAGE_TOKEN'];
 
   if (coverageToken != null) {
     PubApp coverallsApp = new PubApp.global('dart_coveralls');
     coverallsApp.run([
       'report',
-      '--token',
-      coverageToken,
       '--retry',
       '2',
       '--exclude-test-files',
+      '--token',
+      coverageToken,
       'test/all.dart'
     ]);
   } else {
-    log('Skipping coverage task: no environment variable `REPO_TOKEN` found.');
+    log('Skipping coverage task: no environment variable `COVERAGE_TOKEN` found.');
   }
 }
 
