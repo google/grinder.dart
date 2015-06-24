@@ -143,7 +143,7 @@ class TestRunner {
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
     if (selector != null) {
-      if (selector is List) selector = selector.join('||');
+      if (selector is List) selector = selector.join(',');
       args.add('--platform=${selector}');
     }
     if (concurrency != null) args.add('--concurrency=${concurrency}');
