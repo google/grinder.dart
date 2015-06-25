@@ -370,20 +370,25 @@ class Analyzer {
 class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
-  static void format(fileOrPath) {
-    _run('--overwrite', coerceToPathList(fileOrPath));
+  static void format(fileOrPath, {int lineLength}) {
+    _run('--overwrite', coerceToPathList(fileOrPath), lineLength: lineLength);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
-  static bool dryRun(fileOrPath) {
-    String results = _run('--dry-run', coerceToPathList(fileOrPath));
+  static bool dryRun(fileOrPath, {int lineLength}) {
+    String results = _run('--dry-run', coerceToPathList(fileOrPath),
+        lineLength: lineLength);
     return results.trim().isNotEmpty;
   }
 
   static String _run(String option, List<String> targets,
-      {bool quiet: false}) => run_lib.run(_sdkBin('dartfmt'),
-          quiet: quiet, arguments: [option]..addAll(targets));
+      {bool quiet: false, int lineLength}) {
+    List args = [option];
+    if (lineLength != null) args.add('--line-length=${lineLength}');
+    args.addAll(targets);
+    return run_lib.run(_sdkBin('dartfmt'), quiet: quiet, arguments: args);
+  }
 }
 
 /// Access the `pub global` commands.
