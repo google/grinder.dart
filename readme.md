@@ -75,15 +75,16 @@ or to tab-complete your tasks (thanks to [unscripted](https://github.com/seaneag
 
     grind --completion install
     . ~/.bashrc
-    
+
     grind [TAB][TAB]
     build  test   doc
-    
+
     grind b[TAB]
     grind build
 
 You can also bypass installing `grind`, and instead use
-`pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129), simply `pub run grinder`.
+`pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129),
+simply `pub run grinder`.
 
 ## Disclaimer
 
