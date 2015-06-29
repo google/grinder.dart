@@ -91,30 +91,36 @@ class Grinder {
    * [start] should be called once and only once; i.e., Grinder instances are
    * not re-usable.
    *
+   * Items in [invocations] can either be [String] names of tasks to invoke, or
+   * full [TaskInvocation]s.
+   *
    * The [dontRun] parameter can be used to audit the grinder file, without
    * actually executing any targets.
    *
    * Throws [GrinderException] if named tasks don't exist, or there are
    * cycles in the dependency graph.
    */
-  Future start(Iterable<TaskInvocation> targets, {bool dontRun: false}) {
+  Future start(Iterable invocations, {bool dontRun: false}) {
     if (!dontRun && _taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");
     }
 
+    invocations = invocations.map((invocation) =>
+        invocation is String ? new TaskInvocation(invocation) : invocation);
+
     DateTime startTime = new DateTime.now();
 
-    if (targets.isEmpty) {
+    if (invocations.isEmpty) {
       if (defaultTask != null) {
-        targets = [new TaskInvocation(defaultTask.name)];
+        invocations = [new TaskInvocation(defaultTask.name)];
       } else if (!dontRun) {
         throw new GrinderException('Tried to call non-existent default task.');
       }
-      if (targets.isEmpty) return new Future.value();
+      if (invocations.isEmpty) return new Future.value();
     }
 
     // Verify that all named tasks exist.
-    for (var invocation in targets) {
+    for (var invocation in invocations) {
       var name = invocation.name;
       if (getTask(name) == null) {
         throw new GrinderException("task '$name' doesn't exist");
@@ -152,7 +158,7 @@ class Grinder {
       }
     }
 
-    targets.forEach(_postOrder);
+    invocations.forEach(_postOrder);
 
     if (!dontRun) {
       log('grinder running ${_invocationOrder.join(' ')}');

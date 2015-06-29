@@ -37,20 +37,26 @@ class GrinderTask {
   /// The list of named task parameters ([Option]s and [Flag]s).
   final Iterable<Option> options;
 
-  /// Create a new [GrinderTask]. A name is required; a [description], [run] to
-  /// execute when this task is started, and a [depends] list are optional.
+  /// Create a new [GrinderTask].
+  ///
+  /// Items in [depends] represent task dependencies.  They can either be
+  /// [String] names of tasks (without arguments), or full [TaskInvocation]s.
+  ///
+  /// Use [positionals], [rest], and [options] to define parameters accepted by
+  /// this task.
   GrinderTask(
       this.name,
       {this.taskFunction,
       this.description,
-      Iterable<TaskInvocation> depends: const [],
+      Iterable depends: const [],
       Iterable<Positional> positionals: const [],
       this.rest,
       Iterable<Option> options: const []
       })
-      : this.depends = new UnmodifiableListView(depends.toList()),
-      this.positionals = new UnmodifiableListView(positionals.toList()),
-      this.options = new UnmodifiableListView(options.toList()) {
+      : this.depends = new UnmodifiableListView(depends.map((dep) =>
+            dep is String ? new TaskInvocation(dep) : dep).toList()),
+        this.positionals = new UnmodifiableListView(positionals.toList()),
+        this.options = new UnmodifiableListView(options.toList()) {
     if (taskFunction == null && depends.isEmpty) {
       throw new GrinderException('GrinderTasks must have a task function or '
       'dependencies.');
@@ -65,8 +71,8 @@ class GrinderTask {
     if (taskFunction == null) return null;
 
     var f = taskFunction is _TaskFunction
-    ? () => taskFunction(context)
-    : taskFunction;
+        ? () => taskFunction(context)
+        : taskFunction;
 
     return zonedContext.withValue(_context, f);
   }

@@ -5,6 +5,10 @@ library grinder.src.task_invocation;
 
 import 'package:collection/collection.dart';
 
+/// An invocation of a [GrinderTask].
+///
+/// Identifies the [name] of the task to invoke, and which arguments
+/// ([positionals] and [options]) to send to it.
 class TaskInvocation {
 
   final String name;

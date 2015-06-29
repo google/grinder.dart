@@ -5,9 +5,7 @@ library grinder.src.cli;
 
 import 'dart:async';
 import 'dart:convert' show JSON, UTF8;
-import 'dart:math';
 
-import 'package:ansicolor/ansicolor.dart';
 import 'package:unscripted/unscripted.dart';
 
 import 'singleton.dart' as singleton;
@@ -33,7 +31,7 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: false}) {
 const _completion = const Completion();
 @Command(allowTrailingOptions: true, help: 'Dart workflows, automated.', plugins: const [_completion])
 cli(
-    @Rest(valueHelp: 'tasks', help: getTaskHelp, allowed: allowedTasks, parser: parseTaskInvocation)
+    @Rest(valueHelp: 'tasks', help: _getTaskHelp, allowed: _allowedTasks, parser: parseTaskInvocation)
     List<TaskInvocation> partialInvocations,
     {@Flag(help: 'Print the version of grinder.')
      bool version: false,
@@ -42,7 +40,7 @@ cli(
      @Deprecated('Task dependencies are now available via --help.')
      @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
      bool deps: false,
-     @Group(getTaskOptions, hide: true)
+     @Group(_getTaskOptions, hide: true)
      Map<String, dynamic> taskOptions}) {
   if (version) {
     const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
@@ -70,42 +68,11 @@ cli(
       }
     }
 
-    var rawInvocations = partialInvocations.map((partial) {
-      var options = {};
-
+    var invocations = partialInvocations.map((partial) {
       var task = singleton.grinder.getTask(partial.name);
-
-      task.options.forEach((option) {
-        var optionValue = taskOptions[option.name];
-        if (option is Flag) {
-          bool value = optionValue;
-          validateArg(
-              value || option.negatable,
-              'Is not negatable.',
-              task: task,
-              param: option.name);
-
-          optionValue = value == null ? option.defaultsTo : value;
-        } else {
-          List values = optionValue;
-          validateArg(
-              option.allowMultiple || values.length <= 1,
-              'Does not allow multiple values: $values',
-              task: task,
-              param: option.name);
-
-          optionValue = values.isEmpty ? option.defaultsTo : option.allowMultiple ? values : values.first;
-        }
-
-        options[option.name] = optionValue;
-      });
-
-      return new TaskInvocation(partial.name, options: options, positionals: partial.positionals);
+      var raw = addTaskOptionsToInvocation(task, partial, taskOptions);
+      return applyTaskToInvocation(task, raw);
     });
-
-    var invocations = rawInvocations.map((rawInvocation) =>
-        applyTaskToInvocation(
-            singleton.grinder.getTask(rawInvocation.name), rawInvocation));
 
     Future result = singleton.grinder.start(invocations);
 
@@ -125,110 +92,8 @@ cli(
 
 var script = new Script(cli);
 
+Iterable<Option> _getTaskOptions() => getTaskOptions(singleton.grinder);
 
-getTaskOptions() {
-  var tasks = singleton.grinder.tasks;
+String _getTaskHelp() => getTaskHelp(singleton.grinder);
 
-  var optionMap = {};
-
-  tasks.forEach((task) {
-    task.options.forEach((option) {
-      optionMap.putIfAbsent(option.name, () => []).add(option);
-    });
-  });
-
-  var taskOptions = [];
-
-  optionMap.forEach((name, options) {
-    var hasFlag = options.any((option) => option is Flag);
-    var hasNonFlag = options.any((option) => option is! Flag);
-
-    if (hasFlag && hasNonFlag) {
-      throw new GrinderException('Cannot define task option "$name" as both an option and a flag.');
-    }
-
-    var option = hasFlag
-        ? new Flag(name: name, negatable: true)
-        : new Option(name: name, allowMultiple: true, defaultsTo: []);
-
-    taskOptions.add(option);
-  });
-
-  return taskOptions;
-}
-
-String getTaskHelp({Grinder grinder, bool useColor}) {
-  if (grinder == null) grinder = singleton.grinder;
-
-  var positionalPen = new AnsiPen()..green();
-  var textPen = new AnsiPen()..gray(level: 0.5);
-
-  var originalColorDisabled = color_disabled;
-  if (useColor != null) color_disabled = !useColor;
-
-  if (grinder.tasks.isEmpty) {
-    return '\n\n  No tasks defined.\n';
-  }
-
-  // Calculate the dependencies.
-  grinder.start([], dontRun: true);
-
-  List<GrinderTask> tasks = grinder.tasks.toList();
-
-  var firstColMap = tasks.fold({}, (map, task) {
-    map[task] = '$task${grinder.defaultTask == task ? ' (default)' : ''}';
-    return map;
-  });
-
-  var firstColMax =
-      firstColMap.values.fold(0, (width, next) => max(width, next.length));
-  var padding = 4;
-  var firstColWidth = firstColMax + padding;
-
-  var ret = '\n\n' + tasks.map((GrinderTask task) {
-    Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
-
-    var buffer = new StringBuffer();
-    buffer
-        .write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
-    var desc = task.description == null ? '' : task.description;
-    var depText =
-        '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
-    if (desc.isNotEmpty) {
-      buffer.writeln(textPen(task.description));
-      if (deps.isNotEmpty) {
-        buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
-      }
-    } else {
-      if (deps.isNotEmpty) buffer.write(depText);
-      buffer.writeln();
-    }
-
-    return buffer.toString();
-  }).join();
-
-  if (useColor != null) color_disabled = originalColorDisabled;
-
-  return ret;
-}
-
-List<String> allowedTasks() =>
-    singleton.grinder.tasks.map((task) => task.name).toList();
-
-String cleanupStackTrace(st) {
-  List<String> lines = '${st}'.trim().split('\n');
-
-  // Remove lines which are not useful to debugging script issues. With our move
-  // to using zones, the exceptions now have stacks 30 frames deep.
-  while (lines.isNotEmpty) {
-    String line = lines.last;
-
-    if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
-      lines.removeLast();
-    } else {
-      break;
-    }
-  }
-
-  return lines.join('\n').trim().replaceAll('<anonymous closure>', '<anon>');
-}
+List<String> _allowedTasks() => allowedTasks(singleton.grinder);
