@@ -12,7 +12,7 @@ import 'dart:convert';
 
 /// Synchronously run an [executable].
 ///
-/// If [quiet] is false, [log]s the stdout.  The stderr is always logged.
+/// If [quiet] is false, [log]s the stdout. The stderr is always logged.
 ///
 /// Returns the stdout.
 ///
@@ -52,7 +52,7 @@ String run(String executable, {List<String> arguments: const [],
 
 /// Synchronously run an [executable].
 ///
-/// If [quiet] is false, [log]s the stdout.  The stderr is always logged.
+/// If [quiet] is false, [log]s the stdout. The stderr is always logged.
 ///
 /// Returns the stdout.
 ///

@@ -1,7 +1,6 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
@@ -35,7 +34,7 @@ analyze() => new PubApp.global('tuneup')..runAsync(['check', '--ignore-infos']);
 test() => new TestRunner().testAsync();
 
 @Task('Apply dartfmt to all Dart source files')
-format() => DartFmt.format(['bin', 'example', 'lib', 'test', 'tool', 'web']);
+format() => DartFmt.format(existingSourceDirs);
 
 @Task('Check that the generated `init` grind script analyzes well.')
 checkInit() {
@@ -54,36 +53,24 @@ checkInit() {
 
 @Task('Gather and send coverage data.')
 void coverage() {
-  final String coverageToken = Platform.environment['REPO_TOKEN'];
+  final String coverageToken = Platform.environment['COVERAGE_TOKEN'];
 
   if (coverageToken != null) {
     PubApp coverallsApp = new PubApp.global('dart_coveralls');
     coverallsApp.run([
       'report',
-      '--token',
-      coverageToken,
       '--retry',
       '2',
       '--exclude-test-files',
+      '--token',
+      coverageToken,
       'test/all.dart'
     ]);
   } else {
-    log('Skipping coverage task: no environment variable `REPO_TOKEN` found.');
+    log('Skipping coverage task: no environment variable `COVERAGE_TOKEN` found.');
   }
 }
 
 @DefaultTask()
 @Depends(analyze, test, checkInit, coverage)
 void buildbot() => null;
-
-// These tasks require a frame buffer to run.
-
-@Task()
-Future testsWeb() => Tests.runWebTests(directory: 'web', htmlFile: 'web.html');
-
-@Task()
-Future testsBuildWeb() {
-  return Pub.buildAsync(directories: ['web']).then((_) {
-    return Tests.runWebTests(directory: 'build/web', htmlFile: 'web.html');
-  });
-}

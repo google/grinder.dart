@@ -1,5 +1,14 @@
 # grinder.dart changes
 
+## UNRELEASED
+- Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart
+  source files using the added method `findDartSourceFiles()`.
+- Add tests for `Analyzer.analyze()` task.
+- Add `sourceDirs` and `existingSourceDirs` to return the projects top-level
+  directories usually containing Dart source files.
+- Deprecate the `Tests` class (in favor of `TestRunner`)
+- Add `lineLength` as an optional argument to `DartFmt.format`
+
 ## 0.7.1+3 (2015/5/24)
 - Fix bug with Dart.run/runAsync. Args were swapped.
 
