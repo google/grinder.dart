@@ -11,6 +11,7 @@ import 'package:ansicolor/ansicolor.dart';
 import 'package:unscripted/unscripted.dart';
 
 import 'singleton.dart' as singleton;
+import 'cli_util.dart';
 import 'utils.dart';
 import '../grinder.dart';
 
@@ -30,16 +31,21 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: false}) {
 // TODO: Re-inline this variable once the fix for http://dartbug.com/23354
 //       is released.
 const _completion = const Completion();
-@Command(help: 'Dart workflows, automated.', plugins: const [_completion])
-cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
-        help: 'Print the version of grinder.') bool version: false, @Option(
-        help: 'Set the location of the Dart SDK.') String dartSdk,
-    @Deprecated('Task dependencies are now available via --help.') @Flag(
-        hide: true,
-        abbr: 'd',
-        help: 'Display the dependencies of tasks.') bool deps: false}) {
+@Command(allowTrailingOptions: true, help: 'Dart workflows, automated.', plugins: const [_completion])
+cli(
+    @Rest(valueHelp: 'tasks', help: getTaskHelp, allowed: allowedTasks, parser: parseTaskInvocation)
+    List<TaskInvocation> partialInvocations,
+    {@Flag(help: 'Print the version of grinder.')
+     bool version: false,
+     @Option(help: 'Set the location of the Dart SDK.')
+     String dartSdk,
+     @Deprecated('Task dependencies are now available via --help.')
+     @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
+     bool deps: false,
+     @Group(getTaskOptions, hide: true)
+     Map<String, dynamic> taskOptions}) {
   if (version) {
-    const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
+    const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
     print('grinder version ${APP_VERSION}');
 
@@ -52,7 +58,7 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
         print('grinder is up to date!');
       }
     }).catchError((e) => null);
-  } else if (tasks.isEmpty && !singleton.grinder.hasDefaultTask) {
+  } else if (partialInvocations.isEmpty && !singleton.grinder.hasDefaultTask) {
     // Support this directly in `unscripted`.
     print('No default task defined.');
     return script.execute(['-h']);
@@ -64,7 +70,44 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
       }
     }
 
-    Future result = singleton.grinder.start(tasks);
+    var rawInvocations = partialInvocations.map((partial) {
+      var options = {};
+
+      var task = singleton.grinder.getTask(partial.name);
+
+      task.options.forEach((option) {
+        var optionValue = taskOptions[option.name];
+        if (option is Flag) {
+          bool value = optionValue;
+          validateArg(
+              value || option.negatable,
+              'Is not negatable.',
+              task: task,
+              param: option.name);
+
+          optionValue = value == null ? option.defaultsTo : value;
+        } else {
+          List values = optionValue;
+          validateArg(
+              option.allowMultiple || values.length <= 1,
+              'Does not allow multiple values: $values',
+              task: task,
+              param: option.name);
+
+          optionValue = values.isEmpty ? option.defaultsTo : option.allowMultiple ? values : values.first;
+        }
+
+        options[option.name] = optionValue;
+      });
+
+      return new TaskInvocation(partial.name, options: options, positionals: partial.positionals);
+    });
+
+    var invocations = rawInvocations.map((rawInvocation) =>
+        applyTaskToInvocation(
+            singleton.grinder.getTask(rawInvocation.name), rawInvocation));
+
+    Future result = singleton.grinder.start(invocations);
 
     return result.catchError((e, st) {
       String message;
@@ -81,6 +124,38 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
 }
 
 var script = new Script(cli);
+
+
+getTaskOptions() {
+  var tasks = singleton.grinder.tasks;
+
+  var optionMap = {};
+
+  tasks.forEach((task) {
+    task.options.forEach((option) {
+      optionMap.putIfAbsent(option.name, () => []).add(option);
+    });
+  });
+
+  var taskOptions = [];
+
+  optionMap.forEach((name, options) {
+    var hasFlag = options.any((option) => option is Flag);
+    var hasNonFlag = options.any((option) => option is! Flag);
+
+    if (hasFlag && hasNonFlag) {
+      throw new GrinderException('Cannot define task option "$name" as both an option and a flag.');
+    }
+
+    var option = hasFlag
+        ? new Flag(name: name, negatable: true)
+        : new Option(name: name, allowMultiple: true, defaultsTo: []);
+
+    taskOptions.add(option);
+  });
+
+  return taskOptions;
+}
 
 String getTaskHelp({Grinder grinder, bool useColor}) {
   if (grinder == null) grinder = singleton.grinder;
@@ -111,7 +186,7 @@ String getTaskHelp({Grinder grinder, bool useColor}) {
   var firstColWidth = firstColMax + padding;
 
   var ret = '\n\n' + tasks.map((GrinderTask task) {
-    Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
+    Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
 
     var buffer = new StringBuffer();
     buffer

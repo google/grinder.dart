@@ -21,6 +21,7 @@ void grinderTest(String name, Function setup, TestVerification verify) {
 class MockGrinderContext implements GrinderContext {
   Grinder grinder;
   GrinderTask task;
+  TaskInvocation invocation;
 
   StringBuffer logBuffer = new StringBuffer();
   StringBuffer failBuffer = new StringBuffer();

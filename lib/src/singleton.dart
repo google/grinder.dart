@@ -17,6 +17,8 @@ class _NoopContext implements GrinderContext {
 
   GrinderTask get task => null;
 
+  TaskInvocation get invocation => null;
+
   void fail(String message) {
     stderr.writeln(message);
     exit(1);

@@ -90,7 +90,8 @@ class TaskDiscovery {
       var depends = [];
       if (dependsAnnotation != null) {
         depends = dependsAnnotation.depends.map((dep) {
-          if (dep is String) return dep;
+          if (dep is TaskInvocation) return dep;
+          if (dep is String) return new TaskInvocation(dep);
           if (dep is Function) {
             var depMethod = (reflect(dep) as ClosureMirror).function;
             var annotatedMethodTask = discoverDeclaration(depMethod, cache);
@@ -108,7 +109,7 @@ class TaskDiscovery {
                   'Task `$name` references dependency task `$depName` from '
                   'library `$depLib` which this build file does not export.');
             }
-            return annotatedMethodTask.task.name;
+            return new TaskInvocation(annotatedMethodTask.task.name);
           }
 
           throw new GrinderException(
