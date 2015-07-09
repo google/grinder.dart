@@ -1,6 +1,6 @@
 # grinder.dart changes
 
-## UNRELEASED
+## 0.7.2 (2015/7/8)
 - Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart
   source files using the added method `findDartSourceFiles()`.
 - Add tests for `Analyzer.analyze()` task.
