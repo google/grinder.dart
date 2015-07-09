@@ -5,12 +5,11 @@ library grinder.src.cli;
 
 import 'dart:async';
 import 'dart:convert' show JSON, UTF8;
-import 'dart:math';
 
-import 'package:ansicolor/ansicolor.dart';
 import 'package:unscripted/unscripted.dart';
 
 import 'singleton.dart' as singleton;
+import 'cli_util.dart';
 import 'utils.dart';
 import '../grinder.dart';
 
@@ -30,16 +29,21 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: false}) {
 // TODO: Re-inline this variable once the fix for http://dartbug.com/23354
 //       is released.
 const _completion = const Completion();
-@Command(help: 'Dart workflows, automated.', plugins: const [_completion])
-cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
-        help: 'Print the version of grinder.') bool version: false, @Option(
-        help: 'Set the location of the Dart SDK.') String dartSdk,
-    @Deprecated('Task dependencies are now available via --help.') @Flag(
-        hide: true,
-        abbr: 'd',
-        help: 'Display the dependencies of tasks.') bool deps: false}) {
+@Command(allowTrailingOptions: true, help: 'Dart workflows, automated.', plugins: const [_completion])
+cli(
+    @Rest(valueHelp: 'tasks', help: _getTaskHelp, allowed: _allowedTasks, parser: parseTaskInvocation)
+    List<TaskInvocation> partialInvocations,
+    {@Flag(help: 'Print the version of grinder.')
+     bool version: false,
+     @Option(help: 'Set the location of the Dart SDK.')
+     String dartSdk,
+     @Deprecated('Task dependencies are now available via --help.')
+     @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
+     bool deps: false,
+     @Group(_getTaskOptions, hide: true)
+     Map<String, dynamic> taskOptions}) {
   if (version) {
-    const String pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
+    const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
     print('grinder version ${APP_VERSION}');
 
@@ -52,7 +56,7 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
         print('grinder is up to date!');
       }
     }).catchError((e) => null);
-  } else if (tasks.isEmpty && !singleton.grinder.hasDefaultTask) {
+  } else if (partialInvocations.isEmpty && !singleton.grinder.hasDefaultTask) {
     // Support this directly in `unscripted`.
     print('No default task defined.');
     return script.execute(['-h']);
@@ -64,7 +68,13 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
       }
     }
 
-    Future result = singleton.grinder.start(tasks);
+    var invocations = partialInvocations.map((partial) {
+      var task = singleton.grinder.getTask(partial.name);
+      var raw = addTaskOptionsToInvocation(task, partial, taskOptions);
+      return applyTaskToInvocation(task, raw);
+    });
+
+    Future result = singleton.grinder.start(invocations);
 
     return result.catchError((e, st) {
       String message;
@@ -82,78 +92,8 @@ cli(@Rest(help: getTaskHelp, allowed: allowedTasks) List<String> tasks, {@Flag(
 
 var script = new Script(cli);
 
-String getTaskHelp({Grinder grinder, bool useColor}) {
-  if (grinder == null) grinder = singleton.grinder;
+Iterable<Option> _getTaskOptions() => getTaskOptions(singleton.grinder);
 
-  var positionalPen = new AnsiPen()..green();
-  var textPen = new AnsiPen()..gray(level: 0.5);
+String _getTaskHelp() => getTaskHelp(singleton.grinder);
 
-  var originalColorDisabled = color_disabled;
-  if (useColor != null) color_disabled = !useColor;
-
-  if (grinder.tasks.isEmpty) {
-    return '\n\n  No tasks defined.\n';
-  }
-
-  // Calculate the dependencies.
-  grinder.start([], dontRun: true);
-
-  List<GrinderTask> tasks = grinder.tasks.toList();
-
-  var firstColMap = tasks.fold({}, (map, task) {
-    map[task] = '$task${grinder.defaultTask == task ? ' (default)' : ''}';
-    return map;
-  });
-
-  var firstColMax =
-      firstColMap.values.fold(0, (width, next) => max(width, next.length));
-  var padding = 4;
-  var firstColWidth = firstColMax + padding;
-
-  var ret = '\n\n' + tasks.map((GrinderTask task) {
-    Iterable<GrinderTask> deps = grinder.getImmediateDependencies(task);
-
-    var buffer = new StringBuffer();
-    buffer
-        .write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
-    var desc = task.description == null ? '' : task.description;
-    var depText =
-        '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
-    if (desc.isNotEmpty) {
-      buffer.writeln(textPen(task.description));
-      if (deps.isNotEmpty) {
-        buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
-      }
-    } else {
-      if (deps.isNotEmpty) buffer.write(depText);
-      buffer.writeln();
-    }
-
-    return buffer.toString();
-  }).join();
-
-  if (useColor != null) color_disabled = originalColorDisabled;
-
-  return ret;
-}
-
-List<String> allowedTasks() =>
-    singleton.grinder.tasks.map((task) => task.name).toList();
-
-String cleanupStackTrace(st) {
-  List<String> lines = '${st}'.trim().split('\n');
-
-  // Remove lines which are not useful to debugging script issues. With our move
-  // to using zones, the exceptions now have stacks 30 frames deep.
-  while (lines.isNotEmpty) {
-    String line = lines.last;
-
-    if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
-      lines.removeLast();
-    } else {
-      break;
-    }
-  }
-
-  return lines.join('\n').trim().replaceAll('<anonymous closure>', '<anon>');
-}
+List<String> _allowedTasks() => allowedTasks(singleton.grinder);

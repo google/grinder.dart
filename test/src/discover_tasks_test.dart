@@ -74,7 +74,7 @@ main() {
           goodLib.declarations[#variable], {});
       var task = annotated.task;
       expect(task.name, 'variable');
-      expect(task.depends, ['method']);
+      expect(task.depends, [new TaskInvocation('method')]);
     });
 
     test('should discover task from getter', () {
@@ -82,7 +82,7 @@ main() {
           discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
       var task = annotated.task;
       expect(task.name, 'getter');
-      expect(task.depends, ['method']);
+      expect(task.depends, [new TaskInvocation('method')]);
     });
 
     test('should dasherize camel case task method', () {
@@ -97,7 +97,7 @@ main() {
       expect(annotated.isDefault, isTrue);
       var task = annotated.task;
       expect(task.name, 'def');
-      expect(task.depends, ['method']);
+      expect(task.depends, [new TaskInvocation('method')]);
     });
 
     test('should return null for non-Task-annotated declarations', () {
