@@ -6,8 +6,9 @@ library grinder.utils;
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert' show UTF8;
-import 'dart:mirrors';
 import 'dart:io';
+import 'dart:mirrors';
+
 import 'package:path/path.dart' as path;
 
 Future<String> httpGet(String url) {

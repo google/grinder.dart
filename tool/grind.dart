@@ -4,7 +4,6 @@
 import 'dart:io';
 
 import 'package:grinder/grinder.dart';
-
 import 'package:unscripted/unscripted.dart';
 
 main(args) {

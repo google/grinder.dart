@@ -96,7 +96,6 @@ main() {
                 new TaskInvocation('foo', positionals: ['a'])),
             returnsNormally);
 
-        var withRequiredRest =
         expect(
                 () => validatePositionals(
                 new GrinderTask('foo', taskFunction: () {}, rest: new Rest(required: true)),

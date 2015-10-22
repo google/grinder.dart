@@ -6,7 +6,6 @@ library grinder.src.discover_tasks;
 import 'dart:mirrors';
 
 import '../grinder.dart';
-
 import 'utils.dart';
 
 /// Add all [Task]-annotated tasks declared in the grinder build file.

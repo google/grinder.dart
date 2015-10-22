@@ -109,7 +109,6 @@ main() {
 
     test('throws when task invoked twice with different arguments', () {
       Grinder grinder = new Grinder();
-      var invocation;
       grinder.addTask(new GrinderTask('foo', taskFunction: () {},
           options: [new Option(name: 'option')]));
       var dep = new TaskInvocation('foo', options: {'option': 'option value'});

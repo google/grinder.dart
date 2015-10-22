@@ -5,6 +5,7 @@
 .buildlog
 .DS_Store
 .svn
+.packages
 packages
 pubspec.lock
 .idea
