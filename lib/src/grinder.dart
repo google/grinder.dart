@@ -44,7 +44,7 @@ class Grinder {
   set defaultTask(GrinderTask v) {
     if (_defaultTask != null) {
       throw new GrinderException('Cannot overwrite existing default task '
-      '$_defaultTask with task $v.');
+          '$_defaultTask with task $v.');
     }
     addTask(v);
     _defaultTask = v;
@@ -60,7 +60,7 @@ class Grinder {
 
   /// Get the task with the given name. Returns `null` if none found.
   GrinderTask getTask(String name) =>
-  _tasks.firstWhere((t) => t.name == name, orElse: () => null);
+      _tasks.firstWhere((t) => t.name == name, orElse: () => null);
 
   /// Return the calculated build order of the task invocations for this run.
   List<TaskInvocation> getBuildOrder() => _invocationOrder;
@@ -76,7 +76,7 @@ class Grinder {
       _invocationOrder.add(invocation);
     } else {
       var existing = _invocationOrder
-      .firstWhere((existing) => existing.name == invocation.name);
+          .firstWhere((existing) => existing.name == invocation.name);
       if (invocation != existing) {
         throw new GrinderException(
             'Cannot run a task multiple times with different arguments.');
@@ -152,9 +152,9 @@ class Grinder {
     // Verify that there are no dependency cycles.
     for (GrinderTask task in tasks) {
       if (getAllDependencies(task)
-      .any((invocation) => invocation.name == task.name)) {
+          .any((invocation) => invocation.name == task.name)) {
         throw new GrinderException("Task ${task} has a dependency cycle.\n"
-        "  ${task} ==> ${getAllDependencies(task).join(', ')}");
+            "  ${task} ==> ${getAllDependencies(task).join(', ')}");
       }
     }
 
@@ -177,7 +177,7 @@ class Grinder {
 
   /// Given a task, return all of its immediate dependencies.
   Iterable<TaskInvocation> getImmediateDependencies(GrinderTask task) =>
-  task.depends;
+      task.depends;
 
   /// Given a task, return all of its transitive dependencies.
   List<TaskInvocation> getAllDependencies(GrinderTask task) => _taskDeps[task];

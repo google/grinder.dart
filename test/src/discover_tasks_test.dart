@@ -32,7 +32,9 @@ main() {
   TaskDiscovery discoveryGood;
   TaskDiscovery discoveryBad;
   setUp(() {
-    LibraryMirror getLib(Symbol name) => currentMirrorSystem().libraries.values
+    LibraryMirror getLib(Symbol name) => currentMirrorSystem()
+        .libraries
+        .values
         .singleWhere((lib) => lib.qualifiedName == name);
 
     goodLib = getLib(#grinder.test.task_discovery.good_tasks);
@@ -178,17 +180,19 @@ main() {
     test('should discover all exported tasks', () {
       var tasks = discoveryGood.discover();
 
-      expect(tasks.map((annotated) => annotated.task.name), unorderedEquals([
-        'method',
-        'variable',
-        'getter',
-        'camel-case',
-        'def',
-        'shown-method',
-        'shown-variable',
-        'non-hidden',
-        'no-context'
-      ]));
+      expect(
+          tasks.map((annotated) => annotated.task.name),
+          unorderedEquals([
+            'method',
+            'variable',
+            'getter',
+            'camel-case',
+            'def',
+            'shown-method',
+            'shown-variable',
+            'non-hidden',
+            'no-context'
+          ]));
     });
   });
 }

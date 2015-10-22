@@ -31,19 +31,18 @@ class Depends {
   final dep7;
   final dep8;
 
-  const Depends(this.dep1, [this.dep2, this.dep3, this.dep4, this.dep5,
-  this.dep6, this.dep7, this.dep8]);
+  const Depends(this.dep1,
+      [this.dep2,
+      this.dep3,
+      this.dep4,
+      this.dep5,
+      this.dep6,
+      this.dep7,
+      this.dep8]);
 
-  List get depends => [
-    dep1,
-    dep2,
-    dep3,
-    dep4,
-    dep5,
-    dep6,
-    dep7,
-    dep8
-  ].takeWhile((dep) => dep != null).toList();
+  List get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
+      .takeWhile((dep) => dep != null)
+      .toList();
 }
 
 /**

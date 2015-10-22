@@ -34,22 +34,19 @@ main() {
       expect(coerceToPathList(new Directory('foo')), ['foo']);
       expect(coerceToPathList(['a', 'b']), ['a', 'b']);
       expect(coerceToPathList([new File('a'), new File('b')]), ['a', 'b']);
-      expect(coerceToPathList([new Directory('a'), new Directory('b')]), [
-        'a',
-        'b'
-      ]);
-      expect(coerceToPathList([new Directory('a'), new File('b'), 'c']), [
-        'a',
-        'b',
-        'c'
-      ]);
+      expect(coerceToPathList([new Directory('a'), new Directory('b')]),
+          ['a', 'b']);
+      expect(coerceToPathList([new Directory('a'), new File('b'), 'c']),
+          ['a', 'b', 'c']);
     });
 
     test('findDartSourceFiles', () {
       var testFiles = findDartSourceFiles(['test']);
       expect(testFiles.length, greaterThan(0));
-      expect(testFiles, anyElement((f) => new File(f).existsSync() &&
-          FileSystemEntity.typeSync(f) == FileSystemEntityType.FILE));
+      expect(
+          testFiles,
+          anyElement((f) => new File(f).existsSync() &&
+              FileSystemEntity.typeSync(f) == FileSystemEntityType.FILE));
     });
   });
 }

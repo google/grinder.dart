@@ -30,7 +30,9 @@ main() {
             new GrinderTask('abc', description: '123', depends: ['ab']));
 
         var help = getTaskHelp(grinder, useColor: false);
-        expect(help.trim(), '''[a]      1
+        expect(
+            help.trim(),
+            '''[a]      1
   [b]      2
   [ab]     (depends on [a] [b])
   [abc]    123
@@ -46,11 +48,9 @@ main() {
     });
 
     group('parseTaskInvocation', () {
-
       test('throws on invalid task name', () {
         expectInvalid(String invalid) {
-          expect(
-              () => parseTaskInvocation(invalid),
+          expect(() => parseTaskInvocation(invalid),
               throwsA('Invalid task invocation: "$invalid"'));
         }
 
@@ -66,40 +66,46 @@ main() {
         expect(parseTaskInvocation('foo'), new TaskInvocation('foo'));
       });
 
-      test('returns invocation with no args for simple name with trailing colon', () {
+      test(
+          'returns invocation with no args for simple name with trailing colon',
+          () {
         expect(parseTaskInvocation('foo:'), new TaskInvocation('foo'));
       });
 
       test('does not remove spaces', () {
-        expect(parseTaskInvocation('foo: a, 1 '), new TaskInvocation('foo', positionals: [' a', ' 1 ']));
+        expect(parseTaskInvocation('foo: a, 1 '),
+            new TaskInvocation('foo', positionals: [' a', ' 1 ']));
       });
     });
 
     group('validatePositionals', () {
-
       test('throws when too few positionals provided', () {
-        var task = new GrinderTask('foo', taskFunction: () {}, positionals: [new Positional()]);
+        var task = new GrinderTask('foo',
+            taskFunction: () {}, positionals: [new Positional()]);
         var invocation = new TaskInvocation('foo');
-        expect(() => validatePositionals(task, invocation), throwsA(new isInstanceOf<GrinderException>()));
+        expect(() => validatePositionals(task, invocation),
+            throwsA(new isInstanceOf<GrinderException>()));
       });
 
       test('throws when too many positionals provided', () {
         var task = new GrinderTask('foo', taskFunction: () {});
         var invocation = new TaskInvocation('foo', positionals: ['a']);
-        expect(() => validatePositionals(task, invocation), throwsA(new isInstanceOf<GrinderException>()));
+        expect(() => validatePositionals(task, invocation),
+            throwsA(new isInstanceOf<GrinderException>()));
       });
 
       test('succeeds when valid number of positionals provided', () {
         expect(
             () => validatePositionals(
-                new GrinderTask('foo', taskFunction: () {}, positionals: [new Positional()]),
+                new GrinderTask('foo',
+                    taskFunction: () {}, positionals: [new Positional()]),
                 new TaskInvocation('foo', positionals: ['a'])),
             returnsNormally);
 
-        var withRequiredRest =
         expect(
-                () => validatePositionals(
-                new GrinderTask('foo', taskFunction: () {}, rest: new Rest(required: true)),
+            () => validatePositionals(
+                new GrinderTask('foo',
+                    taskFunction: () {}, rest: new Rest(required: true)),
                 new TaskInvocation('foo', positionals: ['a'])),
             returnsNormally);
       });

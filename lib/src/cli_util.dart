@@ -25,24 +25,29 @@ TaskInvocation parseTaskInvocation(String invocation) {
 }
 
 void validatePositionals(GrinderTask task, TaskInvocation invocation) {
-  var actual = invocation.positionals != null ? invocation.positionals.length : 0;
+  var actual =
+      invocation.positionals != null ? invocation.positionals.length : 0;
 
   validatePositionalCount(bool condition, String expectation) {
-    validateArg(condition, 'Received $actual positional command-line arguments, but $expectation.', task: task);
+    validateArg(condition,
+        'Received $actual positional command-line arguments, but $expectation.',
+        task: task);
   }
 
   var minPositionals = task.positionals.length;
   if (task.rest != null && task.rest.required) {
     minPositionals++;
   }
-  validatePositionalCount(actual >= minPositionals, 'at least $minPositionals required');
+  validatePositionalCount(
+      actual >= minPositionals, 'at least $minPositionals required');
 
   var maxPositionals = task.rest == null ? task.positionals.length : null;
-  validatePositionalCount(maxPositionals == null || actual <= maxPositionals, 'at most $maxPositionals allowed');
+  validatePositionalCount(maxPositionals == null || actual <= maxPositionals,
+      'at most $maxPositionals allowed');
 }
 
-TaskInvocation applyTaskToInvocation(GrinderTask task, TaskInvocation invocation) {
-
+TaskInvocation applyTaskToInvocation(
+    GrinderTask task, TaskInvocation invocation) {
   validatePositionals(task, invocation);
 
   var positionalParams = task.positionals;
@@ -55,7 +60,7 @@ TaskInvocation applyTaskToInvocation(GrinderTask task, TaskInvocation invocation
   }
 
   String getPositionalName(int index, Positional positional) =>
-  positional.valueHelp != null ? positional.valueHelp : index.toString();
+      positional.valueHelp != null ? positional.valueHelp : index.toString();
 
   var positionalNames = [];
   positionalParams.asMap().forEach((index, positional) {
@@ -63,43 +68,42 @@ TaskInvocation applyTaskToInvocation(GrinderTask task, TaskInvocation invocation
   });
 
   parseArg(param, arg, name) {
-
     if (param.allowed != null) {
       validateArg(param.allowed.contains(arg),
-      '"$arg" is not an allowed value for option "$name".');
+          '"$arg" is not an allowed value for option "$name".');
     }
 
     if (param.parser == null || arg == null) return arg;
 
     try {
       return param.parser(arg);
-    } catch(e) {
+    } catch (e) {
       validateArg(false, 'Invalid value "$arg":\n$e', task: task, param: name);
     }
   }
 
   List zipParsedArgs(args, params, names) {
     return new IterableZip([args, params, names])
-    .map((parts) => parseArg(parts[1], parts[0], parts[2]))
-    .toList();
+        .map((parts) => parseArg(parts[1], parts[0], parts[2]))
+        .toList();
   }
 
-  var positionals = zipParsedArgs(
-      positionalArgs,
-      positionalParams,
-      positionalNames);
+  var positionals =
+      zipParsedArgs(positionalArgs, positionalParams, positionalNames);
 
   if (task.rest != null) {
     var rawRest = invocation.positionals.skip(restParameterIndex);
     var rest = zipParsedArgs(
         rawRest,
         new Iterable.generate(rawRest.length, (_) => task.rest),
-        new Iterable.generate(rawRest.length, (int indexInRest) =>
-        getPositionalName(restParameterIndex + indexInRest, task.rest)));
+        new Iterable.generate(
+            rawRest.length,
+            (int indexInRest) => getPositionalName(
+                restParameterIndex + indexInRest, task.rest)));
     positionals.add(rest);
   }
 
-  var options = <String, dynamic> {};
+  var options = <String, dynamic>{};
 
   task.options.forEach((option) {
     var resolvedOptionValue;
@@ -110,19 +114,22 @@ TaskInvocation applyTaskToInvocation(GrinderTask task, TaskInvocation invocation
       var optionValue = invocation.options[option.name];
       parseValue(value) => parseArg(option, value, option.name);
       resolvedOptionValue = optionValue is List
-      ? new UnmodifiableListView(optionValue.map(parseValue))
-      : parseValue(optionValue);
+          ? new UnmodifiableListView(optionValue.map(parseValue))
+          : parseValue(optionValue);
     }
     options[option.name] = resolvedOptionValue;
   });
 
-  return new TaskInvocation(invocation.name, positionals: positionals, options: options);
+  return new TaskInvocation(invocation.name,
+      positionals: positionals, options: options);
 }
 
 /// Throws a [GrinderException] if [condition] is `false`.
-void validateArg(bool condition, String message, {GrinderTask task, String param}) {
+void validateArg(bool condition, String message,
+    {GrinderTask task, String param}) {
   var paramString = param == null ? '' : 'Argument "$param": ';
-  if (!condition) throw new GrinderException('Task $task: $paramString$message');
+  if (!condition) throw new GrinderException(
+      'Task $task: $paramString$message');
 }
 
 Iterable<Option> getTaskOptions(Grinder grinder) {
@@ -143,12 +150,13 @@ Iterable<Option> getTaskOptions(Grinder grinder) {
     var hasNonFlag = options.any((option) => option is! Flag);
 
     if (hasFlag && hasNonFlag) {
-      throw new GrinderException('Cannot define task option "$name" as both an option and a flag.');
+      throw new GrinderException(
+          'Cannot define task option "$name" as both an option and a flag.');
     }
 
     var option = hasFlag
-    ? new Flag(name: name, negatable: true)
-    : new Option(name: name, allowMultiple: true, defaultsTo: []);
+        ? new Flag(name: name, negatable: true)
+        : new Option(name: name, allowMultiple: true, defaultsTo: []);
 
     taskOptions.add(option);
   });
@@ -156,43 +164,37 @@ Iterable<Option> getTaskOptions(Grinder grinder) {
   return taskOptions;
 }
 
-TaskInvocation addTaskOptionsToInvocation(
-    GrinderTask task,
-    TaskInvocation invocation,
-    Map<String, dynamic> allOptions) {
-
+TaskInvocation addTaskOptionsToInvocation(GrinderTask task,
+    TaskInvocation invocation, Map<String, dynamic> allOptions) {
   var options = {};
 
   task.options.forEach((option) {
     var optionValue = allOptions[option.name];
     if (option is Flag) {
       bool value = optionValue;
-      validateArg(
-          value || option.negatable,
-          'Is not negatable.',
-          task: task,
-          param: option.name);
+      validateArg(value || option.negatable, 'Is not negatable.',
+          task: task, param: option.name);
 
       optionValue = value == null ? option.defaultsTo : value;
     } else {
       List values = optionValue;
-      validateArg(
-          option.allowMultiple || values.length <= 1,
+      validateArg(option.allowMultiple || values.length <= 1,
           'Does not allow multiple values: $values',
-          task: task,
-          param: option.name);
+          task: task, param: option.name);
 
-      optionValue = values.isEmpty ? option.defaultsTo : option.allowMultiple ? values : values.first;
+      optionValue = values.isEmpty
+          ? option.defaultsTo
+          : option.allowMultiple ? values : values.first;
     }
 
     options[option.name] = optionValue;
   });
 
-  return new TaskInvocation(invocation.name, options: options, positionals: invocation.positionals);
+  return new TaskInvocation(invocation.name,
+      options: options, positionals: invocation.positionals);
 }
 
 String getTaskHelp(Grinder grinder, {bool useColor}) {
-
   var positionalPen = new AnsiPen()..green();
   var textPen = new AnsiPen()..gray(level: 0.5);
 
@@ -214,31 +216,32 @@ String getTaskHelp(Grinder grinder, {bool useColor}) {
   });
 
   var firstColMax =
-  firstColMap.values.fold(0, (width, next) => max(width, next.length));
+      firstColMap.values.fold(0, (width, next) => max(width, next.length));
   var padding = 4;
   var firstColWidth = firstColMax + padding;
 
-  var ret = '\n\n' + tasks.map((GrinderTask task) {
-    Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
+  var ret = '\n\n' +
+      tasks.map((GrinderTask task) {
+        Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
 
-    var buffer = new StringBuffer();
-    buffer
-    .write('  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
-    var desc = task.description == null ? '' : task.description;
-    var depText =
-    '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
-    if (desc.isNotEmpty) {
-      buffer.writeln(textPen(task.description));
-      if (deps.isNotEmpty) {
-        buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
-      }
-    } else {
-      if (deps.isNotEmpty) buffer.write(depText);
-      buffer.writeln();
-    }
+        var buffer = new StringBuffer();
+        buffer.write(
+            '  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
+        var desc = task.description == null ? '' : task.description;
+        var depText =
+            '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
+        if (desc.isNotEmpty) {
+          buffer.writeln(textPen(task.description));
+          if (deps.isNotEmpty) {
+            buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
+          }
+        } else {
+          if (deps.isNotEmpty) buffer.write(depText);
+          buffer.writeln();
+        }
 
-    return buffer.toString();
-  }).join();
+        return buffer.toString();
+      }).join();
 
   if (useColor != null) color_disabled = originalColorDisabled;
 

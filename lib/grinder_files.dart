@@ -238,8 +238,17 @@ class FilePath {
   int get length => isFile ? asFile.lengthSync() : 0;
 
   /// Join the given path elements to this path, and return a new [FilePath] object.
-  FilePath join([arg0, String arg1, String arg2, String arg3, String arg4,
-      String arg5, String arg6, String arg7, String arg8, String arg9]) {
+  FilePath join(
+      [arg0,
+      String arg1,
+      String arg2,
+      String arg3,
+      String arg4,
+      String arg5,
+      String arg6,
+      String arg7,
+      String arg8,
+      String arg9]) {
     List paths = [path];
 
     if (arg0 is List) {

@@ -20,8 +20,10 @@ import 'task_invocation.dart';
 class GrinderContext {
   /// The [Grinder] instance.
   final Grinder grinder;
+
   /// The current running [GrinderTask].
   final GrinderTask task;
+
   /// The current [TaskInvocation].
   final TaskInvocation invocation;
 

@@ -19,28 +19,20 @@ final Directory buildDir = new Directory('build');
 final Directory libDir = new Directory('lib');
 final Directory webDir = new Directory('web');
 
-@Deprecated('See binDir') Directory get BIN_DIR => binDir;
-@Deprecated('See buildDir') Directory get BUILD_DIR => buildDir;
-@Deprecated('See libDir') Directory get LIB_DIR => libDir;
-@Deprecated('See webDir') Directory get WEB_DIR => webDir;
-
-/// Run a dart [script] using [run_lib.run].
-///
-/// Returns the stdout.
+/// Run a dart [script] using [run_lib.run]. Returns the stdout.
 @Deprecated('Use `Dart.run` instead.')
-String runDartScript(String script, {List<String> arguments: const [],
-    bool quiet: false, String packageRoot, RunOptions runOptions,
-    @deprecated int vmNewGenHeapMB, //
-    @deprecated int vmOldGenHeapMB, //
-    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
+String runDartScript(String script,
+    {List<String> arguments: const [],
+    bool quiet: false,
+    String packageRoot,
+    RunOptions runOptions,
+    String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return Dart.run(script,
       arguments: arguments,
       quiet: quiet,
       packageRoot: packageRoot,
-      runOptions: runOptions,
-      vmNewGenHeapMB: vmNewGenHeapMB,
-      vmOldGenHeapMB: vmOldGenHeapMB);
+      runOptions: runOptions);
 }
 
 /// A default implementation of an `init` task. This task verifies that the
@@ -52,29 +44,6 @@ void defaultInit([GrinderContext context]) {}
 /// A default implementation of a `clean` task. This task deletes all generated
 /// artifacts in the `build/`.
 void defaultClean([GrinderContext context]) => delete(buildDir);
-
-/// A utility class to run tests for your project.
-@Deprecated('see [TestRunner]')
-class Tests {
-  /// Run command-line tests. You can specify the base directory (`test`), and
-  /// the file to run (`all.dart`).
-  @Deprecated('see [TestRunner]')
-  static void runCliTests(
-      {String directory: 'test', String testFile: 'all.dart'}) {
-    String file = '${directory}/${testFile}';
-    log('running tests: ${file}...');
-    Dart.run(file);
-  }
-
-  /// Run web tests in a browser instance.
-  @Deprecated('see [TestRunner]')
-  static Future runWebTests({String directory: 'test',
-      String htmlFile: 'index.html', dynamic browser}) {
-    fail('See the TestRunner class (and the `test` package) in order to run web'
-        ' based tests.');
-    return new Future.value();
-  }
-}
 
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
@@ -98,16 +67,24 @@ class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  void test({dynamic files, String name, String plainName,
-      dynamic platformSelector, int concurrency, int pubServe,
+  void test(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic platformSelector,
+      int concurrency,
+      int pubServe,
       RunOptions runOptions}) {
-    _test.run(_buildArgs(
-        files: files,
-        name: name,
-        plainName: plainName,
-        selector: platformSelector,
-        concurrency: concurrency,
-        pubServe: pubServe), script: 'test', runOptions: runOptions);
+    _test.run(
+        _buildArgs(
+            files: files,
+            name: name,
+            plainName: plainName,
+            selector: platformSelector,
+            concurrency: concurrency,
+            pubServe: pubServe),
+        script: 'test',
+        runOptions: runOptions);
   }
 
   /// Run the tests in the current package. See the
@@ -125,20 +102,33 @@ class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  Future testAsync({dynamic files, String name, String plainName,
-      dynamic platformSelector, int concurrency, int pubServe,
+  Future testAsync(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic platformSelector,
+      int concurrency,
+      int pubServe,
       RunOptions runOptions}) {
-    return _test.runAsync(_buildArgs(
-        files: files,
-        name: name,
-        plainName: plainName,
-        selector: platformSelector,
-        concurrency: concurrency,
-        pubServe: pubServe), script: 'test', runOptions: runOptions);
+    return _test.runAsync(
+        _buildArgs(
+            files: files,
+            name: name,
+            plainName: plainName,
+            selector: platformSelector,
+            concurrency: concurrency,
+            pubServe: pubServe),
+        script: 'test',
+        runOptions: runOptions);
   }
 
-  List<String> _buildArgs({dynamic files, String name, String plainName,
-      dynamic selector, int concurrency, int pubServe}) {
+  List<String> _buildArgs(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic selector,
+      int concurrency,
+      int pubServe}) {
     List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');

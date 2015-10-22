@@ -4,11 +4,11 @@
 library grinder.src.run;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import '../grinder.dart';
 import 'run_utils.dart';
-import 'dart:convert';
 
 /// Synchronously run an [executable].
 ///
@@ -17,9 +17,11 @@ import 'dart:convert';
 /// Returns the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
-String run(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, //
-    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
+String run(String executable,
+    {List<String> arguments: const [],
+    RunOptions runOptions,
+    bool quiet: false,
+    String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
   if (runOptions == null) runOptions = new RunOptions();
@@ -58,9 +60,11 @@ String run(String executable, {List<String> arguments: const [],
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
 @Deprecated('Use `run` instead.')
-String runProcess(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, //
-    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
+String runProcess(String executable,
+    {List<String> arguments: const [],
+    RunOptions runOptions,
+    bool quiet: false,
+    String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return run(executable,
       arguments: arguments, runOptions: runOptions, quiet: quiet);
@@ -74,14 +78,15 @@ String runProcess(String executable, {List<String> arguments: const [],
 /// Returns a future for the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.start].
-Future<String> runAsync(String executable, {List<String> arguments: const [],
-    RunOptions runOptions, bool quiet: false, //
-    @Deprecated('see RunOptions.workingDirectory') String workingDirectory}) {
+Future<String> runAsync(String executable,
+    {List<String> arguments: const [],
+    RunOptions runOptions,
+    bool quiet: false,
+    String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   if (runOptions == null) runOptions = new RunOptions();
-  List<int> stdout = [],
-      stderr = [];
+  List<int> stdout = [], stderr = [];
 
   return Process
       .start(executable, arguments,
@@ -90,7 +95,6 @@ Future<String> runAsync(String executable, {List<String> arguments: const [],
           includeParentEnvironment: runOptions.includeParentEnvironment,
           runInShell: runOptions.runInShell)
       .then((Process process) {
-
     // Handle stdout.
     var broadcastStdout = process.stdout.asBroadcastStream();
     var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
@@ -131,8 +135,9 @@ Future<String> runAsync(String executable, {List<String> arguments: const [],
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-    {List<String> arguments: const [], RunOptions runOptions, //
-    @Deprecated('see RunOptions.workingDirectory') String workingDirectory,
+    {List<String> arguments: const [],
+    RunOptions runOptions,
+    String workingDirectory,
     bool quiet: false}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return runAsync(executable,
@@ -171,15 +176,22 @@ class RunOptions {
   final Encoding stdoutEncoding;
   final Encoding stderrEncoding;
 
-  RunOptions({this.workingDirectory, this.environment,
-      this.includeParentEnvironment: true, this.runInShell: false,
+  RunOptions(
+      {this.workingDirectory,
+      this.environment,
+      this.includeParentEnvironment: true,
+      this.runInShell: false,
       this.stdoutEncoding: SYSTEM_ENCODING,
       this.stderrEncoding: SYSTEM_ENCODING});
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.
-  RunOptions clone({String workingDirectory, Map<String, String> environment,
-      bool includeParentEnvironment, bool runInShell, Encoding stdoutEncoding,
+  RunOptions clone(
+      {String workingDirectory,
+      Map<String, String> environment,
+      bool includeParentEnvironment,
+      bool runInShell,
+      Encoding stdoutEncoding,
       Encoding stderrEncoding}) {
     Map<String, String> env;
     if (environment != null) {
@@ -188,19 +200,16 @@ class RunOptions {
       env = this.environment != null ? new Map.from(this.environment) : {};
     }
     return new RunOptions(
-        workingDirectory: workingDirectory != null
-            ? workingDirectory
-            : this.workingDirectory,
+        workingDirectory:
+            workingDirectory != null ? workingDirectory : this.workingDirectory,
         environment: env,
         includeParentEnvironment: includeParentEnvironment != null
             ? includeParentEnvironment
             : this.includeParentEnvironment,
         runInShell: runInShell != null ? runInShell : this.runInShell,
-        stdoutEncoding: stdoutEncoding != null
-            ? stdoutEncoding
-            : this.stdoutEncoding,
-        stderrEncoding: stderrEncoding != null
-            ? stderrEncoding
-            : this.stderrEncoding);
+        stdoutEncoding:
+            stdoutEncoding != null ? stdoutEncoding : this.stdoutEncoding,
+        stderrEncoding:
+            stderrEncoding != null ? stderrEncoding : this.stderrEncoding);
   }
 }

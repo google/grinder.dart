@@ -8,13 +8,13 @@ import 'dart:convert' show JSON, UTF8;
 
 import 'package:unscripted/unscripted.dart';
 
-import 'singleton.dart' as singleton;
-import 'cli_util.dart';
-import 'utils.dart';
 import '../grinder.dart';
+import 'cli_util.dart';
+import 'singleton.dart' as singleton;
+import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String APP_VERSION = '0.7.2';
+const String APP_VERSION = '0.8.0-dev.1';
 
 List<String> grinderArgs() => _args;
 List<String> _args;
@@ -29,19 +29,22 @@ Future handleArgs(List<String> args, {bool verifyProjectRoot: false}) {
 // TODO: Re-inline this variable once the fix for http://dartbug.com/23354
 //       is released.
 const _completion = const Completion();
-@Command(allowTrailingOptions: true, help: 'Dart workflows, automated.', plugins: const [_completion])
-cli(
-    @Rest(valueHelp: 'tasks', help: _getTaskHelp, allowed: _allowedTasks, parser: parseTaskInvocation)
+@Command(
+    allowTrailingOptions: true,
+    help: 'Dart workflows, automated.',
+    plugins: const [_completion])
+cli(@Rest(
+        valueHelp: 'tasks',
+        help: _getTaskHelp,
+        allowed: _allowedTasks,
+        parser: parseTaskInvocation)
     List<TaskInvocation> partialInvocations,
-    {@Flag(help: 'Print the version of grinder.')
-     bool version: false,
-     @Option(help: 'Set the location of the Dart SDK.')
-     String dartSdk,
-     @Deprecated('Task dependencies are now available via --help.')
-     @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
-     bool deps: false,
-     @Group(_getTaskOptions, hide: true)
-     Map<String, dynamic> taskOptions}) {
+    {@Flag(help: 'Print the version of grinder.') bool version: false,
+    @Option(help: 'Set the location of the Dart SDK.') String dartSdk,
+    @Deprecated('Task dependencies are now available via --help.')
+    @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
+    bool deps: false,
+    @Group(_getTaskOptions, hide: true) Map<String, dynamic> taskOptions}) {
   if (version) {
     const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
