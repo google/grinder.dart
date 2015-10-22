@@ -63,7 +63,8 @@ main() {
       bool isCheckedMode = false;
       assert(() => isCheckedMode = true);
       if (isCheckedMode) {
-        expect(() => run('dart',
+        expect(
+            () => run('dart',
                 arguments: [runScriptName],
                 workingDirectory: runScriptPath,
                 runOptions: new RunOptions(workingDirectory: runScriptPath)),
@@ -139,13 +140,15 @@ main() {
     test('should use stderrEncoding', () {
       const environment = const {'USE_EXIT_CODE': '100'};
 
-      expect(() => run('dart',
+      expect(
+          () => run('dart',
               arguments: [runScript],
               runOptions: new RunOptions(
                   environment: environment,
                   stderrEncoding: const DummyEncoding()),
-              quiet: true), throwsA(
-          (ProcessException e) => e.stderr == DummyDecoder.dummyDecoderOutput));
+              quiet: true),
+          throwsA((ProcessException e) =>
+              e.stderr == DummyDecoder.dummyDecoderOutput));
     });
   });
 }

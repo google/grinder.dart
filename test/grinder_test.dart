@@ -46,8 +46,10 @@ main() {
       grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
       grinder.defaultTask = new GrinderTask('bar', depends: ['foo']);
       grinder.start([], dontRun: true);
-      expect(grinder.getBuildOrder(),
-          orderedEquals([new TaskInvocation('foo'), new TaskInvocation('bar')]));
+      expect(
+          grinder.getBuildOrder(),
+          orderedEquals(
+              [new TaskInvocation('foo'), new TaskInvocation('bar')]));
     });
 
     test('throws when overwriting default task', () {
@@ -69,16 +71,13 @@ main() {
     test('can invoke a task with arguments', () {
       Grinder grinder = new Grinder();
       var received;
-      grinder.addTask(new GrinderTask(
-          'foo',
-          taskFunction: () {
-            received = context.invocation;
-          },
+      grinder.addTask(new GrinderTask('foo', taskFunction: () {
+        received = context.invocation;
+      },
           positionals: [new Positional()],
           rest: new Rest(),
           options: [new Option(name: 'option')]));
-      var sent = new TaskInvocation(
-          'foo',
+      var sent = new TaskInvocation('foo',
           positionals: ['positional value', 1, 2, 3],
           options: {'option': 'option value'});
       return grinder.start([sent]).then((_) {
@@ -89,16 +88,13 @@ main() {
     test('can invoke a dependency task with arguments', () {
       Grinder grinder = new Grinder();
       var invocation;
-      grinder.addTask(new GrinderTask(
-          'foo',
-          taskFunction: () {
-            invocation = context.invocation;
-          },
+      grinder.addTask(new GrinderTask('foo', taskFunction: () {
+        invocation = context.invocation;
+      },
           positionals: [new Positional()],
           rest: new Rest(),
           options: [new Option(name: 'option')]));
-      var dep = new TaskInvocation(
-          'foo',
+      var dep = new TaskInvocation('foo',
           positionals: ['positional value', 1, 2, 3],
           options: {'option': 'option value'});
       grinder.addTask(new GrinderTask('bar', depends: [dep]));
@@ -109,13 +105,12 @@ main() {
 
     test('throws when task invoked twice with different arguments', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {},
-          options: [new Option(name: 'option')]));
+      grinder.addTask(new GrinderTask('foo',
+          taskFunction: () {}, options: [new Option(name: 'option')]));
       var dep = new TaskInvocation('foo', options: {'option': 'option value'});
       grinder.addTask(new GrinderTask('bar', depends: [dep]));
 
-      expect(
-          () => grinder.start(['bar', 'foo']),
+      expect(() => grinder.start(['bar', 'foo']),
           throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -196,9 +191,7 @@ main() {
       grinder.addTask(
           new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
-      grinder.start(
-          ['docs', 'archive'],
-          dontRun: true);
+      grinder.start(['docs', 'archive'], dontRun: true);
       expect(
           grinder.getBuildOrder(),
           orderedEquals(['setup', 'docs', 'mode-notest', 'compile', 'archive']
@@ -224,8 +217,8 @@ main() {
       grinder.addTask(new GrinderTask('clean', taskFunction: () {}));
 
       grinder.start(['clean'], dontRun: true);
-      expect(
-          grinder.getBuildOrder(), orderedEquals([new TaskInvocation('clean')]));
+      expect(grinder.getBuildOrder(),
+          orderedEquals([new TaskInvocation('clean')]));
     });
 
     test('returns future', () {
@@ -251,8 +244,8 @@ main() {
 
     test('throw on fail', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('i_throw',
-          taskFunction: (GrinderContext context) {
+      grinder.addTask(
+          new GrinderTask('i_throw', taskFunction: (GrinderContext context) {
         context.fail('boo');
       }));
 

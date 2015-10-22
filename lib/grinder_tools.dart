@@ -21,8 +21,11 @@ final Directory webDir = new Directory('web');
 
 /// Run a dart [script] using [run_lib.run]. Returns the stdout.
 @Deprecated('Use `Dart.run` instead.')
-String runDartScript(String script, {List<String> arguments: const [],
-    bool quiet: false, String packageRoot, RunOptions runOptions,
+String runDartScript(String script,
+    {List<String> arguments: const [],
+    bool quiet: false,
+    String packageRoot,
+    RunOptions runOptions,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return Dart.run(script,
@@ -64,16 +67,24 @@ class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  void test({dynamic files, String name, String plainName,
-      dynamic platformSelector, int concurrency, int pubServe,
+  void test(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic platformSelector,
+      int concurrency,
+      int pubServe,
       RunOptions runOptions}) {
-    _test.run(_buildArgs(
-        files: files,
-        name: name,
-        plainName: plainName,
-        selector: platformSelector,
-        concurrency: concurrency,
-        pubServe: pubServe), script: 'test', runOptions: runOptions);
+    _test.run(
+        _buildArgs(
+            files: files,
+            name: name,
+            plainName: plainName,
+            selector: platformSelector,
+            concurrency: concurrency,
+            pubServe: pubServe),
+        script: 'test',
+        runOptions: runOptions);
   }
 
   /// Run the tests in the current package. See the
@@ -91,20 +102,33 @@ class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  Future testAsync({dynamic files, String name, String plainName,
-      dynamic platformSelector, int concurrency, int pubServe,
+  Future testAsync(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic platformSelector,
+      int concurrency,
+      int pubServe,
       RunOptions runOptions}) {
-    return _test.runAsync(_buildArgs(
-        files: files,
-        name: name,
-        plainName: plainName,
-        selector: platformSelector,
-        concurrency: concurrency,
-        pubServe: pubServe), script: 'test', runOptions: runOptions);
+    return _test.runAsync(
+        _buildArgs(
+            files: files,
+            name: name,
+            plainName: plainName,
+            selector: platformSelector,
+            concurrency: concurrency,
+            pubServe: pubServe),
+        script: 'test',
+        runOptions: runOptions);
   }
 
-  List<String> _buildArgs({dynamic files, String name, String plainName,
-      dynamic selector, int concurrency, int pubServe}) {
+  List<String> _buildArgs(
+      {dynamic files,
+      String name,
+      String plainName,
+      dynamic selector,
+      int concurrency,
+      int pubServe}) {
     List<String> args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');

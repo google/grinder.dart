@@ -30,6 +30,7 @@ class TaskDiscovery {
 
     return _resolvedDeclarations;
   }
+
   Map<Symbol, DeclarationMirror> _resolvedDeclarations;
 
   TaskDiscovery(this.library);
@@ -72,8 +73,8 @@ class TaskDiscovery {
         if (decl.parameters.isNotEmpty &&
             !decl.parameters.first.isOptional &&
             !decl.parameters.first.isNamed) {
-          taskFunction =
-              () => owner.invoke(decl.simpleName, [context]).reflectee;
+          taskFunction = () =>
+              owner.invoke(decl.simpleName, [context]).reflectee;
         } else {
           taskFunction = () => owner.invoke(decl.simpleName, []).reflectee;
         }

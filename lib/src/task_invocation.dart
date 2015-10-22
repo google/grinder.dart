@@ -10,21 +10,19 @@ import 'package:collection/collection.dart';
 /// Identifies the [name] of the task to invoke, and which arguments
 /// ([positionals] and [options]) to send to it.
 class TaskInvocation {
-
   final String name;
   final List positionals;
   final Map<String, dynamic> options;
 
-  TaskInvocation(this.name, {this.positionals: const [], this.options: const {}});
+  TaskInvocation(this.name,
+      {this.positionals: const [], this.options: const {}});
 
-  bool operator ==(other) =>
-      other is TaskInvocation &&
+  bool operator ==(other) => other is TaskInvocation &&
       name == other.name &&
       const IterableEquality().equals(positionals, other.positionals) &&
       const MapEquality().equals(options, other.options);
 
-  int get hashCode =>
-      name.hashCode ^
+  int get hashCode => name.hashCode ^
       (const IterableEquality().hash(positionals) * 3) ^
       (const MapEquality().hash(options) * 5);
 

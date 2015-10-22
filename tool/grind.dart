@@ -7,25 +7,23 @@ import 'package:grinder/grinder.dart';
 import 'package:unscripted/unscripted.dart';
 
 main(args) {
+  addTask(new GrinderTask('bump', taskFunction: () {
+    var releaseType = context.invocation.positionals.first;
+    var isPre = context.invocation.options['pre'];
+    var preId = context.invocation.options['pre-id'];
 
-  addTask(new GrinderTask(
-      'bump',
-      taskFunction: () {
-        var releaseType = context.invocation.positionals.first;
-        var isPre = context.invocation.options['pre'];
-        var preId = context.invocation.options['pre-id'];
+    var args = ['bump', releaseType];
 
-        var args = ['bump', releaseType];
-
-        if (isPre) args.add('--pre');
-        if (preId != null) args.addAll(['--pre-id', preId]);
-        new PubApp.global('den').run(args);
-      },
+    if (isPre) args.add('--pre');
+    if (preId != null) args.addAll(['--pre-id', preId]);
+    new PubApp.global('den').run(args);
+  },
       positionals: [new Positional(valueHelp: 'release type')],
       options: [new Flag(name: 'pre'), new Option(name: 'pre-id')]));
 
   grind(args);
 }
+
 @Task()
 analyze() => new PubApp.global('tuneup')..runAsync(['check', '--ignore-infos']);
 

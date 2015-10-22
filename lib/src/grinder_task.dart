@@ -44,22 +44,21 @@ class GrinderTask {
   ///
   /// Use [positionals], [rest], and [options] to define parameters accepted by
   /// this task.
-  GrinderTask(
-      this.name,
+  GrinderTask(this.name,
       {this.taskFunction,
       this.description,
       Iterable depends: const [],
       Iterable<Positional> positionals: const [],
       this.rest,
-      Iterable<Option> options: const []
-      })
-      : this.depends = new UnmodifiableListView(depends.map((dep) =>
-            dep is String ? new TaskInvocation(dep) : dep).toList()),
+      Iterable<Option> options: const []})
+      : this.depends = new UnmodifiableListView(depends
+            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)
+            .toList()),
         this.positionals = new UnmodifiableListView(positionals.toList()),
         this.options = new UnmodifiableListView(options.toList()) {
     if (taskFunction == null && depends.isEmpty) {
       throw new GrinderException('GrinderTasks must have a task function or '
-      'dependencies.');
+          'dependencies.');
     }
   }
 

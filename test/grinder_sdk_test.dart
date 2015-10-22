@@ -133,8 +133,11 @@ main() {
     test('should throw on non-existing file',
         () => expect(() => Analyzer.analyze('xyz'), throws));
 
-    test('should analyze a list of files ', () => expect(() =>
-            Analyzer.analyze(['test/grinder_sdk_test.dart', 'tool/grind.dart']),
-        isNot(throws)));
+    test(
+        'should analyze a list of files ',
+        () => expect(
+            () => Analyzer
+                .analyze(['test/grinder_sdk_test.dart', 'tool/grind.dart']),
+            isNot(throws)));
   });
 }

@@ -80,9 +80,8 @@ typedef dynamic TaskFunction(GrinderContext context);
  */
 @Deprecated('Use the task annotations instead.')
 void task(String name,
-          [Function taskFunction, List<String> depends = const []]) {
-  grinder.addTask(new GrinderTask(
-      name,
+    [Function taskFunction, List<String> depends = const []]) {
+  grinder.addTask(new GrinderTask(name,
       taskFunction: taskFunction,
       depends: depends.map((dep) => new TaskInvocation(dep))));
 }
