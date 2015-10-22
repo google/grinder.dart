@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.0 (unreleased)
+- Removed deprecated constants: BIN_DIR, BUILD_DIR, LIB_DIR, WEB_DIR
+
 ## 0.7.2 (2015/7/8)
 - Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart
   source files using the added method `findDartSourceFiles()`.
