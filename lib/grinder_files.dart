@@ -398,18 +398,18 @@ void _deleteImpl(FileSystemEntity entity) {
   }
 }
 
-@Deprecated('deprecated in favor of copy()')
+/// Prefer using [copy].
 void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
   copy(srcFile, destDir, context);
 }
 
-@Deprecated('deprecated in favor of copy()')
+/// Prefer using [copy].
 void copyDirectory(Directory srcDir, Directory destDir,
     [GrinderContext context]) {
   copy(srcDir, destDir, context);
 }
 
-@Deprecated('deprecated in favor of delete()')
+/// Prefer using [delete].
 void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
   delete(entity);
 }
