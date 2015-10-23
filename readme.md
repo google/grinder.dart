@@ -49,8 +49,10 @@ doc() {
 
 Any task dependencies (see `@Depends` above), are run before the dependent task.
 
-Grinder contains a variety of convenience APIs for common task definitions, such as
-`PubApp` referenced above.  See the [API Documentation](http://www.dartdocs.org/documentation/grinder/latest) for full details.
+Grinder contains a variety of convenience APIs for common task definitions, such
+as `PubApp` referenced above.  See the
+[API Documentation](http://www.dartdocs.org/documentation/grinder/latest) for
+full details.
 
 ### Running Tasks
 
@@ -71,7 +73,8 @@ or to display a list of available tasks and their dependencies:
 
     grind -h
 
-or to tab-complete your tasks (thanks to [unscripted](https://github.com/seaneagan/unscripted)):
+or to tab-complete your tasks (thanks to
+[unscripted](https://github.com/seaneagan/unscripted)):
 
     grind --completion install
     . ~/.bashrc
@@ -82,9 +85,7 @@ or to tab-complete your tasks (thanks to [unscripted](https://github.com/seaneag
     grind b[TAB]
     grind build
 
-You can also bypass installing `grind`, and instead use
-`pub run grinder:grinder`, or [in Dart SDK 1.10](http://dartbug.com/22129),
-simply `pub run grinder`.
+You can also bypass installing `grind` and instead use `pub run grinder`.
 
 ## Disclaimer
 
