@@ -5,6 +5,7 @@ library grinder.src.grinder;
 
 import 'dart:async';
 
+import 'ansi.dart' as ansi;
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
@@ -161,7 +162,7 @@ class Grinder {
     invocations.forEach(_postOrder);
 
     if (!dontRun) {
-      log('grinder running ${_invocationOrder.join(' ')}');
+      log('grinder running ${ansi.bold}${_invocationOrder.join(' ')}${ansi.reset}');
       log('');
 
       return Future.forEach(_invocationOrder, (task) {
@@ -186,7 +187,7 @@ class Grinder {
   void log(String message) => print(message);
 
   Future _invokeTask(TaskInvocation invocation) {
-    log(invocation.toString());
+    log('${ansi.bold}${invocation}${ansi.reset}');
 
     var task = getTask(invocation.name);
     GrinderContext context = new GrinderContext(this, task, invocation);

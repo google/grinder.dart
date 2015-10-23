@@ -3,6 +3,7 @@
 
 library grinder.src.grinder_context;
 
+import 'ansi.dart' as ansi;
 import 'grinder.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
@@ -37,7 +38,7 @@ class GrinderContext {
 
   /// Halt task execution; throws an exception with the given error message.
   void fail(String message) {
-    log('failed: ${message}');
+    log('${ansi.bold}failed:${ansi.reset} ${ansi.red}${message}${ansi.reset}');
     throw new GrinderException(message);
   }
 
