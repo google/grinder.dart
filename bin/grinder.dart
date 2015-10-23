@@ -12,8 +12,8 @@ void runScript(String script, List args) {
   File file = new File(script);
 
   if (!file.existsSync()) {
-    print("Error: expected to find '${script}' "
-        "relative to the current directory.");
+    stderr.writeln(
+        "Error: expected to find '${script}' relative to the current directory.");
     exit(1);
   }
 
@@ -23,16 +23,8 @@ void runScript(String script, List args) {
 
 void _runProcessAsync(String executable, List<String> arguments) {
   Process.start(executable, arguments).then((Process process) {
-    process.stdout.listen((List<int> data) {
-      stdout.write(new String.fromCharCodes(data));
-    });
-
-    process.stderr.listen((List<int> data) {
-      stderr.write(new String.fromCharCodes(data));
-    });
-
-    return process.exitCode.then((int code) {
-      if (code != 0) exit(code);
-    });
+    stdout.addStream(process.stdout);
+    stderr.addStream(process.stderr);
+    return process.exitCode.then((int code) => exit(code));
   });
 }

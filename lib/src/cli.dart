@@ -14,7 +14,7 @@ import 'singleton.dart' as singleton;
 import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String APP_VERSION = '0.8.0-dev.1';
+const String appVersion = '0.8.0-dev.1';
 
 List<String> grinderArgs() => _args;
 List<String> _args;
@@ -41,18 +41,15 @@ cli(@Rest(
     List<TaskInvocation> partialInvocations,
     {@Flag(help: 'Print the version of grinder.') bool version: false,
     @Option(help: 'Set the location of the Dart SDK.') String dartSdk,
-    @Deprecated('Task dependencies are now available via --help.')
-    @Flag(hide: true, abbr: 'd', help: 'Display the dependencies of tasks.')
-    bool deps: false,
     @Group(_getTaskOptions, hide: true) Map<String, dynamic> taskOptions}) {
   if (version) {
     const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 
-    print('grinder version ${APP_VERSION}');
+    print('grinder version ${appVersion}');
 
     return httpGet(pubUrl).then((String str) {
       List versions = JSON.decode(str)['versions'];
-      if (APP_VERSION != versions.last) {
+      if (appVersion != versions.last) {
         print("Version ${versions.last} is available! Run `pub global activate"
             " grinder` to get the latest version.");
       } else {
@@ -71,7 +68,12 @@ cli(@Rest(
       }
     }
 
-    var invocations = partialInvocations.map((partial) {
+    for (TaskInvocation invocation in partialInvocations) {
+      var task = singleton.grinder.getTask(invocation.name);
+      if (task == null) fail("Error, no task found: '${invocation.name}'.");
+    }
+
+    var invocations = partialInvocations.map((TaskInvocation partial) {
       var task = singleton.grinder.getTask(partial.name);
       var raw = addTaskOptionsToInvocation(task, partial, taskOptions);
       return applyTaskToInvocation(task, raw);
@@ -80,6 +82,7 @@ cli(@Rest(
     Future result = singleton.grinder.start(invocations);
 
     return result.catchError((e, st) {
+      // TODO: The stacktrace is being whittled away when it's a future.
       String message;
       if (st != null) {
         message = '\n${e}\n${cleanupStackTrace(st)}';
@@ -93,7 +96,7 @@ cli(@Rest(
   return new Future.value();
 }
 
-var script = new Script(cli);
+Script script = new Script(cli);
 
 Iterable<Option> _getTaskOptions() => getTaskOptions(singleton.grinder);
 

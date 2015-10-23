@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import '../grinder.dart';
+import 'ansi.dart' as ansi;
 
 Stream<String> toLineStream(Stream<List<int>> s, Encoding encoding) =>
     s.transform(encoding.decoder).transform(const LineSplitter());
@@ -16,7 +17,7 @@ logStdout(String line) {
 }
 
 logStderr(String line) {
-  log('stderr: $line');
+  log('${ansi.red}${line}${ansi.reset}');
 }
 
 /// Helper for methods which support the deprecated [workingDirectory] and the
