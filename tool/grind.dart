@@ -69,12 +69,13 @@ void coverage() {
 }
 
 @DefaultTask()
-@Depends(analyze, test, checkInit, coverage)
+@Depends(analyze, test, checkInit, doc, coverage)
 void buildbot() => null;
 
 @Task()
+doc() => DartDoc.docAsync();
+
+@Task()
 ddc() {
-  DevCompiler ddc = new DevCompiler();
-  return ddc.analyze(getFile('example/grind.dart'));
-  //return ddc.analyzeAsync(getFile('example/grind.dart'));
+  return new DevCompiler().analyzeAsync(getFile('example/grind.dart'));
 }
