@@ -20,7 +20,8 @@ final Directory libDir = new Directory('lib');
 final Directory webDir = new Directory('web');
 
 /// Run a dart [script] using [run_lib.run]. Returns the stdout.
-@Deprecated('Use `Dart.run` instead.')
+///
+/// Prefer `Dart.run` instead.
 String runDartScript(String script,
     {List<String> arguments: const [],
     bool quiet: false,
@@ -34,12 +35,6 @@ String runDartScript(String script,
       packageRoot: packageRoot,
       runOptions: runOptions);
 }
-
-/// A default implementation of an `init` task. This task verifies that the
-/// grind script is executed from the project root.
-@Deprecated(
-    'the functionality of this method has been rolled into grinder startup')
-void defaultInit([GrinderContext context]) {}
 
 /// A default implementation of a `clean` task. This task deletes all generated
 /// artifacts in the `build/`.

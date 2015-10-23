@@ -9,6 +9,7 @@
   had been emitted as part of the task
 - Added `outFile` and `enableExperimentalMirrors` to the dart2js task
 - Some grinder output now written using ansi colors
+- Removed the deprecated `defaultInit` method.
 
 ## 0.7.2 (2015/7/8)
 - Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart
