@@ -73,7 +73,13 @@ void coverage() {
 void buildbot() => null;
 
 @Task()
-doc() => DartDoc.docAsync();
+doc() {
+  if (DartDoc.exists()) {
+    DartDoc.docAsync();
+  } else {
+    log('Dartdoc is not available in this SDK.');
+  }
+}
 
 @Task()
 ddc() {
