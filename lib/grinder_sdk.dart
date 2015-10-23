@@ -54,7 +54,27 @@ Directory get sdkDir => getSdkDir(grinderArgs());
  */
 Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
 
-File get dartVM => joinFile(sdkDir, ['bin', _sdkBin('dart')]);
+File get dartVM => joinFile(sdkDir, ['bin', sdkBin('dart')]);
+
+/// Return the path to a binary in the SDK's `bin/` directory. This will handle
+/// appending `.bat` or `.exe` on Windows. This is useful for finding the path
+/// to SDK utilities like `dartdoc`, `dart2js`, ...
+String sdkBin(String name) {
+  if (Platform.isWindows) {
+    return name == 'dart' ? 'dart.exe' : '${name}.bat';
+  } else if (Platform.isMacOS) {
+    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
+    // This is only necessary in unusual circumstances, like when the script is
+    // run from the Editor on macos.
+    if (_sdkOnPath == null) {
+      _sdkOnPath = whichSync('dart', orElse: () => null) != null;
+    }
+
+    return _sdkOnPath ? name : '${sdkDir.path}/bin/${name}';
+  } else {
+    return name;
+  }
+}
 
 /// Utility tasks for for getting information about the Dart VM and for running
 /// Dart applications.
@@ -73,7 +93,7 @@ class Dart {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
-    return runlib.run(_sdkBin('dart'),
+    return runlib.run(sdkBin('dart'),
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
@@ -85,14 +105,14 @@ class Dart {
       List<String> vmArgs: const []}) {
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
-    return runlib.runAsync(_sdkBin('dart'),
+    return runlib.runAsync(sdkBin('dart'),
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
   static String version({bool quiet: false}) {
     // TODO: We may want to run `dart --version` in order to know the version
     // of the SDK that grinder has located.
-    // runlib.run(_sdkBin('dart'), arguments: ['--version'], quiet: quiet);
+    // runlib.run(sdkBin('dart'), arguments: ['--version'], quiet: quiet);
     // The stdout does not have a stable documented format, so use the provided
     // metadata instead.
     return Platform.version.substring(0, Platform.version.indexOf(' '));
@@ -163,7 +183,7 @@ class Pub {
 
     if (force || !publock.upToDate(pubspec)) {
       return runlib
-          .runAsync(_sdkBin('pub'), arguments: ['get'], runOptions: runOptions)
+          .runAsync(sdkBin('pub'), arguments: ['get'], runOptions: runOptions)
           .then((_) => null);
     }
 
@@ -180,8 +200,7 @@ class Pub {
   static Future upgradeAsync({RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
-        .runAsync(_sdkBin('pub'),
-            arguments: ['upgrade'], runOptions: runOptions)
+        .runAsync(sdkBin('pub'), arguments: ['upgrade'], runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -196,7 +215,7 @@ class Pub {
       {RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
-        .runAsync(_sdkBin('pub'),
+        .runAsync(sdkBin('pub'),
             arguments: ['downgrade'], runOptions: runOptions)
         .then((_) => null);
   }
@@ -218,7 +237,7 @@ class Pub {
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runlib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
+    runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
   /**
@@ -239,7 +258,7 @@ class Pub {
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     return runlib
-        .runAsync(_sdkBin('pub'), arguments: args, runOptions: runOptions)
+        .runAsync(sdkBin('pub'), arguments: args, runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -255,7 +274,7 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
+    return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
   /// Run `pub run` on the given [package] and [script].
@@ -266,7 +285,7 @@ class Pub {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.runAsync(_sdkBin('pub'),
+    return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
   }
 
@@ -277,7 +296,7 @@ class Pub {
 
   static String _run(String command,
       {bool quiet: false, RunOptions runOptions}) {
-    return runlib.run(_sdkBin('pub'),
+    return runlib.run(sdkBin('pub'),
         quiet: quiet, arguments: [command], runOptions: runOptions);
   }
 }
@@ -307,7 +326,7 @@ class Dart2js {
     args.add('-o${outFile.path}');
     args.add(sourceFile.path);
 
-    runlib.run(_sdkBin('dart2js'), arguments: args);
+    runlib.run(sdkBin('dart2js'), arguments: args);
   }
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
@@ -334,7 +353,7 @@ class Dart2js {
     args.add(sourceFile.path);
 
     return runlib
-        .runAsync(_sdkBin('dart2js'), arguments: args)
+        .runAsync(sdkBin('dart2js'), arguments: args)
         .then((_) => null);
   }
 
@@ -342,7 +361,16 @@ class Dart2js {
       _parseVersion(_run('--version', quiet: quiet));
 
   static String _run(String command, {bool quiet: false}) =>
-      runlib.run(_sdkBin('dart2js'), quiet: quiet, arguments: [command]);
+      runlib.run(sdkBin('dart2js'), quiet: quiet, arguments: [command]);
+}
+
+/// Utility class for invoking dartdoc.
+class DartDoc {
+  static void doc() {
+    runlib.run(sdkBin('dartdoc'));
+  }
+
+  static Future docAsync() => runlib.runAsync(sdkBin('dartdoc'));
 }
 
 /**
@@ -356,7 +384,7 @@ class Analyzer {
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
-    runlib.run(_sdkBin('dartanalyzer'), arguments: args);
+    runlib.run(sdkBin('dartanalyzer'), arguments: args);
   }
 
   /// Analyze one or more [File]s or paths ([String]).
@@ -368,11 +396,11 @@ class Analyzer {
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(coerceToPathList(files));
 
-    runlib.run(_sdkBin('dartanalyzer'), arguments: args);
+    runlib.run(sdkBin('dartanalyzer'), arguments: args);
   }
 
   static String version({bool quiet: false}) => _parseVersion(runlib
-      .run(_sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
+      .run(sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
 }
 
 /// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
@@ -397,7 +425,7 @@ class DartFmt {
     List args = [option];
     if (lineLength != null) args.add('--line-length=${lineLength}');
     args.addAll(targets);
-    return runlib.run(_sdkBin('dartfmt'), quiet: quiet, arguments: args);
+    return runlib.run(sdkBin('dartfmt'), quiet: quiet, arguments: args);
   }
 }
 
@@ -410,8 +438,7 @@ class PubGlobal {
   /// Install a new Dart application.
   void activate(String packageName, {bool force: false}) {
     if (force || !isActivated(packageName)) {
-      runlib.run(_sdkBin('pub'),
-          arguments: ['global', 'activate', packageName]);
+      runlib.run(sdkBin('pub'), arguments: ['global', 'activate', packageName]);
       _activatedPackages.add(packageName);
     }
   }
@@ -426,7 +453,7 @@ class PubGlobal {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.run(_sdkBin('pub'), arguments: args, runOptions: runOptions);
+    return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
   /// Run the given installed Dart application.
@@ -435,7 +462,7 @@ class PubGlobal {
     var scriptArg = script == null ? package : '$package:$script';
     List args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.runAsync(_sdkBin('pub'),
+    return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
   }
 
@@ -447,7 +474,7 @@ class PubGlobal {
     //...
 
     var stdout =
-        runlib.run(_sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+        runlib.run(sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
@@ -513,23 +540,6 @@ abstract class PubApp {
       {String script, RunOptions runOptions});
 
   String toString() => packageName;
-}
-
-String _sdkBin(String name) {
-  if (Platform.isWindows) {
-    return name == 'dart' ? 'dart.exe' : '${name}.bat';
-  } else if (Platform.isMacOS) {
-    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
-    // This is only necessary in unusual circumstances, like when the script is
-    // run from the Editor on macos.
-    if (_sdkOnPath == null) {
-      _sdkOnPath = whichSync('dart', orElse: () => null) != null;
-    }
-
-    return _sdkOnPath ? name : '${sdkDir.path}/bin/${name}';
-  } else {
-    return name;
-  }
 }
 
 /// Parse the version out of strings like:

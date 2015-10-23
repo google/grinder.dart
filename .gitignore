@@ -10,6 +10,6 @@ packages
 pubspec.lock
 .idea
 .pub/
-docs/
+doc/api/
 build/
 .settings/
