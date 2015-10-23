@@ -2,6 +2,12 @@
 
 ## 0.8.0 (unreleased)
 - Removed deprecated constants: BIN_DIR, BUILD_DIR, LIB_DIR, WEB_DIR
+- Removed the 120-col line wrapping on task output
+- Added a task for DDC (dev_compiler)
+- Fixed an issue where we were emitting overly verbose stack traces on failures
+- Fixed an issue where we would emit stdout after a failure, even when the stdout
+  had been emitted as part of the task
+- Added `outFile` and `enableExperimentalMirrors` to the dart2js task
 
 ## 0.7.2 (2015/7/8)
 - Auto-expand directories passed to `Analyzer.analyze()` to a list of Dart

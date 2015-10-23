@@ -143,3 +143,30 @@ class TestRunner {
     return args;
   }
 }
+
+/// An interface into the DDC (`dev_compiler`).
+class DevCompiler {
+  final PubApp _ddc = new PubApp.global('dev_compiler');
+
+  DevCompiler();
+
+  void analyze(dynamic files) {
+    _ddc.run(coerceToPathList(files));
+  }
+
+  Future analyzeAsync(dynamic files) {
+    return _ddc.runAsync(coerceToPathList(files));
+  }
+
+  void compile(dynamic files, Directory outDir) {
+    List args = coerceToPathList(files);
+    args.add('-o${outDir.path}');
+    _ddc.run(args);
+  }
+
+  Future compileAsync(dynamic files, Directory outDir) {
+    List args = coerceToPathList(files);
+    args.add('-o${outDir.path}');
+    return _ddc.runAsync(args);
+  }
+}
