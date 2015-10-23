@@ -153,17 +153,7 @@ class ProcessException implements Exception {
 
   ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
 
-  String toString() => """
-$executable failed with:
-exit code: $exitCode
-
-stdout:
-
-$stdout
-
-stderr:
-
-$stderr""";
+  String toString() => 'failed with exit code ${exitCode}';
 }
 
 /// Arguments passed to [Process.run] or [Process.start].

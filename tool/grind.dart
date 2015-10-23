@@ -71,3 +71,10 @@ void coverage() {
 @DefaultTask()
 @Depends(analyze, test, checkInit, coverage)
 void buildbot() => null;
+
+@Task()
+ddc() {
+  DevCompiler ddc = new DevCompiler();
+  return ddc.analyze(getFile('example/grind.dart'));
+  //return ddc.analyzeAsync(getFile('example/grind.dart'));
+}

@@ -259,7 +259,9 @@ String cleanupStackTrace(st) {
   while (lines.isNotEmpty) {
     String line = lines.last;
 
-    if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
+    if (line.contains(' (dart:') ||
+        line.contains(' (package:grinder/') ||
+        line.contains('package:unscripted/')) {
       lines.removeLast();
     } else {
       break;

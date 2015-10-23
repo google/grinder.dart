@@ -32,24 +32,6 @@ class GrinderContext {
   /// Log an informational message to Grinder's output.
   void log(String message) {
     List lines = message.trimRight().split('\n');
-
-    lines = lines.expand((line) {
-      final int len = 120;
-      if (line.length > len) {
-        List results = [];
-        results.add(line.substring(0, len));
-        line = line.substring(len);
-        while (line.length > len) {
-          results.add('  ${line.substring(0, len)}');
-          line = line.substring(len);
-        }
-        if (line.isNotEmpty) results.add('  ${line}');
-        return results;
-      } else {
-        return [line];
-      }
-    }).toList();
-
     grinder.log("  ${lines.join('\n  ')}");
   }
 
