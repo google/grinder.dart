@@ -13,4 +13,4 @@ clone_depth: 1
 build: off
 
 test_script:
-  - pub run grinder:grinder
+  - pub run grinder
