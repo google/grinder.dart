@@ -366,6 +366,12 @@ class Dart2js {
 
 /// Utility class for invoking dartdoc.
 class DartDoc {
+  /// Return whether the dartdoc tool exists in this SDK.
+  static bool exists() {
+    File file = new File(sdkBin('dartdoc'));
+    return file.existsSync();
+  }
+
   static void doc() {
     runlib.run(sdkBin('dartdoc'));
   }
