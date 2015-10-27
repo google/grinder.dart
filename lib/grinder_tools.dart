@@ -145,23 +145,44 @@ class DevCompiler {
 
   DevCompiler();
 
-  void analyze(dynamic files) {
-    _ddc.run(coerceToPathList(files));
+  void analyze(dynamic files, {bool htmlOutput: false}) {
+    _ddc.run(_args(files, htmlOutput: htmlOutput));
   }
 
-  Future analyzeAsync(dynamic files) {
-    return _ddc.runAsync(coerceToPathList(files));
+  Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
+    return _ddc.runAsync(_args(files, htmlOutput: htmlOutput));
   }
 
-  void compile(dynamic files, Directory outDir) {
-    List args = coerceToPathList(files);
-    args.add('-o${outDir.path}');
-    _ddc.run(args);
+  void compile(dynamic files, Directory outDir, {
+    bool forceCompile: false,
+    bool htmlOutput: false
+  }) {
+    _ddc.run(_args(files,
+        outDir: outDir,
+        forceCompile: forceCompile,
+        htmlOutput: htmlOutput));
   }
 
-  Future compileAsync(dynamic files, Directory outDir) {
-    List args = coerceToPathList(files);
-    args.add('-o${outDir.path}');
-    return _ddc.runAsync(args);
+  Future compileAsync(dynamic files, Directory outDir, {
+    bool forceCompile: false,
+    bool htmlOutput: false
+  }) {
+    return _ddc.runAsync(_args(files,
+        outDir: outDir,
+        forceCompile: forceCompile,
+        htmlOutput: htmlOutput));
+  }
+
+  List<String> _args(dynamic files, {
+    Directory outDir,
+    bool forceCompile: false,
+    bool htmlOutput: false
+  }) {
+    List<String> args = [];
+    if (outDir != null) args.add('-o${outDir.path}');
+    if (forceCompile) args.add('--force-compile');
+    if (htmlOutput) args.add('--html-output');
+    args.addAll(coerceToPathList(files));
+    return args;
   }
 }
