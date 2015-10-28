@@ -1,3 +1,10 @@
 language: dart
 script: dart -c tool/grind.dart
 sudo: false
+
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash tool/ghpages.sh
+
+env:
+  global:
+  - secure: LImP9GVVlazcPAwId9YewKxtW7fJKYex6Nt02uUzXKSY6Dx7Rn5jXp5afUwnSYs1zMJIb3PJUnzRkWobRF7xShZhAw41D1yNRQrTgoM3OaPCCPUWRzv9M5rBdiPIbw3iP5kFwOYTLjeApX3d+OHUw6jUyPu0fCyvootVPIi+jYE=
