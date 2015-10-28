@@ -111,13 +111,14 @@
 
     <section class="desc markdown">
     
-          <p class="no-docs">Not documented.</p>
+          <p>Analyze the given file or files with DDC.</p>
     
     </section>
 
     <section class="summary source-code" id="source">
       <h2>Source</h2>
-      <pre><code class="prettyprint lang-dart">Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
+      <pre><code class="prettyprint lang-dart">/// Analyze the given file or files with DDC.
+Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
   return _ddc.runAsync(_args(files, htmlOutput: htmlOutput));
 }</code></pre>
     </section>

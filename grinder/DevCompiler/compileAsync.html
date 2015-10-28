@@ -111,13 +111,14 @@
 
     <section class="desc markdown">
     
-          <p class="no-docs">Not documented.</p>
+          <p>Compile the given file with DDC and generate the output to <code>outDir</code>.</p>
     
     </section>
 
     <section class="summary source-code" id="source">
       <h2>Source</h2>
-      <pre><code class="prettyprint lang-dart">Future compileAsync(dynamic files, Directory outDir, {
+      <pre><code class="prettyprint lang-dart">/// Compile the given file with DDC and generate the output to [outDir].
+Future compileAsync(dynamic files, Directory outDir, {
   bool forceCompile: false,
   bool htmlOutput: false
 }) {
