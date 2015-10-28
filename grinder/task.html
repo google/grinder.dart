@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TaskFunction typedef - grinder library - Dart API</title>
+    <title>task function - grinder library - Dart API</title>
     <!-- required because all the links are pseudo-absolute -->
     <base href="..">
 
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="static-assets/styles.css">
 
-    <meta name="description" content="API docs for the TaskFunction property from the grinder library, for the Dart programming language.">
+    <meta name="description" content="API docs for the task function from the grinder library, for the Dart programming language.">
     <link rel="icon" href="static-assets/favicon.png">
 
     <!-- Do not remove placeholder -->
@@ -33,9 +33,9 @@
               <ol class="breadcrumbs gt-separated hidden-xs">
                   <li><a href="index.html">grinder</a></li>
                   <li><a href="grinder/grinder-library.html">grinder</a></li>
-                  <li class="self-crumb">TaskFunction</li>
+                  <li class="self-crumb">task</li>
               </ol>
-              <div class="self-name">TaskFunction</div>
+              <div class="self-name">task</div>
               <form class="search navbar-right" role="search">
                 <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
               </form>
@@ -50,14 +50,15 @@
           <ol class="breadcrumbs gt-separated visible-xs">
               <li><a href="index.html">grinder</a></li>
               <li><a href="grinder/grinder-library.html">grinder</a></li>
-              <li class="self-crumb">TaskFunction</li>
+              <li class="self-crumb">task</li>
           </ol>
           <div class="title-description">
               <h1 class="title">
-                  <div class="kind">typedef</div> <span class="deprecated">TaskFunction</span>
+                  <div class="kind">function</div> <span class="deprecated">task</span>
               </h1>
           </div>
           <ul class="subnav">
+              <li><a href="grinder/task.html#source">Source</a></li>
           </ul>
         </div> <!-- /col -->
       </div> <!-- /row -->
@@ -151,24 +152,41 @@
     <section class="multi-line-signature">
             <div>
                 <ol class="comma-separated metadata-annotations">
-                    <li class="metadata-annotation">@Deprecated(&apos;&apos;&apos;Use a nullary function instead.  A task&apos;s context can now be
-accessed via the top-level `context` getter.&apos;&apos;&apos;)</li>
+                    <li class="metadata-annotation">@Deprecated(&apos;Use the task annotations instead.&apos;)</li>
                 </ol>
             </div>
-            <span class="returntype">dynamic</span>
-            <span class="name deprecated">TaskFunction</span>(
+            <span class="returntype">void</span>
+            <span class="name deprecated">task</span>(
             <br>
             <div class="parameters">
-                <span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>
+                <span class="parameter" id="task-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>,<br>[<span class="parameter" id="task-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span></span>,<br><span class="parameter" id="task-param-depends"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">depends</span> = <span class="default-value">const []</span></span>]
             </div>
             )    </section>
 
     <section class="desc markdown">
     
-          <p>Used to define a method body for a task. Note: a task's context is now
-available as a global variable ('context'). Your task functions should no
-longer be definied with a single <code>GrinderContext</code> parameter.</p>
+          <p>Add a new task definition to the global <code>Grinder</code> instance. A <code>name</code> is
+required. If specified, a <code>taskFunction</code> is invoked when the task starts.
+Any dependencies of the task, that need to run before it, should be passed
+in via <code>depends</code>.</p>
     
+    </section>
+
+    <section class="summary source-code" id="source">
+      <h2>Source</h2>
+      <pre><code class="prettyprint lang-dart">/**
+ * Add a new task definition to the global [Grinder] instance. A [name] is
+ * required. If specified, a [taskFunction] is invoked when the task starts.
+ * Any dependencies of the task, that need to run before it, should be passed
+ * in via [depends].
+ */
+@Deprecated(&apos;Use the task annotations instead.&apos;)
+void task(String name,
+    [Function taskFunction, List&lt;String&gt; depends = const []]) {
+  grinder.addTask(new GrinderTask(name,
+      taskFunction: taskFunction,
+      depends: depends.map((dep) =&gt; new TaskInvocation(dep))));
+}</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TaskFunction typedef - grinder library - Dart API</title>
+    <title>run function - grinder library - Dart API</title>
     <!-- required because all the links are pseudo-absolute -->
     <base href="..">
 
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="static-assets/styles.css">
 
-    <meta name="description" content="API docs for the TaskFunction property from the grinder library, for the Dart programming language.">
+    <meta name="description" content="API docs for the run function from the grinder library, for the Dart programming language.">
     <link rel="icon" href="static-assets/favicon.png">
 
     <!-- Do not remove placeholder -->
@@ -33,9 +33,9 @@
               <ol class="breadcrumbs gt-separated hidden-xs">
                   <li><a href="index.html">grinder</a></li>
                   <li><a href="grinder/grinder-library.html">grinder</a></li>
-                  <li class="self-crumb">TaskFunction</li>
+                  <li class="self-crumb">run</li>
               </ol>
-              <div class="self-name">TaskFunction</div>
+              <div class="self-name">run</div>
               <form class="search navbar-right" role="search">
                 <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
               </form>
@@ -50,14 +50,15 @@
           <ol class="breadcrumbs gt-separated visible-xs">
               <li><a href="index.html">grinder</a></li>
               <li><a href="grinder/grinder-library.html">grinder</a></li>
-              <li class="self-crumb">TaskFunction</li>
+              <li class="self-crumb">run</li>
           </ol>
           <div class="title-description">
               <h1 class="title">
-                  <div class="kind">typedef</div> <span class="deprecated">TaskFunction</span>
+                  <div class="kind">function</div> run
               </h1>
           </div>
           <ul class="subnav">
+              <li><a href="grinder/run.html#source">Source</a></li>
           </ul>
         </div> <!-- /col -->
       </div> <!-- /row -->
@@ -149,26 +150,66 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
 
     <section class="multi-line-signature">
-            <div>
-                <ol class="comma-separated metadata-annotations">
-                    <li class="metadata-annotation">@Deprecated(&apos;&apos;&apos;Use a nullary function instead.  A task&apos;s context can now be
-accessed via the top-level `context` getter.&apos;&apos;&apos;)</li>
-                </ol>
-            </div>
-            <span class="returntype">dynamic</span>
-            <span class="name deprecated">TaskFunction</span>(
+            <span class="returntype">String</span>
+            <span class="name ">run</span>(
             <br>
             <div class="parameters">
-                <span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>
+                <span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>,<br>{<span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>,<br><span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>,<br><span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>,<br><span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>}
             </div>
             )    </section>
 
     <section class="desc markdown">
     
-          <p>Used to define a method body for a task. Note: a task's context is now
-available as a global variable ('context'). Your task functions should no
-longer be definied with a single <code>GrinderContext</code> parameter.</p>
+          <p>Synchronously run an <code>executable</code>.</p>
+<p>If <code>quiet</code> is false, <a href="grinder/log.html">log</a>s the stdout. The stderr is always logged.</p>
+<p>Returns the stdout.</p>
+<p>All other optional parameters are forwarded to <code>Process.runSync</code>.</p>
     
+    </section>
+
+    <section class="summary source-code" id="source">
+      <h2>Source</h2>
+      <pre><code class="prettyprint lang-dart">/// Synchronously run an [executable].
+///
+/// If [quiet] is false, [log]s the stdout. The stderr is always logged.
+///
+/// Returns the stdout.
+///
+/// All other optional parameters are forwarded to [Process.runSync].
+String run(String executable,
+    {List&lt;String&gt; arguments: const [],
+    RunOptions runOptions,
+    bool quiet: false,
+    String workingDirectory}) {
+  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
+  if (!quiet) log(&quot;${executable} ${arguments.join(&apos; &apos;)}&quot;);
+  if (runOptions == null) runOptions = new RunOptions();
+
+  ProcessResult result = Process.runSync(executable, arguments,
+      workingDirectory: runOptions.workingDirectory,
+      environment: runOptions.environment,
+      includeParentEnvironment: runOptions.includeParentEnvironment,
+      runInShell: runOptions.runInShell,
+      stdoutEncoding: runOptions.stdoutEncoding,
+      stderrEncoding: runOptions.stderrEncoding);
+
+  if (!quiet) {
+    if (result.stdout != null &amp;&amp; result.stdout.isNotEmpty) {
+      log(result.stdout.trim());
+    }
+  }
+
+  if (result.stderr != null &amp;&amp; result.stderr.isNotEmpty) {
+    log(result.stderr);
+  }
+
+  if (result.exitCode != 0) {
+    throw new ProcessException._(
+        executable, result.exitCode, result.stdout, result.stderr);
+  }
+
+  return result.stdout;
+}</code></pre>
     </section>
 
   </div> <!-- /.main-content -->

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>test method - TestRunner class - grinder.tools library - Dart API</title>
+    <!-- required because all the links are pseudo-absolute -->
+    <base href="../..">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static-assets/prettify.css">
+    <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static-assets/styles.css">
+
+    <meta name="description" content="API docs for the test method from the TestRunner class, for the Dart programming language.">
+    <link rel="icon" href="static-assets/favicon.png">
+
+    <!-- Do not remove placeholder -->
+    <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 contents">
+              <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+              <ol class="breadcrumbs gt-separated hidden-xs">
+                  <li><a href="index.html">grinder</a></li>
+                  <li><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></li>
+                  <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+                  <li class="self-crumb">test</li>
+              </ol>
+              <div class="self-name">test</div>
+              <form class="search navbar-right" role="search">
+                <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+              </form>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+        </div> <!-- /container -->
+    </nav>
+
+    <div class="container masthead">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <ol class="breadcrumbs gt-separated visible-xs">
+              <li><a href="index.html">grinder</a></li>
+              <li><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></li>
+              <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+              <li class="self-crumb">test</li>
+          </ol>
+          <div class="title-description">
+              <h1 class="title">
+                  <div class="kind">method</div> test
+              </h1>
+          </div>
+          <ul class="subnav">
+              <li><a href="grinder.tools/TestRunner/test.html#source">Source</a></li>
+          </ul>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><a href="index.html">grinder</a></h5>
+    <h5><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></h5>
+    <h5><a href="grinder.tools/TestRunner-class.html">TestRunner</a></h5>
+
+    <ol>
+    
+    
+    
+    
+      <li class="section-title"><a href="grinder.tools/TestRunner-class.html#constructors">Constructors</a></li>
+      <li><a href="grinder.tools/TestRunner/TestRunner.html">TestRunner</a></li>
+    
+    
+      <li class="section-title"><a href="grinder.tools/TestRunner-class.html#instance-methods">Methods</a></li>
+      <li><a href="grinder.tools/TestRunner/test.html">test</a>
+</li>
+      <li><a href="grinder.tools/TestRunner/testAsync.html">testAsync</a>
+</li>
+    </ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+    <section class="multi-line-signature">
+            <span class="returntype">void</span>
+            <span class="name ">test</span>(
+            <br>
+            <div class="parameters">
+                {<span class="parameter" id="test-param-files"><span class="parameter-name">files</span></span>,<br><span class="parameter" id="test-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>,<br><span class="parameter" id="test-param-plainName"><span class="type-annotation">String</span> <span class="parameter-name">plainName</span></span>,<br><span class="parameter" id="test-param-platformSelector"><span class="parameter-name">platformSelector</span></span>,<br><span class="parameter" id="test-param-concurrency"><span class="type-annotation">int</span> <span class="parameter-name">concurrency</span></span>,<br><span class="parameter" id="test-param-pubServe"><span class="type-annotation">int</span> <span class="parameter-name">pubServe</span></span>,<br><span class="parameter" id="test-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>}
+            </div>
+            )    </section>
+
+    <section class="desc markdown">
+    
+          <p>Run the tests in the current package. See the
+<a href="https://pub.dartlang.org/packages/test">test package</a>.</p>
+<p><code>files</code> - the files or directories to test. This can a path (<code>String</code>),
+<code>File</code>, or list of paths or files.</p>
+<p><code>name</code> is substring of the name of the test to run. Regular expression
+syntax is supported. <code>plainName</code> is a plain-text substring of the name of
+the test to run. <code>platformSelector</code> is the platform(s) on which to run the
+tests. This parameter can be a String or a List.
+<a href="https://github.com/dart-lang/test#platform-selector-syntax">Available values</a>
+are <code>vm</code> (default), <code>dartium</code>, <code>content-shell</code>, <code>chrome</code>, <code>phantomjs</code>,
+<code>firefox</code>, <code>safari</code>. <code>concurrency</code> controls the number of concurrent test
+suites run (defaults to 4). <code>pubServe</code> is the port of a pub serve instance
+serving <code>test/</code>.</p>
+    
+    </section>
+
+    <section class="summary source-code" id="source">
+      <h2>Source</h2>
+      <pre><code class="prettyprint lang-dart">/// Run the tests in the current package. See the
+/// [test package](https://pub.dartlang.org/packages/test).
+///
+/// [files] - the files or directories to test. This can a path ([String]),
+/// [File], or list of paths or files.
+///
+/// [name] is substring of the name of the test to run. Regular expression
+/// syntax is supported. [plainName] is a plain-text substring of the name of
+/// the test to run. [platformSelector] is the platform(s) on which to run the
+/// tests. This parameter can be a String or a List.
+/// [Available values](https://github.com/dart-lang/test#platform-selector-syntax)
+/// are `vm` (default), `dartium`, `content-shell`, `chrome`, `phantomjs`,
+/// `firefox`, `safari`. [concurrency] controls the number of concurrent test
+/// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
+/// serving `test/`.
+void test(
+    {dynamic files,
+    String name,
+    String plainName,
+    dynamic platformSelector,
+    int concurrency,
+    int pubServe,
+    RunOptions runOptions}) {
+  _test.run(
+      _buildArgs(
+          files: files,
+          name: name,
+          plainName: plainName,
+          selector: platformSelector,
+          concurrency: concurrency,
+          pubServe: pubServe),
+      script: &apos;test&apos;,
+      runOptions: runOptions);
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+    <div class="container-fluid">
+        <div class="container">
+            <p class="text-center">
+                <span class="no-break">
+                  grinder 0.8.0-dev.2 api docs
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="https://www.dartlang.org">
+                    <img src="static-assets/favicon.png" alt="Dart" title="Dart"width="16" height="16">
+                  </a>
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+<!-- Made with <3 by dartdoc version 0.6.0+1 -->
+</body>
+
+</html>

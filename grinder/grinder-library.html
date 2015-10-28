@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>grinder library - Dart API</title>
+    <!-- required because all the links are pseudo-absolute -->
+    <base href="..">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static-assets/prettify.css">
+    <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static-assets/styles.css">
+
+    <meta name="description" content="grinder library API docs, for the Dart programming language.">
+    <link rel="icon" href="static-assets/favicon.png">
+
+    <!-- Do not remove placeholder -->
+    <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 contents">
+              <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+              <ol class="breadcrumbs gt-separated hidden-xs">
+                  <li><a href="index.html">grinder</a></li>
+                  <li class="self-crumb">grinder</li>
+              </ol>
+              <div class="self-name">grinder</div>
+              <form class="search navbar-right" role="search">
+                <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+              </form>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+        </div> <!-- /container -->
+    </nav>
+
+    <div class="container masthead">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <ol class="breadcrumbs gt-separated visible-xs">
+              <li><a href="index.html">grinder</a></li>
+              <li class="self-crumb">grinder</li>
+          </ol>
+          <div class="title-description">
+              <h1 class="title">
+                  <div class="kind">library</div> grinder
+              </h1>
+          </div>
+          <ul class="subnav">
+              <li><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
+              <li><a href="grinder/grinder-library.html#properties">Properties</a></li>
+              <li><a href="grinder/grinder-library.html#functions">Functions</a></li>
+              <li><a href="grinder/grinder-library.html#classes">Classes</a></li>
+              <li><a href="grinder/grinder-library.html#exceptions">Exceptions</a></li>
+          </ul>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><a href="index.html">grinder</a></h5>
+
+    <ol>
+      <li class="section-title"><a href="index.html">Libraries</a></li>
+      <li><a href="grinder/grinder-library.html">grinder</a></li>
+      <li><a href="grinder.files/grinder.files-library.html">grinder.files</a></li>
+      <li><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></li>
+      <li><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></li>
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+    <section class="desc markdown">
+    
+          <p>Dart workflows, automated.</p>
+<p>See the <a href="https://pub.dartlang.org/packages/grinder">README</a> for detailed usage information.</p>
+    
+    </section>
+
+
+    <section class="summary offset-anchor" id="typedefs">
+        <h2>Typedefs</h2>
+
+        <dl class="callables">
+            <dt id="TaskFunction" class="callable">
+                <a href="grinder/TaskFunction.html"><span class="name deprecated">TaskFunction</span></a><span class="signature">(<wbr><span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>)
+                    &#8594;
+                    <span class="returntype">dynamic</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Used to define a method body for a task. Note: a task's context is now
+available as a global variable ('context'). Your task functions should no
+longer be definied with a single <code>GrinderContext</code> parameter.</p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="properties">
+        <h2>Properties</h2>
+
+        <dl class="properties">
+            <dt id="binDir" class="property">
+                <span class="name"><a href="grinder/binDir.html">binDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="buildDir" class="property">
+                <span class="name"><a href="grinder/buildDir.html">buildDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="context" class="property">
+                <span class="name"><a href="grinder/context.html">context</a></span>
+                <span class="signature">&#8594; <a href="grinder/GrinderContext-class.html">GrinderContext</a></span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>Get the <code>GrinderContext</code> for the currently executing task.</p>
+            </dd>
+            <dt id="dartVM" class="property">
+                <span class="name"><a href="grinder/dartVM.html">dartVM</a></span>
+                <span class="signature">&#8594; File</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="defaultTask" class="property">
+                <span class="name"><a href="grinder/defaultTask.html">defaultTask</a></span>
+                <span class="signature">&#8594; <a href="grinder/GrinderTask-class.html">GrinderTask</a></span>
+            </dt>
+            <dd>
+                <div class="features">
+        read / write
+    </div>
+    <p>The default task run when no tasks are specified on the command line.</p>
+            </dd>
+            <dt id="existingSourceDirs" class="property">
+                <span class="name"><a href="grinder/existingSourceDirs.html">existingSourceDirs</a></span>
+                <span class="signature">&#8594; Set&lt;Directory&gt;</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>The subset of directories in <code>sourceDirs</code> which actually exist in the
+current working directory.</p>
+            </dd>
+            <dt id="libDir" class="property">
+                <span class="name"><a href="grinder/libDir.html">libDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="sdkDir" class="property">
+                <span class="name"><a href="grinder/sdkDir.html">sdkDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>Return the path to the current Dart SDK. This will return <code>null</code> if we are
+unable to locate the Dart SDK.<a href="grinder/sdkDir.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="sourceDirs" class="property">
+                <span class="name"><a href="grinder/sourceDirs.html">sourceDirs</a></span>
+                <span class="signature">&#8594; Set&lt;Directory&gt;</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>A set of common top-level directories according to the Pub package layout
+convention which usually contain Dart source code.</p>
+            </dd>
+            <dt id="webDir" class="property">
+                <span class="name"><a href="grinder/webDir.html">webDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="functions">
+        <h2>Functions</h2>
+
+        <dl class="callables">
+            <dt id="addTask" class="callable">
+                <a href="grinder/addTask.html"><span class="name ">addTask</span></a><span class="signature">(<wbr><span class="parameter" id="addTask-param-task"><span class="type-annotation"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span> <span class="parameter-name">task</span></span>)
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Programmatically add a <code>task</code> to the global <a href="grinder/Grinder-class.html">Grinder</a> instance.<a href="grinder/addTask.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="baseName" class="callable">
+                <a href="grinder/baseName.html"><span class="name ">baseName</span></a><span class="signature">(<wbr><span class="parameter" id="baseName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the first n - 1 segments of the file path.</p>
+            </dd>
+            <dt id="copy" class="callable">
+                <a href="grinder/copy.html"><span class="name ">copy</span></a><span class="signature">(<wbr><span class="parameter" id="copy-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>, <span class="parameter" id="copy-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copy-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+            <dt id="copyDirectory" class="callable">
+                <a href="grinder/copyDirectory.html"><span class="name ">copyDirectory</span></a><span class="signature">(<wbr><span class="parameter" id="copyDirectory-param-srcDir"><span class="type-annotation">Directory</span> <span class="parameter-name">srcDir</span></span>, <span class="parameter" id="copyDirectory-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copyDirectory-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Prefer using <a href="grinder/copy.html">copy</a>.</p>
+            </dd>
+            <dt id="copyFile" class="callable">
+                <a href="grinder/copyFile.html"><span class="name ">copyFile</span></a><span class="signature">(<wbr><span class="parameter" id="copyFile-param-srcFile"><span class="type-annotation">File</span> <span class="parameter-name">srcFile</span></span>, <span class="parameter" id="copyFile-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copyFile-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Prefer using <a href="grinder/copy.html">copy</a>.</p>
+            </dd>
+            <dt id="defaultClean" class="callable">
+                <a href="grinder/defaultClean.html"><span class="name ">defaultClean</span></a><span class="signature">(<wbr>[<span class="parameter" id="defaultClean-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>A default implementation of a <code>clean</code> task. This task deletes all generated
+artifacts in the <code>build/</code>.</p>
+            </dd>
+            <dt id="delete" class="callable">
+                <a href="grinder/delete.html"><span class="name ">delete</span></a><span class="signature">(<wbr><span class="parameter" id="delete-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Delete the given file entity reference.</p>
+            </dd>
+            <dt id="deleteEntity" class="callable">
+                <a href="grinder/deleteEntity.html"><span class="name ">deleteEntity</span></a><span class="signature">(<wbr><span class="parameter" id="deleteEntity-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>, [<span class="parameter" id="deleteEntity-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Prefer using <a href="grinder/delete.html">delete</a>.</p>
+            </dd>
+            <dt id="fail" class="callable">
+                <a href="grinder/fail.html"><span class="name ">fail</span></a><span class="signature">(<wbr><span class="parameter" id="fail-param-message"><span class="type-annotation">String</span> <span class="parameter-name">message</span></span>)
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Halt task execution; throws an exception with the given error message.</p>
+            </dd>
+            <dt id="fileExt" class="callable">
+                <a href="grinder/fileExt.html"><span class="name ">fileExt</span></a><span class="signature">(<wbr><span class="parameter" id="fileExt-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the file's extension without the period. This will return <code>null</code> if
+there is no extension.</p>
+            </dd>
+            <dt id="fileName" class="callable">
+                <a href="grinder/fileName.html"><span class="name ">fileName</span></a><span class="signature">(<wbr><span class="parameter" id="fileName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the last segment of the file path.</p>
+            </dd>
+            <dt id="getDir" class="callable">
+                <a href="grinder/getDir.html"><span class="name ">getDir</span></a><span class="signature">(<wbr><span class="parameter" id="getDir-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
+                    &#8594;
+                    <span class="returntype">Directory</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the directory pointed to by the given <code>path</code>. This method converts the
+given path to a platform dependent path.</p>
+            </dd>
+            <dt id="getFile" class="callable">
+                <a href="grinder/getFile.html"><span class="name ">getFile</span></a><span class="signature">(<wbr><span class="parameter" id="getFile-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
+                    &#8594;
+                    <span class="returntype">File</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the file pointed to by the given <code>path</code>. This method converts the
+given path to a platform dependent path.</p>
+            </dd>
+            <dt id="getSdkDir" class="callable">
+                <a href="grinder/getSdkDir.html"><span class="name ">getSdkDir</span></a><span class="signature">(<wbr>[<span class="parameter" id="getSdkDir-param-cliArgs"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">cliArgs</span></span>])
+                    &#8594;
+                    <span class="returntype">Directory</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the path to the current Dart SDK. This will return <code>null</code> if we are
+unable to locate the Dart SDK.<a href="grinder/getSdkDir.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="grind" class="callable">
+                <a href="grinder/grind.html"><span class="name ">grind</span></a><span class="signature">(<wbr><span class="parameter" id="grind-param-args"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">args</span></span>, {<span class="parameter" id="grind-param-verifyProjectRoot"><span class="type-annotation">bool</span> <span class="parameter-name">verifyProjectRoot</span>: <span class="default-value">true</span></span>})
+                    &#8594;
+                    <span class="returntype">Future</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Run the grinder file.<a href="grinder/grind.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="grinderArgs" class="callable">
+                <a href="grinder/grinderArgs.html"><span class="name ">grinderArgs</span></a><span class="signature">(<wbr>)
+                    &#8594;
+                    <span class="returntype">List&lt;String&gt;</span>
+                </span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+            <dt id="joinDir" class="callable">
+                <a href="grinder/joinDir.html"><span class="name ">joinDir</span></a><span class="signature">(<wbr><span class="parameter" id="joinDir-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span></span>, <span class="parameter" id="joinDir-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
+                    &#8594;
+                    <span class="returntype">Directory</span>
+                </span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+            <dt id="joinFile" class="callable">
+                <a href="grinder/joinFile.html"><span class="name ">joinFile</span></a><span class="signature">(<wbr><span class="parameter" id="joinFile-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span></span>, <span class="parameter" id="joinFile-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
+                    &#8594;
+                    <span class="returntype">File</span>
+                </span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+            <dt id="log" class="callable">
+                <a href="grinder/log.html"><span class="name ">log</span></a><span class="signature">(<wbr><span class="parameter" id="log-param-message"><span class="type-annotation">String</span> <span class="parameter-name">message</span></span>)
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Log an informational message to Grinder's output.</p>
+            </dd>
+            <dt id="run" class="callable">
+                <a href="grinder/run.html"><span class="name ">run</span></a><span class="signature">(<wbr><span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Synchronously run an <code>executable</code>.<a href="grinder/run.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="runAsync" class="callable">
+                <a href="grinder/runAsync.html"><span class="name ">runAsync</span></a><span class="signature">(<wbr><span class="parameter" id="runAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runAsync-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+                    &#8594;
+                    <span class="returntype">Future&lt;String&gt;</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Asynchronously run an <code>executable</code>.<a href="grinder/runAsync.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="runDartScript" class="callable">
+                <a href="grinder/runDartScript.html"><span class="name ">runDartScript</span></a><span class="signature">(<wbr><span class="parameter" id="runDartScript-param-script"><span class="type-annotation">String</span> <span class="parameter-name">script</span></span>, {<span class="parameter" id="runDartScript-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runDartScript-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runDartScript-param-packageRoot"><span class="type-annotation">String</span> <span class="parameter-name">packageRoot</span></span>, <span class="parameter" id="runDartScript-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runDartScript-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Run a dart <code>script</code> using <a href="grinder/run.html">run_lib.run</a>. Returns the stdout.<a href="grinder/runDartScript.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="runProcess" class="callable">
+                <a href="grinder/runProcess.html"><span class="name deprecated">runProcess</span></a><span class="signature">(<wbr><span class="parameter" id="runProcess-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runProcess-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runProcess-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runProcess-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runProcess-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Synchronously run an <code>executable</code>.<a href="grinder/runProcess.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="runProcessAsync" class="callable">
+                <a href="grinder/runProcessAsync.html"><span class="name deprecated">runProcessAsync</span></a><span class="signature">(<wbr><span class="parameter" id="runProcessAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runProcessAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runProcessAsync-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runProcessAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>, <span class="parameter" id="runProcessAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>})
+                    &#8594;
+                    <span class="returntype">Future&lt;String&gt;</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Asynchronously run an <code>executable</code>.<a href="grinder/runProcessAsync.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="sdkBin" class="callable">
+                <a href="grinder/sdkBin.html"><span class="name ">sdkBin</span></a><span class="signature">(<wbr><span class="parameter" id="sdkBin-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the path to a binary in the SDK's <code>bin/</code> directory. This will handle
+appending <code>.bat</code> or <code>.exe</code> on Windows. This is useful for finding the path
+to SDK utilities like <code>dartdoc</code>, <code>dart2js</code>, ...</p>
+            </dd>
+            <dt id="startGrinder" class="callable">
+                <a href="grinder/startGrinder.html"><span class="name deprecated">startGrinder</span></a><span class="signature">(<wbr><span class="parameter" id="startGrinder-param-args"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">args</span></span>, {<span class="parameter" id="startGrinder-param-verifyProjectRoot"><span class="type-annotation">bool</span> <span class="parameter-name">verifyProjectRoot</span>: <span class="default-value">true</span></span>})
+                    &#8594;
+                    <span class="returntype">Future</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Start the build process. This should be called at the end of the <code>main()</code>
+method. If there is a task failure, this method will halt task execution and
+throw.</p>
+            </dd>
+            <dt id="task" class="callable">
+                <a href="grinder/task.html"><span class="name deprecated">task</span></a><span class="signature">(<wbr><span class="parameter" id="task-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>, [<span class="parameter" id="task-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span></span>, <span class="parameter" id="task-param-depends"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">depends</span> = <span class="default-value">const []</span></span>])
+                    &#8594;
+                    <span class="returntype">void</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Add a new task definition to the global <code>Grinder</code> instance. A <code>name</code> is
+required. If specified, a <code>taskFunction</code> is invoked when the task starts.
+Any dependencies of the task, that need to run before it, should be passed
+in via <code>depends</code>.</p>
+            </dd>
+        </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="classes">
+        <h2>Classes</h2>
+
+        <dl>
+            <dt id="Analyzer">
+                <span class="name "><a href="grinder/Analyzer-class.html">Analyzer</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for invoking the analyzer.</p>
+            </dd>
+            <dt id="Dart">
+                <span class="name "><a href="grinder/Dart-class.html">Dart</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for for getting information about the Dart VM and for running
+Dart applications.<a href="grinder/Dart-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="Dart2js">
+                <span class="name "><a href="grinder/Dart2js-class.html">Dart2js</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for invoking dart2js.</p>
+            </dd>
+            <dt id="DartDoc">
+                <span class="name "><a href="grinder/DartDoc-class.html">DartDoc</a></span>
+            </dt>
+            <dd>
+                <p>Utility class for invoking dartdoc.</p>
+            </dd>
+            <dt id="DartFmt">
+                <span class="name "><a href="grinder/DartFmt-class.html">DartFmt</a></span>
+            </dt>
+            <dd>
+                <p>Utility class for invoking <code>dartfmt</code> from the SDK. This wrapper requires
+the <code>dartfmt</code> from SDK 1.9 and greater.</p>
+            </dd>
+            <dt id="DefaultTask">
+                <span class="name "><a href="grinder/DefaultTask-class.html">DefaultTask</a></span>
+            </dt>
+            <dd>
+                <p>An annotation to define the default <code>GrinderTask</code> to run when no tasks are
+specified on the command line.<a href="grinder/DefaultTask-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="Depends">
+                <span class="name "><a href="grinder/Depends-class.html">Depends</a></span>
+            </dt>
+            <dd>
+                <p>An annotation to define a <a href="grinder/Task-class.html">Task</a>'s dependencies.<a href="grinder/Depends-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="DevCompiler">
+                <span class="name "><a href="grinder/DevCompiler-class.html">DevCompiler</a></span>
+            </dt>
+            <dd>
+                <p>An interface into the DDC (<code>dev_compiler</code>).</p>
+            </dd>
+            <dt id="FilePath">
+                <span class="name "><a href="grinder/FilePath-class.html">FilePath</a></span>
+            </dt>
+            <dd>
+                <p>A class to make it easier to manipulate file system entites. Once paths or
+entites are converted into <code>Path</code>s, they can be easily copied, deleted,
+joined, and their name retrieved.</p>
+            </dd>
+            <dt id="FileSet">
+                <span class="name "><a href="grinder/FileSet-class.html">FileSet</a></span>
+            </dt>
+            <dd>
+                <p>A class to handle defining, composing, and comparing groups of files.</p>
+            </dd>
+            <dt id="Grinder">
+                <span class="name "><a href="grinder/Grinder-class.html">Grinder</a></span>
+            </dt>
+            <dd>
+                <p>A class representing a running instance of a Grinder.</p>
+            </dd>
+            <dt id="GrinderContext">
+                <span class="name "><a href="grinder/GrinderContext-class.html">GrinderContext</a></span>
+            </dt>
+            <dd>
+                <p>A <a href="grinder/GrinderContext-class.html">GrinderContext</a> is used to give the currently running Grinder task the
+ability to introspect the running state. It can get the current <a href="grinder/Grinder-class.html">Grinder</a>
+instance and get a reference to the current <a href="grinder/GrinderTask-class.html">GrinderTask</a> instance (as well as
+the previous and next tasks, if any).<a href="grinder/GrinderContext-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="GrinderTask">
+                <span class="name "><a href="grinder/GrinderTask-class.html">GrinderTask</a></span>
+            </dt>
+            <dd>
+                <p>Represents a Grinder task. These can be created automatically using the
+<code>Task</code> and <code>Depends</code> annotations.</p>
+            </dd>
+            <dt id="Pub">
+                <span class="name "><a href="grinder/Pub-class.html">Pub</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for executing pub commands.</p>
+            </dd>
+            <dt id="PubApp">
+                <span class="name "><a href="grinder/PubApp-class.html">PubApp</a></span>
+            </dt>
+            <dd>
+                <p>A Dart command-line application, installed via <code>pub global activate</code>.</p>
+            </dd>
+            <dt id="PubGlobal">
+                <span class="name "><a href="grinder/PubGlobal-class.html">PubGlobal</a></span>
+            </dt>
+            <dd>
+                <p>Access the <code>pub global</code> commands.</p>
+            </dd>
+            <dt id="RunOptions">
+                <span class="name "><a href="grinder/RunOptions-class.html">RunOptions</a></span>
+            </dt>
+            <dd>
+                <p>Arguments passed to <code>Process.run</code> or <code>Process.start</code>.
+See <code>Process.run</code> for more details.</p>
+            </dd>
+            <dt id="Task">
+                <span class="name "><a href="grinder/Task-class.html">Task</a></span>
+            </dt>
+            <dd>
+                <p>An annotation to mark a <code>GrinderTask</code> definition.<a href="grinder/Task-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="TaskInvocation">
+                <span class="name "><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>
+            </dt>
+            <dd>
+                <p>An invocation of a <code>GrinderTask</code>.<a href="grinder/TaskInvocation-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="TestRunner">
+                <span class="name "><a href="grinder/TestRunner-class.html">TestRunner</a></span>
+            </dt>
+            <dd>
+                <p>A wrapper around the <code>test</code> package. This class is used to run your unit
+tests.</p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="exceptions">
+        <h2>Exceptions / Errors</h2>
+
+        <dl>
+            <dt id="GrinderException">
+                <span class="name "><a href="grinder/GrinderException-class.html">GrinderException</a></span>
+            </dt>
+            <dd>
+                <p>An exception class for the Grinder library.</p>
+            </dd>
+            <dt id="ProcessException">
+                <span class="name "><a href="grinder/ProcessException-class.html">ProcessException</a></span>
+            </dt>
+            <dd>
+                <p>An exception from a process which exited with a non-zero exit code.</p>
+            </dd>
+        </dl>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>grinder</h5>
+    <ol>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
+      <li><a href="grinder/binDir.html">binDir</a></li>
+      <li><a href="grinder/buildDir.html">buildDir</a></li>
+      <li><a href="grinder/context.html">context</a></li>
+      <li><a href="grinder/dartVM.html">dartVM</a></li>
+      <li><a href="grinder/defaultTask.html">defaultTask</a></li>
+      <li><a href="grinder/existingSourceDirs.html">existingSourceDirs</a></li>
+      <li><a href="grinder/libDir.html">libDir</a></li>
+      <li><a href="grinder/sdkDir.html">sdkDir</a></li>
+      <li><a href="grinder/sourceDirs.html">sourceDirs</a></li>
+      <li><a href="grinder/webDir.html">webDir</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#functions">Functions</a></li>
+      <li><a href="grinder/addTask.html">addTask</a></li>
+      <li><a href="grinder/baseName.html">baseName</a></li>
+      <li><a href="grinder/copy.html">copy</a></li>
+      <li><a href="grinder/copyDirectory.html">copyDirectory</a></li>
+      <li><a href="grinder/copyFile.html">copyFile</a></li>
+      <li><a href="grinder/defaultClean.html">defaultClean</a></li>
+      <li><a href="grinder/delete.html">delete</a></li>
+      <li><a href="grinder/deleteEntity.html">deleteEntity</a></li>
+      <li><a href="grinder/fail.html">fail</a></li>
+      <li><a href="grinder/fileExt.html">fileExt</a></li>
+      <li><a href="grinder/fileName.html">fileName</a></li>
+      <li><a href="grinder/getDir.html">getDir</a></li>
+      <li><a href="grinder/getFile.html">getFile</a></li>
+      <li><a href="grinder/getSdkDir.html">getSdkDir</a></li>
+      <li><a href="grinder/grind.html">grind</a></li>
+      <li><a href="grinder/grinderArgs.html">grinderArgs</a></li>
+      <li><a href="grinder/joinDir.html">joinDir</a></li>
+      <li><a href="grinder/joinFile.html">joinFile</a></li>
+      <li><a href="grinder/log.html">log</a></li>
+      <li><a href="grinder/run.html">run</a></li>
+      <li><a href="grinder/runAsync.html">runAsync</a></li>
+      <li><a href="grinder/runDartScript.html">runDartScript</a></li>
+      <li><a href="grinder/runProcess.html">runProcess</a></li>
+      <li><a href="grinder/runProcessAsync.html">runProcessAsync</a></li>
+      <li><a href="grinder/sdkBin.html">sdkBin</a></li>
+      <li><a href="grinder/startGrinder.html">startGrinder</a></li>
+      <li><a href="grinder/task.html">task</a></li>
+    
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
+      <li><a href="grinder/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder/Dart-class.html">Dart</a></li>
+      <li><a href="grinder/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
+      <li><a href="grinder/Depends-class.html">Depends</a></li>
+      <li><a href="grinder/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
+      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
+      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
+      <li><a href="grinder/Pub-class.html">Pub</a></li>
+      <li><a href="grinder/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder/PubGlobal-class.html">PubGlobal</a></li>
+      <li><a href="grinder/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
+      <li><a href="grinder/TestRunner-class.html">TestRunner</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#exceptions">Exceptions</a></li>
+      <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
+      <li><a href="grinder/ProcessException-class.html">ProcessException</a></li>
+    </ol>
+  </div><!--/sidebar-offcanvas-right-->
+
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+    <div class="container-fluid">
+        <div class="container">
+            <p class="text-center">
+                <span class="no-break">
+                  grinder 0.8.0-dev.2 api docs
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="https://www.dartlang.org">
+                    <img src="static-assets/favicon.png" alt="Dart" title="Dart"width="16" height="16">
+                  </a>
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+<!-- Made with <3 by dartdoc version 0.6.0+1 -->
+</body>
+
+</html>

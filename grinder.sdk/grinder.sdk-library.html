@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>grinder.sdk library - Dart API</title>
+    <!-- required because all the links are pseudo-absolute -->
+    <base href="..">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static-assets/prettify.css">
+    <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static-assets/styles.css">
+
+    <meta name="description" content="grinder.sdk library API docs, for the Dart programming language.">
+    <link rel="icon" href="static-assets/favicon.png">
+
+    <!-- Do not remove placeholder -->
+    <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 contents">
+              <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+              <ol class="breadcrumbs gt-separated hidden-xs">
+                  <li><a href="index.html">grinder</a></li>
+                  <li class="self-crumb">grinder.sdk</li>
+              </ol>
+              <div class="self-name">grinder.sdk</div>
+              <form class="search navbar-right" role="search">
+                <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+              </form>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+        </div> <!-- /container -->
+    </nav>
+
+    <div class="container masthead">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <ol class="breadcrumbs gt-separated visible-xs">
+              <li><a href="index.html">grinder</a></li>
+              <li class="self-crumb">grinder.sdk</li>
+          </ol>
+          <div class="title-description">
+              <h1 class="title">
+                  <div class="kind">library</div> grinder.sdk
+              </h1>
+          </div>
+          <ul class="subnav">
+              <li><a href="grinder.sdk/grinder.sdk-library.html#properties">Properties</a></li>
+              <li><a href="grinder.sdk/grinder.sdk-library.html#functions">Functions</a></li>
+              <li><a href="grinder.sdk/grinder.sdk-library.html#classes">Classes</a></li>
+          </ul>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><a href="index.html">grinder</a></h5>
+
+    <ol>
+      <li class="section-title"><a href="index.html">Libraries</a></li>
+      <li><a href="grinder/grinder-library.html">grinder</a></li>
+      <li><a href="grinder.files/grinder.files-library.html">grinder.files</a></li>
+      <li><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></li>
+      <li><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></li>
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+    <section class="desc markdown">
+    
+          <p>A library to access tools in the Dart SDK.</p>
+    
+    </section>
+
+
+
+    <section class="summary offset-anchor" id="properties">
+        <h2>Properties</h2>
+
+        <dl class="properties">
+            <dt id="dartVM" class="property">
+                <span class="name"><a href="grinder.sdk/dartVM.html">dartVM</a></span>
+                <span class="signature">&#8594; File</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="existingSourceDirs" class="property">
+                <span class="name"><a href="grinder.sdk/existingSourceDirs.html">existingSourceDirs</a></span>
+                <span class="signature">&#8594; Set&lt;Directory&gt;</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>The subset of directories in <code>sourceDirs</code> which actually exist in the
+current working directory.</p>
+            </dd>
+            <dt id="sdkDir" class="property">
+                <span class="name"><a href="grinder.sdk/sdkDir.html">sdkDir</a></span>
+                <span class="signature">&#8594; Directory</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>Return the path to the current Dart SDK. This will return <code>null</code> if we are
+unable to locate the Dart SDK.<a href="grinder.sdk/sdkDir.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="sourceDirs" class="property">
+                <span class="name"><a href="grinder.sdk/sourceDirs.html">sourceDirs</a></span>
+                <span class="signature">&#8594; Set&lt;Directory&gt;</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>A set of common top-level directories according to the Pub package layout
+convention which usually contain Dart source code.</p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="functions">
+        <h2>Functions</h2>
+
+        <dl class="callables">
+            <dt id="getSdkDir" class="callable">
+                <a href="grinder.sdk/getSdkDir.html"><span class="name ">getSdkDir</span></a><span class="signature">(<wbr>[<span class="parameter" id="getSdkDir-param-cliArgs"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">cliArgs</span></span>])
+                    &#8594;
+                    <span class="returntype">Directory</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the path to the current Dart SDK. This will return <code>null</code> if we are
+unable to locate the Dart SDK.<a href="grinder.sdk/getSdkDir.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="sdkBin" class="callable">
+                <a href="grinder.sdk/sdkBin.html"><span class="name ">sdkBin</span></a><span class="signature">(<wbr><span class="parameter" id="sdkBin-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+                    &#8594;
+                    <span class="returntype">String</span>
+                </span>
+            </dt>
+            <dd>
+                <p>Return the path to a binary in the SDK's <code>bin/</code> directory. This will handle
+appending <code>.bat</code> or <code>.exe</code> on Windows. This is useful for finding the path
+to SDK utilities like <code>dartdoc</code>, <code>dart2js</code>, ...</p>
+            </dd>
+        </dl>
+    </section>
+
+
+    <section class="summary offset-anchor" id="classes">
+        <h2>Classes</h2>
+
+        <dl>
+            <dt id="Analyzer">
+                <span class="name "><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for invoking the analyzer.</p>
+            </dd>
+            <dt id="Dart">
+                <span class="name "><a href="grinder.sdk/Dart-class.html">Dart</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for for getting information about the Dart VM and for running
+Dart applications.<a href="grinder.sdk/Dart-class.html">&hellip;</a>
+</p>
+            </dd>
+            <dt id="Dart2js">
+                <span class="name "><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for invoking dart2js.</p>
+            </dd>
+            <dt id="DartDoc">
+                <span class="name "><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></span>
+            </dt>
+            <dd>
+                <p>Utility class for invoking dartdoc.</p>
+            </dd>
+            <dt id="DartFmt">
+                <span class="name "><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></span>
+            </dt>
+            <dd>
+                <p>Utility class for invoking <code>dartfmt</code> from the SDK. This wrapper requires
+the <code>dartfmt</code> from SDK 1.9 and greater.</p>
+            </dd>
+            <dt id="Pub">
+                <span class="name "><a href="grinder.sdk/Pub-class.html">Pub</a></span>
+            </dt>
+            <dd>
+                <p>Utility tasks for executing pub commands.</p>
+            </dd>
+            <dt id="PubApp">
+                <span class="name "><a href="grinder.sdk/PubApp-class.html">PubApp</a></span>
+            </dt>
+            <dd>
+                <p>A Dart command-line application, installed via <code>pub global activate</code>.</p>
+            </dd>
+            <dt id="PubGlobal">
+                <span class="name "><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></span>
+            </dt>
+            <dd>
+                <p>Access the <code>pub global</code> commands.</p>
+            </dd>
+        </dl>
+    </section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>grinder.sdk</h5>
+    <ol>
+    
+    
+      <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#properties">Properties</a></li>
+      <li><a href="grinder.sdk/dartVM.html">dartVM</a></li>
+      <li><a href="grinder.sdk/existingSourceDirs.html">existingSourceDirs</a></li>
+      <li><a href="grinder.sdk/sdkDir.html">sdkDir</a></li>
+      <li><a href="grinder.sdk/sourceDirs.html">sourceDirs</a></li>
+    
+      <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#functions">Functions</a></li>
+      <li><a href="grinder.sdk/getSdkDir.html">getSdkDir</a></li>
+      <li><a href="grinder.sdk/sdkBin.html">sdkBin</a></li>
+    
+    
+      <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#classes">Classes</a></li>
+      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
+      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
+      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+    
+    </ol>
+  </div><!--/sidebar-offcanvas-right-->
+
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+    <div class="container-fluid">
+        <div class="container">
+            <p class="text-center">
+                <span class="no-break">
+                  grinder 0.8.0-dev.2 api docs
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="https://www.dartlang.org">
+                    <img src="static-assets/favicon.png" alt="Dart" title="Dart"width="16" height="16">
+                  </a>
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+<!-- Made with <3 by dartdoc version 0.6.0+1 -->
+</body>
+
+</html>

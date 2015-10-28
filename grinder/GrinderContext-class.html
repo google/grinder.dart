@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TaskFunction typedef - grinder library - Dart API</title>
+    <title>GrinderContext class - grinder library - Dart API</title>
     <!-- required because all the links are pseudo-absolute -->
     <base href="..">
 
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="static-assets/styles.css">
 
-    <meta name="description" content="API docs for the TaskFunction property from the grinder library, for the Dart programming language.">
+    <meta name="description" content="API docs for the GrinderContext class from the grinder library, for the Dart programming language.">
     <link rel="icon" href="static-assets/favicon.png">
 
     <!-- Do not remove placeholder -->
@@ -33,9 +33,9 @@
               <ol class="breadcrumbs gt-separated hidden-xs">
                   <li><a href="index.html">grinder</a></li>
                   <li><a href="grinder/grinder-library.html">grinder</a></li>
-                  <li class="self-crumb">TaskFunction</li>
+                  <li class="self-crumb">GrinderContext</li>
               </ol>
-              <div class="self-name">TaskFunction</div>
+              <div class="self-name">GrinderContext</div>
               <form class="search navbar-right" role="search">
                 <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
               </form>
@@ -50,14 +50,17 @@
           <ol class="breadcrumbs gt-separated visible-xs">
               <li><a href="index.html">grinder</a></li>
               <li><a href="grinder/grinder-library.html">grinder</a></li>
-              <li class="self-crumb">TaskFunction</li>
+              <li class="self-crumb">GrinderContext</li>
           </ol>
           <div class="title-description">
               <h1 class="title">
-                  <div class="kind">typedef</div> <span class="deprecated">TaskFunction</span>
+                  <div class="kind">class</div> GrinderContext
               </h1>
           </div>
           <ul class="subnav">
+              <li><a href="grinder/GrinderContext-class.html#instance-properties">Properties</a></li>
+              <li><a href="grinder/GrinderContext-class.html#constructors">Constructors</a></li>
+              <li><a href="grinder/GrinderContext-class.html#instance-methods">Methods</a></li>
           </ul>
         </div> <!-- /col -->
       </div> <!-- /row -->
@@ -71,6 +74,7 @@
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
     <h5><a href="index.html">grinder</a></h5>
     <h5><a href="grinder/grinder-library.html">grinder</a></h5>
+
     <ol>
     
       <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
@@ -144,34 +148,137 @@
       <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
       <li><a href="grinder/ProcessException-class.html">ProcessException</a></li>
     </ol>
-  </div><!--/.sidebar-offcanvas-left-->
+  </div>
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
 
-    <section class="multi-line-signature">
-            <div>
-                <ol class="comma-separated metadata-annotations">
-                    <li class="metadata-annotation">@Deprecated(&apos;&apos;&apos;Use a nullary function instead.  A task&apos;s context can now be
-accessed via the top-level `context` getter.&apos;&apos;&apos;)</li>
-                </ol>
-            </div>
-            <span class="returntype">dynamic</span>
-            <span class="name deprecated">TaskFunction</span>(
-            <br>
-            <div class="parameters">
-                <span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>
-            </div>
-            )    </section>
-
     <section class="desc markdown">
     
-          <p>Used to define a method body for a task. Note: a task's context is now
-available as a global variable ('context'). Your task functions should no
-longer be definied with a single <code>GrinderContext</code> parameter.</p>
+          <p>A <a href="grinder/GrinderContext-class.html">GrinderContext</a> is used to give the currently running Grinder task the
+ability to introspect the running state. It can get the current <a href="grinder/Grinder-class.html">Grinder</a>
+instance and get a reference to the current <a href="grinder/GrinderTask-class.html">GrinderTask</a> instance (as well as
+the previous and next tasks, if any).</p>
+<p>A <a href="grinder/GrinderContext-class.html">GrinderContext</a> also allows you to log messages and errors.</p>
     
     </section>
 
-  </div> <!-- /.main-content -->
+
+
+
+
+    <section class="summary offset-anchor" id="instance-properties">
+        <h2>Properties</h2>
+
+        <dl class="properties">
+            <dt id="grinder" class="property">
+                <span class="name"><a href="grinder/GrinderContext/grinder.html">grinder</a></span>
+                <span class="signature">&#8594; <a href="grinder/Grinder-class.html">Grinder</a></span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>The <a href="grinder/Grinder-class.html">Grinder</a> instance.</p>
+            </dd>
+            <dt id="invocation" class="property">
+                <span class="name"><a href="grinder/GrinderContext/invocation.html">invocation</a></span>
+                <span class="signature">&#8594; <a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>The current <a href="grinder/TaskInvocation-class.html">TaskInvocation</a>.</p>
+            </dd>
+            <dt id="task" class="property">
+                <span class="name"><a href="grinder/GrinderContext/task.html">task</a></span>
+                <span class="signature">&#8594; <a href="grinder/GrinderTask-class.html">GrinderTask</a></span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p>The current running <a href="grinder/GrinderTask-class.html">GrinderTask</a>.</p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+        <h2>Constructors</h2>
+
+        <dl class="constructor-summary-list">
+            <dt id="GrinderContext" class="callable">
+                <span class="name"><a href="grinder/GrinderContext/GrinderContext.html">GrinderContext</a></span><span class="signature">(<span class="parameter" id="-param-grinder"><span class="type-annotation"><a href="grinder/Grinder-class.html">Grinder</a></span> <span class="parameter-name">grinder</span></span>, <span class="parameter" id="-param-task"><span class="type-annotation"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span> <span class="parameter-name">task</span></span>, <span class="parameter" id="-param-invocation"><span class="type-annotation"><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span> <span class="parameter-name">invocation</span></span>)</span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+        </dl>
+      </section>
+
+
+      <section class="summary offset-anchor" id="instance-methods">
+          <h2>Methods</h2>
+          <dl class="callables">
+              <dt id="fail" class="callable">
+                  <a href="grinder/GrinderContext/fail.html"><span class="name ">fail</span></a><span class="signature">(<wbr><span class="parameter" id="fail-param-message"><span class="type-annotation">String</span> <span class="parameter-name">message</span></span>)
+                      &#8594;
+                      <span class="returntype">void</span>
+                  </span>
+              </dt>
+              <dd>
+                  <p>Halt task execution; throws an exception with the given error message.</p>
+              </dd>
+              <dt id="log" class="callable">
+                  <a href="grinder/GrinderContext/log.html"><span class="name ">log</span></a><span class="signature">(<wbr><span class="parameter" id="log-param-message"><span class="type-annotation">String</span> <span class="parameter-name">message</span></span>)
+                      &#8594;
+                      <span class="returntype">void</span>
+                  </span>
+              </dt>
+              <dd>
+                  <p>Log an informational message to Grinder's output.</p>
+              </dd>
+              <dt id="toString" class="callable">
+                  <a href="grinder/GrinderContext/toString.html"><span class="name ">toString</span></a><span class="signature">(<wbr>)
+                      &#8594;
+                      <span class="returntype">String</span>
+                  </span>
+              </dt>
+              <dd>
+                  <p>Returns a string representation of this object.</p>
+              </dd>
+          </dl>
+      </section>
+
+    </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>GrinderContext</h5>
+    <ol>
+    
+    
+    
+      <li class="section-title"><a href="grinder/GrinderContext-class.html#instance-properties">Properties</a></li>
+      <li><a href="grinder/GrinderContext/grinder.html">grinder</a>
+</li>
+      <li><a href="grinder/GrinderContext/invocation.html">invocation</a>
+</li>
+      <li><a href="grinder/GrinderContext/task.html">task</a>
+</li>
+    
+      <li class="section-title"><a href="grinder/GrinderContext-class.html#constructors">Constructors</a></li>
+      <li><a href="grinder/GrinderContext/GrinderContext.html">GrinderContext</a></li>
+    
+    
+      <li class="section-title"><a href="grinder/GrinderContext-class.html#instance-methods">Methods</a></li>
+      <li><a href="grinder/GrinderContext/fail.html">fail</a>
+</li>
+      <li><a href="grinder/GrinderContext/log.html">log</a>
+</li>
+      <li><a href="grinder/GrinderContext/toString.html">toString</a>
+</li>
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
 
   </div> <!-- row -->
 </div> <!-- container -->

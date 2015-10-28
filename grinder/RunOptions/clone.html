@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>clone method - RunOptions class - grinder library - Dart API</title>
+    <!-- required because all the links are pseudo-absolute -->
+    <base href="../..">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="static-assets/prettify.css">
+    <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static-assets/styles.css">
+
+    <meta name="description" content="API docs for the clone method from the RunOptions class, for the Dart programming language.">
+    <link rel="icon" href="static-assets/favicon.png">
+
+    <!-- Do not remove placeholder -->
+    <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 contents">
+              <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+              <ol class="breadcrumbs gt-separated hidden-xs">
+                  <li><a href="index.html">grinder</a></li>
+                  <li><a href="grinder/grinder-library.html">grinder</a></li>
+                  <li><a href="grinder/RunOptions-class.html">RunOptions</a></li>
+                  <li class="self-crumb">clone</li>
+              </ol>
+              <div class="self-name">clone</div>
+              <form class="search navbar-right" role="search">
+                <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+              </form>
+            </div> <!-- /col -->
+          </div> <!-- /row -->
+        </div> <!-- /container -->
+    </nav>
+
+    <div class="container masthead">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <ol class="breadcrumbs gt-separated visible-xs">
+              <li><a href="index.html">grinder</a></li>
+              <li><a href="grinder/grinder-library.html">grinder</a></li>
+              <li><a href="grinder/RunOptions-class.html">RunOptions</a></li>
+              <li class="self-crumb">clone</li>
+          </ol>
+          <div class="title-description">
+              <h1 class="title">
+                  <div class="kind">method</div> clone
+              </h1>
+          </div>
+          <ul class="subnav">
+              <li><a href="grinder/RunOptions/clone.html#source">Source</a></li>
+          </ul>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><a href="index.html">grinder</a></h5>
+    <h5><a href="grinder/grinder-library.html">grinder</a></h5>
+    <h5><a href="grinder/RunOptions-class.html">RunOptions</a></h5>
+
+    <ol>
+    
+    
+    
+      <li class="section-title"><a href="grinder/RunOptions-class.html#instance-properties">Properties</a></li>
+      <li><a href="grinder/RunOptions/environment.html">environment</a>
+</li>
+      <li><a href="grinder/RunOptions/includeParentEnvironment.html">includeParentEnvironment</a>
+</li>
+      <li><a href="grinder/RunOptions/runInShell.html">runInShell</a>
+</li>
+      <li><a href="grinder/RunOptions/stderrEncoding.html">stderrEncoding</a>
+</li>
+      <li><a href="grinder/RunOptions/stdoutEncoding.html">stdoutEncoding</a>
+</li>
+      <li><a href="grinder/RunOptions/workingDirectory.html">workingDirectory</a>
+</li>
+    
+      <li class="section-title"><a href="grinder/RunOptions-class.html#constructors">Constructors</a></li>
+      <li><a href="grinder/RunOptions/RunOptions.html">RunOptions</a></li>
+    
+    
+      <li class="section-title"><a href="grinder/RunOptions-class.html#instance-methods">Methods</a></li>
+      <li><a href="grinder/RunOptions/clone.html">clone</a>
+</li>
+    </ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+    <section class="multi-line-signature">
+            <span class="returntype"><a href="grinder/RunOptions-class.html">RunOptions</a></span>
+            <span class="name ">clone</span>(
+            <br>
+            <div class="parameters">
+                {<span class="parameter" id="clone-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>,<br><span class="parameter" id="clone-param-environment"><span class="type-annotation">Map&lt;String,String&gt;</span> <span class="parameter-name">environment</span></span>,<br><span class="parameter" id="clone-param-includeParentEnvironment"><span class="type-annotation">bool</span> <span class="parameter-name">includeParentEnvironment</span></span>,<br><span class="parameter" id="clone-param-runInShell"><span class="type-annotation">bool</span> <span class="parameter-name">runInShell</span></span>,<br><span class="parameter" id="clone-param-stdoutEncoding"><span class="type-annotation">Encoding</span> <span class="parameter-name">stdoutEncoding</span></span>,<br><span class="parameter" id="clone-param-stderrEncoding"><span class="type-annotation">Encoding</span> <span class="parameter-name">stderrEncoding</span></span>}
+            </div>
+            )    </section>
+
+    <section class="desc markdown">
+    
+          <p>Create a clone with updated values in one step.
+For omitted parameters values of the original instance are copied.</p>
+    
+    </section>
+
+    <section class="summary source-code" id="source">
+      <h2>Source</h2>
+      <pre><code class="prettyprint lang-dart">/// Create a clone with updated values in one step.
+/// For omitted parameters values of the original instance are copied.
+RunOptions clone(
+    {String workingDirectory,
+    Map&lt;String, String&gt; environment,
+    bool includeParentEnvironment,
+    bool runInShell,
+    Encoding stdoutEncoding,
+    Encoding stderrEncoding}) {
+  Map&lt;String, String&gt; env;
+  if (environment != null) {
+    env = new Map.from(environment);
+  } else {
+    env = this.environment != null ? new Map.from(this.environment) : {};
+  }
+  return new RunOptions(
+      workingDirectory:
+          workingDirectory != null ? workingDirectory : this.workingDirectory,
+      environment: env,
+      includeParentEnvironment: includeParentEnvironment != null
+          ? includeParentEnvironment
+          : this.includeParentEnvironment,
+      runInShell: runInShell != null ? runInShell : this.runInShell,
+      stdoutEncoding:
+          stdoutEncoding != null ? stdoutEncoding : this.stdoutEncoding,
+      stderrEncoding:
+          stderrEncoding != null ? stderrEncoding : this.stderrEncoding);
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+    <div class="container-fluid">
+        <div class="container">
+            <p class="text-center">
+                <span class="no-break">
+                  grinder 0.8.0-dev.2 api docs
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="https://www.dartlang.org">
+                    <img src="static-assets/favicon.png" alt="Dart" title="Dart"width="16" height="16">
+                  </a>
+                </span>
+                &bull;
+                <span class="copyright no-break">
+                  <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+                </span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+<!-- Made with <3 by dartdoc version 0.6.0+1 -->
+</body>
+
+</html>

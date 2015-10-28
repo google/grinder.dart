@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TaskFunction typedef - grinder library - Dart API</title>
+    <title>TaskInvocation class - grinder library - Dart API</title>
     <!-- required because all the links are pseudo-absolute -->
     <base href="..">
 
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="static-assets/styles.css">
 
-    <meta name="description" content="API docs for the TaskFunction property from the grinder library, for the Dart programming language.">
+    <meta name="description" content="API docs for the TaskInvocation class from the grinder library, for the Dart programming language.">
     <link rel="icon" href="static-assets/favicon.png">
 
     <!-- Do not remove placeholder -->
@@ -33,9 +33,9 @@
               <ol class="breadcrumbs gt-separated hidden-xs">
                   <li><a href="index.html">grinder</a></li>
                   <li><a href="grinder/grinder-library.html">grinder</a></li>
-                  <li class="self-crumb">TaskFunction</li>
+                  <li class="self-crumb">TaskInvocation</li>
               </ol>
-              <div class="self-name">TaskFunction</div>
+              <div class="self-name">TaskInvocation</div>
               <form class="search navbar-right" role="search">
                 <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
               </form>
@@ -50,14 +50,18 @@
           <ol class="breadcrumbs gt-separated visible-xs">
               <li><a href="index.html">grinder</a></li>
               <li><a href="grinder/grinder-library.html">grinder</a></li>
-              <li class="self-crumb">TaskFunction</li>
+              <li class="self-crumb">TaskInvocation</li>
           </ol>
           <div class="title-description">
               <h1 class="title">
-                  <div class="kind">typedef</div> <span class="deprecated">TaskFunction</span>
+                  <div class="kind">class</div> TaskInvocation
               </h1>
           </div>
           <ul class="subnav">
+              <li><a href="grinder/TaskInvocation-class.html#instance-properties">Properties</a></li>
+              <li><a href="grinder/TaskInvocation-class.html#constructors">Constructors</a></li>
+              <li><a href="grinder/TaskInvocation-class.html#operators">Operators</a></li>
+              <li><a href="grinder/TaskInvocation-class.html#instance-methods">Methods</a></li>
           </ul>
         </div> <!-- /col -->
       </div> <!-- /row -->
@@ -71,6 +75,7 @@
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
     <h5><a href="index.html">grinder</a></h5>
     <h5><a href="grinder/grinder-library.html">grinder</a></h5>
+
     <ol>
     
       <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
@@ -144,34 +149,143 @@
       <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
       <li><a href="grinder/ProcessException-class.html">ProcessException</a></li>
     </ol>
-  </div><!--/.sidebar-offcanvas-left-->
+  </div>
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
 
-    <section class="multi-line-signature">
-            <div>
-                <ol class="comma-separated metadata-annotations">
-                    <li class="metadata-annotation">@Deprecated(&apos;&apos;&apos;Use a nullary function instead.  A task&apos;s context can now be
-accessed via the top-level `context` getter.&apos;&apos;&apos;)</li>
-                </ol>
-            </div>
-            <span class="returntype">dynamic</span>
-            <span class="name deprecated">TaskFunction</span>(
-            <br>
-            <div class="parameters">
-                <span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>
-            </div>
-            )    </section>
-
     <section class="desc markdown">
     
-          <p>Used to define a method body for a task. Note: a task's context is now
-available as a global variable ('context'). Your task functions should no
-longer be definied with a single <code>GrinderContext</code> parameter.</p>
+          <p>An invocation of a <code>GrinderTask</code>.</p>
+<p>Identifies the <a href="grinder/TaskInvocation/name.html">name</a> of the task to invoke, and which arguments
+(<a href="grinder/TaskInvocation/positionals.html">positionals</a> and <a href="grinder/TaskInvocation/options.html">options</a>) to send to it.</p>
     
     </section>
 
-  </div> <!-- /.main-content -->
+
+
+
+
+    <section class="summary offset-anchor" id="instance-properties">
+        <h2>Properties</h2>
+
+        <dl class="properties">
+            <dt id="hashCode" class="property">
+                <span class="name"><a href="grinder/TaskInvocation/hashCode.html">hashCode</a></span>
+                <span class="signature">&#8594; int</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="name" class="property">
+                <span class="name"><a href="grinder/TaskInvocation/name.html">name</a></span>
+                <span class="signature">&#8594; String</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="options" class="property">
+                <span class="name"><a href="grinder/TaskInvocation/options.html">options</a></span>
+                <span class="signature">&#8594; Map&lt;String&gt;</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+            <dt id="positionals" class="property">
+                <span class="name"><a href="grinder/TaskInvocation/positionals.html">positionals</a></span>
+                <span class="signature">&#8594; List</span>
+            </dt>
+            <dd>
+                <div class="features">
+        read-only
+    </div>
+    <p></p>
+            </dd>
+        </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+        <h2>Constructors</h2>
+
+        <dl class="constructor-summary-list">
+            <dt id="TaskInvocation" class="callable">
+                <span class="name"><a href="grinder/TaskInvocation/TaskInvocation.html">TaskInvocation</a></span><span class="signature">(<span class="parameter" id="-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>, {<span class="parameter" id="-param-positionals"><span class="type-annotation">List</span> <span class="parameter-name">positionals</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="-param-options"><span class="type-annotation">Map&lt;String&gt;</span> <span class="parameter-name">options</span>: <span class="default-value">const {}</span></span>})</span>
+            </dt>
+            <dd>
+                <p></p>
+            </dd>
+        </dl>
+      </section>
+
+      <section class="summary offset-anchor" id="operators">
+          <h2>Operators</h2>
+          <dl class="callables">
+              <dt id="operator ==" class="callable">
+                  <a href="grinder/TaskInvocation/operator_equals.html"><span class="name ">operator ==</span></a><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="parameter-name">other</span></span>)
+                      &#8594;
+                      <span class="returntype">bool</span>
+                  </span>
+              </dt>
+              <dd>
+                  <p>The equality operator.<a href="grinder/TaskInvocation/operator_equals.html">&hellip;</a>
+</p>
+              </dd>
+          </dl>
+      </section>
+
+      <section class="summary offset-anchor" id="instance-methods">
+          <h2>Methods</h2>
+          <dl class="callables">
+              <dt id="toString" class="callable">
+                  <a href="grinder/TaskInvocation/toString.html"><span class="name ">toString</span></a><span class="signature">(<wbr>)
+                      &#8594;
+                      <span class="returntype">String</span>
+                  </span>
+              </dt>
+              <dd>
+                  <p>Returns a string representation of this object.</p>
+              </dd>
+          </dl>
+      </section>
+
+    </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>TaskInvocation</h5>
+    <ol>
+    
+    
+    
+      <li class="section-title"><a href="grinder/TaskInvocation-class.html#instance-properties">Properties</a></li>
+      <li><a href="grinder/TaskInvocation/hashCode.html">hashCode</a>
+</li>
+      <li><a href="grinder/TaskInvocation/name.html">name</a>
+</li>
+      <li><a href="grinder/TaskInvocation/options.html">options</a>
+</li>
+      <li><a href="grinder/TaskInvocation/positionals.html">positionals</a>
+</li>
+    
+      <li class="section-title"><a href="grinder/TaskInvocation-class.html#constructors">Constructors</a></li>
+      <li><a href="grinder/TaskInvocation/TaskInvocation.html">TaskInvocation</a></li>
+    
+      <li class="section-title"><a href="grinder/TaskInvocation-class.html#operators">Operators</a></li>
+      <li><a href="grinder/TaskInvocation/operator_equals.html">operator ==</a>
+</li>
+    
+      <li class="section-title"><a href="grinder/TaskInvocation-class.html#instance-methods">Methods</a></li>
+      <li><a href="grinder/TaskInvocation/toString.html">toString</a>
+</li>
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
 
   </div> <!-- row -->
 </div> <!-- container -->
