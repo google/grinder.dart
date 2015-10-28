@@ -139,20 +139,23 @@ class TestRunner {
   }
 }
 
-/// An interface into the DDC (`dev_compiler`).
+/// A class to drive the Dart Dev Compiler (DDC, from the `dev_compiler` package).
 class DevCompiler {
   final PubApp _ddc = new PubApp.global('dev_compiler');
 
   DevCompiler();
 
+  /// Analyze the given file or files with DDC.
   void analyze(dynamic files, {bool htmlOutput: false}) {
     _ddc.run(_args(files, htmlOutput: htmlOutput));
   }
 
+  /// Analyze the given file or files with DDC.
   Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
     return _ddc.runAsync(_args(files, htmlOutput: htmlOutput));
   }
 
+  /// Compile the given file with DDC and generate the output to [outDir].
   void compile(dynamic files, Directory outDir, {
     bool forceCompile: false,
     bool htmlOutput: false
@@ -163,6 +166,7 @@ class DevCompiler {
         htmlOutput: htmlOutput));
   }
 
+  /// Compile the given file with DDC and generate the output to [outDir].
   Future compileAsync(dynamic files, Directory outDir, {
     bool forceCompile: false,
     bool htmlOutput: false
