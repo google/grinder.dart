@@ -1,6 +1,6 @@
 # grinder.dart changes
 
-## 0.8.0 (unreleased)
+## 0.8.0 (2015/10/29)
 - Removed deprecated constants: BIN_DIR, BUILD_DIR, LIB_DIR, WEB_DIR
 - Removed the 120-col line wrapping on task output
 - Added a task for DDC (dev_compiler)
