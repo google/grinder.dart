@@ -105,7 +105,7 @@
             <span class="name ">analyze</span>(
             <br>
             <div class="parameters">
-                <span class="parameter" id="analyze-param-files"><span class="parameter-name">files</span></span>,<br>{<span class="parameter" id="analyze-param-htmlOutput"><span class="type-annotation">bool</span> <span class="parameter-name">htmlOutput</span>: <span class="default-value">false</span></span>}
+                <span class="parameter" id="analyze-param-files"><span class="parameter-name">files</span></span>,<br>{<span class="parameter" id="analyze-param-htmlReport"><span class="type-annotation">bool</span> <span class="parameter-name">htmlReport</span>: <span class="default-value">false</span></span>}
             </div>
             )    </section>
 
@@ -118,8 +118,8 @@
     <section class="summary source-code" id="source">
       <h2>Source</h2>
       <pre><code class="prettyprint lang-dart">/// Analyze the given file or files with DDC.
-void analyze(dynamic files, {bool htmlOutput: false}) {
-  _ddc.run(_args(files, htmlOutput: htmlOutput));
+void analyze(dynamic files, {bool htmlReport: false}) {
+  _ddc.run(_args(files, htmlReport: htmlReport));
 }</code></pre>
     </section>
 
@@ -133,7 +133,7 @@ void analyze(dynamic files, {bool htmlOutput: false}) {
         <div class="container">
             <p class="text-center">
                 <span class="no-break">
-                  grinder 0.8.0 api docs
+                  grinder 0.8.0+1 api docs
                 </span>
                 &bull;
                 <span class="copyright no-break">

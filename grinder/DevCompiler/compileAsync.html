@@ -105,7 +105,7 @@
             <span class="name ">compileAsync</span>(
             <br>
             <div class="parameters">
-                <span class="parameter" id="compileAsync-param-files"><span class="parameter-name">files</span></span>,<br><span class="parameter" id="compileAsync-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span></span>,<br>{<span class="parameter" id="compileAsync-param-forceCompile"><span class="type-annotation">bool</span> <span class="parameter-name">forceCompile</span>: <span class="default-value">false</span></span>,<br><span class="parameter" id="compileAsync-param-htmlOutput"><span class="type-annotation">bool</span> <span class="parameter-name">htmlOutput</span>: <span class="default-value">false</span></span>}
+                <span class="parameter" id="compileAsync-param-files"><span class="parameter-name">files</span></span>,<br><span class="parameter" id="compileAsync-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span></span>,<br>{<span class="parameter" id="compileAsync-param-forceCompile"><span class="type-annotation">bool</span> <span class="parameter-name">forceCompile</span>: <span class="default-value">false</span></span>,<br><span class="parameter" id="compileAsync-param-htmlReport"><span class="type-annotation">bool</span> <span class="parameter-name">htmlReport</span>: <span class="default-value">false</span></span>}
             </div>
             )    </section>
 
@@ -120,12 +120,12 @@
       <pre><code class="prettyprint lang-dart">/// Compile the given file with DDC and generate the output to [outDir].
 Future compileAsync(dynamic files, Directory outDir, {
   bool forceCompile: false,
-  bool htmlOutput: false
+  bool htmlReport: false
 }) {
   return _ddc.runAsync(_args(files,
       outDir: outDir,
       forceCompile: forceCompile,
-      htmlOutput: htmlOutput));
+      htmlReport: htmlReport));
 }</code></pre>
     </section>
 
@@ -139,7 +139,7 @@ Future compileAsync(dynamic files, Directory outDir, {
         <div class="container">
             <p class="text-center">
                 <span class="no-break">
-                  grinder 0.8.0 api docs
+                  grinder 0.8.0+1 api docs
                 </span>
                 &bull;
                 <span class="copyright no-break">

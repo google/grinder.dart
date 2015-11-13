@@ -105,7 +105,7 @@
             <span class="name ">analyzeAsync</span>(
             <br>
             <div class="parameters">
-                <span class="parameter" id="analyzeAsync-param-files"><span class="parameter-name">files</span></span>,<br>{<span class="parameter" id="analyzeAsync-param-htmlOutput"><span class="type-annotation">bool</span> <span class="parameter-name">htmlOutput</span>: <span class="default-value">false</span></span>}
+                <span class="parameter" id="analyzeAsync-param-files"><span class="parameter-name">files</span></span>,<br>{<span class="parameter" id="analyzeAsync-param-htmlReport"><span class="type-annotation">bool</span> <span class="parameter-name">htmlReport</span>: <span class="default-value">false</span></span>}
             </div>
             )    </section>
 
@@ -118,8 +118,8 @@
     <section class="summary source-code" id="source">
       <h2>Source</h2>
       <pre><code class="prettyprint lang-dart">/// Analyze the given file or files with DDC.
-Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
-  return _ddc.runAsync(_args(files, htmlOutput: htmlOutput));
+Future analyzeAsync(dynamic files, {bool htmlReport: false}) {
+  return _ddc.runAsync(_args(files, htmlReport: htmlReport));
 }</code></pre>
     </section>
 
@@ -133,7 +133,7 @@ Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
         <div class="container">
             <p class="text-center">
                 <span class="no-break">
-                  grinder 0.8.0 api docs
+                  grinder 0.8.0+1 api docs
                 </span>
                 &bull;
                 <span class="copyright no-break">
