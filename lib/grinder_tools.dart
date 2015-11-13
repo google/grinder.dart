@@ -146,46 +146,46 @@ class DevCompiler {
   DevCompiler();
 
   /// Analyze the given file or files with DDC.
-  void analyze(dynamic files, {bool htmlOutput: false}) {
-    _ddc.run(_args(files, htmlOutput: htmlOutput));
+  void analyze(dynamic files, {bool htmlReport: false}) {
+    _ddc.run(_args(files, htmlReport: htmlReport));
   }
 
   /// Analyze the given file or files with DDC.
-  Future analyzeAsync(dynamic files, {bool htmlOutput: false}) {
-    return _ddc.runAsync(_args(files, htmlOutput: htmlOutput));
+  Future analyzeAsync(dynamic files, {bool htmlReport: false}) {
+    return _ddc.runAsync(_args(files, htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
   void compile(dynamic files, Directory outDir, {
     bool forceCompile: false,
-    bool htmlOutput: false
+    bool htmlReport: false
   }) {
     _ddc.run(_args(files,
         outDir: outDir,
         forceCompile: forceCompile,
-        htmlOutput: htmlOutput));
+        htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
   Future compileAsync(dynamic files, Directory outDir, {
     bool forceCompile: false,
-    bool htmlOutput: false
+    bool htmlReport: false
   }) {
     return _ddc.runAsync(_args(files,
         outDir: outDir,
         forceCompile: forceCompile,
-        htmlOutput: htmlOutput));
+        htmlReport: htmlReport));
   }
 
   List<String> _args(dynamic files, {
     Directory outDir,
     bool forceCompile: false,
-    bool htmlOutput: false
+    bool htmlReport: false
   }) {
     List<String> args = [];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');
-    if (htmlOutput) args.add('--html-output');
+    if (htmlReport) args.add('--html-report');
     args.addAll(coerceToPathList(files));
     return args;
   }
