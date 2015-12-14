@@ -13,7 +13,6 @@ environment:
 
 dependencies:
   ansicolor: '>=0.0.9 <0.1.0'
-  args: '>=0.10.0 <0.14.0'
   collection: '>=1.1.0 <2.0.0'
   cli_util: '>=0.0.1 <0.1.0'
   glob: '>=1.0.0 <2.0.0'
