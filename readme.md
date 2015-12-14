@@ -29,21 +29,26 @@ import 'package:grinder/grinder.dart';
 
 main(args) => grind(args);
 
-@Task('Test stuff.')
-test() {
-  new PubApp.local('test').run([]);
-}
-
 @DefaultTask('Build the project.')
-@Depends(test)
 build() {
   log("Building...");
 }
 
+@Task('Test stuff.')
+@Depends(build)
+test() {
+  new PubApp.local('test').run([]);
+}
+
 @Task('Generate docs.')
-@Depends(test)
 doc() {
   log("Generating docs...");
+}
+
+@Task('Deploy built app.')
+@Depends(build, test, doc)
+deploy() {
+  ...
 }
 ```
 
