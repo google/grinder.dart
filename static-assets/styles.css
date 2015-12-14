@@ -51,7 +51,7 @@ nav .container {
 }
 
 header {
-  background-color: #2196F3;
+  background-color: rgb(0, 102, 152);
   color: white;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
 }
@@ -133,33 +133,36 @@ p {
   margin-bottom: 1em;
 }
 
-p.no-docs {
-  font-style: italic;
-}
-
 a, a:hover {
-  color: #1976D2;
+  color: rgb(0, 102, 152);
 }
 
 pre.prettyprint {
   font-family: 'Source Code Pro', monospace;
   color: black;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 14px;
   word-wrap: normal;
   line-height: 1.4;
   background: #f7f7f7;
-  border: 1px solid #f0f0f0;
+  border: 1px solid #ddd;
   margin: 16px 0 16px 0;
   padding: 8px;
 }
 
 pre code {
   white-space: pre;
+  word-wrap: initial;
 }
 
 .fixed {
   white-space: pre;
+}
+
+pre {
+  border: 1px solid #ddd;
+  background-color: #f7f7f7;
+  font-size: 14px;
 }
 
 code {
@@ -167,6 +170,12 @@ code {
   /* overriding bootstrap */
   color: inherit;
   background-color: #f7f7f7;
+}
+
+h2 .crossdart {
+  float: right;
+  font-size: 0.5em;
+  margin-top: 1em;
 }
 
 @media(max-width: 768px) {
@@ -193,7 +202,7 @@ code {
   }
 
   ul.subnav li {
-    font-size: 110%;
+    font-size: 17px;
   }
 }
 
@@ -210,9 +219,16 @@ header li {
 }
 
 header h1 .kind {
-  color: #DDDDDD;
+  color: #ddd;
   text-transform: uppercase;
-  font-size: 13px;
+  font-size: 15px;
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  header h1 .kind {
+    font-size: 14px;
+  }
 }
 
 dt {
@@ -221,6 +237,7 @@ dt {
 
 dd {
   color: #212121;
+  margin-bottom: 1em;
 }
 
 dd.callable, dd.constant, dd.property {
@@ -228,17 +245,17 @@ dd.callable, dd.constant, dd.property {
 }
 
 dd p {
-  margin-top: 4px;
   white-space: nowrap;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 0;
 }
 
 section.summary h2 {
   color: #727272;
   margin-bottom: 16px;
   padding-bottom: 4px;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #ddd;
 }
 
 /* indents wrapped lines */
@@ -258,7 +275,6 @@ dl.dl-horizontal dt::after {
 }
 
 dt .name {
-  font-size: 17px;
   font-weight: 500;
 }
 
@@ -310,6 +326,7 @@ footer {
 
 footer p {
   margin: 0;
+  color: #555;
 }
 
 footer .no-break {
@@ -323,7 +340,7 @@ footer .container-fluid {
 }
 
 .copyright a {
-  color: #212121;
+  color: #555;
 }
 
 .markdown h1 {
@@ -378,16 +395,17 @@ footer .container-fluid {
   margin: 0;
 }
 
-/* The little slug line under a declaration for things like "const",
-   "read-only", etc. */
+/* The slug line under a declaration for things like "const", "read-only", etc. */
 .features {
-  font-size: 14px;
   font-style: italic;
   color: #727272;
 }
 
 .multi-line-signature {
   font-size: 17px;
+  color: #727272;
+  margin-left: 24px;
+  text-indent: -24px;
 }
 
 .breadcrumbs {
@@ -407,25 +425,22 @@ footer .container-fluid {
 @media screen and (max-width: 768px) {
   .breadcrumbs {
     margin: 0 0 24px 0;
+    overflow-x: hidden;
   }
 }
 
 .self-crumb {
-  color: #DDDDDD;
+  color: #ddd;
 }
 
 nav .self-name {
-  color: #DDDDDD;
+  color: #ddd;
   display: none;
 }
 
 .annotation-list {
   list-style: none;
   padding: 0;
-  display: inline;
-}
-
-.annotation-list li {
   display: inline;
 }
 
@@ -500,21 +515,6 @@ ul.subnav li:last-of-type {
 @media(max-width: 768px) {
   ul.subnav li {
     margin-right: 16px;
-  }
-}
-
-span.top-level-variable-type {
-  color: #727272;
-}
-
-@media (max-width: 768px) {
-  dl.properties span.top-level-variable-type {
-    display: block;
-  }
-
-  section.summary dl.properties dt {
-    margin-left: 0;
-    text-indent: inherit;
   }
 }
 
@@ -620,7 +620,7 @@ button {
 }
 
 .sidebar-offcanvas-left h5 {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #ddd;
   padding: 16px;
 }
 
@@ -731,4 +731,9 @@ form.search {
 .search-from-lib {
   font-style: italic;
   color: gray;
+}
+
+section#setter {
+  border-top: 1px solid #ddd;
+  padding-top: 36px;
 }
