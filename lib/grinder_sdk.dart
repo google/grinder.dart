@@ -303,13 +303,35 @@ class Pub {
 
 /// Utility tasks for invoking dart2js.
 class Dart2js {
+  static List<String> _buildArgs(
+      {bool minify,
+      bool csp,
+      bool enableExperimentalMirrors,
+      String categories,
+      List<String> extraArgs,
+      File outFile,
+      File sourceFile}) {
+    var args = <String>[];
+    if (minify) args.add('--minify');
+    if (csp) args.add('--csp');
+    if (enableExperimentalMirrors) args.add('--enable-experimental-mirrors');
+    if (categories != null) args.add('--categories=$categories');
+
+    return args
+      ..addAll(extraArgs)
+      ..add('-o${outFile.path}')
+      ..add(sourceFile.path);
+  }
+
   /// Invoke a dart2js compile with the given [sourceFile] as input.
   static void compile(File sourceFile,
       {Directory outDir,
       File outFile,
       bool minify: false,
       bool csp: false,
-      bool enableExperimentalMirrors: false}) {
+      bool enableExperimentalMirrors: false,
+      String categories,
+      List<String> extraArgs: const []}) {
     if (outFile == null) {
       if (outDir == null) outDir = sourceFile.parent;
       outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -319,14 +341,15 @@ class Dart2js {
 
     if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
-    List args = [];
-    if (minify) args.add('--minify');
-    if (csp) args.add('--csp');
-    if (enableExperimentalMirrors) args.add('--enable-experimental-mirrors');
-    args.add('-o${outFile.path}');
-    args.add(sourceFile.path);
-
-    runlib.run(sdkBin('dart2js'), arguments: args);
+    runlib.run(sdkBin('dart2js'),
+        arguments: _buildArgs(
+            minify: minify,
+            csp: csp,
+            enableExperimentalMirrors: enableExperimentalMirrors,
+            categories: categories,
+            extraArgs: extraArgs,
+            outFile: outFile,
+            sourceFile: sourceFile));
   }
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
@@ -335,7 +358,9 @@ class Dart2js {
       File outFile,
       bool minify: false,
       bool csp: false,
-      bool enableExperimentalMirrors: false}) {
+      bool enableExperimentalMirrors: false,
+      String categories,
+      List<String> extraArgs: const []}) {
     if (outFile == null) {
       if (outDir == null) outDir = sourceFile.parent;
       outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -345,15 +370,16 @@ class Dart2js {
 
     if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
-    List args = [];
-    if (minify) args.add('--minify');
-    if (csp) args.add('--csp');
-    if (enableExperimentalMirrors) args.add('--enable-experimental-mirrors');
-    args.add('-o${outFile.path}');
-    args.add(sourceFile.path);
-
     return runlib
-        .runAsync(sdkBin('dart2js'), arguments: args)
+        .runAsync(sdkBin('dart2js'),
+            arguments: _buildArgs(
+                minify: minify,
+                csp: csp,
+                enableExperimentalMirrors: enableExperimentalMirrors,
+                categories: categories,
+                extraArgs: extraArgs,
+                outFile: outFile,
+                sourceFile: sourceFile))
         .then((_) => null);
   }
 

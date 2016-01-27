@@ -14,7 +14,7 @@ import 'singleton.dart' as singleton;
 import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String appVersion = '0.8.0+1';
+const String appVersion = '0.8.0+2';
 
 List<String> grinderArgs() => _args;
 List<String> _args;

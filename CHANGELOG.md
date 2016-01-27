@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.0+2
+- Add categories and extraArgs named arguments to Dart2Js.compile and compileAsync
+
 ## 0.8.0+1 (2015/11/12)
 - Fixed a bug with the DDC `--html-report` option
 
