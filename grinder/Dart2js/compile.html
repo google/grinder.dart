@@ -108,7 +108,7 @@
 
     <section class="multi-line-signature">
         <span class="returntype">void</span>
-        <span class="name ">compile</span>(<wbr><span class="parameter" id="compile-param-sourceFile"><span class="type-annotation">File</span> <span class="parameter-name">sourceFile</span></span>, {<span class="parameter" id="compile-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span></span>, <span class="parameter" id="compile-param-outFile"><span class="type-annotation">File</span> <span class="parameter-name">outFile</span></span>, <span class="parameter" id="compile-param-minify"><span class="type-annotation">bool</span> <span class="parameter-name">minify</span>: <span class="default-value">false</span></span>, <span class="parameter" id="compile-param-csp"><span class="type-annotation">bool</span> <span class="parameter-name">csp</span>: <span class="default-value">false</span></span>, <span class="parameter" id="compile-param-enableExperimentalMirrors"><span class="type-annotation">bool</span> <span class="parameter-name">enableExperimentalMirrors</span>: <span class="default-value">false</span></span>})
+        <span class="name ">compile</span>(<wbr><span class="parameter" id="compile-param-sourceFile"><span class="type-annotation">File</span> <span class="parameter-name">sourceFile</span></span>, {<span class="parameter" id="compile-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span></span>, <span class="parameter" id="compile-param-outFile"><span class="type-annotation">File</span> <span class="parameter-name">outFile</span></span>, <span class="parameter" id="compile-param-minify"><span class="type-annotation">bool</span> <span class="parameter-name">minify</span>: <span class="default-value">false</span></span>, <span class="parameter" id="compile-param-csp"><span class="type-annotation">bool</span> <span class="parameter-name">csp</span>: <span class="default-value">false</span></span>, <span class="parameter" id="compile-param-enableExperimentalMirrors"><span class="type-annotation">bool</span> <span class="parameter-name">enableExperimentalMirrors</span>: <span class="default-value">false</span></span>, <span class="parameter" id="compile-param-categories"><span class="type-annotation">String</span> <span class="parameter-name">categories</span></span>, <span class="parameter" id="compile-param-extraArgs"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">extraArgs</span>: <span class="default-value">const []</span></span>})
     </section>
 
     <section class="desc markdown">
@@ -122,7 +122,9 @@
     File outFile,
     bool minify: false,
     bool csp: false,
-    bool enableExperimentalMirrors: false}) {
+    bool enableExperimentalMirrors: false,
+    String categories,
+    List&lt;String&gt; extraArgs: const []}) {
   if (outFile == null) {
     if (outDir == null) outDir = sourceFile.parent;
     outFile = joinFile(outDir, [&quot;${fileName(sourceFile)}.js&quot;]);
@@ -132,14 +134,15 @@
 
   if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
-  List args = [];
-  if (minify) args.add(&apos;--minify&apos;);
-  if (csp) args.add(&apos;--csp&apos;);
-  if (enableExperimentalMirrors) args.add(&apos;--enable-experimental-mirrors&apos;);
-  args.add(&apos;-o${outFile.path}&apos;);
-  args.add(sourceFile.path);
-
-  runlib.run(sdkBin(&apos;dart2js&apos;), arguments: args);
+  runlib.run(sdkBin(&apos;dart2js&apos;),
+      arguments: _buildArgs(
+          minify: minify,
+          csp: csp,
+          enableExperimentalMirrors: enableExperimentalMirrors,
+          categories: categories,
+          extraArgs: extraArgs,
+          outFile: outFile,
+          sourceFile: sourceFile));
 }</code></pre>
     </section>
 
@@ -153,7 +156,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+1
+          grinder 0.8.0+2
         </span>
         &bull;
         <span class="no-break">
