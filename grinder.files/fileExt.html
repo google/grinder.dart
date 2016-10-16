@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the fileExt function from the grinder.files library, for the Dart programming language.">
   <title>fileExt function - grinder.files library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the fileExt function from the grinder.files library, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -78,23 +76,23 @@
     
     
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#functions">Functions</a></li>
-      <li><a class="" href="grinder.files/baseName.html">baseName</a></li>
-      <li><a class="" href="grinder.files/copy.html">copy</a></li>
-      <li><a class="" href="grinder.files/copyDirectory.html">copyDirectory</a></li>
-      <li><a class="" href="grinder.files/copyFile.html">copyFile</a></li>
-      <li><a class="" href="grinder.files/delete.html">delete</a></li>
-      <li><a class="" href="grinder.files/deleteEntity.html">deleteEntity</a></li>
-      <li><a class="" href="grinder.files/fileExt.html">fileExt</a></li>
-      <li><a class="" href="grinder.files/fileName.html">fileName</a></li>
-      <li><a class="" href="grinder.files/getDir.html">getDir</a></li>
-      <li><a class="" href="grinder.files/getFile.html">getFile</a></li>
-      <li><a class="" href="grinder.files/joinDir.html">joinDir</a></li>
-      <li><a class="" href="grinder.files/joinFile.html">joinFile</a></li>
+      <li><a href="grinder.files/baseName.html">baseName</a></li>
+      <li><a href="grinder.files/copy.html">copy</a></li>
+      <li><a href="grinder.files/copyDirectory.html">copyDirectory</a></li>
+      <li><a href="grinder.files/copyFile.html">copyFile</a></li>
+      <li><a href="grinder.files/delete.html">delete</a></li>
+      <li><a href="grinder.files/deleteEntity.html">deleteEntity</a></li>
+      <li><a href="grinder.files/fileExt.html">fileExt</a></li>
+      <li><a href="grinder.files/fileName.html">fileName</a></li>
+      <li><a href="grinder.files/getDir.html">getDir</a></li>
+      <li><a href="grinder.files/getFile.html">getFile</a></li>
+      <li><a href="grinder.files/joinDir.html">joinDir</a></li>
+      <li><a href="grinder.files/joinFile.html">joinFile</a></li>
     
     
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#classes">Classes</a></li>
-      <li><a class="" href="grinder.files/FilePath-class.html">FilePath</a></li>
-      <li><a class="" href="grinder.files/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
     
     </ol>
   </div><!--/.sidebar-offcanvas-left-->
@@ -105,7 +103,6 @@
         <span class="returntype">String</span>
         <span class="name ">fileExt</span>(<wbr><span class="parameter" id="fileExt-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
     </section>
-
     <section class="desc markdown">
       <p>Return the file's extension without the period. This will return <code>null</code> if
 there is no extension.</p>
@@ -113,11 +110,11 @@ there is no extension.</p>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">String fileExt(FileSystemEntity entity) {
+      <pre class="prettyprint language-dart">String fileExt(FileSystemEntity entity) {
   String name = fileName(entity);
-  int index = name.indexOf(&apos;.&apos;);
+  int index = name.indexOf(&#39;.&#39;);
   return index != -1 &amp;&amp; index &lt; name.length ? name.substring(index + 1) : null;
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -130,7 +127,7 @@ there is no extension.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -150,6 +147,7 @@ there is no extension.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

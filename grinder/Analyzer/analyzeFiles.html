@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the analyzeFiles method from the Analyzer class, for the Dart programming language.">
   <title>analyzeFiles method - Analyzer class - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the analyzeFiles method from the Analyzer class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -81,9 +79,9 @@
     
     
       <li class="section-title"><a href="grinder/Analyzer-class.html#static-methods">Static methods</a></li>
-      <li><a class="" href="grinder/Analyzer/analyze.html">analyze</a></li>
+      <li><a href="grinder/Analyzer/analyze.html">analyze</a></li>
       <li><a class="deprecated" href="grinder/Analyzer/analyzeFiles.html">analyzeFiles</a></li>
-      <li><a class="" href="grinder/Analyzer/version.html">version</a></li>
+      <li><a href="grinder/Analyzer/version.html">version</a></li>
     
       <li class="section-title"><a href="grinder/Analyzer-class.html#constructors">Constructors</a></li>
       <li><a href="grinder/Analyzer/Analyzer.html">Analyzer</a></li>
@@ -91,47 +89,45 @@
       <li class="section-title inherited">
         <a href="grinder/Analyzer-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a class="" href="grinder/Analyzer/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a class="" href="grinder/Analyzer/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="grinder/Analyzer/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/Analyzer/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder/Analyzer-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder/Analyzer/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder/Analyzer/operator_equals.html">operator ==</a></li>
     
       <li class="section-title inherited"><a href="grinder/Analyzer-class.html#instance-methods">Methods</a></li>
-      <li class="inherited"><a class="" href="grinder/Analyzer/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a class="" href="grinder/Analyzer/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder/Analyzer/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="grinder/Analyzer/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <div>
-          <ol class="annotation-list">
-            <li>Deprecated('see `analyze`, which now takes a list as an argument')</li>
-          </ol>
-        </div>
-        <span class="returntype">void</span>
-        <span class="name deprecated">analyzeFiles</span>(<wbr><span class="parameter" id="analyzeFiles-param-files"><span class="type-annotation">List</span> <span class="parameter-name">files</span></span>, {<span class="parameter" id="analyzeFiles-param-packageRoot"><span class="type-annotation">Directory</span> <span class="parameter-name">packageRoot</span></span>, <span class="parameter" id="analyzeFiles-param-fatalWarnings"><span class="type-annotation">bool</span> <span class="parameter-name">fatalWarnings</span>: <span class="default-value">false</span></span>})
+      <div>
+        <ol class="annotation-list">
+          <li>Deprecated('see `analyze`, which now takes a list as an argument')</li>
+        </ol>
+      </div>
+      <span class="returntype">void</span>
+      <span class="name deprecated">analyzeFiles</span>(<wbr><span class="parameter" id="analyzeFiles-param-files"><span class="type-annotation">List</span> <span class="parameter-name">files</span>, {</span> <span class="parameter" id="analyzeFiles-param-packageRoot"><span class="type-annotation">Directory</span> <span class="parameter-name">packageRoot</span>, </span> <span class="parameter" id="analyzeFiles-param-fatalWarnings"><span class="type-annotation">bool</span> <span class="parameter-name">fatalWarnings</span>: <span class="default-value">false</span></span> })
     </section>
-
     <section class="desc markdown">
       <p>Analyze one or more <code>File</code>s or paths (<code>String</code>).</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">@Deprecated(&apos;see `analyze`, which now takes a list as an argument&apos;)
+      <pre class="prettyprint language-dart">@Deprecated(&#39;see `analyze`, which now takes a list as an argument&#39;)
 static void analyzeFiles(List files,
     {Directory packageRoot, bool fatalWarnings: false}) {
   List args = [];
-  if (packageRoot != null) args.add(&apos;--package-root=${packageRoot.path}&apos;);
-  if (fatalWarnings) args.add(&apos;--fatal-warnings&apos;);
+  if (packageRoot != null) args.add(&#39;--package-root=${packageRoot.path}&#39;);
+  if (fatalWarnings) args.add(&#39;--fatal-warnings&#39;);
   args.addAll(coerceToPathList(files));
 
-  runlib.run(sdkBin(&apos;dartanalyzer&apos;), arguments: args);
-}</code></pre>
+  runlib.run(sdkBin(&#39;dartanalyzer&#39;), arguments: args);
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -144,7 +140,7 @@ static void analyzeFiles(List files,
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -164,6 +160,7 @@ static void analyzeFiles(List files,
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the dryRun method from the DartFmt class, for the Dart programming language.">
   <title>dryRun method - DartFmt class - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the dryRun method from the DartFmt class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -81,8 +79,8 @@
     
     
       <li class="section-title"><a href="grinder/DartFmt-class.html#static-methods">Static methods</a></li>
-      <li><a class="" href="grinder/DartFmt/dryRun.html">dryRun</a></li>
-      <li><a class="" href="grinder/DartFmt/format.html">format</a></li>
+      <li><a href="grinder/DartFmt/dryRun.html">dryRun</a></li>
+      <li><a href="grinder/DartFmt/format.html">format</a></li>
     
       <li class="section-title"><a href="grinder/DartFmt-class.html#constructors">Constructors</a></li>
       <li><a href="grinder/DartFmt/DartFmt.html">DartFmt</a></li>
@@ -90,26 +88,24 @@
       <li class="section-title inherited">
         <a href="grinder/DartFmt-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a class="" href="grinder/DartFmt/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a class="" href="grinder/DartFmt/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="grinder/DartFmt/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/DartFmt/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder/DartFmt-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder/DartFmt/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder/DartFmt/operator_equals.html">operator ==</a></li>
     
       <li class="section-title inherited"><a href="grinder/DartFmt-class.html#instance-methods">Methods</a></li>
-      <li class="inherited"><a class="" href="grinder/DartFmt/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a class="" href="grinder/DartFmt/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder/DartFmt/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="grinder/DartFmt/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <span class="returntype">bool</span>
-        <span class="name ">dryRun</span>(<wbr><span class="parameter" id="dryRun-param-fileOrPath"><span class="parameter-name">fileOrPath</span></span>, {<span class="parameter" id="dryRun-param-lineLength"><span class="type-annotation">int</span> <span class="parameter-name">lineLength</span></span>})
+      <span class="returntype">bool</span>
+      <span class="name ">dryRun</span>(<wbr><span class="parameter" id="dryRun-param-fileOrPath"><span class="parameter-name">fileOrPath</span>, {</span> <span class="parameter" id="dryRun-param-lineLength"><span class="type-annotation">int</span> <span class="parameter-name">lineLength</span></span> })
     </section>
-
     <section class="desc markdown">
       <p>Run the <code>dartfmt</code> command with the <code>--dry-run</code> option. Return <code>true</code> if
 any files would be changed by running the formatter.</p>
@@ -117,11 +113,11 @@ any files would be changed by running the formatter.</p>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">static bool dryRun(fileOrPath, {int lineLength}) {
+      <pre class="prettyprint language-dart">static bool dryRun(fileOrPath, {int lineLength}) {
   String results =
-      _run(&apos;--dry-run&apos;, coerceToPathList(fileOrPath), lineLength: lineLength);
+      _run(&#39;--dry-run&#39;, coerceToPathList(fileOrPath), lineLength: lineLength);
   return results.trim().isNotEmpty;
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -134,7 +130,7 @@ any files would be changed by running the formatter.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -154,6 +150,7 @@ any files would be changed by running the formatter.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

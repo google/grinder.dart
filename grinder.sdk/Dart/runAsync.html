@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the runAsync method from the Dart class, for the Dart programming language.">
   <title>runAsync method - Dart class - grinder.sdk library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the runAsync method from the Dart class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -81,9 +79,9 @@
     
     
       <li class="section-title"><a href="grinder.sdk/Dart-class.html#static-methods">Static methods</a></li>
-      <li><a class="" href="grinder.sdk/Dart/run.html">run</a></li>
-      <li><a class="" href="grinder.sdk/Dart/runAsync.html">runAsync</a></li>
-      <li><a class="" href="grinder.sdk/Dart/version.html">version</a></li>
+      <li><a href="grinder.sdk/Dart/run.html">run</a></li>
+      <li><a href="grinder.sdk/Dart/runAsync.html">runAsync</a></li>
+      <li><a href="grinder.sdk/Dart/version.html">version</a></li>
     
       <li class="section-title"><a href="grinder.sdk/Dart-class.html#constructors">Constructors</a></li>
       <li><a href="grinder.sdk/Dart/Dart.html">Dart</a></li>
@@ -91,40 +89,38 @@
       <li class="section-title inherited">
         <a href="grinder.sdk/Dart-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a class="" href="grinder.sdk/Dart/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/Dart/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="grinder.sdk/Dart/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder.sdk/Dart/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder.sdk/Dart-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/Dart/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder.sdk/Dart/operator_equals.html">operator ==</a></li>
     
       <li class="section-title inherited"><a href="grinder.sdk/Dart-class.html#instance-methods">Methods</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/Dart/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/Dart/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder.sdk/Dart/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="grinder.sdk/Dart/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <span class="returntype">Future&lt;String&gt;</span>
-        <span class="name ">runAsync</span>(<wbr><span class="parameter" id="runAsync-param-script"><span class="type-annotation">String</span> <span class="parameter-name">script</span></span>, {<span class="parameter" id="runAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runAsync-param-packageRoot"><span class="type-annotation">String</span> <span class="parameter-name">packageRoot</span></span>, <span class="parameter" id="runAsync-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runAsync-param-vmArgs"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">vmArgs</span>: <span class="default-value">const []</span></span>})
+      <span class="returntype">Future&lt;String&gt;</span>
+      <span class="name ">runAsync</span>(<wbr><span class="parameter" id="runAsync-param-script"><span class="type-annotation">String</span> <span class="parameter-name">script</span>, {</span> <span class="parameter" id="runAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="runAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="runAsync-param-packageRoot"><span class="type-annotation">String</span> <span class="parameter-name">packageRoot</span>, </span> <span class="parameter" id="runAsync-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="runAsync-param-vmArgs"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">vmArgs</span>: <span class="default-value">const []</span></span> })
     </section>
-
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">static Future&lt;String&gt; runAsync(String script,
+      <pre class="prettyprint language-dart">static Future&lt;String&gt; runAsync(String script,
     {List&lt;String&gt; arguments: const [],
     bool quiet: false,
     String packageRoot,
-    RunOptions runOptions, //
+    RunOptions runOptions, &#47;&#47;
     List&lt;String&gt; vmArgs: const []}) {
   List&lt;String&gt; args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
-  return runlib.runAsync(sdkBin(&apos;dart&apos;),
+  return runlib.runAsync(dartVM.path,
       arguments: args, quiet: quiet, runOptions: runOptions);
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -137,7 +133,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -157,6 +153,7 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

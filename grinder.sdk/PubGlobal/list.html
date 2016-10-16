@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the list method from the PubGlobal class, for the Dart programming language.">
   <title>list method - PubGlobal class - grinder.sdk library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the list method from the PubGlobal class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -85,53 +83,51 @@
       <li class="section-title inherited">
         <a href="grinder.sdk/PubGlobal-class.html#instance-properties">Properties</a>
       </li>
-      <li class="inherited"><a class="" href="grinder.sdk/PubGlobal/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/PubGlobal/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="grinder.sdk/PubGlobal/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder.sdk/PubGlobal/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder.sdk/PubGlobal-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/PubGlobal/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder.sdk/PubGlobal/operator_equals.html">operator ==</a></li>
     
       <li class="section-title"><a href="grinder.sdk/PubGlobal-class.html#instance-methods">Methods</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal/activate.html">activate</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal/isActivated.html">isActivated</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal/list.html">list</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/PubGlobal/noSuchMethod.html">noSuchMethod</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal/run.html">run</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal/runAsync.html">runAsync</a></li>
-      <li class="inherited"><a class="" href="grinder.sdk/PubGlobal/toString.html">toString</a></li>
+      <li><a href="grinder.sdk/PubGlobal/activate.html">activate</a></li>
+      <li><a href="grinder.sdk/PubGlobal/isActivated.html">isActivated</a></li>
+      <li><a href="grinder.sdk/PubGlobal/list.html">list</a></li>
+      <li class="inherited"><a href="grinder.sdk/PubGlobal/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="grinder.sdk/PubGlobal/run.html">run</a></li>
+      <li><a href="grinder.sdk/PubGlobal/runAsync.html">runAsync</a></li>
+      <li class="inherited"><a href="grinder.sdk/PubGlobal/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <span class="returntype">List&lt;<a class="" href="grinder/PubApp-class.html">PubApp</a>&gt;</span>
-        <span class="name ">list</span>(<wbr>)
+      <span class="returntype">List&lt;<a href="grinder/PubApp-class.html">PubApp</a>&gt;</span>
+      <span class="name ">list</span>(<wbr>)
     </section>
-
     <section class="desc markdown">
       <p>Return the list of installed applications.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">List&lt;PubApp&gt; list() {
-  //dart_coveralls 0.1.8
-  //den 0.1.3
-  //discoveryapis_generator 0.6.1
-  //...
+      <pre class="prettyprint language-dart">List&lt;PubApp&gt; list() {
+  &#47;&#47;dart_coveralls 0.1.8
+  &#47;&#47;den 0.1.3
+  &#47;&#47;discoveryapis_generator 0.6.1
+  &#47;&#47;...
 
   var stdout =
-      runlib.run(sdkBin(&apos;pub&apos;), arguments: [&apos;global&apos;, &apos;list&apos;], quiet: true);
+      runlib.run(sdkBin(&#39;pub&#39;), arguments: [&#39;global&#39;, &#39;list&#39;], quiet: true);
 
-  var lines = stdout.trim().split(&apos;\n&apos;);
+  var lines = stdout.trim().split(&#39;\n&#39;);
   return lines.map((line) {
     line = line.trim();
-    if (!line.contains(&apos; &apos;)) return new PubApp.global(line);
-    return new PubApp.global(line.split(&apos; &apos;).first);
+    if (!line.contains(&#39; &#39;)) return new PubApp.global(line);
+    return new PubApp.global(line.split(&#39; &#39;).first);
   }).toList();
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -144,7 +140,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -164,6 +160,7 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

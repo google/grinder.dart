@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the run function from the grinder.tools library, for the Dart programming language.">
   <title>run function - grinder.tools library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the run function from the grinder.tools library, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -77,27 +75,27 @@
     
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#properties">Properties</a></li>
-      <li><a class="" href="grinder.tools/binDir.html">binDir</a></li>
-      <li><a class="" href="grinder.tools/buildDir.html">buildDir</a></li>
-      <li><a class="" href="grinder.tools/libDir.html">libDir</a></li>
-      <li><a class="" href="grinder.tools/webDir.html">webDir</a></li>
+      <li><a href="grinder.tools/binDir.html">binDir</a></li>
+      <li><a href="grinder.tools/buildDir.html">buildDir</a></li>
+      <li><a href="grinder.tools/libDir.html">libDir</a></li>
+      <li><a href="grinder.tools/webDir.html">webDir</a></li>
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#functions">Functions</a></li>
-      <li><a class="" href="grinder.tools/defaultClean.html">defaultClean</a></li>
-      <li><a class="" href="grinder.tools/run.html">run</a></li>
-      <li><a class="" href="grinder.tools/runAsync.html">runAsync</a></li>
-      <li><a class="" href="grinder.tools/runDartScript.html">runDartScript</a></li>
+      <li><a href="grinder.tools/defaultClean.html">defaultClean</a></li>
+      <li><a href="grinder.tools/run.html">run</a></li>
+      <li><a href="grinder.tools/runAsync.html">runAsync</a></li>
+      <li><a href="grinder.tools/runDartScript.html">runDartScript</a></li>
       <li><a class="deprecated" href="grinder.tools/runProcess.html">runProcess</a></li>
       <li><a class="deprecated" href="grinder.tools/runProcessAsync.html">runProcessAsync</a></li>
     
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#classes">Classes</a></li>
-      <li><a class="" href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
-      <li><a class="" href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
-      <li><a class="" href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#exceptions">Exceptions</a></li>
-      <li><a class="" href="grinder.tools/ProcessException-class.html">ProcessException</a></li>
+      <li><a href="grinder.tools/ProcessException-class.html">ProcessException</a></li>
     </ol>
   </div><!--/.sidebar-offcanvas-left-->
 
@@ -105,25 +103,24 @@
 
     <section class="multi-line-signature">
         <span class="returntype">String</span>
-        <span class="name ">run</span>(<wbr><span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+        <span class="name ">run</span>(<wbr><span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span>, {</span> <span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span> })
     </section>
-
     <section class="desc markdown">
       <p>Synchronously run an <code>executable</code>.</p>
-<p>If <code>quiet</code> is false, <a class="" href="grinder/log.html">log</a>s the stdout. The stderr is always logged.</p>
+<p>If <code>quiet</code> is false, <a href="grinder/log.html">log</a>s the stdout. The stderr is always logged.</p>
 <p>Returns the stdout.</p>
 <p>All other optional parameters are forwarded to <code>Process.runSync</code>.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">String run(String executable,
+      <pre class="prettyprint language-dart">String run(String executable,
     {List&lt;String&gt; arguments: const [],
     RunOptions runOptions,
     bool quiet: false,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  if (!quiet) log(&quot;${executable} ${arguments.join(&apos; &apos;)}&quot;);
+  if (!quiet) log(&quot;${executable} ${arguments.join(&#39; &#39;)}&quot;);
   if (runOptions == null) runOptions = new RunOptions();
 
   ProcessResult result = Process.runSync(executable, arguments,
@@ -150,7 +147,7 @@
   }
 
   return result.stdout;
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -163,7 +160,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -183,6 +180,7 @@
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="grinder.files library API docs, for the Dart programming language.">
   <title>grinder.files library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="grinder.files library API docs, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -72,8 +70,9 @@
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
     <h5><a href="index.html">grinder</a></h5>
 
+
     <ol>
-      <li class="section-title"><a href="index.html">Libraries</a></li>
+      <li class="section-title"><a href="index.html#libraries">Libraries</a></li>
       <li><a href="grinder/grinder-library.html">grinder</a></li>
       <li><a href="grinder.files/grinder.files-library.html">grinder.files</a></li>
       <li><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></li>
@@ -85,7 +84,7 @@
 
     <section class="desc markdown">
       <p>General file system routines, useful in the context of running builds. This
-includes the <a class="" href="grinder/FileSet-class.html">FileSet</a> class, which is used for reasoning about sets of
+includes the <a href="grinder/FileSet-class.html">FileSet</a> class, which is used for reasoning about sets of
 files.</p>
     </section>
     
@@ -97,7 +96,7 @@ files.</p>
 
       <dl class="callables">
         <dt id="baseName" class="callable">
-          <span class="name "><a class="" href="grinder.files/baseName.html">baseName</a></span><span class="signature">(<wbr><span class="parameter" id="baseName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+          <span class="name"><a href="grinder.files/baseName.html">baseName</a></span><span class="signature">(<wbr><span class="parameter" id="baseName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
@@ -105,7 +104,7 @@ files.</p>
           <p>Return the first n - 1 segments of the file path.</p>
         </dd>
         <dt id="copy" class="callable">
-          <span class="name "><a class="" href="grinder.files/copy.html">copy</a></span><span class="signature">(<wbr><span class="parameter" id="copy-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>, <span class="parameter" id="copy-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copy-param-context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+          <span class="name"><a href="grinder.files/copy.html">copy</a></span><span class="signature">(<wbr><span class="parameter" id="copy-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span>, </span> <span class="parameter" id="copy-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copy-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
@@ -113,23 +112,23 @@ files.</p>
           <p></p>
         </dd>
         <dt id="copyDirectory" class="callable">
-          <span class="name "><a class="" href="grinder.files/copyDirectory.html">copyDirectory</a></span><span class="signature">(<wbr><span class="parameter" id="copyDirectory-param-srcDir"><span class="type-annotation">Directory</span> <span class="parameter-name">srcDir</span></span>, <span class="parameter" id="copyDirectory-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copyDirectory-param-context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+          <span class="name"><a href="grinder.files/copyDirectory.html">copyDirectory</a></span><span class="signature">(<wbr><span class="parameter" id="copyDirectory-param-srcDir"><span class="type-annotation">Directory</span> <span class="parameter-name">srcDir</span>, </span> <span class="parameter" id="copyDirectory-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copyDirectory-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
         <dd>
-          <p>Prefer using <a class="" href="grinder/copy.html">copy</a>.</p>
+          <p>Prefer using <a href="grinder/copy.html">copy</a>.</p>
         </dd>
         <dt id="copyFile" class="callable">
-          <span class="name "><a class="" href="grinder.files/copyFile.html">copyFile</a></span><span class="signature">(<wbr><span class="parameter" id="copyFile-param-srcFile"><span class="type-annotation">File</span> <span class="parameter-name">srcFile</span></span>, <span class="parameter" id="copyFile-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span></span>, [<span class="parameter" id="copyFile-param-context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+          <span class="name"><a href="grinder.files/copyFile.html">copyFile</a></span><span class="signature">(<wbr><span class="parameter" id="copyFile-param-srcFile"><span class="type-annotation">File</span> <span class="parameter-name">srcFile</span>, </span> <span class="parameter" id="copyFile-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copyFile-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
         <dd>
-          <p>Prefer using <a class="" href="grinder/copy.html">copy</a>.</p>
+          <p>Prefer using <a href="grinder/copy.html">copy</a>.</p>
         </dd>
         <dt id="delete" class="callable">
-          <span class="name "><a class="" href="grinder.files/delete.html">delete</a></span><span class="signature">(<wbr><span class="parameter" id="delete-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+          <span class="name"><a href="grinder.files/delete.html">delete</a></span><span class="signature">(<wbr><span class="parameter" id="delete-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
@@ -137,15 +136,15 @@ files.</p>
           <p>Delete the given file entity reference.</p>
         </dd>
         <dt id="deleteEntity" class="callable">
-          <span class="name "><a class="" href="grinder.files/deleteEntity.html">deleteEntity</a></span><span class="signature">(<wbr><span class="parameter" id="deleteEntity-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>, [<span class="parameter" id="deleteEntity-param-context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+          <span class="name"><a href="grinder.files/deleteEntity.html">deleteEntity</a></span><span class="signature">(<wbr><span class="parameter" id="deleteEntity-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span>, [</span> <span class="parameter" id="deleteEntity-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
         <dd>
-          <p>Prefer using <a class="" href="grinder/delete.html">delete</a>.</p>
+          <p>Prefer using <a href="grinder/delete.html">delete</a>.</p>
         </dd>
         <dt id="fileExt" class="callable">
-          <span class="name "><a class="" href="grinder.files/fileExt.html">fileExt</a></span><span class="signature">(<wbr><span class="parameter" id="fileExt-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+          <span class="name"><a href="grinder.files/fileExt.html">fileExt</a></span><span class="signature">(<wbr><span class="parameter" id="fileExt-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
@@ -154,7 +153,7 @@ files.</p>
 there is no extension.</p>
         </dd>
         <dt id="fileName" class="callable">
-          <span class="name "><a class="" href="grinder.files/fileName.html">fileName</a></span><span class="signature">(<wbr><span class="parameter" id="fileName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
+          <span class="name"><a href="grinder.files/fileName.html">fileName</a></span><span class="signature">(<wbr><span class="parameter" id="fileName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
@@ -162,7 +161,7 @@ there is no extension.</p>
           <p>Return the last segment of the file path.</p>
         </dd>
         <dt id="getDir" class="callable">
-          <span class="name "><a class="" href="grinder.files/getDir.html">getDir</a></span><span class="signature">(<wbr><span class="parameter" id="getDir-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
+          <span class="name"><a href="grinder.files/getDir.html">getDir</a></span><span class="signature">(<wbr><span class="parameter" id="getDir-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
             <span class="returntype parameter">&#8594; Directory</span>
           </span>
         </dt>
@@ -171,7 +170,7 @@ there is no extension.</p>
 given path to a platform dependent path.</p>
         </dd>
         <dt id="getFile" class="callable">
-          <span class="name "><a class="" href="grinder.files/getFile.html">getFile</a></span><span class="signature">(<wbr><span class="parameter" id="getFile-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
+          <span class="name"><a href="grinder.files/getFile.html">getFile</a></span><span class="signature">(<wbr><span class="parameter" id="getFile-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
             <span class="returntype parameter">&#8594; File</span>
           </span>
         </dt>
@@ -180,7 +179,7 @@ given path to a platform dependent path.</p>
 given path to a platform dependent path.</p>
         </dd>
         <dt id="joinDir" class="callable">
-          <span class="name "><a class="" href="grinder.files/joinDir.html">joinDir</a></span><span class="signature">(<wbr><span class="parameter" id="joinDir-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span></span>, <span class="parameter" id="joinDir-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
+          <span class="name"><a href="grinder.files/joinDir.html">joinDir</a></span><span class="signature">(<wbr><span class="parameter" id="joinDir-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span>, </span> <span class="parameter" id="joinDir-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
             <span class="returntype parameter">&#8594; Directory</span>
           </span>
         </dt>
@@ -188,7 +187,7 @@ given path to a platform dependent path.</p>
           <p></p>
         </dd>
         <dt id="joinFile" class="callable">
-          <span class="name "><a class="" href="grinder.files/joinFile.html">joinFile</a></span><span class="signature">(<wbr><span class="parameter" id="joinFile-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span></span>, <span class="parameter" id="joinFile-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
+          <span class="name"><a href="grinder.files/joinFile.html">joinFile</a></span><span class="signature">(<wbr><span class="parameter" id="joinFile-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span>, </span> <span class="parameter" id="joinFile-param-files"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">files</span></span>)
             <span class="returntype parameter">&#8594; File</span>
           </span>
         </dt>
@@ -204,7 +203,7 @@ given path to a platform dependent path.</p>
 
       <dl>
         <dt id="FilePath">
-          <span class="name "><a class="" href="grinder.files/FilePath-class.html">FilePath</a></span>
+          <span class="name "><a href="grinder.files/FilePath-class.html">FilePath</a></span>
         </dt>
         <dd>
           <p>A class to make it easier to manipulate file system entites. Once paths or
@@ -212,7 +211,7 @@ entites are converted into <code>Path</code>s, they can be easily copied, delete
 joined, and their name retrieved.</p>
         </dd>
         <dt id="FileSet">
-          <span class="name "><a class="" href="grinder.files/FileSet-class.html">FileSet</a></span>
+          <span class="name "><a href="grinder.files/FileSet-class.html">FileSet</a></span>
         </dt>
         <dd>
           <p>A class to handle defining, composing, and comparing groups of files.</p>
@@ -230,23 +229,23 @@ joined, and their name retrieved.</p>
     
     
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#functions">Functions</a></li>
-      <li><a class="" href="grinder.files/baseName.html">baseName</a></li>
-      <li><a class="" href="grinder.files/copy.html">copy</a></li>
-      <li><a class="" href="grinder.files/copyDirectory.html">copyDirectory</a></li>
-      <li><a class="" href="grinder.files/copyFile.html">copyFile</a></li>
-      <li><a class="" href="grinder.files/delete.html">delete</a></li>
-      <li><a class="" href="grinder.files/deleteEntity.html">deleteEntity</a></li>
-      <li><a class="" href="grinder.files/fileExt.html">fileExt</a></li>
-      <li><a class="" href="grinder.files/fileName.html">fileName</a></li>
-      <li><a class="" href="grinder.files/getDir.html">getDir</a></li>
-      <li><a class="" href="grinder.files/getFile.html">getFile</a></li>
-      <li><a class="" href="grinder.files/joinDir.html">joinDir</a></li>
-      <li><a class="" href="grinder.files/joinFile.html">joinFile</a></li>
+      <li><a href="grinder.files/baseName.html">baseName</a></li>
+      <li><a href="grinder.files/copy.html">copy</a></li>
+      <li><a href="grinder.files/copyDirectory.html">copyDirectory</a></li>
+      <li><a href="grinder.files/copyFile.html">copyFile</a></li>
+      <li><a href="grinder.files/delete.html">delete</a></li>
+      <li><a href="grinder.files/deleteEntity.html">deleteEntity</a></li>
+      <li><a href="grinder.files/fileExt.html">fileExt</a></li>
+      <li><a href="grinder.files/fileName.html">fileName</a></li>
+      <li><a href="grinder.files/getDir.html">getDir</a></li>
+      <li><a href="grinder.files/getFile.html">getFile</a></li>
+      <li><a href="grinder.files/joinDir.html">joinDir</a></li>
+      <li><a href="grinder.files/joinFile.html">joinFile</a></li>
     
     
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#classes">Classes</a></li>
-      <li><a class="" href="grinder.files/FilePath-class.html">FilePath</a></li>
-      <li><a class="" href="grinder.files/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
     
     </ol>
   </div><!--/sidebar-offcanvas-right-->
@@ -259,7 +258,7 @@ joined, and their name retrieved.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -279,6 +278,7 @@ joined, and their name retrieved.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

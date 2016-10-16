@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the sdkBin function from the grinder.sdk library, for the Dart programming language.">
   <title>sdkBin function - grinder.sdk library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the sdkBin function from the grinder.sdk library, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -77,25 +75,25 @@
     
     
       <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#properties">Properties</a></li>
-      <li><a class="" href="grinder.sdk/dartVM.html">dartVM</a></li>
-      <li><a class="" href="grinder.sdk/existingSourceDirs.html">existingSourceDirs</a></li>
-      <li><a class="" href="grinder.sdk/sdkDir.html">sdkDir</a></li>
-      <li><a class="" href="grinder.sdk/sourceDirs.html">sourceDirs</a></li>
+      <li><a href="grinder.sdk/dartVM.html">dartVM</a></li>
+      <li><a href="grinder.sdk/existingSourceDirs.html">existingSourceDirs</a></li>
+      <li><a href="grinder.sdk/sdkDir.html">sdkDir</a></li>
+      <li><a href="grinder.sdk/sourceDirs.html">sourceDirs</a></li>
     
       <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#functions">Functions</a></li>
-      <li><a class="" href="grinder.sdk/getSdkDir.html">getSdkDir</a></li>
-      <li><a class="" href="grinder.sdk/sdkBin.html">sdkBin</a></li>
+      <li><a class="deprecated" href="grinder.sdk/getSdkDir.html">getSdkDir</a></li>
+      <li><a href="grinder.sdk/sdkBin.html">sdkBin</a></li>
     
     
       <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#classes">Classes</a></li>
-      <li><a class="" href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
-      <li><a class="" href="grinder.sdk/Dart-class.html">Dart</a></li>
-      <li><a class="" href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
-      <li><a class="" href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
-      <li><a class="" href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
-      <li><a class="" href="grinder.sdk/Pub-class.html">Pub</a></li>
-      <li><a class="" href="grinder.sdk/PubApp-class.html">PubApp</a></li>
-      <li><a class="" href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
+      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
+      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
     
     </ol>
   </div><!--/.sidebar-offcanvas-left-->
@@ -106,7 +104,6 @@
         <span class="returntype">String</span>
         <span class="name ">sdkBin</span>(<wbr><span class="parameter" id="sdkBin-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
     </section>
-
     <section class="desc markdown">
       <p>Return the path to a binary in the SDK's <code>bin/</code> directory. This will handle
 appending <code>.bat</code> or <code>.exe</code> on Windows. This is useful for finding the path
@@ -115,22 +112,11 @@ to SDK utilities like <code>dartdoc</code>, <code>dart2js</code>, ...</p>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">String sdkBin(String name) {
-  if (Platform.isWindows) {
-    return name == &apos;dart&apos; ? &apos;dart.exe&apos; : &apos;${name}.bat&apos;;
-  } else if (Platform.isMacOS) {
-    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
-    // This is only necessary in unusual circumstances, like when the script is
-    // run from the Editor on macos.
-    if (_sdkOnPath == null) {
-      _sdkOnPath = whichSync(&apos;dart&apos;, orElse: () =&gt; null) != null;
-    }
-
-    return _sdkOnPath ? name : &apos;${sdkDir.path}/bin/${name}&apos;;
-  } else {
-    return name;
-  }
-}</code></pre>
+      <pre class="prettyprint language-dart">String sdkBin(String name) {
+  if (!Platform.isWindows) return path.join(sdkDir.path, &#39;bin&#39;, name);
+  if (name == &#39;dart&#39;) return Platform.resolvedExecutable;
+  return path.join(sdkDir.path, &#39;bin&#39;, &#39;$name.bat&#39;);
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -143,7 +129,7 @@ to SDK utilities like <code>dartdoc</code>, <code>dart2js</code>, ...</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -163,6 +149,7 @@ to SDK utilities like <code>dartdoc</code>, <code>dart2js</code>, ...</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the start method from the Grinder class, for the Dart programming language.">
   <title>start method - Grinder class - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the start method from the Grinder class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -87,52 +85,50 @@
       <li class="section-title">
         <a href="grinder/Grinder-class.html#instance-properties">Properties</a>
       </li>
-      <li><a class="" href="grinder/Grinder/defaultTask.html">defaultTask</a></li>
-      <li><a class="" href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></li>
-      <li class="inherited"><a class="" href="grinder/Grinder/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a class="" href="grinder/Grinder/runtimeType.html">runtimeType</a></li>
-      <li><a class="" href="grinder/Grinder/tasks.html">tasks</a></li>
+      <li><a href="grinder/Grinder/defaultTask.html">defaultTask</a></li>
+      <li><a href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></li>
+      <li class="inherited"><a href="grinder/Grinder/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/Grinder/runtimeType.html">runtimeType</a></li>
+      <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
     
       <li class="section-title inherited"><a href="grinder/Grinder-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder/Grinder/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder/Grinder/operator_equals.html">operator ==</a></li>
     
       <li class="section-title"><a href="grinder/Grinder-class.html#instance-methods">Methods</a></li>
-      <li><a class="" href="grinder/Grinder/addTask.html">addTask</a></li>
-      <li><a class="" href="grinder/Grinder/getAllDependencies.html">getAllDependencies</a></li>
-      <li><a class="" href="grinder/Grinder/getBuildOrder.html">getBuildOrder</a></li>
-      <li><a class="" href="grinder/Grinder/getImmediateDependencies.html">getImmediateDependencies</a></li>
-      <li><a class="" href="grinder/Grinder/getTask.html">getTask</a></li>
-      <li><a class="" href="grinder/Grinder/log.html">log</a></li>
-      <li class="inherited"><a class="" href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
-      <li><a class="" href="grinder/Grinder/start.html">start</a></li>
-      <li class="inherited"><a class="" href="grinder/Grinder/toString.html">toString</a></li>
+      <li><a href="grinder/Grinder/addTask.html">addTask</a></li>
+      <li><a href="grinder/Grinder/getAllDependencies.html">getAllDependencies</a></li>
+      <li><a href="grinder/Grinder/getBuildOrder.html">getBuildOrder</a></li>
+      <li><a href="grinder/Grinder/getImmediateDependencies.html">getImmediateDependencies</a></li>
+      <li><a href="grinder/Grinder/getTask.html">getTask</a></li>
+      <li><a href="grinder/Grinder/log.html">log</a></li>
+      <li class="inherited"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="grinder/Grinder/start.html">start</a></li>
+      <li class="inherited"><a href="grinder/Grinder/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <span class="returntype">Future</span>
-        <span class="name ">start</span>(<wbr><span class="parameter" id="start-param-invocations"><span class="type-annotation">Iterable</span> <span class="parameter-name">invocations</span></span>, {<span class="parameter" id="start-param-dontRun"><span class="type-annotation">bool</span> <span class="parameter-name">dontRun</span>: <span class="default-value">false</span></span>})
+      <span class="returntype">Future</span>
+      <span class="name ">start</span>(<wbr><span class="parameter" id="start-param-invocations"><span class="type-annotation">Iterable</span> <span class="parameter-name">invocations</span>, {</span> <span class="parameter" id="start-param-dontRun"><span class="type-annotation">bool</span> <span class="parameter-name">dontRun</span>: <span class="default-value">false</span></span> })
     </section>
-
     <section class="desc markdown">
       <p>Start the build process and run all the tasks in the calculated build
 order.</p>
-<p><a class="" href="grinder/Grinder/start.html">start</a> should be called once and only once; i.e., Grinder instances are
+<p><a href="grinder/Grinder/start.html">start</a> should be called once and only once; i.e., Grinder instances are
 not re-usable.</p>
 <p>Items in <code>invocations</code> can either be <code>String</code> names of tasks to invoke, or
-full <a class="" href="grinder/TaskInvocation-class.html">TaskInvocation</a>s.</p>
+full <a href="grinder/TaskInvocation-class.html">TaskInvocation</a>s.</p>
 <p>The <code>dontRun</code> parameter can be used to audit the grinder file, without
 actually executing any targets.</p>
-<p>Throws <a class="" href="grinder/GrinderException-class.html">GrinderException</a> if named tasks don't exist, or there are
+<p>Throws <a href="grinder/GrinderException-class.html">GrinderException</a> if named tasks don't exist, or there are
 cycles in the dependency graph.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">Future start(Iterable invocations, {bool dontRun: false}) {
+      <pre class="prettyprint language-dart">Future start(Iterable invocations, {bool dontRun: false}) {
   if (!dontRun &amp;&amp; _taskDeps != null) {
     throw new StateError(&quot;Grinder instances are not re-usable&quot;);
   }
@@ -146,66 +142,66 @@ cycles in the dependency graph.</p>
     if (defaultTask != null) {
       invocations = [new TaskInvocation(defaultTask.name)];
     } else if (!dontRun) {
-      throw new GrinderException(&apos;Tried to call non-existent default task.&apos;);
+      throw new GrinderException(&#39;Tried to call non-existent default task.&#39;);
     }
     if (invocations.isEmpty) return new Future.value();
   }
 
-  // Verify that all named tasks exist.
+  &#47;&#47; Verify that all named tasks exist.
   for (var invocation in invocations) {
     var name = invocation.name;
     if (getTask(name) == null) {
-      throw new GrinderException(&quot;task &apos;$name&apos; doesn&apos;t exist&quot;);
+      throw new GrinderException(&quot;task &#39;$name&#39; doesn&#39;t exist&quot;);
     }
   }
 
-  // Verify that there aren&apos;t any duplicate names.
+  &#47;&#47; Verify that there aren&#39;t any duplicate names.
   Set&lt;String&gt; names = new Set();
 
   for (GrinderTask task in _tasks) {
     if (names.contains(task.name)) {
-      throw new GrinderException(&quot;task &apos;${task.name}&apos; is defined twice&quot;);
+      throw new GrinderException(&quot;task &#39;${task.name}&#39; is defined twice&quot;);
     }
     names.add(task.name);
   }
 
-  // Verify that all referenced tasks exist.
+  &#47;&#47; Verify that all referenced tasks exist.
   for (GrinderTask task in tasks) {
     for (var invocation in task.depends) {
       if (getTask(invocation.name) == null) {
         throw new GrinderException(
-            &quot;task &apos;${invocation.name}&apos; referenced by ${task}, doesn&apos;t exist&quot;);
+            &quot;task &#39;${invocation.name}&#39; referenced by ${task}, doesn&#39;t exist&quot;);
       }
     }
   }
 
   _calculateAllDeps();
 
-  // Verify that there are no dependency cycles.
+  &#47;&#47; Verify that there are no dependency cycles.
   for (GrinderTask task in tasks) {
     if (getAllDependencies(task)
         .any((invocation) =&gt; invocation.name == task.name)) {
       throw new GrinderException(&quot;Task ${task} has a dependency cycle.\n&quot;
-          &quot;  ${task} ==&gt; ${getAllDependencies(task).join(&apos;, &apos;)}&quot;);
+          &quot;  ${task} ==&gt; ${getAllDependencies(task).join(&#39;, &#39;)}&quot;);
     }
   }
 
   invocations.forEach(_postOrder);
 
   if (!dontRun) {
-    log(&apos;grinder running ${ansi.bold}${_invocationOrder.join(&apos; &apos;)}${ansi.reset}&apos;);
-    log(&apos;&apos;);
+    log(&#39;grinder running ${ansi.bold}${_invocationOrder.join(&#39; &#39;)}${ansi.reset}&#39;);
+    log(&#39;&#39;);
 
     return Future.forEach(_invocationOrder, (task) {
       return _invokeTask(task);
     }).then((_) {
       Duration elapsed = new DateTime.now().difference(startTime);
-      log(&apos;finished in ${elapsed.inMilliseconds / 1000.0} seconds.&apos;);
+      log(&#39;finished in ${elapsed.inMilliseconds &#47; 1000.0} seconds.&#39;);
     });
   } else {
     return new Future.value();
   }
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -218,7 +214,7 @@ cycles in the dependency graph.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -238,6 +234,7 @@ cycles in the dependency graph.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

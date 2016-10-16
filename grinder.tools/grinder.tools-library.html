@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="grinder.tools library API docs, for the Dart programming language.">
   <title>grinder.tools library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="grinder.tools library API docs, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -74,8 +72,9 @@
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
     <h5><a href="index.html">grinder</a></h5>
 
+
     <ol>
-      <li class="section-title"><a href="index.html">Libraries</a></li>
+      <li class="section-title"><a href="index.html#libraries">Libraries</a></li>
       <li><a href="grinder/grinder-library.html">grinder</a></li>
       <li><a href="grinder.files/grinder.files-library.html">grinder.files</a></li>
       <li><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></li>
@@ -96,7 +95,7 @@
 
       <dl class="properties">
         <dt id="binDir" class="property">
-          <span class="name"><a class="" href="grinder.tools/binDir.html">binDir</a></span>
+          <span class="name"><a href="grinder.tools/binDir.html">binDir</a></span>
           <span class="signature">&#8594; Directory</span>
         </dt>
         <dd>
@@ -106,7 +105,7 @@
   </div>
 </dd>
         <dt id="buildDir" class="property">
-          <span class="name"><a class="" href="grinder.tools/buildDir.html">buildDir</a></span>
+          <span class="name"><a href="grinder.tools/buildDir.html">buildDir</a></span>
           <span class="signature">&#8594; Directory</span>
         </dt>
         <dd>
@@ -116,7 +115,7 @@
   </div>
 </dd>
         <dt id="libDir" class="property">
-          <span class="name"><a class="" href="grinder.tools/libDir.html">libDir</a></span>
+          <span class="name"><a href="grinder.tools/libDir.html">libDir</a></span>
           <span class="signature">&#8594; Directory</span>
         </dt>
         <dd>
@@ -126,7 +125,7 @@
   </div>
 </dd>
         <dt id="webDir" class="property">
-          <span class="name"><a class="" href="grinder.tools/webDir.html">webDir</a></span>
+          <span class="name"><a href="grinder.tools/webDir.html">webDir</a></span>
           <span class="signature">&#8594; Directory</span>
         </dt>
         <dd>
@@ -143,7 +142,7 @@
 
       <dl class="callables">
         <dt id="defaultClean" class="callable">
-          <span class="name "><a class="" href="grinder.tools/defaultClean.html">defaultClean</a></span><span class="signature">(<wbr>[<span class="parameter" id="defaultClean-param-context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>])
+          <span class="name"><a href="grinder.tools/defaultClean.html">defaultClean</a></span><span class="signature">(<wbr>[<span class="parameter" id="defaultClean-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
         </dt>
@@ -152,49 +151,44 @@
 artifacts in the <code>build/</code>.</p>
         </dd>
         <dt id="run" class="callable">
-          <span class="name "><a class="" href="grinder.tools/run.html">run</a></span><span class="signature">(<wbr><span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+          <span class="name"><a href="grinder.tools/run.html">run</a></span><span class="signature">(<wbr><span class="parameter" id="run-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span>, {</span> <span class="parameter" id="run-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="run-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="run-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="run-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span> })
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
         <dd>
-          <p>Synchronously run an <code>executable</code>.<a href="grinder.tools/run.html">&hellip;</a>
-</p>
+          <p>Synchronously run an <code>executable</code>.</p>
         </dd>
         <dt id="runAsync" class="callable">
-          <span class="name "><a class="" href="grinder.tools/runAsync.html">runAsync</a></span><span class="signature">(<wbr><span class="parameter" id="runAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runAsync-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+          <span class="name"><a href="grinder.tools/runAsync.html">runAsync</a></span><span class="signature">(<wbr><span class="parameter" id="runAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span>, {</span> <span class="parameter" id="runAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="runAsync-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="runAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="runAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span> })
             <span class="returntype parameter">&#8594; Future&lt;String&gt;</span>
           </span>
         </dt>
         <dd>
-          <p>Asynchronously run an <code>executable</code>.<a href="grinder.tools/runAsync.html">&hellip;</a>
-</p>
+          <p>Asynchronously run an <code>executable</code>.</p>
         </dd>
         <dt id="runDartScript" class="callable">
-          <span class="name "><a class="" href="grinder.tools/runDartScript.html">runDartScript</a></span><span class="signature">(<wbr><span class="parameter" id="runDartScript-param-script"><span class="type-annotation">String</span> <span class="parameter-name">script</span></span>, {<span class="parameter" id="runDartScript-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runDartScript-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runDartScript-param-packageRoot"><span class="type-annotation">String</span> <span class="parameter-name">packageRoot</span></span>, <span class="parameter" id="runDartScript-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runDartScript-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+          <span class="name"><a href="grinder.tools/runDartScript.html">runDartScript</a></span><span class="signature">(<wbr><span class="parameter" id="runDartScript-param-script"><span class="type-annotation">String</span> <span class="parameter-name">script</span>, {</span> <span class="parameter" id="runDartScript-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="runDartScript-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="runDartScript-param-packageRoot"><span class="type-annotation">String</span> <span class="parameter-name">packageRoot</span>, </span> <span class="parameter" id="runDartScript-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="runDartScript-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span> })
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
         <dd>
-          <p>Run a dart <code>script</code> using <a class="" href="grinder/run.html">run_lib.run</a>. Returns the stdout.<a href="grinder.tools/runDartScript.html">&hellip;</a>
-</p>
+          <p>Run a dart <code>script</code> using <a href="grinder/run.html">run_lib.run</a>. Returns the stdout.</p>
         </dd>
         <dt id="runProcess" class="callable">
-          <span class="name deprecated"><a class="deprecated" href="grinder.tools/runProcess.html">runProcess</a></span><span class="signature">(<wbr><span class="parameter" id="runProcess-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runProcess-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runProcess-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runProcess-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>, <span class="parameter" id="runProcess-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>})
+          <span class="name deprecated"><a class="deprecated" href="grinder.tools/runProcess.html">runProcess</a></span><span class="signature">(<wbr><span class="parameter" id="runProcess-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span>, {</span> <span class="parameter" id="runProcess-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="runProcess-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="runProcess-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="runProcess-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span> })
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
         <dd>
-          <p>Synchronously run an <code>executable</code>.<a href="grinder.tools/runProcess.html">&hellip;</a>
-</p>
+          <p>Synchronously run an <code>executable</code>.</p>
         </dd>
         <dt id="runProcessAsync" class="callable">
-          <span class="name deprecated"><a class="deprecated" href="grinder.tools/runProcessAsync.html">runProcessAsync</a></span><span class="signature">(<wbr><span class="parameter" id="runProcessAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span></span>, {<span class="parameter" id="runProcessAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span></span>, <span class="parameter" id="runProcessAsync-param-runOptions"><span class="type-annotation"><a class="" href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span>, <span class="parameter" id="runProcessAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span></span>, <span class="parameter" id="runProcessAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span>})
+          <span class="name deprecated"><a class="deprecated" href="grinder.tools/runProcessAsync.html">runProcessAsync</a></span><span class="signature">(<wbr><span class="parameter" id="runProcessAsync-param-executable"><span class="type-annotation">String</span> <span class="parameter-name">executable</span>, {</span> <span class="parameter" id="runProcessAsync-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="runProcessAsync-param-runOptions"><span class="type-annotation"><a href="grinder/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span>, </span> <span class="parameter" id="runProcessAsync-param-workingDirectory"><span class="type-annotation">String</span> <span class="parameter-name">workingDirectory</span>, </span> <span class="parameter" id="runProcessAsync-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; Future&lt;String&gt;</span>
           </span>
         </dt>
         <dd>
-          <p>Asynchronously run an <code>executable</code>.<a href="grinder.tools/runProcessAsync.html">&hellip;</a>
-</p>
+          <p>Asynchronously run an <code>executable</code>.</p>
         </dd>
       </dl>
     </section>
@@ -205,20 +199,20 @@ artifacts in the <code>build/</code>.</p>
 
       <dl>
         <dt id="DevCompiler">
-          <span class="name "><a class="" href="grinder.tools/DevCompiler-class.html">DevCompiler</a></span>
+          <span class="name "><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></span>
         </dt>
         <dd>
           <p>A class to drive the Dart Dev Compiler (DDC, from the <code>dev_compiler</code> package).</p>
         </dd>
         <dt id="RunOptions">
-          <span class="name "><a class="" href="grinder.tools/RunOptions-class.html">RunOptions</a></span>
+          <span class="name "><a href="grinder.tools/RunOptions-class.html">RunOptions</a></span>
         </dt>
         <dd>
           <p>Arguments passed to <code>Process.run</code> or <code>Process.start</code>.
 See <code>Process.run</code> for more details.</p>
         </dd>
         <dt id="TestRunner">
-          <span class="name "><a class="" href="grinder.tools/TestRunner-class.html">TestRunner</a></span>
+          <span class="name "><a href="grinder.tools/TestRunner-class.html">TestRunner</a></span>
         </dt>
         <dd>
           <p>A wrapper around the <code>test</code> package. This class is used to run your unit
@@ -232,7 +226,7 @@ tests.</p>
 
       <dl>
         <dt id="ProcessException">
-          <span class="name "><a class="" href="grinder.tools/ProcessException-class.html">ProcessException</a></span>
+          <span class="name "><a href="grinder.tools/ProcessException-class.html">ProcessException</a></span>
         </dt>
         <dd>
           <p>An exception from a process which exited with a non-zero exit code.</p>
@@ -248,27 +242,27 @@ tests.</p>
     
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#properties">Properties</a></li>
-      <li><a class="" href="grinder.tools/binDir.html">binDir</a></li>
-      <li><a class="" href="grinder.tools/buildDir.html">buildDir</a></li>
-      <li><a class="" href="grinder.tools/libDir.html">libDir</a></li>
-      <li><a class="" href="grinder.tools/webDir.html">webDir</a></li>
+      <li><a href="grinder.tools/binDir.html">binDir</a></li>
+      <li><a href="grinder.tools/buildDir.html">buildDir</a></li>
+      <li><a href="grinder.tools/libDir.html">libDir</a></li>
+      <li><a href="grinder.tools/webDir.html">webDir</a></li>
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#functions">Functions</a></li>
-      <li><a class="" href="grinder.tools/defaultClean.html">defaultClean</a></li>
-      <li><a class="" href="grinder.tools/run.html">run</a></li>
-      <li><a class="" href="grinder.tools/runAsync.html">runAsync</a></li>
-      <li><a class="" href="grinder.tools/runDartScript.html">runDartScript</a></li>
+      <li><a href="grinder.tools/defaultClean.html">defaultClean</a></li>
+      <li><a href="grinder.tools/run.html">run</a></li>
+      <li><a href="grinder.tools/runAsync.html">runAsync</a></li>
+      <li><a href="grinder.tools/runDartScript.html">runDartScript</a></li>
       <li><a class="deprecated" href="grinder.tools/runProcess.html">runProcess</a></li>
       <li><a class="deprecated" href="grinder.tools/runProcessAsync.html">runProcessAsync</a></li>
     
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#classes">Classes</a></li>
-      <li><a class="" href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
-      <li><a class="" href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
-      <li><a class="" href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#exceptions">Exceptions</a></li>
-      <li><a class="" href="grinder.tools/ProcessException-class.html">ProcessException</a></li>
+      <li><a href="grinder.tools/ProcessException-class.html">ProcessException</a></li>
     </ol>
   </div><!--/sidebar-offcanvas-right-->
 
@@ -280,7 +274,7 @@ tests.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -300,6 +294,7 @@ tests.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->

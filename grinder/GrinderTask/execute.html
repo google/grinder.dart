@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.8.0">
+  <meta name="description" content="API docs for the execute method from the GrinderTask class, for the Dart programming language.">
   <title>execute method - GrinderTask class - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="../..">
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
   <link rel="stylesheet" href="static-assets/prettify.css">
   <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="static-assets/styles.css">
-
-  <meta name="description" content="API docs for the execute method from the GrinderTask class, for the Dart programming language.">
   <link rel="icon" href="static-assets/favicon.png">
 
   <!-- Do not remove placeholder -->
@@ -87,34 +85,32 @@
       <li class="section-title">
         <a href="grinder/GrinderTask-class.html#instance-properties">Properties</a>
       </li>
-      <li><a class="" href="grinder/GrinderTask/depends.html">depends</a></li>
-      <li><a class="" href="grinder/GrinderTask/description.html">description</a></li>
-      <li class="inherited"><a class="" href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
-      <li><a class="" href="grinder/GrinderTask/name.html">name</a></li>
-      <li><a class="" href="grinder/GrinderTask/options.html">options</a></li>
-      <li><a class="" href="grinder/GrinderTask/positionals.html">positionals</a></li>
-      <li><a class="" href="grinder/GrinderTask/rest.html">rest</a></li>
-      <li class="inherited"><a class="" href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
-      <li><a class="" href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
+      <li><a href="grinder/GrinderTask/depends.html">depends</a></li>
+      <li><a href="grinder/GrinderTask/description.html">description</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
+      <li><a href="grinder/GrinderTask/name.html">name</a></li>
+      <li><a href="grinder/GrinderTask/options.html">options</a></li>
+      <li><a href="grinder/GrinderTask/positionals.html">positionals</a></li>
+      <li><a href="grinder/GrinderTask/rest.html">rest</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
+      <li><a href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
     
       <li class="section-title inherited"><a href="grinder/GrinderTask-class.html#operators">Operators</a></li>
-      <li class="inherited"><a class="" href="grinder/GrinderTask/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/operator_equals.html">operator ==</a></li>
     
       <li class="section-title"><a href="grinder/GrinderTask-class.html#instance-methods">Methods</a></li>
-      <li><a class="" href="grinder/GrinderTask/execute.html">execute</a></li>
-      <li class="inherited"><a class="" href="grinder/GrinderTask/noSuchMethod.html">noSuchMethod</a></li>
-      <li><a class="" href="grinder/GrinderTask/toString.html">toString</a></li>
+      <li><a href="grinder/GrinderTask/execute.html">execute</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/noSuchMethod.html">noSuchMethod</a></li>
+      <li><a href="grinder/GrinderTask/toString.html">toString</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-
     <section class="multi-line-signature">
-        <span class="returntype">dynamic</span>
-        <span class="name ">execute</span>(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a class="" href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span></span>)
+      <span class="returntype">dynamic</span>
+      <span class="name ">execute</span>(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span></span>)
     </section>
-
     <section class="desc markdown">
       <p>This method is invoked when the task is started. If a task was created with
 a <code>Function</code>, that function will be invoked by this method.</p>
@@ -122,7 +118,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre><code class="prettyprint lang-dart">dynamic execute(GrinderContext _context) {
+      <pre class="prettyprint language-dart">dynamic execute(GrinderContext _context) {
   if (taskFunction == null) return null;
 
   var f = taskFunction is _TaskFunction
@@ -130,7 +126,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
       : taskFunction;
 
   return zonedContext.withValue(_context, f);
-}</code></pre>
+}</pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -143,7 +139,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+2
+          grinder 0.8.0+3
         </span>
         &bull;
         <span class="no-break">
@@ -163,6 +159,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
 <script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
 <!-- Do not remove placeholder -->
 <!-- Footer Placeholder -->
