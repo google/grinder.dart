@@ -49,9 +49,9 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) {
   } catch (e) {
     if (e is GrinderException) {
       fail(e.message);
-    } else {
-      return new Future.error(e);
     }
+
+    return new Future.error(e);
   }
 }
 
