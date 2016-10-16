@@ -18,19 +18,13 @@ main() {
       }
     });
 
-    test('getSdkDir', () {
-      expect(getSdkDir(), isNotNull);
-      expect(getSdkDir(grinderArgs()), isNotNull);
-      expect(getSdkDir([]), isNotNull);
+    test('sdkDir', () {
+      expect(sdkDir, isNotNull);
     });
 
     test('get dartVM', () {
       expect(dartVM, isNotNull);
     });
-
-//    test('DartSdk.location', () {
-//      expect(DartSdk.location, isNotNull);
-//    });
 
     test('Dart.version', () {
       expect(Dart.version(quiet: true), isNotEmpty);

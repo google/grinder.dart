@@ -4,7 +4,7 @@
 library grinder.src.cli;
 
 import 'dart:async';
-import 'dart:convert' show JSON, UTF8;
+import 'dart:convert' show JSON;
 
 import 'package:unscripted/unscripted.dart';
 
@@ -14,7 +14,7 @@ import 'singleton.dart' as singleton;
 import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String appVersion = '0.8.0+2';
+const String appVersion = '0.8.0+3';
 
 List<String> grinderArgs() => _args;
 List<String> _args;
@@ -92,8 +92,6 @@ cli(@Rest(
       fail(message);
     });
   }
-
-  return new Future.value();
 }
 
 Script script = new Script(cli);
