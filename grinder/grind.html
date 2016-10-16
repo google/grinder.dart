@@ -171,9 +171,9 @@ run from a project root.</p>
   } catch (e) {
     if (e is GrinderException) {
       fail(e.message);
-    } else {
-      return new Future.error(e);
     }
+
+    return new Future.error(e);
   }
 }</pre>
     </section>
