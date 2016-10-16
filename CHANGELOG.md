@@ -1,5 +1,9 @@
 # grinder.dart changes
 
+## 0.8.0+3
+- All APIs, including `pub run grinder`, always use the same Dart version as the
+  user.
+
 ## 0.8.0+2
 - Added `categories` and `extraArgs` parameters to `Dart2Js.compile()` and
   `Dart2Js.compileAsync()`

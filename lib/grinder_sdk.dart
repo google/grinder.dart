@@ -7,16 +7,12 @@ library grinder.sdk;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cli_util/cli_util.dart' as cli_util;
 import 'package:path/path.dart' as path;
-import 'package:which/which.dart';
 
 import 'grinder.dart';
 import 'src/run.dart' as runlib;
 import 'src/run_utils.dart';
 import 'src/utils.dart';
-
-bool _sdkOnPath;
 
 /// A set of common top-level directories according to the Pub package layout
 /// convention which usually contain Dart source code.
@@ -38,42 +34,25 @@ Set<Directory> get existingSourceDirs => Directory.current
     .where((d) => sourceDirs.any((sd) => sd.path == d.path))
     .toSet();
 
-/**
- * Return the path to the current Dart SDK. This will return `null` if we are
- * unable to locate the Dart SDK.
- *
- * See also [getSdkDir].
- */
-Directory get sdkDir => getSdkDir(grinderArgs());
+/// The path to the current Dart SDK.
+final sdkDir =
+    new Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
 
-/**
- * Return the path to the current Dart SDK. This will return `null` if we are
- * unable to locate the Dart SDK.
- *
- * This is an alias for the `cli_util` package's `getSdkDir()` method.
- */
-Directory getSdkDir([List<String> cliArgs]) => cli_util.getSdkDir(cliArgs);
+/// This is deprecated.
+///
+/// Use [sdkDir] instead.
+@deprecated
+Directory getSdkDir([List<String> cliArgs]) => sdkDir;
 
-File get dartVM => joinFile(sdkDir, ['bin', sdkBin('dart')]);
+final dartVM = new File(Platform.resolvedExecutable);
 
 /// Return the path to a binary in the SDK's `bin/` directory. This will handle
 /// appending `.bat` or `.exe` on Windows. This is useful for finding the path
 /// to SDK utilities like `dartdoc`, `dart2js`, ...
 String sdkBin(String name) {
-  if (Platform.isWindows) {
-    return name == 'dart' ? 'dart.exe' : '${name}.bat';
-  } else if (Platform.isMacOS) {
-    // If `dart` is not visible, we should join the sdk path and `bin/$name`.
-    // This is only necessary in unusual circumstances, like when the script is
-    // run from the Editor on macos.
-    if (_sdkOnPath == null) {
-      _sdkOnPath = whichSync('dart', orElse: () => null) != null;
-    }
-
-    return _sdkOnPath ? name : '${sdkDir.path}/bin/${name}';
-  } else {
-    return name;
-  }
+  if (!Platform.isWindows) return path.join(sdkDir.path, 'bin', name);
+  if (name == 'dart') return Platform.resolvedExecutable;
+  return path.join(sdkDir.path, 'bin', '$name.bat');
 }
 
 /// Utility tasks for for getting information about the Dart VM and for running
@@ -93,7 +72,7 @@ class Dart {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
-    return runlib.run(sdkBin('dart'),
+    return runlib.run(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
@@ -105,14 +84,14 @@ class Dart {
       List<String> vmArgs: const []}) {
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
-    return runlib.runAsync(sdkBin('dart'),
+    return runlib.runAsync(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
   static String version({bool quiet: false}) {
     // TODO: We may want to run `dart --version` in order to know the version
     // of the SDK that grinder has located.
-    // runlib.run(sdkBin('dart'), arguments: ['--version'], quiet: quiet);
+    // runlib.run(dartVM.path, arguments: ['--version'], quiet: quiet);
     // The stdout does not have a stable documented format, so use the provided
     // metadata instead.
     return Platform.version.substring(0, Platform.version.indexOf(' '));

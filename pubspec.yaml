@@ -1,6 +1,6 @@
 name: grinder
 # This version must be updated in tandem with the lib/src/cli.dart version.
-version: 0.8.0+2
+version: 0.8.0+3
 description: Dart workflows, automated.
 
 homepage: https://github.com/google/grinder.dart
@@ -9,16 +9,14 @@ authors:
 - Sean Eagan <seaneagan1@gmail.com>
 
 environment:
-  sdk: '>=1.8.0 <2.0.0'
+  sdk: '>=1.11.0 <2.0.0'
 
 dependencies:
   ansicolor: '>=0.0.9 <0.1.0'
   collection: '>=1.1.0 <2.0.0'
-  cli_util: '>=0.0.1 <0.1.0'
   glob: '>=1.0.0 <2.0.0'
   path: '>=1.0.0 <2.0.0'
   unscripted: '>=0.6.1+1 <0.7.0'
-  which: '>=0.1.2 <0.2.0'
 
 dev_dependencies:
   test: '^0.12.0'

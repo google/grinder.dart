@@ -18,7 +18,7 @@ void runScript(String script, List args) {
   }
 
   List newArgs = [script]..addAll(args);
-  _runProcessAsync(Platform.isWindows ? 'dart.exe' : 'dart', newArgs);
+  _runProcessAsync(Platform.resolvedExecutable, newArgs);
 }
 
 void _runProcessAsync(String executable, List<String> arguments) {
