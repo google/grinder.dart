@@ -86,10 +86,10 @@
         <a href="grinder/GrinderContext-class.html#instance-properties">Properties</a>
       </li>
       <li><a href="grinder/GrinderContext/grinder.html">grinder</a></li>
-      <li class="inherited"><a href="grinder/GrinderContext/hashCode.html">hashCode</a></li>
       <li><a href="grinder/GrinderContext/invocation.html">invocation</a></li>
-      <li class="inherited"><a href="grinder/GrinderContext/runtimeType.html">runtimeType</a></li>
       <li><a href="grinder/GrinderContext/task.html">task</a></li>
+      <li class="inherited"><a href="grinder/GrinderContext/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/GrinderContext/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder/GrinderContext-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="grinder/GrinderContext/operator_equals.html">operator ==</a></li>
@@ -97,8 +97,8 @@
       <li class="section-title"><a href="grinder/GrinderContext-class.html#instance-methods">Methods</a></li>
       <li><a href="grinder/GrinderContext/fail.html">fail</a></li>
       <li><a href="grinder/GrinderContext/log.html">log</a></li>
-      <li class="inherited"><a href="grinder/GrinderContext/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="grinder/GrinderContext/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder/GrinderContext/noSuchMethod.html">noSuchMethod</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-->
@@ -116,22 +116,22 @@ only if <code>this</code> and <code>other</code> are the same object.</p>
 a class. The overriding method must still be an equivalence relation.
 That is, it must be:</p><ul><li>
 <p>Total: It must return a boolean for all arguments. It should never throw
-   or return <code>null</code>.</p></li><li>
+or return <code>null</code>.</p></li><li>
 <p>Reflexive: For all objects <code>o</code>, <code>o == o</code> must be true.</p></li><li>
 <p>Symmetric: For all objects <code>o1</code> and <code>o2</code>, <code>o1 == o2</code> and <code>o2 == o1</code> must
-   either both be true, or both be false.</p></li><li>
+either both be true, or both be false.</p></li><li>
 <p>Transitive: For all objects <code>o1</code>, <code>o2</code>, and <code>o3</code>, if <code>o1 == o2</code> and
-   <code>o2 == o3</code> are true, then <code>o1 == o3</code> must be true.</p></li></ul>
-<p>The method should also be consistent over time, so equality of two objects
-should not change over time, or at least only change if one of the objects
-was modified.</p>
+<code>o2 == o3</code> are true, then <code>o1 == o3</code> must be true.</p></li></ul>
+<p>The method should also be consistent over time,
+so whether two objects are equal should only change
+if at least one of the objects was modified.</p>
 <p>If a subclass overrides the equality operator it should override
 the <code>hashCode</code> method as well to maintain consistency.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre class="prettyprint language-dart">bool operator ==(other) =&gt; identical(this, other);</pre>
+      <pre class="prettyprint language-dart">external bool operator ==(other);</pre>
     </section>
 
   </div> <!-- /.main-content -->

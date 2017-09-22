@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.9.7+2">
+  <meta name="generator" content="made with love by dartdoc 0.9.14-dev">
   <meta name="description" content="grinder API docs, for the Dart programming language.">
   <title>grinder - Dart API docs</title>
 
@@ -81,10 +81,10 @@
 <p>Dart workflows, automated.</p></blockquote>
 <p>Grinder consists of a library to define project tasks (e.g. test, build, doc),
 and a command-line tool to run them.</p>
-<p><a href="https://pub.dartlang.org/packages/grinder"></a><a href="https://img.shields.io/pub/v/grinder.svg"><img alt="pub package" src="https://img.shields.io/pub/v/grinder.svg"></a>
-<a href="https://travis-ci.org/google/grinder.dart"></a><a href="https://travis-ci.org/google/grinder.dart.svg?branch=master"><img alt="Build Status" src="https://travis-ci.org/google/grinder.dart.svg?branch=master"></a>
-<a href="https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master"></a><a href="https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true"><img alt="Build status" src="https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true"></a>
-<a href="https://coveralls.io/r/google/grinder.dart"></a><a href="https://img.shields.io/coveralls/google/grinder.dart.svg"><img alt="Coverage Status" src="https://img.shields.io/coveralls/google/grinder.dart.svg"></a></p>
+<p><a href="https://pub.dartlang.org/packages/grinder"><img alt="pub package" src="https://img.shields.io/pub/v/grinder.svg"></a>
+<a href="https://travis-ci.org/google/grinder.dart"><img alt="Build Status" src="https://travis-ci.org/google/grinder.dart.svg?branch=master"></a>
+<a href="https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master"><img alt="Build status" src="https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true"></a>
+<a href="https://coveralls.io/r/google/grinder.dart"><img alt="Coverage Status" src="https://img.shields.io/coveralls/google/grinder.dart.svg"></a></p>
 <h2>Getting Started</h2>
 <p>To start using <code>grinder</code>, add it to your <a href="https://www.dartlang.org/tools/pub/dependencies.html#dev-dependencies">dev_dependencies</a>.</p>
 <h3>Defining Tasks</h3>
@@ -94,7 +94,7 @@ in a <code>tool/grind.dart</code> script. To create a simple grinder script, run
 <pre class="prettyprint language-dart"><code>pub run grinder:init
 </code></pre>
 <p>In general, grinder scripts look something like this:</p>
-<pre class="dart prettyprint"><code>import 'package:grinder/grinder.dart';
+<pre class="language-dart prettyprint"><code class="language-dart">import 'package:grinder/grinder.dart';
 
 main(args) =&gt; grind(args);
 
@@ -170,7 +170,7 @@ grind build
             </dt>
             <dd>
               <p>General file system routines, useful in the context of running builds. This
-includes the <a href="grinder/FileSet-class.html">FileSet</a> class, which is used for reasoning about sets of
+includes the <a href="grinder.files/FileSet-class.html">FileSet</a> class, which is used for reasoning about sets of
 files.</p>
             </dd>
             <dt id="grinder.sdk">

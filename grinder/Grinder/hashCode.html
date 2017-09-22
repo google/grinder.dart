@@ -84,9 +84,9 @@
       </li>
       <li><a href="grinder/Grinder/defaultTask.html">defaultTask</a></li>
       <li><a href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></li>
+      <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
       <li class="inherited"><a href="grinder/Grinder/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="grinder/Grinder/runtimeType.html">runtimeType</a></li>
-      <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
     
       <li class="section-title inherited"><a href="grinder/Grinder-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="grinder/Grinder/operator_equals.html">operator ==</a></li>
@@ -98,8 +98,8 @@
       <li><a href="grinder/Grinder/getImmediateDependencies.html">getImmediateDependencies</a></li>
       <li><a href="grinder/Grinder/getTask.html">getTask</a></li>
       <li><a href="grinder/Grinder/log.html">log</a></li>
-      <li class="inherited"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="grinder/Grinder/start.html">start</a></li>
+      <li class="inherited"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
       <li class="inherited"><a href="grinder/Grinder/toString.html">toString</a></li>
     </ol>
 
@@ -115,14 +115,28 @@
         <span class="name ">hashCode</span></section>
       
       <section class="desc markdown">
-  <p>Get a hash code for this object.</p>
-<p>All objects have hash codes. Hash codes are guaranteed to be the
-same for objects that are equal when compared using the equality
-operator <code>==</code>. Other than that there are no guarantees about
-the hash codes. They will not be consistent between runs and
-there are no distribution guarantees.</p>
-<p>If a subclass overrides <code>hashCode</code> it should override the
-equality operator as well to maintain consistency.</p>
+  <p>The hash code for this object.</p>
+<p>A hash code is a single integer which represents the state of the object
+that affects <code>==</code> comparisons.</p>
+<p>All objects have hash codes.
+The default hash code represents only the identity of the object,
+the same way as the default <code>==</code> implementation only considers objects
+equal if they are identical (see <code>identityHashCode</code>).</p>
+<p>If <code>==</code> is overridden to use the object state instead,
+the hash code must also be changed to represent that state.</p>
+<p>Hash codes must be the same for objects that are equal to each other
+according to <code>==</code>.
+The hash code of an object should only change if the object changes
+in a way that affects equality.
+There are no further requirements for the hash codes.
+They need not be consistent between executions of the same program
+and there are no distribution guarantees.</p>
+<p>Objects that are not equal are allowed to have the same hash code,
+it is even technically allowed that all instances have the same hash code,
+but if clashes happen too often, it may reduce the efficiency of hash-based
+data structures like <code>HashSet</code> or <code>HashMap</code>.</p>
+<p>If a subclass overrides <code>hashCode</code>, it should override the
+<code>==</code> operator as well to maintain consistency.</p>
 </section>
 </section>
       <section class="summary source-code" id="source">

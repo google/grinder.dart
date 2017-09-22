@@ -87,9 +87,9 @@
       </li>
       <li><a href="grinder/Grinder/defaultTask.html">defaultTask</a></li>
       <li><a href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></li>
+      <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
       <li class="inherited"><a href="grinder/Grinder/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="grinder/Grinder/runtimeType.html">runtimeType</a></li>
-      <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
     
       <li class="section-title inherited"><a href="grinder/Grinder-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="grinder/Grinder/operator_equals.html">operator ==</a></li>
@@ -101,8 +101,8 @@
       <li><a href="grinder/Grinder/getImmediateDependencies.html">getImmediateDependencies</a></li>
       <li><a href="grinder/Grinder/getTask.html">getTask</a></li>
       <li><a href="grinder/Grinder/log.html">log</a></li>
-      <li class="inherited"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="grinder/Grinder/start.html">start</a></li>
+      <li class="inherited"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></li>
       <li class="inherited"><a href="grinder/Grinder/toString.html">toString</a></li>
     </ol>
 
@@ -186,10 +186,11 @@ cycles in the dependency graph.</p>
     }
   }
 
-  invocations.forEach(_postOrder);
+  invocations.forEach((i) =&gt; _postOrder(i as TaskInvocation));
 
   if (!dontRun) {
-    log(&#39;grinder running ${ansi.bold}${_invocationOrder.join(&#39; &#39;)}${ansi.reset}&#39;);
+    log(&#39;grinder running ${ansi.bold}${_invocationOrder.join(&#39; &#39;)}${ansi
+        .reset}&#39;);
     log(&#39;&#39;);
 
     return Future.forEach(_invocationOrder, (task) {

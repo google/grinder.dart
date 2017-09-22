@@ -88,21 +88,21 @@
       </li>
       <li><a href="grinder/GrinderTask/depends.html">depends</a></li>
       <li><a href="grinder/GrinderTask/description.html">description</a></li>
-      <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
       <li><a href="grinder/GrinderTask/name.html">name</a></li>
       <li><a href="grinder/GrinderTask/options.html">options</a></li>
       <li><a href="grinder/GrinderTask/positionals.html">positionals</a></li>
       <li><a href="grinder/GrinderTask/rest.html">rest</a></li>
-      <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
       <li><a href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder/GrinderTask-class.html#operators">Operators</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/operator_equals.html">operator ==</a></li>
     
       <li class="section-title"><a href="grinder/GrinderTask-class.html#instance-methods">Methods</a></li>
       <li><a href="grinder/GrinderTask/execute.html">execute</a></li>
-      <li class="inherited"><a href="grinder/GrinderTask/noSuchMethod.html">noSuchMethod</a></li>
       <li><a href="grinder/GrinderTask/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder/GrinderTask/noSuchMethod.html">noSuchMethod</a></li>
     </ol>
 
   </div><!--/.sidebar-offcanvas-left-->
@@ -131,8 +131,7 @@ this task.</p>
     this.rest,
     Iterable&lt;Option&gt; options: const []})
     : this.depends = new UnmodifiableListView(depends
-          .map((dep) =&gt; dep is String ? new TaskInvocation(dep) : dep)
-          .toList()),
+          .map((dep) =&gt; dep is String ? new TaskInvocation(dep) : dep)),
       this.positionals = new UnmodifiableListView(positionals.toList()),
       this.options = new UnmodifiableListView(options.toList()) {
   if (taskFunction == null &amp;&amp; depends.isEmpty) {
