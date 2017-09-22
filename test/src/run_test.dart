@@ -3,9 +3,8 @@
 
 library grinder.test.src.run;
 
-import 'dart:io' as io;
-
 import 'dart:convert' show Converter, Encoding, JSON;
+import 'dart:io' as io;
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/grinder_tools.dart';
@@ -68,7 +67,7 @@ main() {
                 arguments: [runScriptName],
                 workingDirectory: runScriptPath,
                 runOptions: new RunOptions(workingDirectory: runScriptPath)),
-            throws);
+            throwsA(new isInstanceOf<ArgumentError>()));
       }
     });
 
@@ -102,7 +101,9 @@ main() {
         expect(json['environment'][k], environment[k]);
       }
       // Filter out __CF_USER_TEXT_ENCODING.
-      expect(json['environment'].keys.where((str) => !str.startsWith('__')),
+      expect(
+          json['environment'].keys.where(
+              (str) => (!str.startsWith('__') && !str.startsWith('GLIB'))),
           unorderedEquals(environment.keys));
     });
 
@@ -170,6 +171,7 @@ class DummyEncoding extends Encoding {
 /// Decoder for [DummyEncoding].
 class DummyDecoder extends Converter<List<int>, String> {
   static const dummyDecoderOutput = 'DummyDecoder';
+
   const DummyDecoder();
 
   String convert(List<int> codeUnits, [int start = 0, int end]) {

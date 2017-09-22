@@ -3,7 +3,7 @@
 
 library grinder.sdk_test;
 
-import 'dart:io';
+import 'dart:io' hide ProcessException;
 
 import 'package:grinder/grinder.dart';
 import 'package:test/test.dart';
@@ -124,14 +124,16 @@ main() {
   });
 
   group('grinder.sdk Analyzer', () {
-    test('should throw on non-existing file',
-        () => expect(() => Analyzer.analyze('xyz'), throws));
+    test(
+        'should throw on non-existing file',
+        () => expect(() => Analyzer.analyze('xyz'),
+            throwsA(new isInstanceOf<ProcessException>())));
 
     test(
         'should analyze a list of files ',
         () => expect(
             () => Analyzer
                 .analyze(['test/grinder_sdk_test.dart', 'tool/grind.dart']),
-            isNot(throws)));
+            isNot(throwsA(new isInstanceOf<ProcessException>()))));
   });
 }

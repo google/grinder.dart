@@ -52,8 +52,7 @@ class GrinderTask {
       this.rest,
       Iterable<Option> options: const []})
       : this.depends = new UnmodifiableListView(depends
-            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)
-            .toList()),
+            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)),
         this.positionals = new UnmodifiableListView(positionals.toList()),
         this.options = new UnmodifiableListView(options.toList()) {
     if (taskFunction == null && depends.isEmpty) {
