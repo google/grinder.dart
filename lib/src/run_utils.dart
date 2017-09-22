@@ -31,7 +31,10 @@ logStderr(String line) {
 RunOptions mergeWorkingDirectory(
     String workingDirectory, RunOptions runOptions) {
   if (workingDirectory != null) {
-    assert(runOptions == null || runOptions.workingDirectory == null);
+    if (runOptions?.workingDirectory != null) {
+      throw new ArgumentError(
+          'only one of workingDirectory or runOptions.workingDirectory may be specified');
+    }
   }
   return runOptions == null
       ? new RunOptions(workingDirectory: workingDirectory)

@@ -3,9 +3,8 @@
 
 library grinder.test.src.run;
 
-import 'dart:io' as io;
-
 import 'dart:convert' show Converter, Encoding, JSON;
+import 'dart:io' as io;
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/grinder_tools.dart';
@@ -68,7 +67,7 @@ main() {
                 arguments: [runScriptName],
                 workingDirectory: runScriptPath,
                 runOptions: new RunOptions(workingDirectory: runScriptPath)),
-            throws);
+            throwsA(new isInstanceOf<ArgumentError>()));
       }
     });
 
@@ -170,6 +169,7 @@ class DummyEncoding extends Encoding {
 /// Decoder for [DummyEncoding].
 class DummyDecoder extends Converter<List<int>, String> {
   static const dummyDecoderOutput = 'DummyDecoder';
+
   const DummyDecoder();
 
   String convert(List<int> codeUnits, [int start = 0, int end]) {

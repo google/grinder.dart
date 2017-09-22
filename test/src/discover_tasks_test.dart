@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 import 'task_discovery/good_tasks.dart' as good;
 import 'task_discovery/bad_tasks.dart' as bad;
-import 'task_discovery/external_tasks.dart' as external;
+import 'task_discovery/external_tasks.dart' as external_tasks;
 import '_common.dart';
 
 main() {
@@ -26,7 +26,7 @@ main() {
   //     https://github.com/dart-lang/reflectable/issues/2
   good.variable;
   bad.dependsNonExported;
-  external.shownVariable;
+  external_tasks.shownVariable;
   externalLib;
 
   TaskDiscovery discoveryGood;

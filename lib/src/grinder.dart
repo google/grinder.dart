@@ -159,10 +159,11 @@ class Grinder {
       }
     }
 
-    invocations.forEach(_postOrder);
+    invocations.forEach((i) => _postOrder(i as TaskInvocation));
 
     if (!dontRun) {
-      log('grinder running ${ansi.bold}${_invocationOrder.join(' ')}${ansi.reset}');
+      log('grinder running ${ansi.bold}${_invocationOrder.join(' ')}${ansi
+          .reset}');
       log('');
 
       return Future.forEach(_invocationOrder, (task) {

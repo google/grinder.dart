@@ -50,8 +50,8 @@ TaskInvocation applyTaskToInvocation(
     GrinderTask task, TaskInvocation invocation) {
   validatePositionals(task, invocation);
 
-  var positionalParams = task.positionals;
-  var positionalArgs = invocation.positionals;
+  List<Positional> positionalParams = task.positionals;
+  List positionalArgs = invocation.positionals;
   int restParameterIndex;
 
   if (task.rest != null) {
@@ -62,7 +62,7 @@ TaskInvocation applyTaskToInvocation(
   String getPositionalName(int index, Positional positional) =>
       positional.valueHelp != null ? positional.valueHelp : index.toString();
 
-  var positionalNames = [];
+  List<String> positionalNames = [];
   positionalParams.asMap().forEach((index, positional) {
     positionalNames.add(getPositionalName(index, positional));
   });
@@ -83,7 +83,7 @@ TaskInvocation applyTaskToInvocation(
   }
 
   List zipParsedArgs(args, params, names) {
-    return new IterableZip([args, params, names])
+    return new IterableZip(<List>[args, params, names])
         .map((parts) => parseArg(parts[1], parts[0], parts[2]))
         .toList();
   }
@@ -128,11 +128,11 @@ TaskInvocation applyTaskToInvocation(
 void validateArg(bool condition, String message,
     {GrinderTask task, String param}) {
   var paramString = param == null ? '' : 'Argument "$param": ';
-  if (!condition) throw new GrinderException(
-      'Task $task: $paramString$message');
+  if (!condition)
+    throw new GrinderException('Task $task: $paramString$message');
 }
 
-Iterable<Option> getTaskOptions(Grinder grinder) {
+List<Option> getTaskOptions(Grinder grinder) {
   var tasks = grinder.tasks;
 
   var optionMap = {};
@@ -143,7 +143,7 @@ Iterable<Option> getTaskOptions(Grinder grinder) {
     });
   });
 
-  var taskOptions = [];
+  List<Option> taskOptions = [];
 
   optionMap.forEach((name, options) {
     var hasFlag = options.any((option) => option is Flag);
@@ -216,7 +216,7 @@ String getTaskHelp(Grinder grinder, {bool useColor}) {
   });
 
   var firstColMax =
-      firstColMap.values.fold(0, (width, next) => max(width, next.length));
+      firstColMap.values.fold(0, (width, next) => max<num>(width, next.length));
   var padding = 4;
   var firstColWidth = firstColMax + padding;
 
@@ -228,8 +228,8 @@ String getTaskHelp(Grinder grinder, {bool useColor}) {
         buffer.write(
             '  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
         var desc = task.description == null ? '' : task.description;
-        var depText =
-            '${textPen('(depends on ')}${positionalPen(deps.join(' '))}${textPen(')')}';
+        var depText = '${textPen('(depends on ')}${positionalPen(
+            deps.join(' '))}${textPen(')')}';
         if (desc.isNotEmpty) {
           buffer.writeln(textPen(task.description));
           if (deps.isNotEmpty) {

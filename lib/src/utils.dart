@@ -18,7 +18,9 @@ Future<String> httpGet(String url) {
   }).then((HttpClientResponse response) {
     return response.toList();
   }).then((List<List> data) {
-    return UTF8.decode(data.reduce((a, b) => a.addAll(b)));
+    return UTF8.decode(data.reduce((a, b) {
+      a.addAll(b);
+    }));
   });
 }
 
@@ -64,8 +66,8 @@ String withCapitalization(String s, bool capitalized) {
 //       http://dartbug.com/22601
 declarationsEqual(DeclarationMirror decl1, decl2) =>
     decl2 is DeclarationMirror &&
-        decl1.owner == decl2.owner &&
-        decl1.simpleName == decl2.simpleName;
+    decl1.owner == decl2.owner &&
+    decl1.simpleName == decl2.simpleName;
 
 // TODO: Remove if this becomes supported by `dart:mirrors`:
 //       http://dartbug.com/22591
