@@ -78,18 +78,6 @@ or to display a list of available tasks and their dependencies:
 
     grind -h
 
-or to tab-complete your tasks (thanks to
-[unscripted](https://github.com/seaneagan/unscripted)):
-
-    grind --completion install
-    . ~/.bashrc
-
-    grind [TAB][TAB]
-    build  test   doc
-
-    grind b[TAB]
-    grind build
-
 You can also bypass installing `grind` and instead use `pub run grinder`.
 
 ## Disclaimer

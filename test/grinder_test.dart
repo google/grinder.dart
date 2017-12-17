@@ -7,7 +7,6 @@ import 'dart:async';
 
 import 'package:grinder/grinder.dart' hide fail;
 import 'package:test/test.dart';
-import 'package:unscripted/unscripted.dart';
 
 main() {
   group('grinder', () {

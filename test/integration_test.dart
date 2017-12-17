@@ -27,7 +27,7 @@ main() {
     });
 
     grinderTest('all ran', () {
-      return handleArgs(['bar']);
+      return runTasks(['bar']);
     }, (ctx) {
       expect(ctx.isFailed, false);
       expect(ranTasks['foo'], true);

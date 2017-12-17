@@ -45,7 +45,7 @@ export 'src/task_invocation.dart';
 Future grind(List<String> args, {bool verifyProjectRoot: true}) {
   try {
     discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
-    return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
+    return runTasks(args, verifyProjectRoot: verifyProjectRoot);
   } catch (e) {
     if (e is GrinderException) {
       fail(e.message);
@@ -62,12 +62,12 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) {
  */
 @Deprecated('Use `grind` instead.')
 Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {
-  return handleArgs(args, verifyProjectRoot: verifyProjectRoot);
+  return runTasks(args, verifyProjectRoot: verifyProjectRoot);
 }
 
 /// Used to define a method body for a task. Note: a task's context is now
 /// available as a global variable ('context'). Your task functions should no
-/// longer be definied with a single `GrinderContext` parameter.
+/// longer be defined with a single `GrinderContext` parameter.
 @Deprecated('''Use a nullary function instead.  A task's context can now be
 accessed via the top-level `context` getter.''')
 typedef dynamic TaskFunction(GrinderContext context);

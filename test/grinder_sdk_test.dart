@@ -86,7 +86,6 @@ main() {
     setUp(() {
       temp = FilePath.createSystemTemp();
       file = temp.join('runAsync.dart').asFile;
-      // TODO: should this be checked in somewhere?
       file.writeAsStringSync('void main() {print("hello from runAsync");}');
     });
 

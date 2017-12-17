@@ -115,12 +115,6 @@ class Dart {
   }
 }
 
-//class DartSdk {
-//  /// Return the path to the current Dart SDK. This will return `null` if we are
-//  /// unable to locate the Dart SDK.
-//  static Directory get location => sdkDir;
-//}
-
 /**
  * Utility tasks for executing pub commands.
  */

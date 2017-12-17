@@ -1,5 +1,9 @@
 # grinder.dart changes
 
+## 0.8.1
+- Remove a dependency on a non-strong mode package (`unscripted`)
+- todo: task args passing
+
 ## 0.8.0+3
 - All APIs, including `pub run grinder`, always use the same Dart version as the
   user.

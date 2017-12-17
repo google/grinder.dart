@@ -163,11 +163,6 @@ class FilePath {
     }
   }
 
-//  /// Returns the abolute version of this Path.
-//  FilePath get absolute {
-//    // TODO:
-//  }
-
   bool get isDirectory => FileSystemEntity.isDirectorySync(_path);
   bool get isFile => FileSystemEntity.isFileSync(_path);
   bool get isLink => FileSystemEntity.isLinkSync(_path);

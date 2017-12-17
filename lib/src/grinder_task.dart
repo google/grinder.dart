@@ -5,8 +5,6 @@ library grinder.src.grinder_task;
 
 import 'dart:collection';
 
-import 'package:unscripted/unscripted.dart';
-
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
 import 'singleton.dart';
@@ -18,6 +16,9 @@ class GrinderTask {
   /// The name of the task.
   final String name;
 
+  // TODO: when executing this function, look to pass in any args
+  // TODO: document how to pass in args
+
   /// The function to execute when starting this task.
   final Function taskFunction;
 
@@ -28,36 +29,21 @@ class GrinderTask {
   /// An optional description of the task.
   final String description;
 
-  /// The list of positional task parameters.
-  final List<Positional> positionals;
-
-  /// The list of positional task parameters.
-  final Rest rest;
-
-  /// The list of named task parameters ([Option]s and [Flag]s).
-  final Iterable<Option> options;
-
   /// Create a new [GrinderTask].
   ///
   /// Items in [depends] represent task dependencies.  They can either be
   /// [String] names of tasks (without arguments), or full [TaskInvocation]s.
-  ///
-  /// Use [positionals], [rest], and [options] to define parameters accepted by
-  /// this task.
-  GrinderTask(this.name,
-      {this.taskFunction,
-      this.description,
-      Iterable depends: const [],
-      Iterable<Positional> positionals: const [],
-      this.rest,
-      Iterable<Option> options: const []})
+  GrinderTask(
+    this.name, {
+    this.taskFunction,
+    this.description,
+    Iterable depends: const [],
+  })
       : this.depends = new UnmodifiableListView(depends
-            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)),
-        this.positionals = new UnmodifiableListView(positionals.toList()),
-        this.options = new UnmodifiableListView(options.toList()) {
+            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)) {
     if (taskFunction == null && depends.isEmpty) {
-      throw new GrinderException('GrinderTasks must have a task function or '
-          'dependencies.');
+      throw new GrinderException(
+          'GrinderTasks must have a task function or dependencies.');
     }
   }
 

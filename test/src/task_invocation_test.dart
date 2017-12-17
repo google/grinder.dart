@@ -5,43 +5,48 @@ library grinder.src.task_invocation_test;
 
 import 'package:grinder/grinder.dart' hide fail;
 import 'package:test/test.dart';
-import 'package:unscripted/unscripted.dart';
 
 main() {
-  group('TaskInvocation', () {
-    group('==', () {
-      test('returns false if other is not of same type', () {
-        expect(new TaskInvocation('foo') == 'foo', isFalse);
-      });
+  group('TaskArgs', () {
+    test('flag', () {
+      TaskArgs args = new TaskArgs('test', ['--foo']);
 
-      test('returns false if name is different', () {
-        expect(new TaskInvocation('foo') == new TaskInvocation('bar'), isFalse);
-      });
+      expect(args.hasFlag('foo'), true);
+      expect(args.getFlag('foo'), true);
 
-      test('returns false if positionals are different', () {
-        expect(
-            new TaskInvocation('foo', positionals: []) ==
-                new TaskInvocation('foo', positionals: [new Positional()]),
-            isFalse);
-      });
-
-      test('returns false if positionals are different', () {
-        expect(
-            new TaskInvocation('foo', options: {}) ==
-                new TaskInvocation('foo', options: {'option': 'option value'}),
-            isFalse);
-      });
-
-      test('returns true if all fields are the same', () {
-        expect(new TaskInvocation('foo') == new TaskInvocation('foo'), isTrue);
-      });
+      expect(args.hasFlag('bar'), false);
+      expect(args.getFlag('bar'), false);
     });
 
-    group('hashCode', () {
-      test('returns same value when fields are same', () {
-        _getHashCode() => new TaskInvocation('foo').hashCode;
-        expect(_getHashCode() == _getHashCode(), isTrue);
-      });
+    test('negated flag', () {
+      TaskArgs args = new TaskArgs('test', ['--no-foo']);
+
+      expect(args.hasFlag('foo'), true);
+      expect(args.getFlag('foo'), false);
+    });
+
+    test('option', () {
+      TaskArgs args = new TaskArgs('test', ['--foo=bar']);
+
+      expect(args.hasOption('foo'), true);
+      expect(args.getOption('foo'), 'bar');
+
+      expect(args.hasOption('baz'), false);
+      expect(args.getOption('baz'), null);
+    });
+
+    test('quoted option', () {
+      TaskArgs args = new TaskArgs('test', ['--foo="bar baz"']);
+
+      expect(args.hasOption('foo'), true);
+      expect(args.getOption('foo'), 'bar baz');
+    });
+
+    test('option missing value', () {
+      TaskArgs args = new TaskArgs('test', ['--foo=']);
+
+      expect(args.hasOption('foo'), true);
+      expect(args.getOption('foo'), '');
     });
   });
 }
