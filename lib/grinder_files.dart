@@ -16,10 +16,6 @@ import 'grinder.dart';
 
 final String _sep = Platform.pathSeparator;
 
-// TODO: add files to a set
-
-// TODO: union sets?
-
 // TODO: it would be nice to be able to pipeline processing sets of files. So
 // copy groups a, b, c to location d. zip that new set d. the zip file is set e;
 // move that somewhere. Or, being able to run map, reduce, and expand on groups

@@ -5,11 +5,12 @@ library grinder.src.cli_util;
 
 import 'dart:math';
 
-import 'package:ansicolor/ansicolor.dart';
 import 'package:collection/collection.dart';
 import 'package:unscripted/unscripted.dart';
 
 import '../grinder.dart';
+
+// TODO: For task output, use the cli_util package.
 
 TaskInvocation parseTaskInvocation(String invocation) {
   var invocationPattern = new RegExp(r'([_a-zA-Z][\-_a-zA-Z0-9]*)(:(.*))?$');
@@ -194,13 +195,7 @@ TaskInvocation addTaskOptionsToInvocation(GrinderTask task,
       options: options, positionals: invocation.positionals);
 }
 
-String getTaskHelp(Grinder grinder, {bool useColor}) {
-  var positionalPen = new AnsiPen()..green();
-  var textPen = new AnsiPen()..gray(level: 0.5);
-
-  var originalColorDisabled = color_disabled;
-  if (useColor != null) color_disabled = !useColor;
-
+String getTaskHelp(Grinder grinder, {bool useColor: true}) {
   if (grinder.tasks.isEmpty) {
     return '\n\n  No tasks defined.\n';
   }
@@ -220,18 +215,16 @@ String getTaskHelp(Grinder grinder, {bool useColor}) {
   var padding = 4;
   var firstColWidth = firstColMax + padding;
 
-  var ret = '\n\n' +
+  return '\n\n' +
       tasks.map((GrinderTask task) {
         Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
 
         var buffer = new StringBuffer();
-        buffer.write(
-            '  ${positionalPen(firstColMap[task].padRight(firstColWidth))}');
+        buffer.write('  ${firstColMap[task].padRight(firstColWidth)}');
         var desc = task.description == null ? '' : task.description;
-        var depText = '${textPen('(depends on ')}${positionalPen(
-            deps.join(' '))}${textPen(')')}';
+        var depText = '(depends on ${deps.join(' ')})';
         if (desc.isNotEmpty) {
-          buffer.writeln(textPen(task.description));
+          buffer.writeln(task.description);
           if (deps.isNotEmpty) {
             buffer.writeln('  ${''.padRight(firstColWidth)}$depText');
           }
@@ -242,10 +235,6 @@ String getTaskHelp(Grinder grinder, {bool useColor}) {
 
         return buffer.toString();
       }).join();
-
-  if (useColor != null) color_disabled = originalColorDisabled;
-
-  return ret;
 }
 
 List<String> allowedTasks(Grinder grinder) =>

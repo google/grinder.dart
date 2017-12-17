@@ -33,15 +33,15 @@ const _completion = const Completion();
     allowTrailingOptions: true,
     help: 'Dart workflows, automated.',
     plugins: const [_completion])
-cli(@Rest(
-        valueHelp: 'tasks',
-        help: _getTaskHelp,
-        allowed: _allowedTasks,
-        parser: parseTaskInvocation)
-    List<TaskInvocation> partialInvocations,
-    {@Flag(help: 'Print the version of grinder.') bool version: false,
-    @Option(help: 'Set the location of the Dart SDK.') String dartSdk,
-    @Group(_getTaskOptions, hide: true) Map<String, dynamic> taskOptions}) {
+cli(
+    @Rest(valueHelp: 'tasks', help: _getTaskHelp, allowed: _allowedTasks, parser: parseTaskInvocation)
+        List<TaskInvocation> partialInvocations,
+    {@Flag(help: 'Print the version of grinder.')
+        bool version: false,
+    @Option(help: 'Set the location of the Dart SDK.')
+        String dartSdk,
+    @Group(_getTaskOptions, hide: true)
+        Map<String, dynamic> taskOptions}) {
   if (version) {
     const pubUrl = 'https://pub.dartlang.org/packages/grinder.json';
 

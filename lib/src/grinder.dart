@@ -12,6 +12,8 @@ import 'grinder_task.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
 
+// TODO: For task output, use the cli_util package.
+
 /// Programmatically add a [task] to the global [Grinder] instance.
 ///
 /// Any calls to this should occur before the call to [grind].

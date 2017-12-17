@@ -45,7 +45,8 @@ main() {
       expect(testFiles.length, greaterThan(0));
       expect(
           testFiles,
-          anyElement((f) => new File(f).existsSync() &&
+          anyElement((f) =>
+              new File(f).existsSync() &&
               FileSystemEntity.typeSync(f) == FileSystemEntityType.FILE));
     });
   });

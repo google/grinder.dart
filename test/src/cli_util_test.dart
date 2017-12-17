@@ -30,9 +30,7 @@ main() {
             new GrinderTask('abc', description: '123', depends: ['ab']));
 
         var help = getTaskHelp(grinder, useColor: false);
-        expect(
-            help.trim(),
-            '''[a]      1
+        expect(help.trim(), '''[a]      1
   [b]      2
   [ab]     (depends on [a] [b])
   [abc]    123
