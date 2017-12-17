@@ -14,7 +14,6 @@ main() {
   group('cli_util', () {
     group('ArgParser', () {
       // TODO: test ArgParser
-
     });
 
     group('getTaskHelp', () {
