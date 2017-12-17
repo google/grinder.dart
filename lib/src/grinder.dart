@@ -28,10 +28,10 @@ set defaultTask(GrinderTask v) {
  * A class representing a running instance of a Grinder.
  */
 class Grinder {
-  List<GrinderTask> _tasks = [];
+  final List<GrinderTask> _tasks = [];
   Map<GrinderTask, List> _taskDeps;
-  List<TaskInvocation> _invocationOrder = [];
-  Set<String> _calcedTaskNameSet = new Set();
+  final List<TaskInvocation> _invocationOrder = [];
+  final Set<String> _calcedTaskNameSet = new Set();
 
   /// Create a new instance of Grinder.
   Grinder();

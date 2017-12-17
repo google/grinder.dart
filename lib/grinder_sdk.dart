@@ -125,7 +125,7 @@ class Dart {
  * Utility tasks for executing pub commands.
  */
 class Pub {
-  static PubGlobal _global = new PubGlobal._();
+  static final PubGlobal _global = new PubGlobal._();
 
   /**
    * Run `pub get` on the current project. If [force] is true, this will execute
