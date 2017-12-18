@@ -11,6 +11,8 @@ import 'package:test/test.dart';
 
 typedef TestVerification(MockGrinderContext ctx);
 
+TaskFunction nullTaskFunction = ([TaskArgs args]) => null;
+
 void grinderTest(String name, Function setup, TestVerification verify) {
   test(name, () {
     MockGrinderContext ctx = new MockGrinderContext();
@@ -29,6 +31,7 @@ class MockGrinderContext implements GrinderContext {
   bool get isFailed => failBuffer.isNotEmpty;
 
   void log(String message) => logBuffer.write('${message}\n');
+
   void fail(String message) => failBuffer.write('${message}\n');
 
   Future runZoned(Function f) {

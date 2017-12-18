@@ -154,10 +154,10 @@ main() {
       Directory targetDir = joinDir(temp, ['target']);
       copy(sourceDir, targetDir);
 
-      String expectedResult = joinFile(targetDir, ['fileA'])
-              .readAsStringSync() +
-          joinFile(targetDir, ['fileB']).readAsStringSync() +
-          joinFile(targetDir, ['fileC']).readAsStringSync();
+      String expectedResult =
+          joinFile(targetDir, ['fileA']).readAsStringSync() +
+              joinFile(targetDir, ['fileB']).readAsStringSync() +
+              joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
     });
   });

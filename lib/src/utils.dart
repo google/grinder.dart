@@ -5,24 +5,10 @@ library grinder.utils;
 
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert' show UTF8;
 import 'dart:io';
 import 'dart:mirrors';
 
 import 'package:path/path.dart' as path;
-
-Future<String> httpGet(String url) {
-  HttpClient client = new HttpClient();
-  return client.getUrl(Uri.parse(url)).then((HttpClientRequest request) {
-    return request.close();
-  }).then((HttpClientResponse response) {
-    return response.toList();
-  }).then((List<List> data) {
-    return UTF8.decode(data.reduce((a, b) {
-      a.addAll(b);
-    }));
-  });
-}
 
 class ResettableTimer implements Timer {
   final Duration duration;
@@ -64,7 +50,7 @@ String withCapitalization(String s, bool capitalized) {
 
 // TODO: Remove this once this `dart:mirrors` bug is fixed:
 //       http://dartbug.com/22601
-declarationsEqual(DeclarationMirror decl1, decl2) =>
+bool declarationsEqual(DeclarationMirror decl1, decl2) =>
     decl2 is DeclarationMirror &&
     decl1.owner == decl2.owner &&
     decl1.simpleName == decl2.simpleName;
@@ -176,4 +162,22 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
     }
   });
   return files;
+}
+
+String cleanupStackTrace(st) {
+  List<String> lines = '${st}'.trim().split('\n');
+
+  // Remove lines which are not useful to debugging script issues. With our move
+  // to using zones, the exceptions now have stacks 30 frames deep.
+  while (lines.isNotEmpty) {
+    String line = lines.last;
+
+    if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
+      lines.removeLast();
+    } else {
+      break;
+    }
+  }
+
+  return lines.join('\n').trim().replaceAll('<anonymous closure>', '<anon>');
 }

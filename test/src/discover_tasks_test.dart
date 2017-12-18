@@ -9,10 +9,10 @@ import 'package:grinder/grinder.dart';
 import 'package:grinder/src/discover_tasks.dart';
 import 'package:test/test.dart';
 
-import 'task_discovery/good_tasks.dart' as good;
+import '_common.dart';
 import 'task_discovery/bad_tasks.dart' as bad;
 import 'task_discovery/external_tasks.dart' as external_tasks;
-import '_common.dart';
+import 'task_discovery/good_tasks.dart' as good;
 
 main() {
   // Libs which contains annotated tasks (imported above).
@@ -22,8 +22,6 @@ main() {
   externalLib;
 
   // Dummy calls to avoid "unused import" warnings.
-  // TODO: Remove if it becomes unnecessary:
-  //     https://github.com/dart-lang/reflectable/issues/2
   good.variable;
   bad.dependsNonExported;
   external_tasks.shownVariable;
@@ -56,7 +54,7 @@ main() {
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method];
       var annotated = new AnnotatedTask(
-          new GrinderTask('method', taskFunction: () {}), false);
+          new GrinderTask('method', taskFunction: nullTaskFunction), false);
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
@@ -72,8 +70,8 @@ main() {
     });
 
     test('should discover task from variable', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#variable], {});
+      var annotated = discoveryGood
+          .discoverDeclaration(goodLib.declarations[#variable], {});
       var task = annotated.task;
       expect(task.name, 'variable');
       expect(task.depends, [new TaskInvocation('method')]);
@@ -88,8 +86,8 @@ main() {
     });
 
     test('should dasherize camel case task method', () {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#camelCase], {});
+      var annotated = discoveryGood
+          .discoverDeclaration(goodLib.declarations[#camelCase], {});
       expect(annotated.task.name, 'camel-case');
     });
 
@@ -115,8 +113,8 @@ main() {
     });
 
     test('should throw when task getter returns null', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#nullReturningGetter], {});
+      f() => discoveryBad
+          .discoverDeclaration(badLib.declarations[#nullReturningGetter], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -126,8 +124,8 @@ main() {
     });
 
     test('should throw when depending on non-exported task', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#dependsNonExported], {});
+      f() => discoveryBad
+          .discoverDeclaration(badLib.declarations[#dependsNonExported], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -138,14 +136,14 @@ main() {
     });
 
     test('should throw when depending on invalid task', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#dependsNonTask], {});
+      f() => discoveryBad
+          .discoverDeclaration(badLib.declarations[#dependsNonTask], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('should throw when annotated with Depends but not Task', () {
-      f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#dependsWithoutTask], {});
+      f() => discoveryBad
+          .discoverDeclaration(badLib.declarations[#dependsWithoutTask], {});
       expect(f, throwsA(new isInstanceOf<GrinderException>()));
     });
   });
@@ -154,25 +152,25 @@ main() {
     grinderTest('task from method', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#method], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from method no-context', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#noContext], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      var annotated = discoveryGood
+          .discoverDeclaration(goodLib.declarations[#noContext], {});
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from variable', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood.discoverDeclaration(
-          goodLib.declarations[#variable], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      var annotated = discoveryGood
+          .discoverDeclaration(goodLib.declarations[#variable], {});
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from getter', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
   });
 

@@ -5,7 +5,8 @@ library grinder.src.grinder;
 
 import 'dart:async';
 
-import 'ansi.dart' as ansi;
+import 'package:cli_util/cli_logging.dart' show Ansi;
+
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
@@ -24,14 +25,14 @@ set defaultTask(GrinderTask v) {
   grinder.defaultTask = v;
 }
 
-/**
- * A class representing a running instance of a Grinder.
- */
+/// A class representing a running instance of a Grinder.
 class Grinder {
-  List<GrinderTask> _tasks = [];
+  final List<GrinderTask> _tasks = [];
   Map<GrinderTask, List> _taskDeps;
-  List<TaskInvocation> _invocationOrder = [];
-  Set<String> _calcedTaskNameSet = new Set();
+  final List<TaskInvocation> _invocationOrder = [];
+  final Set<String> _calcedTaskNameSet = new Set();
+
+  Ansi ansi = new Ansi(Ansi.terminalSupportsAnsi);
 
   /// Create a new instance of Grinder.
   Grinder();
@@ -85,22 +86,20 @@ class Grinder {
     }
   }
 
-  /**
-   * Start the build process and run all the tasks in the calculated build
-   * order.
-   *
-   * [start] should be called once and only once; i.e., Grinder instances are
-   * not re-usable.
-   *
-   * Items in [invocations] can either be [String] names of tasks to invoke, or
-   * full [TaskInvocation]s.
-   *
-   * The [dontRun] parameter can be used to audit the grinder file, without
-   * actually executing any targets.
-   *
-   * Throws [GrinderException] if named tasks don't exist, or there are
-   * cycles in the dependency graph.
-   */
+  /// Start the build process and run all the tasks in the calculated build
+  /// order.
+  ///
+  /// [start] should be called once and only once; i.e., Grinder instances are
+  /// not re-usable.
+  ///
+  /// Items in [invocations] can either be [String] names of tasks to invoke, or
+  /// full [TaskInvocation]s.
+  ///
+  /// The [dontRun] parameter can be used to audit the grinder file, without
+  /// actually executing any targets.
+  ///
+  /// Throws [GrinderException] if named tasks don't exist, or there are
+  /// cycles in the dependency graph.
   Future start(Iterable invocations, {bool dontRun: false}) {
     if (!dontRun && _taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");
@@ -162,15 +161,14 @@ class Grinder {
     invocations.forEach((i) => _postOrder(i as TaskInvocation));
 
     if (!dontRun) {
-      log('grinder running ${ansi.bold}${_invocationOrder.join(' ')}${ansi
-          .reset}');
+      log('grinder running ${_invocationOrder.join(' ')}');
       log('');
 
-      return Future.forEach(_invocationOrder, (task) {
+      return Future.forEach(_invocationOrder, (TaskInvocation task) {
         return _invokeTask(task);
       }).then((_) {
-        Duration elapsed = new DateTime.now().difference(startTime);
-        log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+        final Duration elapsed = new DateTime.now().difference(startTime);
+        log('finished in ${(elapsed.inMilliseconds ~/ 100) / 10} seconds');
       });
     } else {
       return new Future.value();
@@ -188,17 +186,16 @@ class Grinder {
   void log(String message) => print(message);
 
   Future _invokeTask(TaskInvocation invocation) {
-    log('${ansi.bold}${invocation}${ansi.reset}');
+    log('${ansi.emphasized(invocation.toString())}');
 
     var task = getTask(invocation.name);
     GrinderContext context = new GrinderContext(this, task, invocation);
-    var result = task.execute(context);
+    dynamic result = task.execute(context, invocation.arguments);
 
-    if (!(result is Future)) {
+    if (result is! Future) {
       result = new Future.value(result);
     }
 
-    // TODO: whenComplete(), dispose of the context?
     return (result as Future).then((_) {
       log('');
     });

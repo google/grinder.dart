@@ -3,21 +3,18 @@
 
 library grinder.src.grinder_context;
 
-import 'ansi.dart' as ansi;
 import 'grinder.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
 
-/**
- * A [GrinderContext] is used to give the currently running Grinder task the
- * ability to introspect the running state. It can get the current [Grinder]
- * instance and get a reference to the current [GrinderTask] instance (as well as
- * the previous and next tasks, if any).
- *
- * A [GrinderContext] also allows you to log messages and errors.
- */
+/// A [GrinderContext] is used to give the currently running Grinder task the
+/// ability to introspect the running state. It can get the current [Grinder]
+/// instance and get a reference to the current [GrinderTask] instance (as well as
+/// the previous and next tasks, if any).
+///
+/// A [GrinderContext] also allows you to log messages and errors.
 class GrinderContext {
   /// The [Grinder] instance.
   final Grinder grinder;
@@ -38,7 +35,7 @@ class GrinderContext {
 
   /// Halt task execution; throws an exception with the given error message.
   void fail(String message) {
-    log('${ansi.bold}failed:${ansi.reset} ${ansi.red}${message}${ansi.reset}');
+    log(grinder.ansi.emphasized('failed: ') + grinder.ansi.error(message));
     throw new GrinderException(message);
   }
 

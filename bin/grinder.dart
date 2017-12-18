@@ -6,10 +6,9 @@ library grinder.bin.grinder;
 
 import 'dart:io';
 
-void main(List args) => runScript('tool/grind.dart', args);
-
-void runScript(String script, List args) {
-  File file = new File(script);
+void main(List<String> args) {
+  final String script = 'tool/grind.dart';
+  final File file = new File(script);
 
   if (!file.existsSync()) {
     stderr.writeln(
@@ -17,12 +16,8 @@ void runScript(String script, List args) {
     exit(1);
   }
 
-  List newArgs = [script]..addAll(args);
-  _runProcessAsync(Platform.resolvedExecutable, newArgs);
-}
-
-void _runProcessAsync(String executable, List<String> arguments) {
-  Process.start(executable, arguments).then((Process process) {
+  final List<String> newArgs = <String>[script]..addAll(args);
+  Process.start(Platform.resolvedExecutable, newArgs).then((Process process) {
     stdout.addStream(process.stdout);
     stderr.addStream(process.stderr);
     return process.exitCode.then((int code) => exit(code));

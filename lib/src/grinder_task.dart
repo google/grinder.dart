@@ -5,18 +5,21 @@ library grinder.src.grinder_task;
 
 import 'dart:collection';
 
-import 'package:unscripted/unscripted.dart';
-
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
+
+/// The typedef for grinder task functions.
+typedef dynamic TaskFunction(TaskArgs args);
 
 /// Represents a Grinder task. These can be created automatically using the
 /// [Task] and [Depends] annotations.
 class GrinderTask {
   /// The name of the task.
   final String name;
+
+  // TODO: document how to pass in args
 
   /// The function to execute when starting this task.
   final Function taskFunction;
@@ -28,56 +31,41 @@ class GrinderTask {
   /// An optional description of the task.
   final String description;
 
-  /// The list of positional task parameters.
-  final List<Positional> positionals;
-
-  /// The list of positional task parameters.
-  final Rest rest;
-
-  /// The list of named task parameters ([Option]s and [Flag]s).
-  final Iterable<Option> options;
-
   /// Create a new [GrinderTask].
   ///
   /// Items in [depends] represent task dependencies.  They can either be
   /// [String] names of tasks (without arguments), or full [TaskInvocation]s.
-  ///
-  /// Use [positionals], [rest], and [options] to define parameters accepted by
-  /// this task.
-  GrinderTask(this.name,
-      {this.taskFunction,
-      this.description,
-      Iterable depends: const [],
-      Iterable<Positional> positionals: const [],
-      this.rest,
-      Iterable<Option> options: const []})
+  GrinderTask(
+    this.name, {
+    this.taskFunction,
+    this.description,
+    Iterable depends: const [],
+  })
       : this.depends = new UnmodifiableListView(depends
-            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)),
-        this.positionals = new UnmodifiableListView(positionals.toList()),
-        this.options = new UnmodifiableListView(options.toList()) {
+            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)) {
     if (taskFunction == null && depends.isEmpty) {
-      throw new GrinderException('GrinderTasks must have a task function or '
-          'dependencies.');
+      throw new GrinderException(
+          'GrinderTasks must have a task function or dependencies.');
     }
   }
 
-  /**
-   * This method is invoked when the task is started. If a task was created with
-   * a [Function], that function will be invoked by this method.
-   */
-  dynamic execute(GrinderContext _context) {
+  /// This method is invoked when the task is started. If a task was created
+  /// with a function, that function will be invoked by this method.
+  dynamic execute(GrinderContext _context, TaskArgs args) {
     if (taskFunction == null) return null;
 
-    var f = taskFunction is _TaskFunction
-        ? () => taskFunction(context)
-        : taskFunction;
-
-    return zonedContext.withValue(_context, f);
+    if (taskFunction is TaskFunction) {
+      return zonedContext.withValue(_context, () => taskFunction(args));
+    } else if (taskFunction is _OldTaskFunction) {
+      _context.log(
+          "warning: task definitions no longer require an explicit 'GrinderContext' parameter");
+      return zonedContext.withValue(_context, () => taskFunction(_context));
+    } else {
+      return zonedContext.withValue(_context, taskFunction);
+    }
   }
 
-  String toString() => "[${name}]";
+  String toString() => "[$name]";
 }
 
-// Temporary internal version of `TaskFunction`.
-// TODO: Remove this when removing the ability to use such functions.
-typedef dynamic _TaskFunction(GrinderContext context);
+typedef dynamic _OldTaskFunction(GrinderContext context);

@@ -156,32 +156,21 @@ class DevCompiler {
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  void compile(dynamic files, Directory outDir, {
-    bool forceCompile: false,
-    bool htmlReport: false
-  }) {
+  void compile(dynamic files, Directory outDir,
+      {bool forceCompile: false, bool htmlReport: false}) {
     _ddc.run(_args(files,
-        outDir: outDir,
-        forceCompile: forceCompile,
-        htmlReport: htmlReport));
+        outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  Future compileAsync(dynamic files, Directory outDir, {
-    bool forceCompile: false,
-    bool htmlReport: false
-  }) {
+  Future compileAsync(dynamic files, Directory outDir,
+      {bool forceCompile: false, bool htmlReport: false}) {
     return _ddc.runAsync(_args(files,
-        outDir: outDir,
-        forceCompile: forceCompile,
-        htmlReport: htmlReport));
+        outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
   }
 
-  List<String> _args(dynamic files, {
-    Directory outDir,
-    bool forceCompile: false,
-    bool htmlReport: false
-  }) {
+  List<String> _args(dynamic files,
+      {Directory outDir, bool forceCompile: false, bool htmlReport: false}) {
     List<String> args = [];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');

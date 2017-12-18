@@ -115,23 +115,13 @@ class Dart {
   }
 }
 
-//class DartSdk {
-//  /// Return the path to the current Dart SDK. This will return `null` if we are
-//  /// unable to locate the Dart SDK.
-//  static Directory get location => sdkDir;
-//}
-
-/**
- * Utility tasks for executing pub commands.
- */
+/// Utility tasks for executing pub commands.
 class Pub {
-  static PubGlobal _global = new PubGlobal._();
+  static final PubGlobal _global = new PubGlobal._();
 
-  /**
-   * Run `pub get` on the current project. If [force] is true, this will execute
-   * even if the pubspec.lock file is up-to-date with respect to the
-   * pubspec.yaml file.
-   */
+  /// Run `pub get` on the current project. If [force] is true, this will execute
+  /// even if the pubspec.lock file is up-to-date with respect to the
+  /// pubspec.yaml file.
   static void get(
       {bool force: false, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
@@ -146,11 +136,9 @@ class Pub {
     }
   }
 
-  /**
-   * Run `pub get` on the current project. If [force] is true, this will execute
-   * even if the pubspec.lock file is up-to-date with respect to the
-   * pubspec.yaml file.
-   */
+  /// Run `pub get` on the current project. If [force] is true, this will execute
+  /// even if the pubspec.lock file is up-to-date with respect to the
+  /// pubspec.yaml file.
   static Future getAsync(
       {bool force: false, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
@@ -199,17 +187,16 @@ class Pub {
         .then((_) => null);
   }
 
-  /**
-   * Run `pub build` on the current project.
-   *
-   * The valid values for [mode] are `release` and `debug`.
-   */
-  static void build(
-      {String mode,
-      List<String> directories,
-      RunOptions runOptions,
-      String outputDirectory,
-      String workingDirectory}) {
+  /// Run `pub build` on the current project.
+  ///
+  /// The valid values for [mode] are `release` and `debug`.
+  static void build({
+    String mode,
+    List<String> directories,
+    RunOptions runOptions,
+    String outputDirectory,
+    String workingDirectory,
+  }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -219,11 +206,9 @@ class Pub {
     runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
 
-  /**
-   * Run `pub build` on the current project.
-   *
-   * The valid values for [mode] are `release` and `debug`.
-   */
+  /// Run `pub build` on the current project.
+  ///
+  /// The valid values for [mode] are `release` and `debug`.
   static Future buildAsync(
       {String mode,
       List<String> directories,
@@ -378,9 +363,7 @@ class DartDoc {
   static Future docAsync() => runlib.runAsync(sdkBin('dartdoc'));
 }
 
-/**
- * Utility tasks for invoking the analyzer.
- */
+/// Utility tasks for invoking the analyzer.
 class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,

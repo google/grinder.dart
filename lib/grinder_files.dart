@@ -1,11 +1,9 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/**
- * General file system routines, useful in the context of running builds. This
- * includes the [FileSet] class, which is used for reasoning about sets of
- * files.
- */
+/// General file system routines, useful in the context of running builds. This
+/// includes the [FileSet] class, which is used for reasoning about sets of
+/// files.
 library grinder.files;
 
 import 'dart:io';
@@ -16,10 +14,6 @@ import 'grinder.dart';
 
 final String _sep = Platform.pathSeparator;
 
-// TODO: add files to a set
-
-// TODO: union sets?
-
 // TODO: it would be nice to be able to pipeline processing sets of files. So
 // copy groups a, b, c to location d. zip that new set d. the zip file is set e;
 // move that somewhere. Or, being able to run map, reduce, and expand on groups
@@ -29,9 +23,7 @@ final String _sep = Platform.pathSeparator;
 //   - performs work
 //   - and returns an output set
 
-/**
- * A class to handle defining, composing, and comparing groups of files.
- */
+/// A class to handle defining, composing, and comparing groups of files.
 class FileSet {
   List<File> files = [];
 
@@ -47,10 +39,8 @@ class FileSet {
     files.add(file);
   }
 
-  /**
-   * Returns whether this file set exists, and is not older then the given
-   * [FileSet].
-   */
+  /// Returns whether this file set exists, and is not older then the given
+  /// [FileSet].
   bool upToDate(FileSet other) {
     if (!exists) {
       return false;
@@ -167,13 +157,10 @@ class FilePath {
     }
   }
 
-//  /// Returns the abolute version of this Path.
-//  FilePath get absolute {
-//    // TODO:
-//  }
-
   bool get isDirectory => FileSystemEntity.isDirectorySync(_path);
+
   bool get isFile => FileSystemEntity.isFileSync(_path);
+
   bool get isLink => FileSystemEntity.isLinkSync(_path);
 
   /// Assume the current file system entity is a [File] and return it as such.
@@ -295,28 +282,22 @@ class FilePath {
   }
 }
 
-/**
- * Return the last segment of the file path.
- */
+/// Return the last segment of the file path.
 String fileName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(index + 1) : name);
 }
 
-/**
- * Return the file's extension without the period. This will return `null` if
- * there is no extension.
- */
+/// Return the file's extension without the period. This will return `null` if
+/// there is no extension.
 String fileExt(FileSystemEntity entity) {
   String name = fileName(entity);
   int index = name.indexOf('.');
   return index != -1 && index < name.length ? name.substring(index + 1) : null;
 }
 
-/**
- * Return the first n - 1 segments of the file path.
- */
+/// Return the first n - 1 segments of the file path.
 String baseName(FileSystemEntity entity) {
   String name = entity.path;
   int index = name.lastIndexOf(_sep);
@@ -333,10 +314,8 @@ Directory joinDir(Directory dir, List<String> files) {
   return new Directory("${dir.path}${_sep}${pathFragment}");
 }
 
-/**
- * Return the file pointed to by the given [path]. This method converts the
- * given path to a platform dependent path.
- */
+/// Return the file pointed to by the given [path]. This method converts the
+/// given path to a platform dependent path.
 File getFile(String path) {
   if (_sep == '/') {
     return new File(path);
@@ -345,10 +324,8 @@ File getFile(String path) {
   }
 }
 
-/**
- * Return the directory pointed to by the given [path]. This method converts the
- * given path to a platform dependent path.
- */
+/// Return the directory pointed to by the given [path]. This method converts the
+/// given path to a platform dependent path.
 Directory getDir(String path) {
   if (_sep == '/') {
     return new Directory(path);
@@ -414,6 +391,6 @@ void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
   delete(entity);
 }
 
-_addNonNull(List args, String arg) {
+void _addNonNull(List args, String arg) {
   if (arg != null) args.add(arg);
 }
