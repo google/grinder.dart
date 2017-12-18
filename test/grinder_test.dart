@@ -8,6 +8,8 @@ import 'dart:async';
 import 'package:grinder/grinder.dart' hide fail;
 import 'package:test/test.dart';
 
+import 'src/_common.dart';
+
 main() {
   group('grinder', () {
     test('tasks must have a task function or dependencies', () {
@@ -19,15 +21,15 @@ main() {
     test('badTaskName', () {
       // test that a bad task name throws
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
       expect(() => grinder.start(['bar'], dontRun: true),
           throwsA(new isInstanceOf<GrinderException>()));
     });
 
     test('duplicate task name', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
+      grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
       expect(() => grinder.start(['foo'], dontRun: true),
           throwsA(new isInstanceOf<GrinderException>()));
     });
@@ -42,7 +44,7 @@ main() {
 
     test('default task is run by default', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('foo', taskFunction: ([foo]) => null));
       grinder.defaultTask = new GrinderTask('bar', depends: ['foo']);
       grinder.start([], dontRun: true);
       expect(
@@ -53,9 +55,11 @@ main() {
 
     test('throws when overwriting default task', () {
       Grinder grinder = new Grinder();
-      grinder.defaultTask = new GrinderTask('foo', taskFunction: () {});
+      grinder.defaultTask =
+          new GrinderTask('foo', taskFunction: nullTaskFunction);
       expect(() {
-        grinder.defaultTask = new GrinderTask('bar', taskFunction: () {});
+        grinder.defaultTask =
+            new GrinderTask('bar', taskFunction: nullTaskFunction);
       }, throwsA(new isInstanceOf<GrinderException>()));
     });
 
@@ -70,15 +74,11 @@ main() {
     test('can invoke a task with arguments', () {
       Grinder grinder = new Grinder();
       var received;
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {
+      grinder.addTask(new GrinderTask('foo', taskFunction: ([TaskArgs args]) {
         received = context.invocation;
-      },
-          positionals: [new Positional()],
-          rest: new Rest(),
-          options: [new Option(name: 'option')]));
-      var sent = new TaskInvocation('foo',
-          positionals: ['positional value', 1, 2, 3],
-          options: {'option': 'option value'});
+      }));
+      var sent = new TaskInvocation(
+          'foo', new TaskArgs('foo', ['--foo', '--bar=baz']));
       return grinder.start([sent]).then((_) {
         expect(received, sent);
       });
@@ -87,15 +87,10 @@ main() {
     test('can invoke a dependency task with arguments', () {
       Grinder grinder = new Grinder();
       var invocation;
-      grinder.addTask(new GrinderTask('foo', taskFunction: () {
+      grinder.addTask(new GrinderTask('foo', taskFunction: ([args]) {
         invocation = context.invocation;
-      },
-          positionals: [new Positional()],
-          rest: new Rest(),
-          options: [new Option(name: 'option')]));
-      var dep = new TaskInvocation('foo',
-          positionals: ['positional value', 1, 2, 3],
-          options: {'option': 'option value'});
+      }));
+      var dep = new TaskInvocation('foo');
       grinder.addTask(new GrinderTask('bar', depends: [dep]));
       return grinder.start(['bar']).then((_) {
         expect(invocation, dep);
@@ -104,9 +99,8 @@ main() {
 
     test('throws when task invoked twice with different arguments', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo',
-          taskFunction: () {}, options: [new Option(name: 'option')]));
-      var dep = new TaskInvocation('foo', options: {'option': 'option value'});
+      grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
+      var dep = new TaskInvocation('foo');
       grinder.addTask(new GrinderTask('bar', depends: [dep]));
 
       expect(() => grinder.start(['bar', 'foo']),
@@ -116,8 +110,8 @@ main() {
     test('stringEscape', () {
       // test that we execute tasks in the correct order
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('b', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('d', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('b', taskFunction: nullTaskFunction));
+      grinder.addTask(new GrinderTask('d', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('a', depends: ['b']));
       grinder.addTask(new GrinderTask('c', depends: ['d']));
       grinder.addTask(new GrinderTask('e', depends: ['a', 'c']));
@@ -130,9 +124,11 @@ main() {
 
     test('task execution order 1', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('setup', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('setup', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-notest', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-test', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
       grinder.addTask(
           new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
@@ -153,9 +149,11 @@ main() {
 
     test('task execution order 2', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('setup', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('setup', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-notest', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-test', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
       grinder.addTask(
           new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
@@ -176,9 +174,11 @@ main() {
 
     test('task execution order 3', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('setup', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('setup', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-notest', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-test', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
       grinder.addTask(
           new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
@@ -199,9 +199,11 @@ main() {
 
     test('task execution order 4', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('setup', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-notest', taskFunction: () {}));
-      grinder.addTask(new GrinderTask('mode-test', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('setup', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-notest', taskFunction: nullTaskFunction));
+      grinder.addTask(
+          new GrinderTask('mode-test', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('compile', depends: ['setup']));
       grinder.addTask(
           new GrinderTask('deploy', depends: ['setup', 'mode-notest']));
@@ -213,7 +215,7 @@ main() {
       grinder.addTask(
           new GrinderTask('release', depends: ['mode-notest', 'compile']));
 
-      grinder.addTask(new GrinderTask('clean', taskFunction: () {}));
+      grinder.addTask(new GrinderTask('clean', taskFunction: nullTaskFunction));
 
       grinder.start(['clean'], dontRun: true);
       expect(grinder.getBuildOrder(),
@@ -224,7 +226,7 @@ main() {
       StringBuffer buf = new StringBuffer();
       Grinder grinder = new Grinder();
 
-      grinder.addTask(new GrinderTask('a1', taskFunction: (c) {
+      grinder.addTask(new GrinderTask('a1', taskFunction: ([args]) {
         Completer completer = new Completer();
         new Timer(new Duration(milliseconds: 100), () {
           buf.write('a');
@@ -232,7 +234,8 @@ main() {
         });
         return completer.future;
       }));
-      grinder.addTask(new GrinderTask('a2', depends: ['a1'], taskFunction: (c) {
+      grinder.addTask(
+          new GrinderTask('a2', depends: ['a1'], taskFunction: ([args]) {
         buf.write('b');
       }));
 
@@ -243,8 +246,7 @@ main() {
 
     test('throw on fail', () {
       Grinder grinder = new Grinder();
-      grinder.addTask(
-          new GrinderTask('i_throw', taskFunction: (GrinderContext context) {
+      grinder.addTask(new GrinderTask('i_throw', taskFunction: ([args]) {
         context.fail('boo');
       }));
 

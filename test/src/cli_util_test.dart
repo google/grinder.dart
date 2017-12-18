@@ -8,6 +8,8 @@ import 'package:grinder/src/grinder.dart';
 import 'package:grinder/src/grinder_task.dart';
 import 'package:test/test.dart';
 
+import '_common.dart';
+
 // TODO: test('throws on invalid task name', () {
 
 main() {
@@ -19,10 +21,10 @@ main() {
     group('getTaskHelp', () {
       test('with tasks', () {
         var grinder = new Grinder();
-        grinder.addTask(
-            new GrinderTask('a', description: '1', taskFunction: () {}));
-        grinder.addTask(
-            new GrinderTask('b', description: '2', taskFunction: () {}));
+        grinder.addTask(new GrinderTask('a',
+            description: '1', taskFunction: nullTaskFunction));
+        grinder.addTask(new GrinderTask('b',
+            description: '2', taskFunction: nullTaskFunction));
         grinder.addTask(
             new GrinderTask('ab', description: '', depends: ['a', 'b']));
         grinder.addTask(

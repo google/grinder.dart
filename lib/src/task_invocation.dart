@@ -31,7 +31,7 @@ class TaskInvocation {
   String toString() {
     var args = arguments.arguments;
     var argString = args.isEmpty ? '' : ':${args.join(',')}';
-    return '[$name$argString]';
+    return '$name$argString';
   }
 }
 

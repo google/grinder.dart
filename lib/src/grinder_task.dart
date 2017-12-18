@@ -10,6 +10,9 @@ import 'grinder_exception.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
 
+/// The typedef for grinder task functions.
+typedef dynamic TaskFunction(TaskArgs args);
+
 /// Represents a Grinder task. These can be created automatically using the
 /// [Task] and [Depends] annotations.
 class GrinderTask {
@@ -47,23 +50,17 @@ class GrinderTask {
     }
   }
 
-  /**
-   * This method is invoked when the task is started. If a task was created with
-   * a [Function], that function will be invoked by this method.
-   */
-  dynamic execute(GrinderContext _context) {
+  /// This method is invoked when the task is started. If a task was created
+  /// with a function, that function will be invoked by this method.
+  dynamic execute(GrinderContext _context, TaskArgs args) {
     if (taskFunction == null) return null;
 
-    var f = taskFunction is _TaskFunction
-        ? () => taskFunction(context)
-        : taskFunction;
-
-    return zonedContext.withValue(_context, f);
+    if (taskFunction is TaskFunction) {
+      return zonedContext.withValue(_context, () => taskFunction(args));
+    } else {
+      return zonedContext.withValue(_context, taskFunction);
+    }
   }
 
-  String toString() => "[${name}]";
+  String toString() => "[$name]";
 }
-
-// Temporary internal version of `TaskFunction`.
-// TODO: Remove this when removing the ability to use such functions.
-typedef dynamic _TaskFunction(GrinderContext context);

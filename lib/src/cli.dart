@@ -5,6 +5,7 @@ library grinder.src.cli;
 
 import 'dart:async';
 
+import 'package:cli_util/cli_logging.dart' show Ansi;
 import 'package:grinder/src/utils.dart';
 
 import '../grinder.dart';
@@ -31,6 +32,7 @@ runTasks(
     () => getTaskHelp(singleton.grinder),
   );
 
+  parser.addFlag('color', help: 'Whether to use terminal colors.');
   parser.addFlag('version', help: 'Reports the version of this tool.');
   parser.addFlag('help', abbr: 'h', help: 'Print this usage information.');
 
@@ -43,6 +45,12 @@ runTasks(
     print('grinder version ${appVersion}');
     return null;
   } else {
+    if (results.hasFlag('color')) {
+      singleton.grinder.ansi = new Ansi(results.getFlag('color'));
+    } else {
+      singleton.grinder.ansi = new Ansi(true);
+    }
+
     if (_verifyProjectRoot) {
       // Verify that we're running from the project root.
       if (!getFile('pubspec.yaml').existsSync()) {
@@ -55,7 +63,6 @@ runTasks(
       if (task == null) fail("Error, no task found: '${invocation.name}'.");
     }
 
-    // TODO: test that each task exists
     Future result = singleton.grinder.start(results.taskInvocations);
 
     return result.catchError((e, st) {
@@ -69,8 +76,6 @@ runTasks(
     });
   }
 }
-
-//List<String> _allowedTasks() => allowedTasks(singleton.grinder);
 
 typedef String DescribeFunction();
 
@@ -172,6 +177,8 @@ class ArgResults {
   final Set<String> _flags = new Set();
 
   ArgResults._(this.arguments);
+
+  bool hasFlag(String name) => _flags.contains(name);
 
   bool getFlag(String name) => _flags.contains(name);
 

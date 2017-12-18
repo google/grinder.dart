@@ -65,13 +65,6 @@ Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {
   return runTasks(args, verifyProjectRoot: verifyProjectRoot);
 }
 
-/// Used to define a method body for a task. Note: a task's context is now
-/// available as a global variable ('context'). Your task functions should no
-/// longer be defined with a single `GrinderContext` parameter.
-@Deprecated('''Use a nullary function instead.  A task's context can now be
-accessed via the top-level `context` getter.''')
-typedef dynamic TaskFunction(GrinderContext context);
-
 /**
  * Add a new task definition to the global [Grinder] instance. A [name] is
  * required. If specified, a [taskFunction] is invoked when the task starts.

@@ -6,18 +6,19 @@ library grinder.src.run_utils;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:grinder/src/singleton.dart';
+
 import '../grinder.dart';
-import 'ansi.dart' as ansi;
 
 Stream<String> toLineStream(Stream<List<int>> s, Encoding encoding) =>
     s.transform(encoding.decoder).transform(const LineSplitter());
 
-logStdout(String line) {
+void logStdout(String line) {
   log(line);
 }
 
-logStderr(String line) {
-  log('${ansi.red}${line}${ansi.reset}');
+void logStderr(String line) {
+  log(grinder.ansi.error(line));
 }
 
 /// Helper for methods which support the deprecated [workingDirectory] and the

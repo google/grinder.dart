@@ -5,7 +5,8 @@ library grinder.src.grinder;
 
 import 'dart:async';
 
-import 'ansi.dart' as ansi;
+import 'package:cli_util/cli_logging.dart' show Ansi;
+
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
@@ -34,6 +35,8 @@ class Grinder {
   Map<GrinderTask, List> _taskDeps;
   final List<TaskInvocation> _invocationOrder = [];
   final Set<String> _calcedTaskNameSet = new Set();
+
+  Ansi ansi = new Ansi(Ansi.terminalSupportsAnsi);
 
   /// Create a new instance of Grinder.
   Grinder();
@@ -164,15 +167,14 @@ class Grinder {
     invocations.forEach((i) => _postOrder(i as TaskInvocation));
 
     if (!dontRun) {
-      log('grinder running ${ansi.bold}${_invocationOrder.join(' ')}${ansi
-          .reset}');
+      log('grinder running ${_invocationOrder.join(' ')}');
       log('');
 
-      return Future.forEach(_invocationOrder, (task) {
+      return Future.forEach(_invocationOrder, (TaskInvocation task) {
         return _invokeTask(task);
       }).then((_) {
-        Duration elapsed = new DateTime.now().difference(startTime);
-        log('finished in ${elapsed.inMilliseconds / 1000.0} seconds.');
+        final Duration elapsed = new DateTime.now().difference(startTime);
+        log('finished in ${(elapsed.inMilliseconds ~/ 100) / 10} seconds');
       });
     } else {
       return new Future.value();
@@ -190,17 +192,16 @@ class Grinder {
   void log(String message) => print(message);
 
   Future _invokeTask(TaskInvocation invocation) {
-    log('${ansi.bold}${invocation}${ansi.reset}');
+    log('${ansi.emphasized(invocation.toString())}');
 
     var task = getTask(invocation.name);
     GrinderContext context = new GrinderContext(this, task, invocation);
-    var result = task.execute(context);
+    dynamic result = task.execute(context, invocation.arguments);
 
-    if (!(result is Future)) {
+    if (result is! Future) {
       result = new Future.value(result);
     }
 
-    // TODO: whenComplete(), dispose of the context?
     return (result as Future).then((_) {
       log('');
     });

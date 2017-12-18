@@ -22,8 +22,6 @@ main() {
   externalLib;
 
   // Dummy calls to avoid "unused import" warnings.
-  // TODO: Remove if it becomes unnecessary:
-  //     https://github.com/dart-lang/reflectable/issues/2
   good.variable;
   bad.dependsNonExported;
   external_tasks.shownVariable;
@@ -56,7 +54,7 @@ main() {
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method];
       var annotated = new AnnotatedTask(
-          new GrinderTask('method', taskFunction: () {}), false);
+          new GrinderTask('method', taskFunction: nullTaskFunction), false);
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
@@ -154,25 +152,25 @@ main() {
     grinderTest('task from method', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#method], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from method no-context', () {}, (MockGrinderContext ctx) {
       var annotated = discoveryGood
           .discoverDeclaration(goodLib.declarations[#noContext], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from variable', () {}, (MockGrinderContext ctx) {
       var annotated = discoveryGood
           .discoverDeclaration(goodLib.declarations[#variable], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from getter', () {}, (MockGrinderContext ctx) {
       var annotated =
           discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
-      expect(annotated.task.execute(ctx), 'someValue');
+      expect(annotated.task.execute(ctx, null), 'someValue');
     });
   });
 

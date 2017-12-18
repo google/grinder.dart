@@ -1,8 +1,10 @@
 # grinder.dart changes
 
 ## 0.8.1
+- Added the ability to pass task functions parameters from the command line via
+  a `TaskArgs` object
+- Removed support for task functions taking a `GrinderContext` parameter
 - Remove a dependency on a non-strong mode package (`unscripted`)
-- todo: task args passing
 
 ## 0.8.0+3
 - All APIs, including `pub run grinder`, always use the same Dart version as the

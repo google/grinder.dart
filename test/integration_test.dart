@@ -43,7 +43,7 @@ _fooTask() {
   log('ran _fooTask');
 }
 
-_barTask(GrinderContext context) {
+_barTask([TaskArgs args]) {
   ranTasks['bar'] = true;
   log('ran _barTask\n${context}');
 }
