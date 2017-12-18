@@ -78,7 +78,7 @@
     <ol>
     
       <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
-      <li><a class="deprecated" href="grinder/TaskFunction.html">TaskFunction</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
       <li><a href="grinder.tools/binDir.html">binDir</a></li>
@@ -141,6 +141,7 @@
       <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
       <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
       <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
       <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
       <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
@@ -166,7 +167,7 @@
 
       <dl class="constructor-summary-list">
         <dt id="GrinderTask" class="callable">
-          <span class="name"><a href="grinder/GrinderTask/GrinderTask.html">GrinderTask</a></span><span class="signature">(<span class="parameter" id="-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, {</span> <span class="parameter" id="-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span>, </span> <span class="parameter" id="-param-description"><span class="type-annotation">String</span> <span class="parameter-name">description</span>, </span> <span class="parameter" id="-param-depends"><span class="type-annotation">Iterable</span> <span class="parameter-name">depends</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="-param-positionals"><span class="type-annotation">Iterable&lt;Positional&gt;</span> <span class="parameter-name">positionals</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="-param-rest"><span class="type-annotation">Rest</span> <span class="parameter-name">rest</span>, </span> <span class="parameter" id="-param-options"><span class="type-annotation">Iterable&lt;Option&gt;</span> <span class="parameter-name">options</span>: <span class="default-value">const []</span></span> })</span>
+          <span class="name"><a href="grinder/GrinderTask/GrinderTask.html">GrinderTask</a></span><span class="signature">(<span class="parameter" id="-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, {</span> <span class="parameter" id="-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span>, </span> <span class="parameter" id="-param-description"><span class="type-annotation">String</span> <span class="parameter-name">description</span>, </span> <span class="parameter" id="-param-depends"><span class="type-annotation">Iterable</span> <span class="parameter-name">depends</span>: <span class="default-value">const []</span></span> })</span>
         </dt>
         <dd>
           <p>Create a new <a href="grinder/GrinderTask-class.html">GrinderTask</a>.</p>
@@ -201,30 +202,6 @@ before this task is invoked.</p>
         </dt>
         <dd>
           <p>The name of the task.</p>
-          <div class="features">final</div>
-</dd>
-        <dt id="options" class="property">
-          <span class="name"><a href="grinder/GrinderTask/options.html">options</a></span>
-          <span class="signature">&#8594; Iterable&lt;Option&gt;</span>
-        </dt>
-        <dd>
-          <p>The list of named task parameters (<code>Option</code>s and <code>Flag</code>s).</p>
-          <div class="features">final</div>
-</dd>
-        <dt id="positionals" class="property">
-          <span class="name"><a href="grinder/GrinderTask/positionals.html">positionals</a></span>
-          <span class="signature">&#8594; List&lt;Positional&gt;</span>
-        </dt>
-        <dd>
-          <p>The list of positional task parameters.</p>
-          <div class="features">final</div>
-</dd>
-        <dt id="rest" class="property">
-          <span class="name"><a href="grinder/GrinderTask/rest.html">rest</a></span>
-          <span class="signature">&#8594; Rest</span>
-        </dt>
-        <dd>
-          <p>The list of positional task parameters.</p>
           <div class="features">final</div>
 </dd>
         <dt id="taskFunction" class="property">
@@ -273,13 +250,13 @@ before this task is invoked.</p>
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="execute" class="callable">
-          <span class="name"><a href="grinder/GrinderTask/execute.html">execute</a></span><span class="signature">(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span></span>)
+          <span class="name"><a href="grinder/GrinderTask/execute.html">execute</a></span><span class="signature">(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span>, </span> <span class="parameter" id="execute-param-args"><span class="type-annotation"><a href="grinder/TaskArgs-class.html">TaskArgs</a></span> <span class="parameter-name">args</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
         </dt>
         <dd>
-          <p>This method is invoked when the task is started. If a task was created with
-a <code>Function</code>, that function will be invoked by this method.</p>
+          <p>This method is invoked when the task is started. If a task was created
+with a function, that function will be invoked by this method.</p>
           
 </dd>
         <dt id="toString" class="callable">
@@ -320,9 +297,6 @@ a <code>Function</code>, that function will be invoked by this method.</p>
       <li><a href="grinder/GrinderTask/depends.html">depends</a></li>
       <li><a href="grinder/GrinderTask/description.html">description</a></li>
       <li><a href="grinder/GrinderTask/name.html">name</a></li>
-      <li><a href="grinder/GrinderTask/options.html">options</a></li>
-      <li><a href="grinder/GrinderTask/positionals.html">positionals</a></li>
-      <li><a href="grinder/GrinderTask/rest.html">rest</a></li>
       <li><a href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
@@ -345,7 +319,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

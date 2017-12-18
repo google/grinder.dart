@@ -88,9 +88,6 @@
       <li><a href="grinder/GrinderTask/depends.html">depends</a></li>
       <li><a href="grinder/GrinderTask/description.html">description</a></li>
       <li><a href="grinder/GrinderTask/name.html">name</a></li>
-      <li><a href="grinder/GrinderTask/options.html">options</a></li>
-      <li><a href="grinder/GrinderTask/positionals.html">positionals</a></li>
-      <li><a href="grinder/GrinderTask/rest.html">rest</a></li>
       <li><a href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
@@ -109,23 +106,27 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
     <section class="multi-line-signature">
       <span class="returntype">dynamic</span>
-      <span class="name ">execute</span>(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span></span>)
+      <span class="name ">execute</span>(<wbr><span class="parameter" id="execute-param-_context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">_context</span>, </span> <span class="parameter" id="execute-param-args"><span class="type-annotation"><a href="grinder/TaskArgs-class.html">TaskArgs</a></span> <span class="parameter-name">args</span></span>)
     </section>
     <section class="desc markdown">
-      <p>This method is invoked when the task is started. If a task was created with
-a <code>Function</code>, that function will be invoked by this method.</p>
+      <p>This method is invoked when the task is started. If a task was created
+with a function, that function will be invoked by this method.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre class="prettyprint language-dart">dynamic execute(GrinderContext _context) {
+      <pre class="prettyprint language-dart">dynamic execute(GrinderContext _context, TaskArgs args) {
   if (taskFunction == null) return null;
 
-  var f = taskFunction is _TaskFunction
-      ? () =&gt; taskFunction(context)
-      : taskFunction;
-
-  return zonedContext.withValue(_context, f);
+  if (taskFunction is TaskFunction) {
+    return zonedContext.withValue(_context, () =&gt; taskFunction(args));
+  } else if (taskFunction is _OldTaskFunction) {
+    _context.log(
+        &quot;warning: task definitions no longer require an explicit &#39;GrinderContext&#39; parameter&quot;);
+    return zonedContext.withValue(_context, () =&gt; taskFunction(_context));
+  } else {
+    return zonedContext.withValue(_context, taskFunction);
+  }
 }</pre>
     </section>
 
@@ -139,7 +140,7 @@ a <code>Function</code>, that function will be invoked by this method.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

@@ -85,6 +85,7 @@
       <li class="section-title">
         <a href="grinder/Grinder-class.html#instance-properties">Properties</a>
       </li>
+      <li><a href="grinder/Grinder/ansi.html">ansi</a></li>
       <li><a href="grinder/Grinder/defaultTask.html">defaultTask</a></li>
       <li><a href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></li>
       <li><a href="grinder/Grinder/tasks.html">tasks</a></li>
@@ -189,15 +190,14 @@ cycles in the dependency graph.</p>
   invocations.forEach((i) =&gt; _postOrder(i as TaskInvocation));
 
   if (!dontRun) {
-    log(&#39;grinder running ${ansi.bold}${_invocationOrder.join(&#39; &#39;)}${ansi
-        .reset}&#39;);
+    log(&#39;grinder running ${_invocationOrder.join(&#39; &#39;)}&#39;);
     log(&#39;&#39;);
 
-    return Future.forEach(_invocationOrder, (task) {
+    return Future.forEach(_invocationOrder, (TaskInvocation task) {
       return _invokeTask(task);
     }).then((_) {
-      Duration elapsed = new DateTime.now().difference(startTime);
-      log(&#39;finished in ${elapsed.inMilliseconds &#47; 1000.0} seconds.&#39;);
+      final Duration elapsed = new DateTime.now().difference(startTime);
+      log(&#39;finished in ${(elapsed.inMilliseconds ~&#47; 100) &#47; 10} seconds&#39;);
     });
   } else {
     return new Future.value();
@@ -215,7 +215,7 @@ cycles in the dependency graph.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

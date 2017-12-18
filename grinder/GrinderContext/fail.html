@@ -115,7 +115,7 @@
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
       <pre class="prettyprint language-dart">void fail(String message) {
-  log(&#39;${ansi.bold}failed:${ansi.reset} ${ansi.red}${message}${ansi.reset}&#39;);
+  log(grinder.ansi.emphasized(&#39;failed: &#39;) + grinder.ansi.error(message));
   throw new GrinderException(message);
 }</pre>
     </section>
@@ -130,7 +130,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

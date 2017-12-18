@@ -124,12 +124,13 @@
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre class="prettyprint language-dart">static void build(
-    {String mode,
-    List&lt;String&gt; directories,
-    RunOptions runOptions,
-    String outputDirectory,
-    String workingDirectory}) {
+      <pre class="prettyprint language-dart">static void build({
+  String mode,
+  List&lt;String&gt; directories,
+  RunOptions runOptions,
+  String outputDirectory,
+  String workingDirectory,
+}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   List args = [&#39;build&#39;];
   if (mode != null) args.add(&#39;--mode=${mode}&#39;);
@@ -150,7 +151,7 @@
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

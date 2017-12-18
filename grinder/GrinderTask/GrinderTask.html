@@ -89,9 +89,6 @@
       <li><a href="grinder/GrinderTask/depends.html">depends</a></li>
       <li><a href="grinder/GrinderTask/description.html">description</a></li>
       <li><a href="grinder/GrinderTask/name.html">name</a></li>
-      <li><a href="grinder/GrinderTask/options.html">options</a></li>
-      <li><a href="grinder/GrinderTask/positionals.html">positionals</a></li>
-      <li><a href="grinder/GrinderTask/rest.html">rest</a></li>
       <li><a href="grinder/GrinderTask/taskFunction.html">taskFunction</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/hashCode.html">hashCode</a></li>
       <li class="inherited"><a href="grinder/GrinderTask/runtimeType.html">runtimeType</a></li>
@@ -110,33 +107,28 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
     <section class="multi-line-signature">
       
-            <span class="name ">GrinderTask</span>(<wbr><span class="parameter" id="-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, {</span> <span class="parameter" id="-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span>, </span> <span class="parameter" id="-param-description"><span class="type-annotation">String</span> <span class="parameter-name">description</span>, </span> <span class="parameter" id="-param-depends"><span class="type-annotation">Iterable</span> <span class="parameter-name">depends</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="-param-positionals"><span class="type-annotation">Iterable&lt;Positional&gt;</span> <span class="parameter-name">positionals</span>: <span class="default-value">const []</span>, </span> <span class="parameter" id="-param-rest"><span class="type-annotation">Rest</span> <span class="parameter-name">rest</span>, </span> <span class="parameter" id="-param-options"><span class="type-annotation">Iterable&lt;Option&gt;</span> <span class="parameter-name">options</span>: <span class="default-value">const []</span></span> })
+            <span class="name ">GrinderTask</span>(<wbr><span class="parameter" id="-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, {</span> <span class="parameter" id="-param-taskFunction"><span class="type-annotation">Function</span> <span class="parameter-name">taskFunction</span>, </span> <span class="parameter" id="-param-description"><span class="type-annotation">String</span> <span class="parameter-name">description</span>, </span> <span class="parameter" id="-param-depends"><span class="type-annotation">Iterable</span> <span class="parameter-name">depends</span>: <span class="default-value">const []</span></span> })
     </section>
 
     <section class="desc markdown">
       <p>Create a new <a href="grinder/GrinderTask-class.html">GrinderTask</a>.</p>
 <p>Items in <code>depends</code> represent task dependencies.  They can either be
 <code>String</code> names of tasks (without arguments), or full <a href="grinder/TaskInvocation-class.html">TaskInvocation</a>s.</p>
-<p>Use <code>positionals</code>, <a href="grinder/GrinderTask/rest.html">rest</a>, and <code>options</code> to define parameters accepted by
-this task.</p>
     </section>
     
     <section class="summary source-code" id="source">
       <h2><span>Source</span> </h2>
-      <pre class="prettyprint language-dart">GrinderTask(this.name,
-    {this.taskFunction,
-    this.description,
-    Iterable depends: const [],
-    Iterable&lt;Positional&gt; positionals: const [],
-    this.rest,
-    Iterable&lt;Option&gt; options: const []})
+      <pre class="prettyprint language-dart">GrinderTask(
+  this.name, {
+  this.taskFunction,
+  this.description,
+  Iterable depends: const [],
+})
     : this.depends = new UnmodifiableListView(depends
-          .map((dep) =&gt; dep is String ? new TaskInvocation(dep) : dep)),
-      this.positionals = new UnmodifiableListView(positionals.toList()),
-      this.options = new UnmodifiableListView(options.toList()) {
+          .map((dep) =&gt; dep is String ? new TaskInvocation(dep) : dep)) {
   if (taskFunction == null &amp;&amp; depends.isEmpty) {
-    throw new GrinderException(&#39;GrinderTasks must have a task function or &#39;
-        &#39;dependencies.&#39;);
+    throw new GrinderException(
+        &#39;GrinderTasks must have a task function or dependencies.&#39;);
   }
 }</pre>
     </section>
@@ -151,7 +143,7 @@ this task.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="API docs for the TaskArgs class from the grinder library, for the Dart programming language.">
+  <title>TaskArgs class - grinder library - Dart API</title>
+  <!-- required because all the links are pseudo-absolute -->
+  <base href="..">
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
+  <link rel="stylesheet" href="static-assets/prettify.css">
+  <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static-assets/styles.css">
+  <link rel="icon" href="static-assets/favicon.png">
+
+  <!-- Do not remove placeholder -->
+  <!-- Header Placeholder -->
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header class="container-fluid" id="title">
+  <nav class="navbar navbar-fixed-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 contents">
+          <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+          <ol class="breadcrumbs gt-separated hidden-xs">
+            <li><a href="index.html">grinder</a></li>
+            <li><a href="grinder/grinder-library.html">grinder</a></li>
+            <li class="self-crumb">TaskArgs</li>
+          </ol>
+          <div class="self-name">TaskArgs</div>
+          <form class="search navbar-right" role="search">
+            <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+          </form>
+        </div> <!-- /col -->
+      </div> <!-- /row -->
+    </div> <!-- /container -->
+  </nav>
+
+  <div class="container masthead">
+    <div class="row">
+      <div class="col-sm-12 contents">
+        <ol class="breadcrumbs gt-separated visible-xs">
+          <li><a href="index.html">grinder</a></li>
+          <li><a href="grinder/grinder-library.html">grinder</a></li>
+          <li class="self-crumb">TaskArgs</li>
+        </ol>
+        <div class="title-description">
+          <h1 class="title">
+            <span class="kind">class</span> TaskArgs
+          </h1>
+        </div>
+        <ul class="subnav">
+          <li><a href="grinder/TaskArgs-class.html#instance-properties">Properties</a></li>
+          <li><a href="grinder/TaskArgs-class.html#constructors">Constructors</a></li>
+          <li><a href="grinder/TaskArgs-class.html#operators">Operators</a></li>
+          <li><a href="grinder/TaskArgs-class.html#instance-methods">Methods</a></li>
+        </ul>
+      </div> <!-- /col -->
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+
+</header>
+
+<div class="container body">
+  <div class="row">
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><a href="index.html">grinder</a></h5>
+    <h5><a href="grinder/grinder-library.html">grinder</a></h5>
+
+    <ol>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
+      <li><a href="grinder.tools/binDir.html">binDir</a></li>
+      <li><a href="grinder.tools/buildDir.html">buildDir</a></li>
+      <li><a href="grinder/context.html">context</a></li>
+      <li><a href="grinder.sdk/dartVM.html">dartVM</a></li>
+      <li><a href="grinder/defaultTask.html">defaultTask</a></li>
+      <li><a href="grinder.sdk/existingSourceDirs.html">existingSourceDirs</a></li>
+      <li><a href="grinder.tools/libDir.html">libDir</a></li>
+      <li><a href="grinder.sdk/sdkDir.html">sdkDir</a></li>
+      <li><a href="grinder.sdk/sourceDirs.html">sourceDirs</a></li>
+      <li><a href="grinder.tools/webDir.html">webDir</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#functions">Functions</a></li>
+      <li><a href="grinder/addTask.html">addTask</a></li>
+      <li><a href="grinder.files/baseName.html">baseName</a></li>
+      <li><a href="grinder.files/copy.html">copy</a></li>
+      <li><a href="grinder.files/copyDirectory.html">copyDirectory</a></li>
+      <li><a href="grinder.files/copyFile.html">copyFile</a></li>
+      <li><a href="grinder.tools/defaultClean.html">defaultClean</a></li>
+      <li><a href="grinder.files/delete.html">delete</a></li>
+      <li><a href="grinder.files/deleteEntity.html">deleteEntity</a></li>
+      <li><a href="grinder/fail.html">fail</a></li>
+      <li><a href="grinder.files/fileExt.html">fileExt</a></li>
+      <li><a href="grinder.files/fileName.html">fileName</a></li>
+      <li><a href="grinder.files/getDir.html">getDir</a></li>
+      <li><a href="grinder.files/getFile.html">getFile</a></li>
+      <li><a class="deprecated" href="grinder.sdk/getSdkDir.html">getSdkDir</a></li>
+      <li><a href="grinder/grind.html">grind</a></li>
+      <li><a href="grinder/grinderArgs.html">grinderArgs</a></li>
+      <li><a href="grinder.files/joinDir.html">joinDir</a></li>
+      <li><a href="grinder.files/joinFile.html">joinFile</a></li>
+      <li><a href="grinder/log.html">log</a></li>
+      <li><a href="grinder.tools/run.html">run</a></li>
+      <li><a href="grinder.tools/runAsync.html">runAsync</a></li>
+      <li><a href="grinder.tools/runDartScript.html">runDartScript</a></li>
+      <li><a class="deprecated" href="grinder.tools/runProcess.html">runProcess</a></li>
+      <li><a class="deprecated" href="grinder.tools/runProcessAsync.html">runProcessAsync</a></li>
+      <li><a href="grinder.sdk/sdkBin.html">sdkBin</a></li>
+      <li><a class="deprecated" href="grinder/startGrinder.html">startGrinder</a></li>
+      <li><a class="deprecated" href="grinder/task.html">task</a></li>
+    
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
+      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
+      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
+      <li><a href="grinder/Depends-class.html">Depends</a></li>
+      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
+      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
+      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
+      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
+      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
+      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
+      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+    
+      <li class="section-title"><a href="grinder/grinder-library.html#exceptions">Exceptions</a></li>
+      <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
+      <li><a href="grinder.tools/ProcessException-class.html">ProcessException</a></li>
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+
+    <section class="desc markdown">
+      <p>Any arguments passed into the task from the command line.</p>
+<p>The arguments could be in the form of flags (<code>grind foo --release</code>) or flags
+(<code>grind foo --config=bar</code>).</p>
+    </section>
+    
+
+
+
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="TaskArgs" class="callable">
+          <span class="name"><a href="grinder/TaskArgs/TaskArgs.html">TaskArgs</a></span><span class="signature">(<span class="parameter" id="-param-taskName"><span class="type-annotation">String</span> <span class="parameter-name">taskName</span>, </span> <span class="parameter" id="-param-arguments"><span class="type-annotation">List&lt;String&gt;</span> <span class="parameter-name">arguments</span></span>)</span>
+        </dt>
+        <dd>
+          <p></p>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="arguments" class="property">
+          <span class="name"><a href="grinder/TaskArgs/arguments.html">arguments</a></span>
+          <span class="signature">&#8594; List&lt;String&gt;</span>
+        </dt>
+        <dd>
+          <p>The original list of arguments that were parsed.</p>
+          <div class="features">final</div>
+</dd>
+        <dt id="taskName" class="property">
+          <span class="name"><a href="grinder/TaskArgs/taskName.html">taskName</a></span>
+          <span class="signature">&#8594; String</span>
+        </dt>
+        <dd>
+          <p></p>
+          <div class="features">final</div>
+</dd>
+        <dt id="hashCode" class="property inherited">
+          <span class="name"><a href="grinder/TaskArgs/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; int</span>
+        </dt>
+        <dd class="inherited">
+          <p>The hash code for this object.</p>
+          <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="grinder/TaskArgs/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; Type</span>
+        </dt>
+        <dd class="inherited">
+          <p>A representation of the runtime type of the object.</p>
+          <div class="features">read-only, inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="grinder/TaskArgs/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          <p>The equality operator.</p>
+          <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="getFlag" class="callable">
+          <span class="name"><a href="grinder/TaskArgs/getFlag.html">getFlag</a></span><span class="signature">(<wbr><span class="parameter" id="getFlag-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd>
+          <p></p>
+          
+</dd>
+        <dt id="getOption" class="callable">
+          <span class="name"><a href="grinder/TaskArgs/getOption.html">getOption</a></span><span class="signature">(<wbr><span class="parameter" id="getOption-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+            <span class="returntype parameter">&#8594; String</span>
+          </span>
+        </dt>
+        <dd>
+          <p></p>
+          
+</dd>
+        <dt id="hasFlag" class="callable">
+          <span class="name"><a href="grinder/TaskArgs/hasFlag.html">hasFlag</a></span><span class="signature">(<wbr><span class="parameter" id="hasFlag-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd>
+          <p></p>
+          
+</dd>
+        <dt id="hasOption" class="callable">
+          <span class="name"><a href="grinder/TaskArgs/hasOption.html">hasOption</a></span><span class="signature">(<wbr><span class="parameter" id="hasOption-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd>
+          <p></p>
+          
+</dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="grinder/TaskArgs/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          <p>Invoked when a non-existent method or property is accessed.</p>
+          <div class="features">inherited</div>
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="grinder/TaskArgs/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; String</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          <p>Returns a string representation of this object.</p>
+          <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <h5>TaskArgs</h5>
+    <ol>
+    
+    
+    
+      <li class="section-title"><a href="grinder/TaskArgs-class.html#constructors">Constructors</a></li>
+      <li><a href="grinder/TaskArgs/TaskArgs.html">TaskArgs</a></li>
+    
+      <li class="section-title">
+        <a href="grinder/TaskArgs-class.html#instance-properties">Properties</a>
+      </li>
+      <li><a href="grinder/TaskArgs/arguments.html">arguments</a></li>
+      <li><a href="grinder/TaskArgs/taskName.html">taskName</a></li>
+      <li class="inherited"><a href="grinder/TaskArgs/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/TaskArgs/runtimeType.html">runtimeType</a></li>
+    
+      <li class="section-title inherited"><a href="grinder/TaskArgs-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="grinder/TaskArgs/operator_equals.html">operator ==</a></li>
+    
+      <li class="section-title"><a href="grinder/TaskArgs-class.html#instance-methods">Methods</a></li>
+      <li><a href="grinder/TaskArgs/getFlag.html">getFlag</a></li>
+      <li><a href="grinder/TaskArgs/getOption.html">getOption</a></li>
+      <li><a href="grinder/TaskArgs/hasFlag.html">hasFlag</a></li>
+      <li><a href="grinder/TaskArgs/hasOption.html">hasOption</a></li>
+      <li class="inherited"><a href="grinder/TaskArgs/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="grinder/TaskArgs/toString.html">toString</a></li>
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</div> <!-- row -->
+</div> <!-- container -->
+
+<footer>
+  <div class="container-fluid">
+    <div class="container">
+      <p class="text-center">
+        <span class="no-break">
+          grinder 0.8.1
+        </span>
+        &bull;
+        <span class="no-break">
+          <a href="https://www.dartlang.org">
+            <img src="static-assets/favicon.png" alt="Dart" title="Dart" width="16" height="16">
+          </a>
+        </span>
+        &bull;
+        <span class="copyright no-break">
+          <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
+        </span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/prettify.js"></script>
+<script src="static-assets/URI.js"></script>
+<script src="static-assets/script.js"></script>
+<!-- Do not remove placeholder -->
+<!-- Footer Placeholder -->
+
+</body>
+
+</html>

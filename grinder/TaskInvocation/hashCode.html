@@ -82,10 +82,9 @@
       <li class="section-title">
         <a href="grinder/TaskInvocation-class.html#instance-properties">Properties</a>
       </li>
+      <li><a href="grinder/TaskInvocation/arguments.html">arguments</a></li>
       <li><a href="grinder/TaskInvocation/hashCode.html">hashCode</a></li>
       <li><a href="grinder/TaskInvocation/name.html">name</a></li>
-      <li><a href="grinder/TaskInvocation/options.html">options</a></li>
-      <li><a href="grinder/TaskInvocation/positionals.html">positionals</a></li>
       <li class="inherited"><a href="grinder/TaskInvocation/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title"><a href="grinder/TaskInvocation-class.html#operators">Operators</a></li>
@@ -134,9 +133,8 @@ data structures like <code>HashSet</code> or <code>HashMap</code>.</p>
 </section>
       <section class="summary source-code" id="source">
         <h2><span>Source</span> </h2>
-        <pre class="prettyprint language-dart">int get hashCode =&gt; name.hashCode ^
-    (const IterableEquality().hash(positionals) * 3) ^
-    (const MapEquality().hash(options) * 5);</pre>
+        <pre class="prettyprint language-dart">int get hashCode =&gt;
+    name.hashCode ^ (const IterableEquality().hash(arguments.arguments) * 3);</pre>
       </section>
 
 
@@ -150,7 +148,7 @@ data structures like <code>HashSet</code> or <code>HashMap</code>.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">

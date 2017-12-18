@@ -96,16 +96,13 @@
 
       <dl class="callables">
         <dt id="TaskFunction" class="callable">
-          <span class="name deprecated"><a class="deprecated" href="grinder/TaskFunction.html">TaskFunction</a></span><span class="signature">(<wbr><span class="parameter" id="TaskFunction-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span>)
+          <span class="name"><a href="grinder/TaskFunction.html">TaskFunction</a></span><span class="signature">(<wbr><span class="parameter" id="TaskFunction-param-args"><span class="type-annotation"><a href="grinder/TaskArgs-class.html">TaskArgs</a></span> <span class="parameter-name">args</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
         </dt>
         <dd>
-          <p>Used to define a method body for a task. Note: a task's context is now
-available as a global variable ('context'). Your task functions should no
-longer be definied with a single <code>GrinderContext</code> parameter.</p>
-          <div class="features">@Deprecated(&#39;&#39;&#39;Use a nullary function instead.  A task&#39;s context can now be
-accessed via the top-level `context` getter.&#39;&#39;&#39;)</div>
+          <p>The typedef for grinder task functions.</p>
+          
 </dd>
       </dl>
     </section>
@@ -583,6 +580,12 @@ See <code>Process.run</code> for more details.</p>
         <dd>
           <p>An annotation to mark a <a href="grinder/GrinderTask-class.html">GrinderTask</a> definition.</p>
         </dd>
+        <dt id="TaskArgs">
+          <span class="name "><a href="grinder/TaskArgs-class.html">TaskArgs</a></span>
+        </dt>
+        <dd>
+          <p>Any arguments passed into the task from the command line.</p>
+        </dd>
         <dt id="TaskInvocation">
           <span class="name "><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>
         </dt>
@@ -625,7 +628,7 @@ tests.</p>
     <ol>
     
       <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
-      <li><a class="deprecated" href="grinder/TaskFunction.html">TaskFunction</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
       <li><a href="grinder.tools/binDir.html">binDir</a></li>
@@ -688,6 +691,7 @@ tests.</p>
       <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
       <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
       <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
       <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
       <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
@@ -705,7 +709,7 @@ tests.</p>
     <div class="container">
       <p class="text-center">
         <span class="no-break">
-          grinder 0.8.0+3
+          grinder 0.8.1
         </span>
         &bull;
         <span class="no-break">
