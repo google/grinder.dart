@@ -19,7 +19,7 @@ List<String> grinderArgs() => _args;
 List<String> _args;
 bool _verifyProjectRoot;
 
-runTasks(
+Future runTasks(
   List<String> args, {
   bool verifyProjectRoot: false,
 }) async {
@@ -32,7 +32,8 @@ runTasks(
     () => getTaskHelp(singleton.grinder),
   );
 
-  parser.addFlag('color', help: 'Whether to use terminal colors.');
+  parser.addFlag('color',
+      negatable: true, help: 'Whether to use terminal colors.');
   parser.addFlag('version', help: 'Reports the version of this tool.');
   parser.addFlag('help', abbr: 'h', help: 'Print this usage information.');
 
@@ -90,8 +91,9 @@ class ArgParser {
     this._describeTasks = describeTasks;
   }
 
-  void addFlag(String name, {String abbr, String help}) {
-    _flags.add(new _ArgsFlag(name, abbr: abbr, help: help));
+  void addFlag(String name, {String abbr, String help, bool negatable: false}) {
+    _flags
+        .add(new _ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
   }
 
   ArgResults parse(List<String> args) {
@@ -163,10 +165,17 @@ class _ArgsFlag {
   final String name;
   final String abbr;
   final String help;
+  final bool negatable;
 
-  _ArgsFlag(this.name, {this.abbr, this.help});
+  _ArgsFlag(this.name, {this.abbr, this.help, this.negatable});
 
-  String get label => abbr == null ? '--$name' : '-$abbr, --$name';
+  String get label {
+    if (negatable) {
+      return '--no-$name';
+    } else {
+      return abbr == null ? '--$name' : '-$abbr, --$name';
+    }
+  }
 }
 
 class ArgResults {

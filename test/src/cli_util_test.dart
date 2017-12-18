@@ -3,19 +3,41 @@
 
 library grinder.src.cli_test;
 
+import 'package:grinder/src/cli.dart';
 import 'package:grinder/src/cli_util.dart';
 import 'package:grinder/src/grinder.dart';
 import 'package:grinder/src/grinder_task.dart';
+import 'package:grinder/src/task_invocation.dart';
 import 'package:test/test.dart';
 
 import '_common.dart';
 
-// TODO: test('throws on invalid task name', () {
-
 main() {
   group('cli_util', () {
     group('ArgParser', () {
-      // TODO: test ArgParser
+      test('flags and tasks', () {
+        ArgParser parser = new ArgParser('foo', 'foo description', () => '');
+        parser.addFlag('help', abbr: 'h');
+        parser.addFlag('foo');
+        parser.addFlag('bar');
+
+        ArgResults results =
+            parser.parse(['-h', '--foo', 'task1', '--foo', 'task2']);
+
+        expect(results.getFlag('help'), true);
+        expect(results.getFlag('foo'), true);
+        expect(results.getFlag('bar'), false);
+
+        expect(results.taskInvocations, hasLength(2));
+
+        TaskInvocation task = results.taskInvocations.first;
+        expect(task.name, 'task1');
+        expect(task.arguments.getFlag('foo'), true);
+
+        task = results.taskInvocations[1];
+        expect(task.name, 'task2');
+        expect(task.arguments.arguments, isEmpty);
+      });
     });
 
     group('getTaskHelp', () {

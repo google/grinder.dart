@@ -9,14 +9,12 @@ import 'grinder_task.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
 
-/**
- * A [GrinderContext] is used to give the currently running Grinder task the
- * ability to introspect the running state. It can get the current [Grinder]
- * instance and get a reference to the current [GrinderTask] instance (as well as
- * the previous and next tasks, if any).
- *
- * A [GrinderContext] also allows you to log messages and errors.
- */
+/// A [GrinderContext] is used to give the currently running Grinder task the
+/// ability to introspect the running state. It can get the current [Grinder]
+/// instance and get a reference to the current [GrinderTask] instance (as well as
+/// the previous and next tasks, if any).
+///
+/// A [GrinderContext] also allows you to log messages and errors.
 class GrinderContext {
   /// The [Grinder] instance.
   final Grinder grinder;

@@ -13,8 +13,6 @@ import 'grinder_task.dart';
 import 'singleton.dart';
 import 'task_invocation.dart';
 
-// TODO: For task output, use the cli_util package.
-
 /// Programmatically add a [task] to the global [Grinder] instance.
 ///
 /// Any calls to this should occur before the call to [grind].
@@ -27,9 +25,7 @@ set defaultTask(GrinderTask v) {
   grinder.defaultTask = v;
 }
 
-/**
- * A class representing a running instance of a Grinder.
- */
+/// A class representing a running instance of a Grinder.
 class Grinder {
   final List<GrinderTask> _tasks = [];
   Map<GrinderTask, List> _taskDeps;
@@ -90,22 +86,20 @@ class Grinder {
     }
   }
 
-  /**
-   * Start the build process and run all the tasks in the calculated build
-   * order.
-   *
-   * [start] should be called once and only once; i.e., Grinder instances are
-   * not re-usable.
-   *
-   * Items in [invocations] can either be [String] names of tasks to invoke, or
-   * full [TaskInvocation]s.
-   *
-   * The [dontRun] parameter can be used to audit the grinder file, without
-   * actually executing any targets.
-   *
-   * Throws [GrinderException] if named tasks don't exist, or there are
-   * cycles in the dependency graph.
-   */
+  /// Start the build process and run all the tasks in the calculated build
+  /// order.
+  ///
+  /// [start] should be called once and only once; i.e., Grinder instances are
+  /// not re-usable.
+  ///
+  /// Items in [invocations] can either be [String] names of tasks to invoke, or
+  /// full [TaskInvocation]s.
+  ///
+  /// The [dontRun] parameter can be used to audit the grinder file, without
+  /// actually executing any targets.
+  ///
+  /// Throws [GrinderException] if named tasks don't exist, or there are
+  /// cycles in the dependency graph.
   Future start(Iterable invocations, {bool dontRun: false}) {
     if (!dontRun && _taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");

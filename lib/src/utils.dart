@@ -50,7 +50,7 @@ String withCapitalization(String s, bool capitalized) {
 
 // TODO: Remove this once this `dart:mirrors` bug is fixed:
 //       http://dartbug.com/22601
-declarationsEqual(DeclarationMirror decl1, decl2) =>
+bool declarationsEqual(DeclarationMirror decl1, decl2) =>
     decl2 is DeclarationMirror &&
     decl1.owner == decl2.owner &&
     decl1.simpleName == decl2.simpleName;

@@ -5,9 +5,7 @@ library grinder.init;
 
 import 'dart:io';
 
-/**
- * A command to create a simple, starting `tool/grind.dart` build script.
- */
+/// A command to create a simple, starting `tool/grind.dart` build script.
 void main(List args) {
   if (!new File('pubspec.yaml').existsSync()) {
     _fail('This script must be run from the project root.');

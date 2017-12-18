@@ -45,12 +45,10 @@ class Depends {
       .toList();
 }
 
-/**
- * An annotation to define the default [GrinderTask] to run when no tasks are
- * specified on the command line.
- *
- * Use this instead of [Task] when defining the default task.
- */
+/// An annotation to define the default [GrinderTask] to run when no tasks are
+/// specified on the command line.
+///
+/// Use this instead of [Task] when defining the default task.
 class DefaultTask extends Task {
   const DefaultTask([String description]) : super(description);
 }

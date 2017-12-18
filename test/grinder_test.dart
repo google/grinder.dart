@@ -97,16 +97,6 @@ main() {
       });
     });
 
-    test('throws when task invoked twice with different arguments', () {
-      Grinder grinder = new Grinder();
-      grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
-      var dep = new TaskInvocation('foo');
-      grinder.addTask(new GrinderTask('bar', depends: [dep]));
-
-      expect(() => grinder.start(['bar', 'foo']),
-          throwsA(new isInstanceOf<GrinderException>()));
-    });
-
     test('stringEscape', () {
       // test that we execute tasks in the correct order
       Grinder grinder = new Grinder();

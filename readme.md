@@ -12,7 +12,8 @@ and a command-line tool to run them.
 
 ## Getting Started
 
-To start using `grinder`, add it to your [dev_dependencies](https://www.dartlang.org/tools/pub/dependencies.html#dev-dependencies).
+To start using `grinder`, add it to your
+[dev_dependencies](https://www.dartlang.org/tools/pub/dependencies.html#dev-dependencies).
 
 ### Defining Tasks
 
@@ -79,6 +80,33 @@ or to display a list of available tasks and their dependencies:
     grind -h
 
 You can also bypass installing `grind` and instead use `pub run grinder`.
+
+## Passing parameters to tasks
+
+In order to pass parameters to tasks from the command-line, you define
+your task function to take a `TaskArgs` parameter. For example:
+
+`grind build-site --release --mode=topaz`
+
+and:
+
+```dart
+@Task()
+buildSite(TaskArgs args) {
+  bool isRelease = args.getFlag('release');
+  String mode = args.getOption('mode'); // will be set to topaz
+  
+  ...
+}
+```
+
+would pass the flag `release` and the option `mode` to the `buildSite`
+task.
+
+You can pass flags and options to multiple tasks. The following command-line
+would pass separate flags and options to two different tasks:
+
+`grind build-site --release generate-docs --header=small`
 
 ## Disclaimer
 

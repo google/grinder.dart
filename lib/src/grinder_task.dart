@@ -19,7 +19,6 @@ class GrinderTask {
   /// The name of the task.
   final String name;
 
-  // TODO: when executing this function, look to pass in any args
   // TODO: document how to pass in args
 
   /// The function to execute when starting this task.
@@ -57,6 +56,10 @@ class GrinderTask {
 
     if (taskFunction is TaskFunction) {
       return zonedContext.withValue(_context, () => taskFunction(args));
+    } else if (taskFunction is _OldTaskFunction) {
+      _context.log(
+          "warning: task definitions no longer require an explicit 'GrinderContext' parameter");
+      return zonedContext.withValue(_context, () => taskFunction(_context));
     } else {
       return zonedContext.withValue(_context, taskFunction);
     }
@@ -64,3 +67,5 @@ class GrinderTask {
 
   String toString() => "[$name]";
 }
+
+typedef dynamic _OldTaskFunction(GrinderContext context);

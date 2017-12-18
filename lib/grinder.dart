@@ -1,13 +1,11 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/**
- * Dart workflows, automated.
- *
- * See the [README][] for detailed usage information.
- *
- * [README]: https://pub.dartlang.org/packages/grinder
- */
+/// Dart workflows, automated.
+///
+/// See the [README][] for detailed usage information.
+///
+/// [README]: https://pub.dartlang.org/packages/grinder
 library grinder;
 
 import 'dart:async';
@@ -55,22 +53,18 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) {
   }
 }
 
-/**
- * Start the build process. This should be called at the end of the `main()`
- * method. If there is a task failure, this method will halt task execution and
- * throw.
- */
+/// Start the build process. This should be called at the end of the `main()`
+/// method. If there is a task failure, this method will halt task execution and
+/// throw.
 @Deprecated('Use `grind` instead.')
 Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {
   return runTasks(args, verifyProjectRoot: verifyProjectRoot);
 }
 
-/**
- * Add a new task definition to the global [Grinder] instance. A [name] is
- * required. If specified, a [taskFunction] is invoked when the task starts.
- * Any dependencies of the task, that need to run before it, should be passed
- * in via [depends].
- */
+/// Add a new task definition to the global [Grinder] instance. A [name] is
+/// required. If specified, a [taskFunction] is invoked when the task starts.
+/// Any dependencies of the task, that need to run before it, should be passed
+/// in via [depends].
 @Deprecated('Use the task annotations instead.')
 void task(String name,
     [Function taskFunction, List<String> depends = const []]) {

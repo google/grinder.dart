@@ -7,8 +7,6 @@ import 'package:cli_util/cli_logging.dart' show Ansi;
 
 import '../grinder.dart';
 
-// TODO: pass args to tasks
-
 String getTaskHelp(Grinder grinder, {bool useColor: true}) {
   if (grinder.tasks.isEmpty) {
     return '  No tasks defined.';
@@ -36,7 +34,7 @@ String getTaskHelp(Grinder grinder, {bool useColor: true}) {
           return '${ansi.green}${d.name}${ansi.none}';
         }).join(' ');
         String depText = '(depends on: $depTasks)';
-        if (task.description != null) {
+        if (task.description != null && task.description.isNotEmpty) {
           buffer.writeln(task.description);
           if (deps.isNotEmpty) {
             buffer.writeln('  ${''.padRight(20)} $depText');
