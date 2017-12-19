@@ -133,8 +133,7 @@ data structures like <code>HashSet</code> or <code>HashMap</code>.</p>
 </section>
       <section class="summary source-code" id="source">
         <h2><span>Source</span> </h2>
-        <pre class="prettyprint language-dart">int get hashCode =&gt;
-    name.hashCode ^ (const IterableEquality().hash(arguments.arguments) * 3);</pre>
+        <pre class="prettyprint language-dart">int get hashCode =&gt; name.hashCode ^ (arguments.arguments.length * 3);</pre>
       </section>
 
 

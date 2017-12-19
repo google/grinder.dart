@@ -131,8 +131,7 @@ the <code>hashCode</code> method as well to maintain consistency.</p>
       <pre class="prettyprint language-dart">bool operator ==(other) =&gt;
     other is TaskInvocation &amp;&amp;
     name == other.name &amp;&amp;
-    const IterableEquality()
-        .equals(arguments.arguments, other.arguments.arguments);</pre>
+    _listEquals(arguments.arguments, other.arguments.arguments);</pre>
     </section>
 
   </div> <!-- /.main-content -->
