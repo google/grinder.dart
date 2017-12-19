@@ -13,7 +13,6 @@ environment:
 
 dependencies:
   cli_util: ^0.1.2
-  collection: '>=1.1.0 <2.0.0'
   glob: '>=1.0.0 <2.0.0'
   path: '>=1.0.0 <2.0.0'
 
