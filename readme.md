@@ -83,8 +83,8 @@ You can also bypass installing `grind` and instead use `pub run grinder`.
 
 ## Passing parameters to tasks
 
-In order to pass parameters to tasks from the command-line, you define
-your task function to take a `TaskArgs` parameter. For example:
+In order to pass parameters to tasks from the command-line, you query the
+`TaskArgs` instance for your task invocation. For example:
 
 `grind build --release --mode=topaz`
 
@@ -92,7 +92,8 @@ and:
 
 ```dart
 @Task()
-build(TaskArgs args) {
+build() {
+  TaskArgs args = context.invocation.arguments
   bool isRelease = args.getFlag('release');
   String mode = args.getOption('mode'); // will be set to topaz
   
