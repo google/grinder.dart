@@ -142,12 +142,13 @@ grind build doc
 </code></pre>
 <p>You can also bypass installing <code>grind</code> and instead use <code>pub run grinder</code>.</p>
 <h2>Passing parameters to tasks</h2>
-<p>In order to pass parameters to tasks from the command-line, you define
-your task function to take a <code>TaskArgs</code> parameter. For example:</p>
+<p>In order to pass parameters to tasks from the command-line, you query the
+<code>TaskArgs</code> instance for your task invocation. For example:</p>
 <p><code>grind build --release --mode=topaz</code></p>
 <p>and:</p>
 <pre class="language-dart prettyprint"><code class="language-dart">@Task()
-build(TaskArgs args) {
+build() {
+  TaskArgs args = context.invocation.arguments
   bool isRelease = args.getFlag('release');
   String mode = args.getOption('mode'); // will be set to topaz
   
