@@ -3,7 +3,7 @@
 
 library grinder.test.src.run;
 
-import 'dart:convert' show Converter, Encoding, JSON;
+import 'dart:convert' show Converter, Encoding, jsonDecode;
 import 'dart:io' as io;
 
 import 'package:grinder/grinder.dart';
@@ -22,7 +22,7 @@ main() {
 
       String output =
           run('dart', arguments: [runScript]..addAll(arguments), quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       expect(json['arguments'], orderedEquals(arguments));
     });
 
@@ -31,7 +31,7 @@ main() {
           arguments: [runScriptName],
           runOptions: new RunOptions(workingDirectory: runScriptPath),
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -40,7 +40,7 @@ main() {
           arguments: [runScriptName],
           workingDirectory: runScriptPath,
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -52,7 +52,7 @@ main() {
           workingDirectory: runScriptPath,
           runOptions: new RunOptions(),
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -60,7 +60,7 @@ main() {
         'should throw when workingDirectory and runOptions.workingDirectory are passed',
         () {
       bool isCheckedMode = false;
-      assert(() => isCheckedMode = true);
+      assert((() => isCheckedMode = true)());
       if (isCheckedMode) {
         expect(
             () => run('dart',
@@ -78,7 +78,7 @@ main() {
           arguments: [runScript],
           runOptions: new RunOptions(environment: environment),
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
@@ -96,7 +96,7 @@ main() {
           runOptions: new RunOptions(
               environment: environment, includeParentEnvironment: false),
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
@@ -121,7 +121,7 @@ main() {
               includeParentEnvironment: false,
               runInShell: true),
           quiet: true);
-      Map json = JSON.decode(output);
+      Map json = jsonDecode(output);
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }

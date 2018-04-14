@@ -9,7 +9,7 @@ authors:
 - Sean Eagan <seaneagan1@gmail.com>
 
 environment:
-  sdk: '>=1.11.0 <2.0.0'
+  sdk: '>=2.0.0-dev.17.0 <2.0.0'
 
 dependencies:
   cli_util: ^0.1.2

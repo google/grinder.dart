@@ -9,6 +9,7 @@
 packages
 pubspec.lock
 .idea
+.dart_tool/
 .pub/
 doc/api/
 build/

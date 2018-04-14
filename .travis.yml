@@ -1,6 +1,7 @@
 language: dart
+dart:
+  - dev
 script: dart -c tool/grind.dart
-sudo: false
 
 after_success:
   - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash tool/ghpages.sh

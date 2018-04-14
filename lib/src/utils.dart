@@ -28,6 +28,8 @@ class ResettableTimer implements Timer {
   void cancel() => _timer.cancel();
 
   bool get isActive => _timer.isActive;
+
+  int get tick => _timer.tick;
 }
 
 String camelToDashes(String input) {
@@ -60,13 +62,13 @@ bool declarationsEqual(DeclarationMirror decl1, decl2) =>
 Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
     LibraryMirror library) {
   var resolved = {}..addAll(library.declarations);
-  library.libraryDependencies.forEach((dependency) {
+  library.libraryDependencies.forEach((LibraryDependencyMirror dependency) {
     if (dependency.isExport) {
-      var shown = {};
-      var hidden = [];
+      Map<Symbol, DeclarationMirror> shown = <Symbol, DeclarationMirror>{};
+      List<Symbol> hidden = <Symbol>[];
       dependency.combinators.forEach((combinator) {
         if (combinator.isShow) {
-          combinator.identifiers.forEach((id) {
+          combinator.identifiers.forEach((Symbol id) {
             shown[id] = dependency.targetLibrary.declarations[id];
           });
         }
@@ -86,7 +88,7 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
 
 getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
     decl.metadata
-        .map((mirror) => mirror.reflectee)
+        .map((InstanceMirror mirror) => mirror.reflectee)
         .firstWhere(test, orElse: () => null);
 
 /// A simple way to expose a default value that can be overridden within zones.
@@ -124,7 +126,7 @@ List<String> coerceToPathList(filesOrPaths) {
     if (item is String) return item;
     if (item is FileSystemEntity) return item.path;
     return '${item}';
-  }).toList();
+  }).cast<String>().toList();
 }
 
 /// Takes a list of paths and if an element is a directory it expands it to
