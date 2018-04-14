@@ -44,8 +44,8 @@ main() {
 
   group('discoverDeclaration', () {
     test('should set cache', () {
-      var cache = {};
-      var methodDecl = goodLib.declarations[#method];
+      Map<DeclarationMirror, AnnotatedTask> cache = {};
+      DeclarationMirror methodDecl = goodLib.declarations[#method];
       var annotated = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(annotated.isDefault, isFalse);
       expect(cache, {methodDecl: annotated});
