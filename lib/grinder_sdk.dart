@@ -368,7 +368,7 @@ class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    List args = [];
+    List<String> args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
@@ -379,7 +379,7 @@ class Analyzer {
   @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
       {Directory packageRoot, bool fatalWarnings: false}) {
-    List args = [];
+    List<String> args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(coerceToPathList(files));
@@ -410,7 +410,7 @@ class DartFmt {
 
   static String _run(String option, List<String> targets,
       {bool quiet: false, int lineLength}) {
-    List args = [option];
+    List<String> args = [option];
     if (lineLength != null) args.add('--line-length=${lineLength}');
     args.addAll(targets);
     return runlib.run(sdkBin('dartfmt'), quiet: quiet, arguments: args);
