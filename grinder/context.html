@@ -9,69 +9,58 @@
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
-  <link rel="stylesheet" href="static-assets/prettify.css">
-  <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
 
-  <!-- Do not remove placeholder -->
-  <!-- Header Placeholder -->
 </head>
 
 <body>
 
 <div id="overlay-under-drawer"></div>
 
-<header class="container-fluid" id="title">
-  <nav class="navbar navbar-fixed-top">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12 contents">
-          <button id="sidenav-left-toggle" type="button">&nbsp;</button>
-          <ol class="breadcrumbs gt-separated hidden-xs">
-            <li><a href="index.html">grinder</a></li>
-            <li><a href="grinder/grinder-library.html">grinder</a></li>
-            <li class="self-crumb">context</li>
-          </ol>
-          <div class="self-name">context</div>
-          <form class="search navbar-right" role="search">
-            <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
-          </form>
-        </div> <!-- /col -->
-      </div> <!-- /row -->
-    </div> <!-- /container -->
-  </nav>
-
-  <div class="container masthead">
-    <div class="row">
-      <div class="col-sm-12 contents">
-        <ol class="breadcrumbs gt-separated visible-xs">
-          <li><a href="index.html">grinder</a></li>
-          <li><a href="grinder/grinder-library.html">grinder</a></li>
-          <li class="self-crumb">context</li>
-        </ol>
-        <div class="title-description">
-          <h1 class="title">
-            <span class="kind">property</span> context
-          </h1>
-        </div>
-      </div> <!-- /col -->
-    </div> <!-- /row -->
-  </div> <!-- /container -->
-
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="index.html">grinder</a></li>
+    <li><a href="grinder/grinder-library.html">grinder</a></li>
+    <li class="self-crumb">context property</li>
+  </ol>
+  <div class="self-name">context</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
 </header>
 
-<div class="container body">
-  <div class="row">
+<main>
 
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <h5><a href="index.html">grinder</a></h5>
-    <h5><a href="grinder/grinder-library.html">grinder</a></h5>
+    <h5>grinder library</h5>
     <ol>
+      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
+      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
+      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
+      <li><a href="grinder/Depends-class.html">Depends</a></li>
+      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
+      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
+      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
+      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
+      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
+      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
+      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
-      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
-      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
       <li><a href="grinder.tools/binDir.html">binDir</a></li>
@@ -115,28 +104,8 @@
       <li><a class="deprecated" href="grinder/task.html">task</a></li>
     
     
-      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
-      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
-      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
-      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
-      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
-      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
-      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
-      <li><a href="grinder/Depends-class.html">Depends</a></li>
-      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
-      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
-      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
-      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
-      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
-      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
-      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
-      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
-      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
-      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
-      <li><a href="grinder/Task-class.html">Task</a></li>
-      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
-      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
-      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#exceptions">Exceptions</a></li>
       <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
@@ -145,58 +114,46 @@
   </div><!--/.sidebar-offcanvas-left-->
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+    <h1>context top-level property</h1>
 
 
-      <section id="getter">
-      
-      <section class="multi-line-signature">
-        <span class="returntype"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span>
-        <span class="name ">context</span></section>
-      
-      <section class="desc markdown">
+    <section id="getter">
+    
+    <section class="multi-line-signature">
+      <span class="returntype"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span>
+      <span class="name ">context</span>
+  
+</section>
+    
+    <section class="desc markdown">
   <p>Get the <a href="grinder/GrinderContext-class.html">GrinderContext</a> for the currently executing task.</p>
 </section>
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span> </h2>
+  <pre class="language-dart"><code class="language-dart">GrinderContext get context =&gt; zonedContext.value;</code></pre>
 </section>
-      <section class="summary source-code" id="source">
-        <h2><span>Source</span> </h2>
-        <pre class="prettyprint language-dart">GrinderContext get context =&gt; zonedContext.value;</pre>
-      </section>
-
-
+</section>
+    
   </div> <!-- /.main-content -->
 
-</div> <!-- row -->
-</div> <!-- container -->
+  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
 
 <footer>
-  <div class="container-fluid">
-    <div class="container">
-      <p class="text-center">
-        <span class="no-break">
-          grinder 0.8.1
-        </span>
-        &bull;
-        <span class="no-break">
-          <a href="https://www.dartlang.org">
-            <img src="static-assets/favicon.png" alt="Dart" title="Dart" width="16" height="16">
-          </a>
-        </span>
-        &bull;
-        <span class="copyright no-break">
-          <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
-        </span>
-      </p>
-    </div>
-  </div>
+  <span class="no-break">
+    grinder 0.8.1
+  </span>
+
 </footer>
 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
-<script src="static-assets/prettify.js"></script>
+<script src="static-assets/highlight.pack.js"></script>
 <script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
-<!-- Do not remove placeholder -->
-<!-- Footer Placeholder -->
+
 
 </body>
 

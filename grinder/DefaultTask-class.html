@@ -9,76 +9,58 @@
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto:500,400italic,300,400' type='text/css'>
-  <link rel="stylesheet" href="static-assets/prettify.css">
-  <link rel="stylesheet" href="static-assets/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
 
-  <!-- Do not remove placeholder -->
-  <!-- Header Placeholder -->
 </head>
 
 <body>
 
 <div id="overlay-under-drawer"></div>
 
-<header class="container-fluid" id="title">
-  <nav class="navbar navbar-fixed-top">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12 contents">
-          <button id="sidenav-left-toggle" type="button">&nbsp;</button>
-          <ol class="breadcrumbs gt-separated hidden-xs">
-            <li><a href="index.html">grinder</a></li>
-            <li><a href="grinder/grinder-library.html">grinder</a></li>
-            <li class="self-crumb">DefaultTask</li>
-          </ol>
-          <div class="self-name">DefaultTask</div>
-          <form class="search navbar-right" role="search">
-            <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
-          </form>
-        </div> <!-- /col -->
-      </div> <!-- /row -->
-    </div> <!-- /container -->
-  </nav>
-
-  <div class="container masthead">
-    <div class="row">
-      <div class="col-sm-12 contents">
-        <ol class="breadcrumbs gt-separated visible-xs">
-          <li><a href="index.html">grinder</a></li>
-          <li><a href="grinder/grinder-library.html">grinder</a></li>
-          <li class="self-crumb">DefaultTask</li>
-        </ol>
-        <div class="title-description">
-          <h1 class="title">
-            <span class="kind">class</span> DefaultTask
-          </h1>
-        </div>
-        <ul class="subnav">
-          <li><a href="grinder/DefaultTask-class.html#instance-properties">Properties</a></li>
-          <li><a href="grinder/DefaultTask-class.html#constructors">Constructors</a></li>
-          <li><a href="grinder/DefaultTask-class.html#operators">Operators</a></li>
-          <li><a href="grinder/DefaultTask-class.html#instance-methods">Methods</a></li>
-        </ul>
-      </div> <!-- /col -->
-    </div> <!-- /row -->
-  </div> <!-- /container -->
-
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="index.html">grinder</a></li>
+    <li><a href="grinder/grinder-library.html">grinder</a></li>
+    <li class="self-crumb">DefaultTask class</li>
+  </ol>
+  <div class="self-name">DefaultTask</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
 </header>
 
-<div class="container body">
-  <div class="row">
+<main>
 
   <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <h5><a href="index.html">grinder</a></h5>
-    <h5><a href="grinder/grinder-library.html">grinder</a></h5>
-
+    <h5>grinder library</h5>
     <ol>
+      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
+      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
+      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
+      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
+      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
+      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
+      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
+      <li><a href="grinder/Depends-class.html">Depends</a></li>
+      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
+      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
+      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
+      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
+      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
+      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
+      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
+      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
+      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
+      <li><a href="grinder/Task-class.html">Task</a></li>
+      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
+      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
+      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
     
-      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
-      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
       <li><a href="grinder.tools/binDir.html">binDir</a></li>
@@ -122,28 +104,8 @@
       <li><a class="deprecated" href="grinder/task.html">task</a></li>
     
     
-      <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
-      <li><a href="grinder.sdk/Analyzer-class.html">Analyzer</a></li>
-      <li><a href="grinder.sdk/Dart-class.html">Dart</a></li>
-      <li><a href="grinder.sdk/Dart2js-class.html">Dart2js</a></li>
-      <li><a href="grinder.sdk/DartDoc-class.html">DartDoc</a></li>
-      <li><a href="grinder.sdk/DartFmt-class.html">DartFmt</a></li>
-      <li><a href="grinder/DefaultTask-class.html">DefaultTask</a></li>
-      <li><a href="grinder/Depends-class.html">Depends</a></li>
-      <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
-      <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
-      <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
-      <li><a href="grinder/Grinder-class.html">Grinder</a></li>
-      <li><a href="grinder/GrinderContext-class.html">GrinderContext</a></li>
-      <li><a href="grinder/GrinderTask-class.html">GrinderTask</a></li>
-      <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
-      <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
-      <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
-      <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
-      <li><a href="grinder/Task-class.html">Task</a></li>
-      <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
-      <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
-      <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+      <li class="section-title"><a href="grinder/grinder-library.html#typedefs">Typedefs</a></li>
+      <li><a href="grinder/TaskFunction.html">TaskFunction</a></li>
     
       <li class="section-title"><a href="grinder/grinder-library.html#exceptions">Exceptions</a></li>
       <li><a href="grinder/GrinderException-class.html">GrinderException</a></li>
@@ -152,6 +114,7 @@
   </div>
 
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+    <h1>DefaultTask class</h1>
 
     <section class="desc markdown">
       <p>An annotation to define the default <a href="grinder/GrinderTask-class.html">GrinderTask</a> to run when no tasks are
@@ -174,9 +137,6 @@ specified on the command line.</p>
       </dl>
     </section>
 
-
-
-
     <section class="summary offset-anchor" id="constructors">
       <h2>Constructors</h2>
 
@@ -185,7 +145,7 @@ specified on the command line.</p>
           <span class="name"><a href="grinder/DefaultTask/DefaultTask.html">DefaultTask</a></span><span class="signature">([<span class="parameter" id="-param-description"><span class="type-annotation">String</span> <span class="parameter-name">description</span></span> ])</span>
         </dt>
         <dd>
-          <p></p>
+          
           <div class="constructor-modifier features">const</div>
         </dd>
       </dl>
@@ -200,39 +160,24 @@ specified on the command line.</p>
           <span class="signature">&#8594; String</span>
         </dt>
         <dd class="inherited">
-          <p>See <a href="grinder/GrinderTask/description.html">description</a>.</p>
+          See <code>GrinderTask.description</code>.
           <div class="features">final, inherited</div>
 </dd>
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="grinder/DefaultTask/hashCode.html">hashCode</a></span>
+          <span class="name"><a href="grinder/Task/hashCode.html">hashCode</a></span>
           <span class="signature">&#8594; int</span>
         </dt>
         <dd class="inherited">
-          <p>The hash code for this object.</p>
+          The hash code for this object. <a href="grinder/Task/hashCode.html">[...]</a>
           <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="grinder/DefaultTask/runtimeType.html">runtimeType</a></span>
+          <span class="name"><a href="grinder/Task/runtimeType.html">runtimeType</a></span>
           <span class="signature">&#8594; Type</span>
         </dt>
         <dd class="inherited">
-          <p>A representation of the runtime type of the object.</p>
+          A representation of the runtime type of the object.
           <div class="features">read-only, inherited</div>
-</dd>
-      </dl>
-    </section>
-
-    <section class="summary offset-anchor inherited" id="operators">
-      <h2>Operators</h2>
-      <dl class="callables">
-        <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="grinder/DefaultTask/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="parameter-name">other</span></span>)
-            <span class="returntype parameter">&#8594; bool</span>
-          </span>
-        </dt>
-        <dd class="inherited">
-          <p>The equality operator.</p>
-          <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -241,34 +186,48 @@ specified on the command line.</p>
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="grinder/DefaultTask/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
+          <span class="name"><a href="grinder/Task/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
         </dt>
         <dd class="inherited">
-          <p>Invoked when a non-existent method or property is accessed.</p>
+          Invoked when a non-existent method or property is accessed. <a href="grinder/Task/noSuchMethod.html">[...]</a>
           <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="grinder/DefaultTask/toString.html">toString</a></span><span class="signature">(<wbr>)
+          <span class="name"><a href="grinder/Task/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
         </dt>
         <dd class="inherited">
-          <p>Returns a string representation of this object.</p>
+          Returns a string representation of this object.
           <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
 
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="grinder/Task/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; bool</span>
+          </span>
+        </dt>
+        <dd class="inherited">
+          The equality operator. <a href="grinder/Task/operator_equals.html">[...]</a>
+          <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+
   </div> <!-- /.main-content -->
 
   <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
-    <h5>DefaultTask</h5>
     <ol>
-    
-    
-    
       <li class="section-title"><a href="grinder/DefaultTask-class.html#constructors">Constructors</a></li>
       <li><a href="grinder/DefaultTask/DefaultTask.html">DefaultTask</a></li>
     
@@ -276,50 +235,36 @@ specified on the command line.</p>
         <a href="grinder/DefaultTask-class.html#instance-properties">Properties</a>
       </li>
       <li class="inherited"><a href="grinder/Task/description.html">description</a></li>
-      <li class="inherited"><a href="grinder/DefaultTask/hashCode.html">hashCode</a></li>
-      <li class="inherited"><a href="grinder/DefaultTask/runtimeType.html">runtimeType</a></li>
-    
-      <li class="section-title inherited"><a href="grinder/DefaultTask-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="grinder/DefaultTask/operator_equals.html">operator ==</a></li>
+      <li class="inherited"><a href="grinder/Task/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="grinder/Task/runtimeType.html">runtimeType</a></li>
     
       <li class="section-title inherited"><a href="grinder/DefaultTask-class.html#instance-methods">Methods</a></li>
-      <li class="inherited"><a href="grinder/DefaultTask/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="grinder/DefaultTask/toString.html">toString</a></li>
+      <li class="inherited"><a href="grinder/Task/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="grinder/Task/toString.html">toString</a></li>
+    
+      <li class="section-title inherited"><a href="grinder/DefaultTask-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="grinder/Task/operator_equals.html">operator ==</a></li>
+    
+    
+    
     </ol>
   </div><!--/.sidebar-offcanvas-->
 
-</div> <!-- row -->
-</div> <!-- container -->
+</main>
 
 <footer>
-  <div class="container-fluid">
-    <div class="container">
-      <p class="text-center">
-        <span class="no-break">
-          grinder 0.8.1
-        </span>
-        &bull;
-        <span class="no-break">
-          <a href="https://www.dartlang.org">
-            <img src="static-assets/favicon.png" alt="Dart" title="Dart" width="16" height="16">
-          </a>
-        </span>
-        &bull;
-        <span class="copyright no-break">
-          <a href="http://creativecommons.org/licenses/by-sa/4.0/">cc license</a>
-        </span>
-      </p>
-    </div>
-  </div>
+  <span class="no-break">
+    grinder 0.8.1
+  </span>
+
 </footer>
 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="static-assets/typeahead.bundle.min.js"></script>
-<script src="static-assets/prettify.js"></script>
+<script src="static-assets/highlight.pack.js"></script>
 <script src="static-assets/URI.js"></script>
 <script src="static-assets/script.js"></script>
-<!-- Do not remove placeholder -->
-<!-- Footer Placeholder -->
+
 
 </body>
 
