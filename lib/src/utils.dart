@@ -29,9 +29,7 @@ class ResettableTimer implements Timer {
 
   bool get isActive => _timer.isActive;
 
-  // TODO: implement tick
-  @override
-  int get tick => null;
+  int get tick => _timer.tick;
 }
 
 String camelToDashes(String input) {
