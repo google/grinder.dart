@@ -198,7 +198,7 @@ class Pub {
     String workingDirectory,
   }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List args = ['build'];
+    List<String> args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
@@ -216,7 +216,7 @@ class Pub {
       String outputDirectory,
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List args = ['build'];
+    List<String> args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
@@ -236,7 +236,7 @@ class Pub {
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    List args = ['run', scriptArg];
+    List<String> args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
@@ -247,7 +247,7 @@ class Pub {
   static Future<String> runAsync(String package,
       {List<String> arguments, RunOptions runOptions, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    List args = ['run', scriptArg];
+    List<String> args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
@@ -439,7 +439,7 @@ class PubGlobal {
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    List args = ['global', 'run', scriptArg];
+    List<String> args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
@@ -448,7 +448,7 @@ class PubGlobal {
   Future<String> runAsync(String package,
       {List<String> arguments, RunOptions runOptions, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    List args = ['global', 'run', scriptArg];
+    List<String> args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
