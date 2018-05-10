@@ -96,7 +96,7 @@
     String outputDirectory,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  List args = [&#39;build&#39;];
+  List&lt;String&gt; args = [&#39;build&#39;];
   if (mode != null) args.add(&#39;--mode=${mode}&#39;);
   if (outputDirectory != null) args.add(&#39;--output=${outputDirectory}&#39;);
   if (directories != null &amp;&amp; directories.isNotEmpty) args.addAll(directories);
@@ -116,7 +116,7 @@
 
 <footer>
   <span class="no-break">
-    grinder 0.8.1
+    grinder 0.8.2
   </span>
 
 </footer>

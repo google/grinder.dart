@@ -92,7 +92,7 @@
       <pre class="language-dart"><code class="language-dart">static Future&lt;String&gt; runAsync(String package,
     {List&lt;String&gt; arguments, RunOptions runOptions, String script}) {
   var scriptArg = script == null ? package : &#39;$package:$script&#39;;
-  List args = [&#39;run&#39;, scriptArg];
+  List&lt;String&gt; args = [&#39;run&#39;, scriptArg];
   if (arguments != null) args.addAll(arguments);
   return runlib.runAsync(sdkBin(&#39;pub&#39;),
       arguments: args, runOptions: runOptions);
@@ -108,7 +108,7 @@
 
 <footer>
   <span class="no-break">
-    grinder 0.8.1
+    grinder 0.8.2
   </span>
 
 </footer>

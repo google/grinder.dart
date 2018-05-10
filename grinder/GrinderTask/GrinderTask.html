@@ -85,7 +85,7 @@
   this.name, {
   this.taskFunction,
   this.description,
-  Iterable depends: const [],
+  Iterable&lt;dynamic&gt; depends: const [],
 })
     : this.depends = new UnmodifiableListView(depends
           .map((dep) =&gt; dep is String ? new TaskInvocation(dep) : dep)) {
@@ -105,7 +105,7 @@
 
 <footer>
   <span class="no-break">
-    grinder 0.8.1
+    grinder 0.8.2
   </span>
 
 </footer>
