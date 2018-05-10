@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.2
+- Address some `--preview-dart-2` runtime issues.
+
 ## 0.8.1
 - Added the ability to pass parameters to tasks from the command line (using
   a `TaskArgs` parameter on task functions)

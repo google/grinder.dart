@@ -1,8 +1,9 @@
 analyzer:
   strong-mode: true
+  errors:
+    deprecated_member_use: ignore
 linter:
   rules:
-    #- annotate_overrides
     - avoid_init_to_null
     - directives_ordering
     - no_adjacent_strings_in_list
