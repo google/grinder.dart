@@ -88,7 +88,7 @@ class TaskDiscovery {
 
       var name = camelToDashes(methodName);
 
-      var depends = [];
+      List<dynamic> depends = [];
       if (dependsAnnotation != null) {
         depends = dependsAnnotation.depends.map((dep) {
           if (dep is TaskInvocation) return dep;

@@ -57,16 +57,20 @@ bool declarationsEqual(DeclarationMirror decl1, decl2) =>
     decl1.owner == decl2.owner &&
     decl1.simpleName == decl2.simpleName;
 
-// TODO: Remove if this becomes supported by `dart:mirrors`:
-//       http://dartbug.com/22591
 Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
     LibraryMirror library) {
-  var resolved = {}..addAll(library.declarations);
+  final Map<Symbol, DeclarationMirror> resolvedDeclarations =
+      <Symbol, DeclarationMirror>{};
+  resolvedDeclarations.addAll(library.declarations);
+
   library.libraryDependencies.forEach((LibraryDependencyMirror dependency) {
+    List<CombinatorMirror> combinators =
+        dependency.combinators.cast<CombinatorMirror>();
+
     if (dependency.isExport) {
       Map<Symbol, DeclarationMirror> shown = <Symbol, DeclarationMirror>{};
       List<Symbol> hidden = <Symbol>[];
-      dependency.combinators.forEach((combinator) {
+      combinators.forEach((CombinatorMirror combinator) {
         if (combinator.isShow) {
           combinator.identifiers.forEach((Symbol id) {
             shown[id] = dependency.targetLibrary.declarations[id];
@@ -80,10 +84,12 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
         shown.addAll(dependency.targetLibrary.declarations);
         hidden.forEach(shown.remove);
       }
-      resolved.addAll(shown);
+      resolvedDeclarations.addAll(shown);
     }
   });
-  return new UnmodifiableMapView(resolved);
+
+  return new UnmodifiableMapView<Symbol, DeclarationMirror>(
+      resolvedDeclarations);
 }
 
 getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
@@ -122,11 +128,14 @@ class ZonedValue<T> {
 /// [filesOrPaths] param into a list of strings.
 List<String> coerceToPathList(filesOrPaths) {
   if (filesOrPaths is! Iterable) filesOrPaths = [filesOrPaths];
-  return filesOrPaths.map((item) {
-    if (item is String) return item;
-    if (item is FileSystemEntity) return item.path;
-    return '${item}';
-  }).cast<String>().toList();
+  return filesOrPaths
+      .map((item) {
+        if (item is String) return item;
+        if (item is FileSystemEntity) return item.path;
+        return '${item}';
+      })
+      .cast<String>()
+      .toList();
 }
 
 /// Takes a list of paths and if an element is a directory it expands it to
