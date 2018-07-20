@@ -1,7 +1,3 @@
-analyzer:
-  strong-mode: true
-  errors:
-    deprecated_member_use: ignore
 linter:
   rules:
     - avoid_init_to_null

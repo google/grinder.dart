@@ -2,7 +2,7 @@ language: dart
 dart:
   - dev
 script:
-  - dart --preview-dart-2 tool/grind.dart
+  - dart tool/grind.dart
 branches:
   only:
     - master
