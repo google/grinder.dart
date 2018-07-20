@@ -101,7 +101,7 @@ be a <code>File</code>, <code>Directory</code>, or <code>Link</code>.</p>
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span> </h2>
   <pre class="language-dart"><code class="language-dart">bool get exists {
-  return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
+  return FileSystemEntity.typeSync(_path) != FileSystemEntityType.notFound;
 }</code></pre>
 </section>
 </section>
@@ -115,7 +115,7 @@ be a <code>File</code>, <code>Directory</code>, or <code>Link</code>.</p>
 
 <footer>
   <span class="no-break">
-    grinder 0.8.2
+    grinder 0.8.3
   </span>
 
 </footer>

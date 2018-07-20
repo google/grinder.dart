@@ -99,11 +99,11 @@
   <pre class="language-dart"><code class="language-dart">FileSystemEntity get entity {
   final FileSystemEntityType type = FileSystemEntity.typeSync(_path);
 
-  if (type == FileSystemEntityType.FILE) {
+  if (type == FileSystemEntityType.file) {
     return new File(_path);
-  } else if (type == FileSystemEntityType.DIRECTORY) {
+  } else if (type == FileSystemEntityType.directory) {
     return new Directory(_path);
-  } else if (type == FileSystemEntityType.LINK) {
+  } else if (type == FileSystemEntityType.link) {
     return new Link(_path);
   } else {
     return null;
@@ -121,7 +121,7 @@
 
 <footer>
   <span class="no-break">
-    grinder 0.8.2
+    grinder 0.8.3
   </span>
 
 </footer>

@@ -116,7 +116,7 @@ The stderr is always logged.</p>
 
     var encoding = runOptions.stdoutEncoding != null
         ? runOptions.stdoutEncoding
-        : SYSTEM_ENCODING;
+        : systemEncoding;
     return process.exitCode.then((int code) {
       var stdoutString = encoding.decode(stdout);
 
@@ -140,7 +140,7 @@ The stderr is always logged.</p>
 
 <footer>
   <span class="no-break">
-    grinder 0.8.2
+    grinder 0.8.3
   </span>
 
 </footer>
