@@ -166,7 +166,7 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
   var files = new Set<String>();
 
   paths.forEach((p) {
-    if (FileSystemEntity.typeSync(p) == FileSystemEntityType.DIRECTORY) {
+    if (FileSystemEntity.typeSync(p) == FileSystemEntityType.directory) {
       files.addAll(_findDartSourceFiles(new Directory(p)));
     } else {
       files.add(p);

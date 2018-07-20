@@ -45,7 +45,7 @@ main() {
           testFiles,
           anyElement((f) =>
               new File(f).existsSync() &&
-              FileSystemEntity.typeSync(f) == FileSystemEntityType.FILE));
+              FileSystemEntity.typeSync(f) == FileSystemEntityType.file));
     });
   });
 }

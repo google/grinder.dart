@@ -111,7 +111,7 @@ Future<String> runAsync(String executable,
 
     var encoding = runOptions.stdoutEncoding != null
         ? runOptions.stdoutEncoding
-        : SYSTEM_ENCODING;
+        : systemEncoding;
     return process.exitCode.then((int code) {
       var stdoutString = encoding.decode(stdout);
 
@@ -171,8 +171,8 @@ class RunOptions {
       this.environment,
       this.includeParentEnvironment: true,
       this.runInShell: false,
-      this.stdoutEncoding: SYSTEM_ENCODING,
-      this.stderrEncoding: SYSTEM_ENCODING});
+      this.stdoutEncoding: systemEncoding,
+      this.stderrEncoding: systemEncoding});
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.

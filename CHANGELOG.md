@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.3
+- Upgrade dependencies for Dart 2
+
 ## 0.8.2
 - Address some `--preview-dart-2` runtime issues.
 

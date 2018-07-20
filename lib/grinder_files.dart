@@ -123,11 +123,11 @@ class FilePath {
   FileSystemEntity get entity {
     final FileSystemEntityType type = FileSystemEntity.typeSync(_path);
 
-    if (type == FileSystemEntityType.FILE) {
+    if (type == FileSystemEntityType.file) {
       return new File(_path);
-    } else if (type == FileSystemEntityType.DIRECTORY) {
+    } else if (type == FileSystemEntityType.directory) {
       return new Directory(_path);
-    } else if (type == FileSystemEntityType.LINK) {
+    } else if (type == FileSystemEntityType.link) {
       return new Link(_path);
     } else {
       return null;
@@ -137,7 +137,7 @@ class FilePath {
   /// Return whether an entity actually exists for this path. The entity could
   /// be a [File], [Directory], or [Link].
   bool get exists {
-    return FileSystemEntity.typeSync(_path) != FileSystemEntityType.NOT_FOUND;
+    return FileSystemEntity.typeSync(_path) != FileSystemEntityType.notFound;
   }
 
   /// Returns the containing [Path]. Returns a non-null value even if this is a
