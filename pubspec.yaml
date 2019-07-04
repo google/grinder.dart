@@ -1,6 +1,6 @@
 name: grinder
 # This version must be updated in tandem with the lib/src/cli.dart version.
-version: 0.8.3
+version: 0.8.3+1
 description: Dart workflows, automated.
 
 homepage: https://github.com/google/grinder.dart
@@ -14,6 +14,7 @@ environment:
 dependencies:
   cli_util: ^0.1.2
   glob: '>=1.0.0 <2.0.0'
+  meta: '^1.1.7'
   path: '>=1.0.0 <2.0.0'
 
 dev_dependencies:

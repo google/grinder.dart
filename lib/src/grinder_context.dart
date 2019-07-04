@@ -3,6 +3,8 @@
 
 library grinder.src.grinder_context;
 
+import 'package:meta/meta.dart';
+
 import 'grinder.dart';
 import 'grinder_exception.dart';
 import 'grinder_task.dart';
@@ -34,6 +36,7 @@ class GrinderContext {
   }
 
   /// Halt task execution; throws an exception with the given error message.
+  @alwaysThrows
   void fail(String message) {
     log(grinder.ansi.emphasized('failed: ') + grinder.ansi.error(message));
     throw new GrinderException(message);
@@ -51,4 +54,5 @@ GrinderContext get context => zonedContext.value;
 void log(String message) => context.log(message);
 
 /// Halt task execution; throws an exception with the given error message.
+@alwaysThrows
 void fail(String message) => context.fail(message);
