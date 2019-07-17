@@ -9,12 +9,12 @@ authors:
 - Sean Eagan <seaneagan1@gmail.com>
 
 environment:
-  sdk: '>=2.0.0-dev.17.0 <3.0.0'
+  sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
   cli_util: ^0.1.2
-  glob: '>=1.0.0 <2.0.0'
-  path: '>=1.0.0 <2.0.0'
+  glob: ^1.0.0
+  path: ^1.0.0
 
 dev_dependencies:
   test: ^1.0.0

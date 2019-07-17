@@ -67,7 +67,7 @@ main() {
                 arguments: [runScriptName],
                 workingDirectory: runScriptPath,
                 runOptions: new RunOptions(workingDirectory: runScriptPath)),
-            throwsA(new isInstanceOf<ArgumentError>()));
+            throwsA(isA<ArgumentError>()));
       }
     });
 

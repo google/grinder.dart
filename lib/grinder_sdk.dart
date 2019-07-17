@@ -35,7 +35,7 @@ Set<Directory> get existingSourceDirs => Directory.current
     .toSet();
 
 /// The path to the current Dart SDK.
-final sdkDir =
+final Directory sdkDir =
     new Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
 
 /// This is deprecated.
@@ -44,7 +44,7 @@ final sdkDir =
 @deprecated
 Directory getSdkDir([List<String> cliArgs]) => sdkDir;
 
-final dartVM = new File(Platform.resolvedExecutable);
+final File dartVM = new File(Platform.resolvedExecutable);
 
 /// Return the path to a binary in the SDK's `bin/` directory. This will handle
 /// appending `.bat` or `.exe` on Windows. This is useful for finding the path
