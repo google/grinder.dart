@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="grinder.files library API docs, for the Dart programming language.">
   <title>grinder.files library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -34,7 +35,18 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li class="self-crumb">grinder.files library</li>
+    </ol>
+    
     <h5><span class="package-name">grinder</span> <span class="package-kind">package</span></h5>
     <ol>
           <li class="section-title">Libraries</li>
@@ -45,8 +57,8 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>grinder.files library</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-library">grinder.files</span> library </h1></div>
 
     <section class="desc markdown">
       <p>General file system routines, useful in the context of running builds. This
@@ -59,7 +71,7 @@ files.</p>
 
       <dl>
         <dt id="FilePath">
-          <span class="name "><a href="grinder.files/FilePath-class.html">FilePath</a></span>
+          <span class="name "><a href="grinder.files/FilePath-class.html">FilePath</a></span>         
         </dt>
         <dd>
           A class to make it easier to manipulate file system entites. Once paths or
@@ -67,13 +79,14 @@ entites are converted into <code>Path</code>s, they can be easily copied, delete
 joined, and their name retrieved.
         </dd>
         <dt id="FileSet">
-          <span class="name "><a href="grinder.files/FileSet-class.html">FileSet</a></span>
+          <span class="name "><a href="grinder.files/FileSet-class.html">FileSet</a></span>         
         </dt>
         <dd>
           A class to handle defining, composing, and comparing groups of files.
         </dd>
       </dl>
     </section>
+
 
 
 
@@ -85,112 +98,112 @@ joined, and their name retrieved.
           <span class="name"><a href="grinder.files/baseName.html">baseName</a></span><span class="signature">(<wbr><span class="parameter" id="baseName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the first n - 1 segments of the file path.
-          
+                  
 </dd>
         <dt id="copy" class="callable">
           <span class="name"><a href="grinder.files/copy.html">copy</a></span><span class="signature">(<wbr><span class="parameter" id="copy-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span>, </span> <span class="parameter" id="copy-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copy-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           
-          
+                  
 </dd>
         <dt id="copyDirectory" class="callable">
           <span class="name"><a href="grinder.files/copyDirectory.html">copyDirectory</a></span><span class="signature">(<wbr><span class="parameter" id="copyDirectory-param-srcDir"><span class="type-annotation">Directory</span> <span class="parameter-name">srcDir</span>, </span> <span class="parameter" id="copyDirectory-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copyDirectory-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Prefer using <a href="grinder.files/copy.html">copy</a>.
-          
+                  
 </dd>
         <dt id="copyFile" class="callable">
           <span class="name"><a href="grinder.files/copyFile.html">copyFile</a></span><span class="signature">(<wbr><span class="parameter" id="copyFile-param-srcFile"><span class="type-annotation">File</span> <span class="parameter-name">srcFile</span>, </span> <span class="parameter" id="copyFile-param-destDir"><span class="type-annotation">Directory</span> <span class="parameter-name">destDir</span>, [</span> <span class="parameter" id="copyFile-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Prefer using <a href="grinder.files/copy.html">copy</a>.
-          
+                  
 </dd>
         <dt id="delete" class="callable">
           <span class="name"><a href="grinder.files/delete.html">delete</a></span><span class="signature">(<wbr><span class="parameter" id="delete-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Delete the given file entity reference.
-          
+                  
 </dd>
         <dt id="deleteEntity" class="callable">
           <span class="name"><a href="grinder.files/deleteEntity.html">deleteEntity</a></span><span class="signature">(<wbr><span class="parameter" id="deleteEntity-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span>, [</span> <span class="parameter" id="deleteEntity-param-context"><span class="type-annotation"><a href="grinder/GrinderContext-class.html">GrinderContext</a></span> <span class="parameter-name">context</span></span> ])
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Prefer using <a href="grinder.files/delete.html">delete</a>.
-          
+                  
 </dd>
         <dt id="fileExt" class="callable">
           <span class="name"><a href="grinder.files/fileExt.html">fileExt</a></span><span class="signature">(<wbr><span class="parameter" id="fileExt-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the file's extension without the period. This will return <code>null</code> if
 there is no extension.
-          
+                  
 </dd>
         <dt id="fileName" class="callable">
           <span class="name"><a href="grinder.files/fileName.html">fileName</a></span><span class="signature">(<wbr><span class="parameter" id="fileName-param-entity"><span class="type-annotation">FileSystemEntity</span> <span class="parameter-name">entity</span></span>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the last segment of the file path.
-          
+                  
 </dd>
         <dt id="getDir" class="callable">
           <span class="name"><a href="grinder.files/getDir.html">getDir</a></span><span class="signature">(<wbr><span class="parameter" id="getDir-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
             <span class="returntype parameter">&#8594; Directory</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the directory pointed to by the given <code>path</code>. This method converts the
 given path to a platform dependent path.
-          
+                  
 </dd>
         <dt id="getFile" class="callable">
           <span class="name"><a href="grinder.files/getFile.html">getFile</a></span><span class="signature">(<wbr><span class="parameter" id="getFile-param-path"><span class="type-annotation">String</span> <span class="parameter-name">path</span></span>)
             <span class="returntype parameter">&#8594; File</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the file pointed to by the given <code>path</code>. This method converts the
 given path to a platform dependent path.
-          
+                  
 </dd>
         <dt id="joinDir" class="callable">
           <span class="name"><a href="grinder.files/joinDir.html">joinDir</a></span><span class="signature">(<wbr><span class="parameter" id="joinDir-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span>, </span> <span class="parameter" id="joinDir-param-files"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">files</span></span>)
             <span class="returntype parameter">&#8594; Directory</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           
-          
+                  
 </dd>
         <dt id="joinFile" class="callable">
           <span class="name"><a href="grinder.files/joinFile.html">joinFile</a></span><span class="signature">(<wbr><span class="parameter" id="joinFile-param-dir"><span class="type-annotation">Directory</span> <span class="parameter-name">dir</span>, </span> <span class="parameter" id="joinFile-param-files"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">files</span></span>)
             <span class="returntype parameter">&#8594; File</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           
-          
+                  
 </dd>
       </dl>
     </section>
@@ -200,12 +213,13 @@ given path to a platform dependent path.
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <h5>grinder.files library</h5>
     <ol>
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#classes">Classes</a></li>
       <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
       <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
+    
     
     
     
@@ -235,6 +249,7 @@ given path to a platform dependent path.
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

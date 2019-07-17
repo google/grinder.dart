@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the TestRunner class from the grinder.tools library, for the Dart programming language.">
   <title>TestRunner class - grinder.tools library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -35,13 +36,26 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></li>
+      <li class="self-crumb">TestRunner class</li>
+    </ol>
+    
     <h5>grinder.tools library</h5>
     <ol>
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#classes">Classes</a></li>
       <li><a href="grinder.tools/DevCompiler-class.html">DevCompiler</a></li>
       <li><a href="grinder.tools/RunOptions-class.html">RunOptions</a></li>
       <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+    
     
     
       <li class="section-title"><a href="grinder.tools/grinder.tools-library.html#properties">Properties</a></li>
@@ -65,8 +79,8 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>TestRunner class</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">TestRunner</span> class </h1></div>
 
     <section class="desc markdown">
       <p>A wrapper around the <code>test</code> package. This class is used to run your unit
@@ -93,19 +107,19 @@ tests.</p>
       <dl class="properties">
         <dt id="hashCode" class="property inherited">
           <span class="name"><a href="grinder.tools/TestRunner/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; int</span>
+          <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
           The hash code for this object. <a href="grinder.tools/TestRunner/hashCode.html">[...]</a>
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="grinder.tools/TestRunner/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; Type</span>
+          <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
           A representation of the runtime type of the object.
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
       </dl>
     </section>
@@ -117,39 +131,39 @@ tests.</p>
           <span class="name"><a href="grinder.tools/TestRunner/test.html">test</a></span><span class="signature">(<wbr>{<span class="parameter" id="test-param-files"><span class="type-annotation">dynamic</span> <span class="parameter-name">files</span>, </span> <span class="parameter" id="test-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, </span> <span class="parameter" id="test-param-plainName"><span class="type-annotation">String</span> <span class="parameter-name">plainName</span>, </span> <span class="parameter" id="test-param-platformSelector"><span class="type-annotation">dynamic</span> <span class="parameter-name">platformSelector</span>, </span> <span class="parameter" id="test-param-concurrency"><span class="type-annotation">int</span> <span class="parameter-name">concurrency</span>, </span> <span class="parameter" id="test-param-pubServe"><span class="type-annotation">int</span> <span class="parameter-name">pubServe</span>, </span> <span class="parameter" id="test-param-runOptions"><span class="type-annotation"><a href="grinder.tools/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span> })
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Run the tests in the current package. See the
 <a href="https://pub.dartlang.org/packages/test">test package</a>. <a href="grinder.tools/TestRunner/test.html">[...]</a>
-          
+                  
 </dd>
         <dt id="testAsync" class="callable">
           <span class="name"><a href="grinder.tools/TestRunner/testAsync.html">testAsync</a></span><span class="signature">(<wbr>{<span class="parameter" id="testAsync-param-files"><span class="type-annotation">dynamic</span> <span class="parameter-name">files</span>, </span> <span class="parameter" id="testAsync-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span>, </span> <span class="parameter" id="testAsync-param-plainName"><span class="type-annotation">String</span> <span class="parameter-name">plainName</span>, </span> <span class="parameter" id="testAsync-param-platformSelector"><span class="type-annotation">dynamic</span> <span class="parameter-name">platformSelector</span>, </span> <span class="parameter" id="testAsync-param-concurrency"><span class="type-annotation">int</span> <span class="parameter-name">concurrency</span>, </span> <span class="parameter" id="testAsync-param-pubServe"><span class="type-annotation">int</span> <span class="parameter-name">pubServe</span>, </span> <span class="parameter" id="testAsync-param-runOptions"><span class="type-annotation"><a href="grinder.tools/RunOptions-class.html">RunOptions</a></span> <span class="parameter-name">runOptions</span></span> })
             <span class="returntype parameter">&#8594; Future</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Run the tests in the current package. See the
 <a href="https://pub.dartlang.org/packages/test">test package</a>. <a href="grinder.tools/TestRunner/testAsync.html">[...]</a>
-          
+                  
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
           <span class="name"><a href="grinder.tools/TestRunner/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Invoked when a non-existent method or property is accessed. <a href="grinder.tools/TestRunner/noSuchMethod.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
           <span class="name"><a href="grinder.tools/TestRunner/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Returns a string representation of this object.
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -161,10 +175,10 @@ tests.</p>
           <span class="name"><a href="grinder.tools/TestRunner/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           The equality operator. <a href="grinder.tools/TestRunner/operator_equals.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -174,7 +188,7 @@ tests.</p>
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
       <li class="section-title"><a href="grinder.tools/TestRunner-class.html#constructors">Constructors</a></li>
       <li><a href="grinder.tools/TestRunner/TestRunner.html">TestRunner</a></li>
@@ -206,6 +220,7 @@ tests.</p>
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="made with love by dartdoc 0.20.1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 0.28.2">
   <meta name="description" content="grinder API docs, for the Dart programming language.">
   <title>grinder - Dart API docs</title>
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -20,6 +21,7 @@
 <div id="overlay-under-drawer"></div>
 
 <header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="https://github.com/google/grinder.dart">grinder package</a></li>
   </ol>
@@ -31,8 +33,18 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <h5><span class="package-name">grinder</span> <span class="package-kind">package</span></h5>
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="https://github.com/google/grinder.dart">grinder package</a></li>
+    </ol>
+    
+    <h5 class="hidden-xs"><span class="package-name">grinder</span> <span class="package-kind">package</span></h5>
     <ol>
           <li class="section-title">Libraries</li>
           <li><a href="grinder/grinder-library.html">grinder</a></li>
@@ -42,21 +54,21 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <section class="desc markdown">
-        <h1>Grinder</h1>
+        <h1 id="grinder">Grinder</h1>
 <blockquote>
 <p>Dart workflows, automated.</p></blockquote>
 <p>Grinder consists of a library to define project tasks (e.g. test, build, doc),
 and a command-line tool to run them.</p>
-<p><a href="https://pub.dartlang.org/packages/grinder"><img alt="pub package" src="https://img.shields.io/pub/v/grinder.svg"></a>
-<a href="https://travis-ci.org/google/grinder.dart"><img alt="Build Status" src="https://travis-ci.org/google/grinder.dart.svg?branch=master"></a>
-<a href="https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master"><img alt="Build status" src="https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true"></a>
-<a href="https://coveralls.io/r/google/grinder.dart"><img alt="Coverage Status" src="https://img.shields.io/coveralls/google/grinder.dart.svg"></a></p>
-<h2>Getting Started</h2>
+<p><a href="https://pub.dartlang.org/packages/grinder"><img src="https://img.shields.io/pub/v/grinder.svg" alt="pub package"></a>
+<a href="https://travis-ci.org/google/grinder.dart"><img src="https://travis-ci.org/google/grinder.dart.svg?branch=master" alt="Build Status"></a>
+<a href="https://ci.appveyor.com/project/devoncarew/grinder-dart/branch/master"><img src="https://ci.appveyor.com/api/projects/status/rxskyfnov8evqwib/branch/master?svg=true" alt="Build status"></a>
+<a href="https://coveralls.io/r/google/grinder.dart"><img src="https://img.shields.io/coveralls/google/grinder.dart.svg" alt="Coverage Status"></a></p>
+<h2 id="getting-started">Getting Started</h2>
 <p>To start using <code>grinder</code>, add it to your
 <a href="https://www.dartlang.org/tools/pub/dependencies.html#dev-dependencies">dev_dependencies</a>.</p>
-<h3>Defining Tasks</h3>
+<h3 id="defining-tasks">Defining Tasks</h3>
 <p>Tasks are defined entirely by Dart code allowing you to take advantage of
 the whole Dart ecosystem to write and debug them.  Task definitions reside
 in a <code>tool/grind.dart</code> script. To create a simple grinder script, run:</p>
@@ -94,7 +106,7 @@ deploy() {
 as <code>PubApp</code> referenced above.  See the
 <a href="http://www.dartdocs.org/documentation/grinder/latest">API Documentation</a> for
 full details.</p>
-<h3>Running Tasks</h3>
+<h3 id="running-tasks">Running Tasks</h3>
 <p>First install the <code>grind</code> executable:</p>
 <pre class="language-dart"><code>pub global activate grinder
 </code></pre>
@@ -109,7 +121,7 @@ grind build doc
 <pre class="language-dart"><code>grind -h
 </code></pre>
 <p>You can also bypass installing <code>grind</code> and instead use <code>pub run grinder</code>.</p>
-<h2>Passing parameters to tasks</h2>
+<h2 id="passing-parameters-to-tasks">Passing parameters to tasks</h2>
 <p>In order to pass parameters to tasks from the command-line, you query the
 <code>TaskArgs</code> instance for your task invocation. For example:</p>
 <p><code>grind build --release --mode=topaz</code></p>
@@ -127,7 +139,7 @@ build() {
 <p>You can pass flags and options to multiple tasks. The following command-line
 would pass separate flags and options to two different tasks:</p>
 <p><code>grind build --release generate-docs --header=small</code></p>
-<h2>Disclaimer</h2>
+<h2 id="disclaimer">Disclaimer</h2>
 <p>This is not an official Google product.</p>
       </section>
       
@@ -135,24 +147,24 @@ would pass separate flags and options to two different tasks:</p>
             <h2>Libraries</h2>
           <dl>
             <dt id="grinder">
-              <span class="name"><a href="grinder/grinder-library.html">grinder</a></span>
+              <span class="name"><a href="grinder/grinder-library.html">grinder</a></span>             
             </dt>
             <dd>
               Dart workflows, automated. <a href="grinder/grinder-library.html">[...]</a>
             </dd>            <dt id="grinder.files">
-              <span class="name"><a href="grinder.files/grinder.files-library.html">grinder.files</a></span>
+              <span class="name"><a href="grinder.files/grinder.files-library.html">grinder.files</a></span>             
             </dt>
             <dd>
               General file system routines, useful in the context of running builds. This
 includes the <a href="grinder.files/FileSet-class.html">FileSet</a> class, which is used for reasoning about sets of
 files.
             </dd>            <dt id="grinder.sdk">
-              <span class="name"><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></span>
+              <span class="name"><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></span>             
             </dt>
             <dd>
               A library to access tools in the Dart SDK.
             </dd>            <dt id="grinder.tools">
-              <span class="name"><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></span>
+              <span class="name"><a href="grinder.tools/grinder.tools-library.html">grinder.tools</a></span>             
             </dt>
             <dd>
               Commonly used tools for build scripts.
@@ -161,6 +173,9 @@ files.
 
   </div> <!-- /.main-content -->
 
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div>
+
 </main>
 
 <footer>
@@ -168,6 +183,7 @@ files.
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

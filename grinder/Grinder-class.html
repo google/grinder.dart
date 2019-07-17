@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the Grinder class from the grinder library, for the Dart programming language.">
   <title>Grinder class - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -35,7 +36,19 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li><a href="grinder/grinder-library.html">grinder</a></li>
+      <li class="self-crumb">Grinder class</li>
+    </ol>
+    
     <h5>grinder library</h5>
     <ol>
       <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
@@ -60,6 +73,7 @@
       <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
       <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
       <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+    
     
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
@@ -113,8 +127,8 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>Grinder class</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">Grinder</span> class </h1></div>
 
     <section class="desc markdown">
       <p>A class representing a running instance of a Grinder.</p>
@@ -140,51 +154,51 @@
       <dl class="properties">
         <dt id="ansi" class="property">
           <span class="name"><a href="grinder/Grinder/ansi.html">ansi</a></span>
-          <span class="signature">&#8596; Ansi</span>
+          <span class="signature">&#8596; Ansi</span>         
         </dt>
         <dd>
           
-          <div class="features">read / write</div>
+                  <div class="features">read / write</div>
 </dd>
         <dt id="defaultTask" class="property">
           <span class="name"><a href="grinder/Grinder/defaultTask.html">defaultTask</a></span>
-          <span class="signature">&#8596; <a href="grinder/GrinderTask-class.html">GrinderTask</a></span>
+          <span class="signature">&#8596; <a href="grinder/GrinderTask-class.html">GrinderTask</a></span>         
         </dt>
         <dd>
           The default task run when no tasks are specified on the command line.
-          <div class="features">read / write</div>
+                  <div class="features">read / write</div>
 </dd>
         <dt id="hasDefaultTask" class="property">
           <span class="name"><a href="grinder/Grinder/hasDefaultTask.html">hasDefaultTask</a></span>
-          <span class="signature">&#8594; bool</span>
+          <span class="signature">&#8594; bool</span>         
         </dt>
         <dd>
           Return whether this grinder instance has a default task set.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="tasks" class="property">
           <span class="name"><a href="grinder/Grinder/tasks.html">tasks</a></span>
-          <span class="signature">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span>&gt;</span></span>
+          <span class="signature">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span>&gt;</span></span>         
         </dt>
         <dd>
           Get the list of all the Grinder tasks.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="hashCode" class="property inherited">
           <span class="name"><a href="grinder/Grinder/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; int</span>
+          <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
           The hash code for this object. <a href="grinder/Grinder/hashCode.html">[...]</a>
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="grinder/Grinder/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; Type</span>
+          <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
           A representation of the runtime type of the object.
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
       </dl>
     </section>
@@ -196,83 +210,83 @@
           <span class="name"><a href="grinder/Grinder/addTask.html">addTask</a></span><span class="signature">(<wbr><span class="parameter" id="addTask-param-task"><span class="type-annotation"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span> <span class="parameter-name">task</span></span>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Add a task to this Grinder instance.
-          
+                  
 </dd>
         <dt id="getAllDependencies" class="callable">
           <span class="name"><a href="grinder/Grinder/getAllDependencies.html">getAllDependencies</a></span><span class="signature">(<wbr><span class="parameter" id="getAllDependencies-param-task"><span class="type-annotation"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span> <span class="parameter-name">task</span></span>)
             <span class="returntype parameter">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>&gt;</span></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Given a task, return all of its transitive dependencies.
-          
+                  
 </dd>
         <dt id="getBuildOrder" class="callable">
           <span class="name"><a href="grinder/Grinder/getBuildOrder.html">getBuildOrder</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; List<span class="signature">&lt;<wbr><span class="type-parameter"><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>&gt;</span></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Return the calculated build order of the task invocations for this run.
-          
+                  
 </dd>
         <dt id="getImmediateDependencies" class="callable">
           <span class="name"><a href="grinder/Grinder/getImmediateDependencies.html">getImmediateDependencies</a></span><span class="signature">(<wbr><span class="parameter" id="getImmediateDependencies-param-task"><span class="type-annotation"><a href="grinder/GrinderTask-class.html">GrinderTask</a></span> <span class="parameter-name">task</span></span>)
             <span class="returntype parameter">&#8594; Iterable<span class="signature">&lt;<wbr><span class="type-parameter"><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></span>&gt;</span></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Given a task, return all of its immediate dependencies.
-          
+                  
 </dd>
         <dt id="getTask" class="callable">
           <span class="name"><a href="grinder/Grinder/getTask.html">getTask</a></span><span class="signature">(<wbr><span class="parameter" id="getTask-param-name"><span class="type-annotation">String</span> <span class="parameter-name">name</span></span>)
             <span class="returntype parameter">&#8594; <a href="grinder/GrinderTask-class.html">GrinderTask</a></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Get the task with the given name. Returns <code>null</code> if none found.
-          
+                  
 </dd>
         <dt id="log" class="callable">
           <span class="name"><a href="grinder/Grinder/log.html">log</a></span><span class="signature">(<wbr><span class="parameter" id="log-param-message"><span class="type-annotation">String</span> <span class="parameter-name">message</span></span>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Log the given informational message.
-          
+                  
 </dd>
         <dt id="start" class="callable">
           <span class="name"><a href="grinder/Grinder/start.html">start</a></span><span class="signature">(<wbr><span class="parameter" id="start-param-invocations"><span class="type-annotation">Iterable</span> <span class="parameter-name">invocations</span>, {</span> <span class="parameter" id="start-param-dontRun"><span class="type-annotation">bool</span> <span class="parameter-name">dontRun</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; Future</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Start the build process and run all the tasks in the calculated build
 order. <a href="grinder/Grinder/start.html">[...]</a>
-          
+                  
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
           <span class="name"><a href="grinder/Grinder/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Invoked when a non-existent method or property is accessed. <a href="grinder/Grinder/noSuchMethod.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
           <span class="name"><a href="grinder/Grinder/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Returns a string representation of this object.
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -284,10 +298,10 @@ order. <a href="grinder/Grinder/start.html">[...]</a>
           <span class="name"><a href="grinder/Grinder/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           The equality operator. <a href="grinder/Grinder/operator_equals.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -297,7 +311,7 @@ order. <a href="grinder/Grinder/start.html">[...]</a>
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
       <li class="section-title"><a href="grinder/Grinder-class.html#constructors">Constructors</a></li>
       <li><a href="grinder/Grinder/Grinder.html">Grinder</a></li>
@@ -338,6 +352,7 @@ order. <a href="grinder/Grinder/start.html">[...]</a>
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

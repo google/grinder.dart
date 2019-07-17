@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the startGrinder function from the grinder library, for the Dart programming language.">
   <title>startGrinder function - grinder library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -35,7 +36,19 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li><a href="grinder/grinder-library.html">grinder</a></li>
+      <li class="self-crumb"><span class="deprecated">startGrinder</span> function</li>
+    </ol>
+    
     <h5>grinder library</h5>
     <ol>
       <li class="section-title"><a href="grinder/grinder-library.html#classes">Classes</a></li>
@@ -60,6 +73,7 @@
       <li><a href="grinder/TaskArgs-class.html">TaskArgs</a></li>
       <li><a href="grinder/TaskInvocation-class.html">TaskInvocation</a></li>
       <li><a href="grinder.tools/TestRunner-class.html">TestRunner</a></li>
+    
     
     
       <li class="section-title"><a href="grinder/grinder-library.html#properties">Properties</a></li>
@@ -113,8 +127,8 @@
     </ol>
   </div><!--/.sidebar-offcanvas-left-->
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>startGrinder function</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-function">startGrinder</span> function </h1></div>
 
     <section class="multi-line-signature">
         <div>
@@ -123,7 +137,7 @@
           </ol>
         </div>
         <span class="returntype">Future</span>
-        <span class="name deprecated">startGrinder</span>
+                <span class="name deprecated">startGrinder</span>
 (<wbr><span class="parameter" id="startGrinder-param-args"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">args</span>, {</span> <span class="parameter" id="startGrinder-param-verifyProjectRoot"><span class="type-annotation">bool</span> <span class="parameter-name">verifyProjectRoot</span>: <span class="default-value">true</span></span> })
     </section>
     <section class="desc markdown">
@@ -133,7 +147,7 @@ throw.</p>
     </section>
     
     <section class="summary source-code" id="source">
-      <h2><span>Implementation</span> </h2>
+      <h2><span>Implementation</span></h2>
       <pre class="language-dart"><code class="language-dart">@Deprecated(&#39;Use `grind` instead.&#39;)
 Future startGrinder(List&lt;String&gt; args, {bool verifyProjectRoot: true}) {
   return runTasks(args, verifyProjectRoot: verifyProjectRoot);
@@ -142,7 +156,7 @@ Future startGrinder(List&lt;String&gt; args, {bool verifyProjectRoot: true}) {
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
 
 </main>
@@ -152,6 +166,7 @@ Future startGrinder(List&lt;String&gt; args, {bool verifyProjectRoot: true}) {
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

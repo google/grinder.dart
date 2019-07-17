@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the FilePath class from the grinder.files library, for the Dart programming language.">
   <title>FilePath class - grinder.files library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -35,12 +36,25 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li><a href="grinder.files/grinder.files-library.html">grinder.files</a></li>
+      <li class="self-crumb">FilePath class</li>
+    </ol>
+    
     <h5>grinder.files library</h5>
     <ol>
       <li class="section-title"><a href="grinder.files/grinder.files-library.html#classes">Classes</a></li>
       <li><a href="grinder.files/FilePath-class.html">FilePath</a></li>
       <li><a href="grinder.files/FileSet-class.html">FileSet</a></li>
+    
     
     
     
@@ -63,8 +77,8 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>FilePath class</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">FilePath</span> class </h1></div>
 
     <section class="desc markdown">
       <p>A class to make it easier to manipulate file system entites. Once paths or
@@ -96,123 +110,123 @@ use for absolute ones.
       <dl class="properties">
         <dt id="asDirectory" class="property">
           <span class="name"><a href="grinder.files/FilePath/asDirectory.html">asDirectory</a></span>
-          <span class="signature">&#8594; Directory</span>
+          <span class="signature">&#8594; Directory</span>         
         </dt>
         <dd>
           Assume the current file system entity is a <code>Directory</code> and return it as
 such. You would call this instead of <a href="grinder.files/FilePath/entity.html">entity</a> when the file system entity
 does not yet exist.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="asFile" class="property">
           <span class="name"><a href="grinder.files/FilePath/asFile.html">asFile</a></span>
-          <span class="signature">&#8594; File</span>
+          <span class="signature">&#8594; File</span>         
         </dt>
         <dd>
           Assume the current file system entity is a <code>File</code> and return it as such.
 You would call this instead of <a href="grinder.files/FilePath/entity.html">entity</a> when the file system entity does
 not yet exist.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="asLink" class="property">
           <span class="name"><a href="grinder.files/FilePath/asLink.html">asLink</a></span>
-          <span class="signature">&#8594; Link</span>
+          <span class="signature">&#8594; Link</span>         
         </dt>
         <dd>
           Assume the current file system entity is a <code>Link</code> and return it as such.
 You would call this instead of <a href="grinder.files/FilePath/entity.html">entity</a> when the file system entity does
 not yet exist.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="entity" class="property">
           <span class="name"><a href="grinder.files/FilePath/entity.html">entity</a></span>
-          <span class="signature">&#8594; FileSystemEntity</span>
+          <span class="signature">&#8594; FileSystemEntity</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="exists" class="property">
           <span class="name"><a href="grinder.files/FilePath/exists.html">exists</a></span>
-          <span class="signature">&#8594; bool</span>
+          <span class="signature">&#8594; bool</span>         
         </dt>
         <dd>
           Return whether an entity actually exists for this path. The entity could
 be a <code>File</code>, <code>Directory</code>, or <code>Link</code>.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="hashCode" class="property">
           <span class="name"><a href="grinder.files/FilePath/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; int</span>
+          <span class="signature">&#8594; int</span>         
         </dt>
         <dd>
           The hash code for this object. <a href="grinder.files/FilePath/hashCode.html">[...]</a>
-          <div class="features">read-only</div>
+                  <div class="features">read-only, override</div>
 </dd>
         <dt id="isDirectory" class="property">
           <span class="name"><a href="grinder.files/FilePath/isDirectory.html">isDirectory</a></span>
-          <span class="signature">&#8594; bool</span>
+          <span class="signature">&#8594; bool</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="isFile" class="property">
           <span class="name"><a href="grinder.files/FilePath/isFile.html">isFile</a></span>
-          <span class="signature">&#8594; bool</span>
+          <span class="signature">&#8594; bool</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="isLink" class="property">
           <span class="name"><a href="grinder.files/FilePath/isLink.html">isLink</a></span>
-          <span class="signature">&#8594; bool</span>
+          <span class="signature">&#8594; bool</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="length" class="property">
           <span class="name"><a href="grinder.files/FilePath/length.html">length</a></span>
-          <span class="signature">&#8594; int</span>
+          <span class="signature">&#8594; int</span>         
         </dt>
         <dd>
           Return the file length; if this FilePath is not a File, return 0.
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="name" class="property">
           <span class="name"><a href="grinder.files/FilePath/name.html">name</a></span>
-          <span class="signature">&#8594; String</span>
+          <span class="signature">&#8594; String</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="parent" class="property">
           <span class="name"><a href="grinder.files/FilePath/parent.html">parent</a></span>
-          <span class="signature">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>
+          <span class="signature">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>         
         </dt>
         <dd>
           Returns the containing <code>Path</code>. Returns a non-null value even if this is a
 root directory. <a href="grinder.files/FilePath/parent.html">[...]</a>
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="path" class="property">
           <span class="name"><a href="grinder.files/FilePath/path.html">path</a></span>
-          <span class="signature">&#8594; String</span>
+          <span class="signature">&#8594; String</span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="grinder.files/FilePath/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; Type</span>
+          <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
           A representation of the runtime type of the object.
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
       </dl>
     </section>
@@ -224,74 +238,74 @@ root directory. <a href="grinder.files/FilePath/parent.html">[...]</a>
           <span class="name"><a href="grinder.files/FilePath/copy.html">copy</a></span><span class="signature">(<wbr><span class="parameter" id="copy-param-destDir"><span class="type-annotation"><a href="grinder.files/FilePath-class.html">FilePath</a></span> <span class="parameter-name">destDir</span></span>)
             <span class="returntype parameter">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Copy the the entity to the given destination. Return the newly created
 <a href="grinder.files/FilePath-class.html">FilePath</a>.
-          
+                  
 </dd>
         <dt id="createDirectory" class="callable">
           <span class="name"><a href="grinder.files/FilePath/createDirectory.html">createDirectory</a></span><span class="signature">(<wbr>{<span class="parameter" id="createDirectory-param-recursive"><span class="type-annotation">bool</span> <span class="parameter-name">recursive</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; Directory</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Synchronously create the directory. See also <code>Directory.createSync</code>. <a href="grinder.files/FilePath/createDirectory.html">[...]</a>
-          
+                  
 </dd>
         <dt id="createFile" class="callable">
           <span class="name"><a href="grinder.files/FilePath/createFile.html">createFile</a></span><span class="signature">(<wbr>{<span class="parameter" id="createFile-param-recursive"><span class="type-annotation">bool</span> <span class="parameter-name">recursive</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; File</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Synchronously create the file. See also <code>File.createSync</code>. <a href="grinder.files/FilePath/createFile.html">[...]</a>
-          
+                  
 </dd>
         <dt id="createLink" class="callable">
           <span class="name"><a href="grinder.files/FilePath/createLink.html">createLink</a></span><span class="signature">(<wbr><span class="parameter" id="createLink-param-target"><span class="type-annotation"><a href="grinder.files/FilePath-class.html">FilePath</a></span> <span class="parameter-name">target</span>, {</span> <span class="parameter" id="createLink-param-recursive"><span class="type-annotation">bool</span> <span class="parameter-name">recursive</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; Link</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Synchronously create the link. See also <code>Link.createSync</code>. <a href="grinder.files/FilePath/createLink.html">[...]</a>
-          
+                  
 </dd>
         <dt id="delete" class="callable">
           <span class="name"><a href="grinder.files/FilePath/delete.html">delete</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Delete the entity at the path.
-          
+                  
 </dd>
         <dt id="join" class="callable">
           <span class="name"><a href="grinder.files/FilePath/join.html">join</a></span><span class="signature">(<wbr>[<span class="parameter" id="join-param-arg0"><span class="type-annotation">dynamic</span> <span class="parameter-name">arg0</span>, </span> <span class="parameter" id="join-param-arg1"><span class="type-annotation">String</span> <span class="parameter-name">arg1</span>, </span> <span class="parameter" id="join-param-arg2"><span class="type-annotation">String</span> <span class="parameter-name">arg2</span>, </span> <span class="parameter" id="join-param-arg3"><span class="type-annotation">String</span> <span class="parameter-name">arg3</span>, </span> <span class="parameter" id="join-param-arg4"><span class="type-annotation">String</span> <span class="parameter-name">arg4</span>, </span> <span class="parameter" id="join-param-arg5"><span class="type-annotation">String</span> <span class="parameter-name">arg5</span>, </span> <span class="parameter" id="join-param-arg6"><span class="type-annotation">String</span> <span class="parameter-name">arg6</span>, </span> <span class="parameter" id="join-param-arg7"><span class="type-annotation">String</span> <span class="parameter-name">arg7</span>, </span> <span class="parameter" id="join-param-arg8"><span class="type-annotation">String</span> <span class="parameter-name">arg8</span>, </span> <span class="parameter" id="join-param-arg9"><span class="type-annotation">String</span> <span class="parameter-name">arg9</span></span> ])
             <span class="returntype parameter">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Join the given path elements to this path, and return a new <a href="grinder.files/FilePath-class.html">FilePath</a> object.
-          
+                  
 </dd>
         <dt id="toString" class="callable">
           <span class="name"><a href="grinder.files/FilePath/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Returns a string representation of this object.
-          
+                  <div class="features">override</div>
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
           <span class="name"><a href="grinder.files/FilePath/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Invoked when a non-existent method or property is accessed. <a href="grinder.files/FilePath/noSuchMethod.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -303,10 +317,10 @@ root directory. <a href="grinder.files/FilePath/parent.html">[...]</a>
           <span class="name"><a href="grinder.files/FilePath/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           The equality operator. <a href="grinder.files/FilePath/operator_equals.html">[...]</a>
-          
+                  <div class="features">override</div>
 </dd>
       </dl>
     </section>
@@ -317,11 +331,11 @@ root directory. <a href="grinder.files/FilePath/parent.html">[...]</a>
       <dl class="properties">
         <dt id="current" class="property">
           <span class="name"><a href="grinder.files/FilePath/current.html">current</a></span>
-          <span class="signature">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>
+          <span class="signature">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>         
         </dt>
         <dd>
           
-          <div class="features">read-only</div>
+                  <div class="features">read-only</div>
 </dd>
       </dl>
     </section>
@@ -333,12 +347,12 @@ root directory. <a href="grinder.files/FilePath/parent.html">[...]</a>
           <span class="name"><a href="grinder.files/FilePath/createSystemTemp.html">createSystemTemp</a></span><span class="signature">(<wbr>[<span class="parameter" id="createSystemTemp-param-prefix"><span class="type-annotation">String</span> <span class="parameter-name">prefix</span></span> ])
             <span class="returntype parameter">&#8594; <a href="grinder.files/FilePath-class.html">FilePath</a></span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Creates a temporary directory in the system temp directory. See
 <code>Directory.systemTemp</code> and <code>Directory.createTempSync</code>. If <code>prefix</code> is
 missing or null, the empty string is used for <code>prefix</code>.
-          
+                  
 </dd>
       </dl>
     </section>
@@ -346,7 +360,7 @@ missing or null, the empty string is used for <code>prefix</code>.
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
       <li class="section-title"><a href="grinder.files/FilePath-class.html#constructors">Constructors</a></li>
       <li><a href="grinder.files/FilePath/FilePath.html">FilePath</a></li>
@@ -398,6 +412,7 @@ missing or null, the empty string is used for <code>prefix</code>.
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

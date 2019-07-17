@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the Dart2js class from the grinder.sdk library, for the Dart programming language.">
   <title>Dart2js class - grinder.sdk library - Dart API</title>
   <!-- required because all the links are pseudo-absolute -->
   <base href="..">
 
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="static-assets/github.css">
   <link rel="stylesheet" href="static-assets/styles.css">
   <link rel="icon" href="static-assets/favicon.png">
-
+  
 </head>
 
 <body>
@@ -35,7 +36,19 @@
 
 <main>
 
-  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">grinder</a></li>
+      <li><a href="grinder.sdk/grinder.sdk-library.html">grinder.sdk</a></li>
+      <li class="self-crumb">Dart2js class</li>
+    </ol>
+    
     <h5>grinder.sdk library</h5>
     <ol>
       <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#classes">Classes</a></li>
@@ -47,6 +60,7 @@
       <li><a href="grinder.sdk/Pub-class.html">Pub</a></li>
       <li><a href="grinder.sdk/PubApp-class.html">PubApp</a></li>
       <li><a href="grinder.sdk/PubGlobal-class.html">PubGlobal</a></li>
+    
     
     
       <li class="section-title"><a href="grinder.sdk/grinder.sdk-library.html#properties">Properties</a></li>
@@ -64,8 +78,8 @@
     </ol>
   </div>
 
-  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
-    <h1>Dart2js class</h1>
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">Dart2js</span> class </h1></div>
 
     <section class="desc markdown">
       <p>Utility tasks for invoking dart2js.</p>
@@ -91,19 +105,19 @@
       <dl class="properties">
         <dt id="hashCode" class="property inherited">
           <span class="name"><a href="grinder.sdk/Dart2js/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; int</span>
+          <span class="signature">&#8594; int</span>         
         </dt>
         <dd class="inherited">
           The hash code for this object. <a href="grinder.sdk/Dart2js/hashCode.html">[...]</a>
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
         <dt id="runtimeType" class="property inherited">
           <span class="name"><a href="grinder.sdk/Dart2js/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; Type</span>
+          <span class="signature">&#8594; Type</span>         
         </dt>
         <dd class="inherited">
           A representation of the runtime type of the object.
-          <div class="features">read-only, inherited</div>
+                  <div class="features">read-only, inherited</div>
 </dd>
       </dl>
     </section>
@@ -115,19 +129,19 @@
           <span class="name"><a href="grinder.sdk/Dart2js/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation">Invocation</span> <span class="parameter-name">invocation</span></span>)
             <span class="returntype parameter">&#8594; dynamic</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Invoked when a non-existent method or property is accessed. <a href="grinder.sdk/Dart2js/noSuchMethod.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
         <dt id="toString" class="callable inherited">
           <span class="name"><a href="grinder.sdk/Dart2js/toString.html">toString</a></span><span class="signature">(<wbr>)
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           Returns a string representation of this object.
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -139,10 +153,10 @@
           <span class="name"><a href="grinder.sdk/Dart2js/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation">dynamic</span> <span class="parameter-name">other</span></span>)
             <span class="returntype parameter">&#8594; bool</span>
           </span>
-        </dt>
+                  </dt>
         <dd class="inherited">
           The equality operator. <a href="grinder.sdk/Dart2js/operator_equals.html">[...]</a>
-          <div class="features">inherited</div>
+                  <div class="features">inherited</div>
 </dd>
       </dl>
     </section>
@@ -155,28 +169,28 @@
           <span class="name"><a href="grinder.sdk/Dart2js/compile.html">compile</a></span><span class="signature">(<wbr><span class="parameter" id="compile-param-sourceFile"><span class="type-annotation">File</span> <span class="parameter-name">sourceFile</span>, {</span> <span class="parameter" id="compile-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span>, </span> <span class="parameter" id="compile-param-outFile"><span class="type-annotation">File</span> <span class="parameter-name">outFile</span>, </span> <span class="parameter" id="compile-param-minify"><span class="type-annotation">bool</span> <span class="parameter-name">minify</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compile-param-csp"><span class="type-annotation">bool</span> <span class="parameter-name">csp</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compile-param-enableExperimentalMirrors"><span class="type-annotation">bool</span> <span class="parameter-name">enableExperimentalMirrors</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compile-param-categories"><span class="type-annotation">String</span> <span class="parameter-name">categories</span>, </span> <span class="parameter" id="compile-param-extraArgs"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">extraArgs</span>: <span class="default-value">const []</span></span> })
             <span class="returntype parameter">&#8594; void</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Invoke a dart2js compile with the given <code>sourceFile</code> as input.
-          
+                  
 </dd>
         <dt id="compileAsync" class="callable">
           <span class="name"><a href="grinder.sdk/Dart2js/compileAsync.html">compileAsync</a></span><span class="signature">(<wbr><span class="parameter" id="compileAsync-param-sourceFile"><span class="type-annotation">File</span> <span class="parameter-name">sourceFile</span>, {</span> <span class="parameter" id="compileAsync-param-outDir"><span class="type-annotation">Directory</span> <span class="parameter-name">outDir</span>, </span> <span class="parameter" id="compileAsync-param-outFile"><span class="type-annotation">File</span> <span class="parameter-name">outFile</span>, </span> <span class="parameter" id="compileAsync-param-minify"><span class="type-annotation">bool</span> <span class="parameter-name">minify</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compileAsync-param-csp"><span class="type-annotation">bool</span> <span class="parameter-name">csp</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compileAsync-param-enableExperimentalMirrors"><span class="type-annotation">bool</span> <span class="parameter-name">enableExperimentalMirrors</span>: <span class="default-value">false</span>, </span> <span class="parameter" id="compileAsync-param-categories"><span class="type-annotation">String</span> <span class="parameter-name">categories</span>, </span> <span class="parameter" id="compileAsync-param-extraArgs"><span class="type-annotation">List<span class="signature">&lt;<wbr><span class="type-parameter">String</span>&gt;</span></span> <span class="parameter-name">extraArgs</span>: <span class="default-value">const []</span></span> })
             <span class="returntype parameter">&#8594; Future</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           Invoke a dart2js compile with the given <code>sourceFile</code> as input.
-          
+                  
 </dd>
         <dt id="version" class="callable">
           <span class="name"><a href="grinder.sdk/Dart2js/version.html">version</a></span><span class="signature">(<wbr>{<span class="parameter" id="version-param-quiet"><span class="type-annotation">bool</span> <span class="parameter-name">quiet</span>: <span class="default-value">false</span></span> })
             <span class="returntype parameter">&#8594; String</span>
           </span>
-        </dt>
+                  </dt>
         <dd>
           
-          
+                  
 </dd>
       </dl>
     </section>
@@ -184,7 +198,7 @@
 
   </div> <!-- /.main-content -->
 
-  <div class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
     <ol>
       <li class="section-title"><a href="grinder.sdk/Dart2js-class.html#constructors">Constructors</a></li>
       <li><a href="grinder.sdk/Dart2js/Dart2js.html">Dart2js</a></li>
@@ -218,6 +232,7 @@
     grinder 0.8.3
   </span>
 
+  
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
