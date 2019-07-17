@@ -125,14 +125,14 @@ main() {
   group('grinder.sdk Analyzer', () {
     test(
         'should throw on non-existing file',
-        () => expect(() => Analyzer.analyze('xyz'),
-            throwsA(new isInstanceOf<ProcessException>())));
+        () => expect(
+            () => Analyzer.analyze('xyz'), throwsA(isA<ProcessException>())));
 
     test(
         'should analyze a list of files ',
         () => expect(
-            () => Analyzer
-                .analyze(['test/grinder_sdk_test.dart', 'tool/grind.dart']),
-            isNot(throwsA(new isInstanceOf<ProcessException>()))));
+            () => Analyzer.analyze(
+                ['test/grinder_sdk_test.dart', 'tool/grind.dart']),
+            isNot(throwsA(isA<ProcessException>()))));
   });
 }

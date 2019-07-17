@@ -13,7 +13,7 @@ analyze() => new PubApp.global('tuneup').runAsync(['check', '--ignore-infos']);
 @Task()
 test() {
   // new TestRunner().testAsync();
-  return Dart.runAsync(getFile('test/all.dart').path, vmArgs: ['--checked']);
+  return Dart.runAsync(getFile('test/all.dart').path);
 }
 
 @Task('Apply dartfmt to all Dart source files')

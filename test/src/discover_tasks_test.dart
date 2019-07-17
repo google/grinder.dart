@@ -109,42 +109,42 @@ main() {
     test('should throw when variable task is null', () {
       f() =>
           discoveryBad.discoverDeclaration(badLib.declarations[#nullTask], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when task getter returns null', () {
       f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#nullReturningGetter], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when task is wront type of declaration', () {
       f() => discoveryBad.discoverDeclaration(badLib.declarations[#Class], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when depending on non-exported task', () {
       f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsNonExported], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when recursively depending on non-exported task', () {
       f() => discoveryBad.discoverDeclaration(
           badLib.declarations[#recursivelyDependsNonExported], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when depending on invalid task', () {
       f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsNonTask], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when annotated with Depends but not Task', () {
       f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsWithoutTask], {});
-      expect(f, throwsA(new isInstanceOf<GrinderException>()));
+      expect(f, throwsA(isA<GrinderException>()));
     });
   });
 

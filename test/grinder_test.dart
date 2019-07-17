@@ -15,7 +15,7 @@ main() {
     test('tasks must have a task function or dependencies', () {
       expect(() {
         new GrinderTask('foo', taskFunction: null, depends: []);
-      }, throwsA(new isInstanceOf<GrinderException>()));
+      }, throwsA(isA<GrinderException>()));
     });
 
     test('badTaskName', () {
@@ -23,7 +23,7 @@ main() {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
       expect(() => grinder.start(['bar'], dontRun: true),
-          throwsA(new isInstanceOf<GrinderException>()));
+          throwsA(isA<GrinderException>()));
     });
 
     test('duplicate task name', () {
@@ -31,7 +31,7 @@ main() {
       grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
       grinder.addTask(new GrinderTask('foo', taskFunction: nullTaskFunction));
       expect(() => grinder.start(['foo'], dontRun: true),
-          throwsA(new isInstanceOf<GrinderException>()));
+          throwsA(isA<GrinderException>()));
     });
 
     test('badDependencyName', () {
@@ -39,7 +39,7 @@ main() {
       Grinder grinder = new Grinder();
       grinder.addTask(new GrinderTask('foo', depends: ['baz']));
       expect(() => grinder.start(['foo'], dontRun: true),
-          throwsA(new isInstanceOf<GrinderException>()));
+          throwsA(isA<GrinderException>()));
     });
 
     test('default task is run by default', () {
@@ -60,7 +60,7 @@ main() {
       expect(() {
         grinder.defaultTask =
             new GrinderTask('bar', taskFunction: nullTaskFunction);
-      }, throwsA(new isInstanceOf<GrinderException>()));
+      }, throwsA(isA<GrinderException>()));
     });
 
     test('test that dependency cycles are caught', () {
@@ -68,7 +68,7 @@ main() {
       grinder.addTask(new GrinderTask('foo', depends: ['bar']));
       grinder.addTask(new GrinderTask('bar', depends: ['foo']));
       expect(() => grinder.start(['foo'], dontRun: true),
-          throwsA(new isInstanceOf<GrinderException>()));
+          throwsA(isA<GrinderException>()));
     });
 
     test('can invoke a task with arguments', () {
@@ -240,8 +240,7 @@ main() {
         context.fail('boo');
       }));
 
-      expect(grinder.start(['i_throw']),
-          throwsA(new isInstanceOf<GrinderException>()));
+      expect(grinder.start(['i_throw']), throwsA(isA<GrinderException>()));
     });
   });
 }
