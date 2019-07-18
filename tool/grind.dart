@@ -55,11 +55,8 @@ void coverage() {
 }
 
 @DefaultTask()
-@Depends(analyze, test, checkInit, doc, coverage)
+@Depends(analyze, test, checkInit, coverage)
 void buildbot() => null;
-
-@Task()
-doc() => DartDoc.docAsync();
 
 @Task()
 ddc() {

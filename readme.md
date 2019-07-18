@@ -57,7 +57,7 @@ Any task dependencies (see `@Depends` above), are run before the dependent task.
 
 Grinder contains a variety of convenience APIs for common task definitions, such
 as `PubApp` referenced above.  See the
-[API Documentation](http://www.dartdocs.org/documentation/grinder/latest) for
+[API Documentation](https://pub.dev/documentation/grinder/latest/) for
 full details.
 
 ### Running Tasks
