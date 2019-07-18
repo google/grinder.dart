@@ -63,12 +63,12 @@ String sdkBin(String name) {
 class Dart {
   /// Run a dart [script] using [runlib.run]. Returns the stdout.
   static String run(String script,
-      {List<String> arguments: const [],
-      bool quiet: false,
+      {List<String> arguments = const [],
+      bool quiet = false,
       String packageRoot,
       RunOptions runOptions, //
       String workingDirectory, //
-      List<String> vmArgs: const []}) {
+      List<String> vmArgs = const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
@@ -77,18 +77,18 @@ class Dart {
   }
 
   static Future<String> runAsync(String script,
-      {List<String> arguments: const [],
-      bool quiet: false,
+      {List<String> arguments = const [],
+      bool quiet = false,
       String packageRoot,
       RunOptions runOptions, //
-      List<String> vmArgs: const []}) {
+      List<String> vmArgs = const []}) {
     List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
     return runlib.runAsync(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static String version({bool quiet: false}) {
+  static String version({bool quiet = false}) {
     // TODO: We may want to run `dart --version` in order to know the version
     // of the SDK that grinder has located.
     // runlib.run(dartVM.path, arguments: ['--version'], quiet: quiet);
@@ -123,7 +123,7 @@ class Pub {
   /// even if the pubspec.lock file is up-to-date with respect to the
   /// pubspec.yaml file.
   static void get(
-      {bool force: false, RunOptions runOptions, String workingDirectory}) {
+      {bool force = false, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -140,7 +140,7 @@ class Pub {
   /// even if the pubspec.lock file is up-to-date with respect to the
   /// pubspec.yaml file.
   static Future getAsync(
-      {bool force: false, RunOptions runOptions, String workingDirectory}) {
+      {bool force = false, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -253,13 +253,13 @@ class Pub {
         arguments: args, runOptions: runOptions);
   }
 
-  static String version({bool quiet: false}) =>
+  static String version({bool quiet = false}) =>
       _parseVersion(_run('--version', quiet: quiet));
 
   static PubGlobal get global => _global;
 
   static String _run(String command,
-      {bool quiet: false, RunOptions runOptions}) {
+      {bool quiet = false, RunOptions runOptions}) {
     return runlib.run(sdkBin('pub'),
         quiet: quiet, arguments: [command], runOptions: runOptions);
   }
@@ -291,11 +291,11 @@ class Dart2js {
   static void compile(File sourceFile,
       {Directory outDir,
       File outFile,
-      bool minify: false,
-      bool csp: false,
-      bool enableExperimentalMirrors: false,
+      bool minify = false,
+      bool csp = false,
+      bool enableExperimentalMirrors = false,
       String categories,
-      List<String> extraArgs: const []}) {
+      List<String> extraArgs = const []}) {
     if (outFile == null) {
       if (outDir == null) outDir = sourceFile.parent;
       outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -320,11 +320,11 @@ class Dart2js {
   static Future compileAsync(File sourceFile,
       {Directory outDir,
       File outFile,
-      bool minify: false,
-      bool csp: false,
-      bool enableExperimentalMirrors: false,
+      bool minify = false,
+      bool csp = false,
+      bool enableExperimentalMirrors = false,
       String categories,
-      List<String> extraArgs: const []}) {
+      List<String> extraArgs = const []}) {
     if (outFile == null) {
       if (outDir == null) outDir = sourceFile.parent;
       outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
@@ -347,10 +347,10 @@ class Dart2js {
         .then((_) => null);
   }
 
-  static String version({bool quiet: false}) =>
+  static String version({bool quiet = false}) =>
       _parseVersion(_run('--version', quiet: quiet));
 
-  static String _run(String command, {bool quiet: false}) =>
+  static String _run(String command, {bool quiet = false}) =>
       runlib.run(sdkBin('dart2js'), quiet: quiet, arguments: [command]);
 }
 
@@ -367,7 +367,7 @@ class DartDoc {
 class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
-      {Directory packageRoot, bool fatalWarnings: false}) {
+      {Directory packageRoot, bool fatalWarnings = false}) {
     List<String> args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
@@ -378,7 +378,7 @@ class Analyzer {
   /// Analyze one or more [File]s or paths ([String]).
   @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
-      {Directory packageRoot, bool fatalWarnings: false}) {
+      {Directory packageRoot, bool fatalWarnings = false}) {
     List<String> args = [];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
@@ -387,7 +387,7 @@ class Analyzer {
     runlib.run(sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet: false}) => _parseVersion(runlib
+  static String version({bool quiet = false}) => _parseVersion(runlib
       .run(sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
 }
 
@@ -409,7 +409,7 @@ class DartFmt {
   }
 
   static String _run(String option, List<String> targets,
-      {bool quiet: false, int lineLength}) {
+      {bool quiet = false, int lineLength}) {
     List<String> args = [option];
     if (lineLength != null) args.add('--line-length=${lineLength}');
     args.addAll(targets);
@@ -424,7 +424,7 @@ class PubGlobal {
   PubGlobal._();
 
   /// Install a new Dart application.
-  void activate(String packageName, {bool force: false}) {
+  void activate(String packageName, {bool force = false}) {
     if (force || !isActivated(packageName)) {
       runlib.run(sdkBin('pub'), arguments: ['global', 'activate', packageName]);
       _activatedPackages.add(packageName);
@@ -507,7 +507,7 @@ abstract class PubApp {
   /// Install the application (run `pub global activate`). Setting [force] to
   /// try will force the activation of the package even if it is already
   /// installed.
-  void activate({bool force: false});
+  void activate({bool force = false});
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
@@ -546,7 +546,7 @@ class _PubGlobalApp extends PubApp {
 
   bool get isActivated => Pub.global.isActivated(packageName);
 
-  void activate({bool force: false}) =>
+  void activate({bool force = false}) =>
       Pub.global.activate(packageName, force: force);
 
   String run(List<String> arguments,
@@ -575,7 +575,7 @@ class _PubLocalApp extends PubApp {
   // TODO: Implement: call a `Pub.isActivated/Pub.isInstalled`.
   bool get isActivated => throw new UnsupportedError('unimplemented');
 
-  void activate({bool force: false}) {}
+  void activate({bool force = false}) {}
 
   String run(List<String> arguments,
       {String script, RunOptions runOptions, String workingDirectory}) {

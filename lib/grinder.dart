@@ -40,7 +40,7 @@ export 'src/task_invocation.dart';
 /// run from a project root.
 ///
 /// If a task fails, it throws and runs no further tasks.
-Future grind(List<String> args, {bool verifyProjectRoot: true}) {
+Future grind(List<String> args, {bool verifyProjectRoot = true}) {
   try {
     discoverTasks(grinder, currentMirrorSystem().isolate.rootLibrary);
     return runTasks(args, verifyProjectRoot: verifyProjectRoot);
@@ -57,7 +57,7 @@ Future grind(List<String> args, {bool verifyProjectRoot: true}) {
 /// method. If there is a task failure, this method will halt task execution and
 /// throw.
 @Deprecated('Use `grind` instead.')
-Future startGrinder(List<String> args, {bool verifyProjectRoot: true}) {
+Future startGrinder(List<String> args, {bool verifyProjectRoot = true}) {
   return runTasks(args, verifyProjectRoot: verifyProjectRoot);
 }
 

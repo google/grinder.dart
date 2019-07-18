@@ -7,7 +7,7 @@ import 'package:cli_util/cli_logging.dart' show Ansi;
 
 import '../grinder.dart';
 
-String getTaskHelp(Grinder grinder, {bool useColor: true}) {
+String getTaskHelp(Grinder grinder, {bool useColor = true}) {
   if (grinder.tasks.isEmpty) {
     return '  No tasks defined.';
   }

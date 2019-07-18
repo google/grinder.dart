@@ -2,6 +2,7 @@
 
 ## 0.8.3+1
 - Mark `fail()` and `GrinderContext.fail()` as `@alwaysThrows`.
+- Use `package:pedantic` to analyze the package.
 
 ## 0.8.3
 - Upgrade dependencies for Dart 2

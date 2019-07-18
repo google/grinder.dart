@@ -18,9 +18,9 @@ import 'run_utils.dart';
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
 String run(String executable,
-    {List<String> arguments: const [],
+    {List<String> arguments = const [],
     RunOptions runOptions,
-    bool quiet: false,
+    bool quiet = false,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
@@ -61,9 +61,9 @@ String run(String executable,
 /// All other optional parameters are forwarded to [Process.runSync].
 @Deprecated('Use `run` instead.')
 String runProcess(String executable,
-    {List<String> arguments: const [],
+    {List<String> arguments = const [],
     RunOptions runOptions,
-    bool quiet: false,
+    bool quiet = false,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return run(executable,
@@ -79,17 +79,16 @@ String runProcess(String executable,
 ///
 /// All other optional parameters are forwarded to [Process.start].
 Future<String> runAsync(String executable,
-    {List<String> arguments: const [],
+    {List<String> arguments = const [],
     RunOptions runOptions,
-    bool quiet: false,
+    bool quiet = false,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   if (runOptions == null) runOptions = new RunOptions();
   List<int> stdout = [], stderr = [];
 
-  return Process
-      .start(executable, arguments,
+  return Process.start(executable, arguments,
           workingDirectory: runOptions.workingDirectory,
           environment: runOptions.environment,
           includeParentEnvironment: runOptions.includeParentEnvironment,
@@ -135,10 +134,10 @@ Future<String> runAsync(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
-    {List<String> arguments: const [],
+    {List<String> arguments = const [],
     RunOptions runOptions,
     String workingDirectory,
-    bool quiet: false}) {
+    bool quiet = false}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return runAsync(executable,
       arguments: arguments, quiet: quiet, runOptions: runOptions);
@@ -169,10 +168,10 @@ class RunOptions {
   RunOptions(
       {this.workingDirectory,
       this.environment,
-      this.includeParentEnvironment: true,
-      this.runInShell: false,
-      this.stdoutEncoding: systemEncoding,
-      this.stderrEncoding: systemEncoding});
+      this.includeParentEnvironment = true,
+      this.runInShell = false,
+      this.stdoutEncoding = systemEncoding,
+      this.stderrEncoding = systemEncoding});
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.
