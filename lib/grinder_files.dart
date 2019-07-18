@@ -27,7 +27,7 @@ final String _sep = Platform.pathSeparator;
 class FileSet {
   List<File> files = [];
 
-  FileSet.fromDir(Directory dir, {String pattern, bool recurse: false}) {
+  FileSet.fromDir(Directory dir, {String pattern, bool recurse = false}) {
     Glob glob = (pattern == null ? null : new Glob(pattern));
 
     if (dir.existsSync()) {
@@ -193,7 +193,7 @@ class FilePath {
   /// If [recursive] is false, the default, the file is created only if all
   /// directories in the path exist. If [recursive] is true, all non-existing
   /// path components are created.
-  File createFile({bool recursive: false}) {
+  File createFile({bool recursive = false}) {
     var file = asFile;
     file.createSync(recursive: recursive);
     return file;
@@ -204,7 +204,7 @@ class FilePath {
   /// If [recursive] is false, the default, the file is created only if all
   /// directories in the path exist. If [recursive] is true, all non-existing
   /// path components are created.
-  Directory createDirectory({bool recursive: false}) {
+  Directory createDirectory({bool recursive = false}) {
     var directory = asDirectory;
     directory.createSync(recursive: recursive);
     return directory;
@@ -215,7 +215,7 @@ class FilePath {
   /// If [recursive] is false, the default, the file is created only if all
   /// directories in the path exist. If [recursive] is true, all non-existing
   /// path components are created.
-  Link createLink(FilePath target, {bool recursive: false}) {
+  Link createLink(FilePath target, {bool recursive = false}) {
     var link = asLink;
     link.createSync(target.path, recursive: recursive);
     return link;

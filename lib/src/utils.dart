@@ -105,7 +105,7 @@ class ZonedValue<T> {
 
   ZonedValue(T rootValue) : _rootValue = rootValue;
 
-  withValue(T value, f(), {bool isFinal: false}) {
+  withValue(T value, f(), {bool isFinal = false}) {
     if (this.isFinal) {
       throw new StateError('Cannot override final zoned value');
     }

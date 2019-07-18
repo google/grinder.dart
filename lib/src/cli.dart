@@ -21,7 +21,7 @@ bool _verifyProjectRoot;
 
 Future runTasks(
   List<String> args, {
-  bool verifyProjectRoot: false,
+  bool verifyProjectRoot = false,
 }) async {
   _args = args == null ? [] : args;
   _verifyProjectRoot = verifyProjectRoot;
@@ -91,7 +91,7 @@ class ArgParser {
     this._describeTasks = describeTasks;
   }
 
-  void addFlag(String name, {String abbr, String help, bool negatable: false}) {
+  void addFlag(String name, {String abbr, String help, bool negatable = false}) {
     _flags
         .add(new _ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
   }

@@ -23,8 +23,8 @@ final Directory webDir = new Directory('web');
 ///
 /// Prefer `Dart.run` instead.
 String runDartScript(String script,
-    {List<String> arguments: const [],
-    bool quiet: false,
+    {List<String> arguments = const [],
+    bool quiet = false,
     String packageRoot,
     RunOptions runOptions,
     String workingDirectory}) {
@@ -146,31 +146,31 @@ class DevCompiler {
   DevCompiler();
 
   /// Analyze the given file or files with DDC.
-  void analyze(dynamic files, {bool htmlReport: false}) {
+  void analyze(dynamic files, {bool htmlReport = false}) {
     _ddc.run(_args(files, htmlReport: htmlReport));
   }
 
   /// Analyze the given file or files with DDC.
-  Future analyzeAsync(dynamic files, {bool htmlReport: false}) {
+  Future analyzeAsync(dynamic files, {bool htmlReport = false}) {
     return _ddc.runAsync(_args(files, htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
   void compile(dynamic files, Directory outDir,
-      {bool forceCompile: false, bool htmlReport: false}) {
+      {bool forceCompile = false, bool htmlReport = false}) {
     _ddc.run(_args(files,
         outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
   Future compileAsync(dynamic files, Directory outDir,
-      {bool forceCompile: false, bool htmlReport: false}) {
+      {bool forceCompile = false, bool htmlReport = false}) {
     return _ddc.runAsync(_args(files,
         outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
   }
 
   List<String> _args(dynamic files,
-      {Directory outDir, bool forceCompile: false, bool htmlReport: false}) {
+      {Directory outDir, bool forceCompile = false, bool htmlReport = false}) {
     List<String> args = [];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');

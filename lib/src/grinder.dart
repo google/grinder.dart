@@ -100,7 +100,7 @@ class Grinder {
   ///
   /// Throws [GrinderException] if named tasks don't exist, or there are
   /// cycles in the dependency graph.
-  Future start(Iterable invocations, {bool dontRun: false}) {
+  Future start(Iterable invocations, {bool dontRun = false}) {
     if (!dontRun && _taskDeps != null) {
       throw new StateError("Grinder instances are not re-usable");
     }
