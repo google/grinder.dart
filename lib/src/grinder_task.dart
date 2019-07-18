@@ -40,8 +40,7 @@ class GrinderTask {
     this.taskFunction,
     this.description,
     Iterable<dynamic> depends = const [],
-  })
-      : this.depends = new UnmodifiableListView(depends
+  }) : this.depends = new UnmodifiableListView(depends
             .map((dep) => dep is String ? new TaskInvocation(dep) : dep)) {
     if (taskFunction == null && depends.isEmpty) {
       throw new GrinderException(

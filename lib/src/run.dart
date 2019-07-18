@@ -88,8 +88,7 @@ Future<String> runAsync(String executable,
   if (runOptions == null) runOptions = new RunOptions();
   List<int> stdout = [], stderr = [];
 
-  return Process
-      .start(executable, arguments,
+  return Process.start(executable, arguments,
           workingDirectory: runOptions.workingDirectory,
           environment: runOptions.environment,
           includeParentEnvironment: runOptions.includeParentEnvironment,
