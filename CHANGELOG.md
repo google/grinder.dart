@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.3+1
+- Mark `fail()` and `GrinderContext.fail()` as `@alwaysThrows`.
+
 ## 0.8.3
 - Upgrade dependencies for Dart 2
 
