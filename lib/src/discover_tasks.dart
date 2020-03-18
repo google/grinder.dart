@@ -10,7 +10,7 @@ import 'utils.dart';
 
 /// Add all [Task]-annotated tasks declared in the grinder build file.
 void discoverTasks(Grinder grinder, LibraryMirror buildLibrary) {
-  var discovery = new TaskDiscovery(buildLibrary);
+  var discovery = TaskDiscovery(buildLibrary);
   discovery.discover().forEach((annotatedTask) {
     if (annotatedTask.isDefault) {
       grinder.defaultTask = annotatedTask.task;
@@ -24,9 +24,7 @@ class TaskDiscovery {
   final LibraryMirror library;
 
   Map<Symbol, DeclarationMirror> get resolvedDeclarations {
-    if (_resolvedDeclarations == null) {
-      _resolvedDeclarations = resolveExportedDeclarations(library);
-    }
+    _resolvedDeclarations ??= resolveExportedDeclarations(library);
 
     return _resolvedDeclarations;
   }
@@ -37,7 +35,7 @@ class TaskDiscovery {
 
   /// Returns tasks for all [Task]-annotated declarations in [library].
   Iterable<AnnotatedTask> discover() {
-    final Map<DeclarationMirror, AnnotatedTask> cache = {};
+    final cache = <DeclarationMirror, AnnotatedTask>{};
     return resolvedDeclarations.values
         .map((decl) => discoverDeclaration(decl, cache))
         .where((task) => task != null);
@@ -59,7 +57,7 @@ class TaskDiscovery {
         getFirstMatchingAnnotation(decl, (a) => a is Depends);
 
     if (annotation == null && dependsAnnotation != null) {
-      throw new GrinderException(
+      throw GrinderException(
           'Top-level `$methodName` is annotated with `Depends` but not '
           '`Task`');
     }
@@ -81,24 +79,24 @@ class TaskDiscovery {
       }
 
       if (taskFunction == null) {
-        throw new GrinderException(
+        throw GrinderException(
             '`Task`-annotated top-level `$methodName` should be a task '
             'function or property which returns a task function.');
       }
 
       var name = camelToDashes(methodName);
 
-      List<dynamic> depends = [];
+      var depends = [];
       if (dependsAnnotation != null) {
         depends = dependsAnnotation.depends.map((dep) {
           if (dep is TaskInvocation) return dep;
-          if (dep is String) return new TaskInvocation(dep);
+          if (dep is String) return TaskInvocation(dep);
           if (dep is Function) {
             var depMethod = (reflect(dep) as ClosureMirror).function;
             var annotatedMethodTask = discoverDeclaration(depMethod, cache);
             if (annotatedMethodTask == null) {
               var depMethodName = MirrorSystem.getName(depMethod.simpleName);
-              throw new GrinderException(
+              throw GrinderException(
                   'Task `$name` references invalid task method '
                   '`$depMethodName` as a dependency');
             }
@@ -106,23 +104,23 @@ class TaskDiscovery {
                 .any((decl) => declarationsEqual(decl, depMethod))) {
               var depName = annotatedMethodTask.task.name;
               var depLib = MirrorSystem.getName(depMethod.owner.qualifiedName);
-              throw new GrinderException(
+              throw GrinderException(
                   'Task `$name` references dependency task `$depName` from '
                   'library `$depLib` which this build file does not export.');
             }
-            return new TaskInvocation(annotatedMethodTask.task.name);
+            return TaskInvocation(annotatedMethodTask.task.name);
           }
 
-          throw new GrinderException(
+          throw GrinderException(
               'Task `$name` references invalid dependency "$dep"');
         }).toList();
       }
 
-      var task = new GrinderTask(name,
+      var task = GrinderTask(name,
           taskFunction: taskFunction,
           depends: depends,
           description: annotation.description);
-      var annotated = new AnnotatedTask(task, annotation is DefaultTask);
+      var annotated = AnnotatedTask(task, annotation is DefaultTask);
 
       return cache[decl] = annotated;
     }

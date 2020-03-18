@@ -7,18 +7,18 @@ import 'dart:io';
 
 /// A command to create a simple, starting `tool/grind.dart` build script.
 void main(List args) {
-  if (!new File('pubspec.yaml').existsSync()) {
+  if (!File('pubspec.yaml').existsSync()) {
     _fail('This script must be run from the project root.');
   }
 
-  File file = new File('tool${Platform.pathSeparator}grind.dart');
+  final file = File('tool${Platform.pathSeparator}grind.dart');
 
   if (file.existsSync()) {
     _fail('Error: ${file.path} already exists.');
   }
 
   // Create `tool` if it does not already exist.
-  new Directory('tool').createSync();
+  Directory('tool').createSync();
 
   file.writeAsStringSync(_grindSampleSource);
   print('Wrote ${file.path}!');

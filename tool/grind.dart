@@ -5,29 +5,30 @@ import 'dart:io';
 
 import 'package:grinder/grinder.dart';
 
-main(args) => grind(args);
+void main(args) => grind(args);
 
 @Task()
-analyze() => new PubApp.global('tuneup').runAsync(['check', '--ignore-infos']);
+Future<String> analyze() =>
+    PubApp.global('tuneup').runAsync(['check', '--ignore-infos']);
 
 @Task()
-test() {
+Future<String> test() {
   // new TestRunner().testAsync();
   return Dart.runAsync(getFile('test/all.dart').path);
 }
 
 @Task('Apply dartfmt to all Dart source files')
-format() => DartFmt.format(existingSourceDirs);
+void format() => DartFmt.format(existingSourceDirs);
 
 @Task('Check that the generated `init` grind script analyzes well.')
-checkInit() {
-  FilePath temp = FilePath.createSystemTemp();
+void checkInit() {
+  final temp = FilePath.createSystemTemp();
 
   try {
-    File pubspec = temp.join('pubspec.yaml').createFile();
+    final pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('name: foo', flush: true);
     Dart.run(FilePath.current.join('bin', 'init.dart').path,
-        runOptions: new RunOptions(workingDirectory: temp.path));
+        runOptions: RunOptions(workingDirectory: temp.path));
     Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
     temp.delete();
@@ -36,10 +37,10 @@ checkInit() {
 
 @Task('Gather and send coverage data.')
 void coverage() {
-  final String coverageToken = Platform.environment['COVERAGE_TOKEN'];
+  final coverageToken = Platform.environment['COVERAGE_TOKEN'];
 
   if (coverageToken != null) {
-    PubApp coverallsApp = new PubApp.global('dart_coveralls');
+    final coverallsApp = PubApp.global('dart_coveralls');
     coverallsApp.run([
       'report',
       '--retry',
@@ -59,6 +60,6 @@ void coverage() {
 void buildbot() => null;
 
 @Task()
-ddc() {
-  return new DevCompiler().analyzeAsync(getFile('example/grind.dart'));
+Future<dynamic> ddc() {
+  return DevCompiler().analyzeAsync(getFile('example/grind.dart'));
 }

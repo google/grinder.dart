@@ -24,9 +24,9 @@ String run(String executable,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
-  if (runOptions == null) runOptions = new RunOptions();
+  runOptions ??= RunOptions();
 
-  ProcessResult result = Process.runSync(executable, arguments,
+  final result = Process.runSync(executable, arguments,
       workingDirectory: runOptions.workingDirectory,
       environment: runOptions.environment,
       includeParentEnvironment: runOptions.includeParentEnvironment,
@@ -45,7 +45,7 @@ String run(String executable,
   }
 
   if (result.exitCode != 0) {
-    throw new ProcessException._(
+    throw ProcessException._(
         executable, result.exitCode, result.stdout, result.stderr);
   }
 
@@ -85,8 +85,8 @@ Future<String> runAsync(String executable,
     String workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
-  if (runOptions == null) runOptions = new RunOptions();
-  List<int> stdout = [], stderr = [];
+  runOptions ??= RunOptions();
+  final stdout = <int>[], stderr = <int>[];
 
   return Process.start(executable, arguments,
           workingDirectory: runOptions.workingDirectory,
@@ -108,14 +108,12 @@ Future<String> runAsync(String executable,
     broadcastStderr.listen((List<int> data) => stderr.addAll(data));
     stderrLines.listen(logStderr);
 
-    var encoding = runOptions.stdoutEncoding != null
-        ? runOptions.stdoutEncoding
-        : systemEncoding;
+    var encoding = runOptions.stdoutEncoding ?? systemEncoding;
     return process.exitCode.then((int code) {
       var stdoutString = encoding.decode(stdout);
 
       if (code != 0) {
-        throw new ProcessException._(
+        throw ProcessException._(
             executable, code, stdoutString, encoding.decode(stderr));
       }
 
@@ -152,6 +150,7 @@ class ProcessException implements Exception {
 
   ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
 
+  @override
   String toString() => 'failed with exit code ${exitCode}';
 }
 
@@ -184,21 +183,17 @@ class RunOptions {
       Encoding stderrEncoding}) {
     Map<String, String> env;
     if (environment != null) {
-      env = new Map.from(environment);
+      env = Map.from(environment);
     } else {
-      env = this.environment != null ? new Map.from(this.environment) : {};
+      env = this.environment != null ? Map.from(this.environment) : {};
     }
-    return new RunOptions(
-        workingDirectory:
-            workingDirectory != null ? workingDirectory : this.workingDirectory,
+    return RunOptions(
+        workingDirectory: workingDirectory ?? this.workingDirectory,
         environment: env,
-        includeParentEnvironment: includeParentEnvironment != null
-            ? includeParentEnvironment
-            : this.includeParentEnvironment,
-        runInShell: runInShell != null ? runInShell : this.runInShell,
-        stdoutEncoding:
-            stdoutEncoding != null ? stdoutEncoding : this.stdoutEncoding,
-        stderrEncoding:
-            stderrEncoding != null ? stderrEncoding : this.stderrEncoding);
+        includeParentEnvironment:
+            includeParentEnvironment ?? this.includeParentEnvironment,
+        runInShell: runInShell ?? this.runInShell,
+        stdoutEncoding: stdoutEncoding ?? this.stdoutEncoding,
+        stderrEncoding: stderrEncoding ?? this.stderrEncoding);
   }
 }

@@ -30,9 +30,9 @@ class Grinder {
   final List<GrinderTask> _tasks = [];
   Map<GrinderTask, List> _taskDeps;
   final List<TaskInvocation> _invocationOrder = [];
-  final Set<String> _calcedTaskNameSet = new Set();
+  final Set<String> _calcedTaskNameSet = <String>{};
 
-  Ansi ansi = new Ansi(Ansi.terminalSupportsAnsi);
+  Ansi ansi = Ansi(Ansi.terminalSupportsAnsi);
 
   /// Create a new instance of Grinder.
   Grinder();
@@ -45,7 +45,7 @@ class Grinder {
 
   set defaultTask(GrinderTask v) {
     if (_defaultTask != null) {
-      throw new GrinderException('Cannot overwrite existing default task '
+      throw GrinderException('Cannot overwrite existing default task '
           '$_defaultTask with task $v.');
     }
     addTask(v);
@@ -80,7 +80,7 @@ class Grinder {
       var existing = _invocationOrder
           .firstWhere((existing) => existing.name == invocation.name);
       if (invocation != existing) {
-        throw new GrinderException(
+        throw GrinderException(
             'Cannot run a task multiple times with different arguments.');
       }
     }
@@ -102,46 +102,46 @@ class Grinder {
   /// cycles in the dependency graph.
   Future start(Iterable invocations, {bool dontRun = false}) {
     if (!dontRun && _taskDeps != null) {
-      throw new StateError("Grinder instances are not re-usable");
+      throw StateError('Grinder instances are not re-usable');
     }
 
     invocations = invocations.map((invocation) =>
-        invocation is String ? new TaskInvocation(invocation) : invocation);
+        invocation is String ? TaskInvocation(invocation) : invocation);
 
-    DateTime startTime = new DateTime.now();
+    final startTime = DateTime.now();
 
     if (invocations.isEmpty) {
       if (defaultTask != null) {
-        invocations = [new TaskInvocation(defaultTask.name)];
+        invocations = [TaskInvocation(defaultTask.name)];
       } else if (!dontRun) {
-        throw new GrinderException('Tried to call non-existent default task.');
+        throw GrinderException('Tried to call non-existent default task.');
       }
-      if (invocations.isEmpty) return new Future.value();
+      if (invocations.isEmpty) return Future.value();
     }
 
     // Verify that all named tasks exist.
     for (var invocation in invocations) {
       var name = invocation.name;
       if (getTask(name) == null) {
-        throw new GrinderException("task '$name' doesn't exist");
+        throw GrinderException("task '$name' doesn't exist");
       }
     }
 
     // Verify that there aren't any duplicate names.
-    Set<String> names = new Set();
+    final names = <String>{};
 
-    for (GrinderTask task in _tasks) {
+    for (final task in _tasks) {
       if (names.contains(task.name)) {
-        throw new GrinderException("task '${task.name}' is defined twice");
+        throw GrinderException("task '${task.name}' is defined twice");
       }
       names.add(task.name);
     }
 
     // Verify that all referenced tasks exist.
-    for (GrinderTask task in tasks) {
+    for (final task in tasks) {
       for (var invocation in task.depends) {
         if (getTask(invocation.name) == null) {
-          throw new GrinderException(
+          throw GrinderException(
               "task '${invocation.name}' referenced by ${task}, doesn't exist");
         }
       }
@@ -150,10 +150,10 @@ class Grinder {
     _calculateAllDeps();
 
     // Verify that there are no dependency cycles.
-    for (GrinderTask task in tasks) {
+    for (final task in tasks) {
       if (getAllDependencies(task)
           .any((invocation) => invocation.name == task.name)) {
-        throw new GrinderException("Task ${task} has a dependency cycle.\n"
+        throw GrinderException('Task ${task} has a dependency cycle.\n'
             "  ${task} ==> ${getAllDependencies(task).join(', ')}");
       }
     }
@@ -167,11 +167,11 @@ class Grinder {
       return Future.forEach(_invocationOrder, (TaskInvocation task) {
         return _invokeTask(task);
       }).then((_) {
-        final Duration elapsed = new DateTime.now().difference(startTime);
+        final elapsed = DateTime.now().difference(startTime);
         log('finished in ${(elapsed.inMilliseconds ~/ 100) / 10} seconds');
       });
     } else {
-      return new Future.value();
+      return Future.value();
     }
   }
 
@@ -189,11 +189,11 @@ class Grinder {
     log('${ansi.emphasized(invocation.toString())}');
 
     var task = getTask(invocation.name);
-    GrinderContext context = new GrinderContext(this, task, invocation);
+    final context = GrinderContext(this, task, invocation);
     dynamic result = task.execute(context, invocation.arguments);
 
     if (result is! Future) {
-      result = new Future.value(result);
+      result = Future.value(result);
     }
 
     return (result as Future).then((_) {
@@ -202,17 +202,17 @@ class Grinder {
   }
 
   void _calculateAllDeps() {
-    _taskDeps = new Map();
+    _taskDeps = {};
 
-    for (GrinderTask task in _tasks) {
-      _taskDeps[task] = _calcDependencies(task, new Set()).toList();
+    for (final task in _tasks) {
+      _taskDeps[task] = _calcDependencies(task, {}).toList();
     }
   }
 
   Set<TaskInvocation> _calcDependencies(
       GrinderTask task, Set<TaskInvocation> foundDeps) {
     for (var dep in getImmediateDependencies(task)) {
-      bool contains = foundDeps.contains(dep);
+      final contains = foundDeps.contains(dep);
       foundDeps.add(dep);
       if (!contains) {
         _calcDependencies(getTask(dep.name), foundDeps);

@@ -17,7 +17,8 @@ final variable = (GrinderContext context) => 'someValue';
 
 @Task()
 @Depends('method')
-get getter => (GrinderContext context) => 'someValue';
+String Function(GrinderContext) get getter =>
+    (GrinderContext context) => 'someValue';
 
 @Task()
 void camelCase(GrinderContext context) {}
@@ -30,4 +31,4 @@ String noContext() => 'someValue';
 void def(GrinderContext context) {}
 
 /// Test that non-[Task]-annotated things are not added.
-nonTask() {}
+void nonTask() {}

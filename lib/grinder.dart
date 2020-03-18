@@ -49,7 +49,7 @@ Future grind(List<String> args, {bool verifyProjectRoot = true}) {
       fail(e.message);
     }
 
-    return new Future.error(e);
+    return Future.error(e);
   }
 }
 
@@ -68,7 +68,7 @@ Future startGrinder(List<String> args, {bool verifyProjectRoot = true}) {
 @Deprecated('Use the task annotations instead.')
 void task(String name,
     [Function taskFunction, List<String> depends = const []]) {
-  grinder.addTask(new GrinderTask(name,
+  grinder.addTask(GrinderTask(name,
       taskFunction: taskFunction,
-      depends: depends.map((dep) => new TaskInvocation(dep))));
+      depends: depends.map((dep) => TaskInvocation(dep))));
 }

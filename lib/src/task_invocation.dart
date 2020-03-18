@@ -12,18 +12,21 @@ class TaskInvocation {
   TaskArgs _arguments;
 
   TaskInvocation(this.name, [TaskArgs arguments]) {
-    _arguments = arguments ?? new TaskArgs(this.name, const []);
+    _arguments = arguments ?? TaskArgs(name, const []);
   }
 
   TaskArgs get arguments => _arguments;
 
+  @override
   bool operator ==(other) =>
       other is TaskInvocation &&
       name == other.name &&
       _listEquals(arguments.arguments, other.arguments.arguments);
 
+  @override
   int get hashCode => name.hashCode ^ (arguments.arguments.length * 3);
 
+  @override
   String toString() {
     var args = arguments.arguments;
     var argString = args.isEmpty ? '' : ':${args.join(',')}';
@@ -57,15 +60,15 @@ class TaskArgs {
   String getOption(String name) => _options[name];
 
   void _parse() {
-    for (String arg in arguments) {
+    for (var arg in arguments) {
       if (!arg.startsWith('--')) continue;
 
       if (arg.contains('=')) {
         // handle options
         arg = arg.substring(2);
 
-        String name = arg.substring(0, arg.indexOf('='));
-        String value = arg.substring(arg.indexOf('=') + 1);
+        var name = arg.substring(0, arg.indexOf('='));
+        var value = arg.substring(arg.indexOf('=') + 1);
 
         if (value.length >= 2 && value.startsWith('"') && value.endsWith('"')) {
           value = value.substring(1, value.length - 1);
@@ -94,7 +97,7 @@ bool _listEquals(List elements1, List elements2) {
   var it1 = elements1.iterator;
   var it2 = elements2.iterator;
   while (true) {
-    bool hasNext = it1.moveNext();
+    final hasNext = it1.moveNext();
     if (hasNext != it2.moveNext()) return false;
     if (!hasNext) return true;
     if (it1.current != it2.current) return false;

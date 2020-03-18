@@ -15,25 +15,25 @@ String getTaskHelp(Grinder grinder, {bool useColor = true}) {
   // Calculate the dependencies.
   grinder.start([], dontRun: true);
 
-  List<GrinderTask> tasks = grinder.tasks.toList();
+  final tasks = grinder.tasks.toList();
 
-  final Ansi ansi = new Ansi(useColor);
+  final ansi = Ansi(useColor);
 
   return tasks
       .map((GrinderTask task) {
-        Iterable<TaskInvocation> deps = grinder.getImmediateDependencies(task);
+        final deps = grinder.getImmediateDependencies(task);
 
-        StringBuffer buffer = new StringBuffer();
-        String label = ansi.emphasized(task.name);
-        int diff = label.length - task.name.length;
+        final buffer = StringBuffer();
+        var label = ansi.emphasized(task.name);
+        final diff = label.length - task.name.length;
         if (grinder.defaultTask == task) {
           label += ' (default)';
         }
         buffer.write('  ${label.padRight(20 + diff)} ');
-        String depTasks = deps.map((d) {
+        final depTasks = deps.map((d) {
           return '${ansi.green}${d.name}${ansi.none}';
         }).join(' ');
-        String depText = '(depends on: $depTasks)';
+        final depText = '(depends on: $depTasks)';
         if (task.description != null && task.description.isNotEmpty) {
           buffer.writeln(task.description);
           if (deps.isNotEmpty) {

@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 
 final String _sep = Platform.pathSeparator;
 
-main() {
+void main() {
   group('grinder.files FileSet', () {
     Directory temp;
     File fileA;
@@ -19,13 +19,13 @@ main() {
     setUp(() {
       temp = Directory.systemTemp.createTempSync();
 
-      fileB = new File('${temp.path}${_sep}b.txt');
+      fileB = File('${temp.path}${_sep}b.txt');
       fileB.writeAsStringSync('b');
 
-      fileA = new File('${temp.path}${_sep}a.txt');
+      fileA = File('${temp.path}${_sep}a.txt');
       fileA.writeAsStringSync('a');
 
-      File subFile = new File('${temp.path}${_sep}foo${_sep}sub.txt');
+      final subFile = File('${temp.path}${_sep}foo${_sep}sub.txt');
       subFile.createSync(recursive: true);
       subFile.writeAsStringSync('sub');
     });
@@ -35,46 +35,46 @@ main() {
     });
 
     test('fromFile ctor', () {
-      FileSet fileSet = new FileSet.fromFile(fileA);
+      final fileSet = FileSet.fromFile(fileA);
       expect(fileSet.files.length, 1);
     });
 
     test('fromDir ctor', () {
-      FileSet fileSet = new FileSet.fromDir(temp, recurse: false);
+      var fileSet = FileSet.fromDir(temp, recurse: false);
       expect(fileSet.files.length, 2);
 
-      fileSet = new FileSet.fromDir(temp, recurse: true);
+      fileSet = FileSet.fromDir(temp, recurse: true);
       expect(fileSet.files.length, 3);
     });
 
     test('exists', () {
-      FileSet fileSet = new FileSet.fromFile(fileA);
+      final fileSet = FileSet.fromFile(fileA);
       expect(fileSet.exists, true);
     });
 
     test("doesn't exist", () {
-      FileSet notExistFileSet = new FileSet.fromFile(new File('noFile'));
+      final notExistFileSet = FileSet.fromFile(File('noFile'));
       expect(notExistFileSet.exists, false);
     });
 
     test('upToDate', () {
-      FileSet fileSetA = new FileSet.fromFile(fileA);
-      FileSet fileSetB = new FileSet.fromFile(fileB);
+      final fileSetA = FileSet.fromFile(fileA);
+      final fileSetB = FileSet.fromFile(fileB);
       expect(fileSetB.upToDate(fileSetA), true);
     });
 
     test('fromDir glob', () {
-      FileSet fileSet = new FileSet.fromDir(fileA.parent, pattern: '*.txt');
+      final fileSet = FileSet.fromDir(fileA.parent, pattern: '*.txt');
       expect(fileSet.files.length, 2);
     });
 
     test('fromDir glob 2', () {
-      FileSet fileSet = new FileSet.fromDir(fileA.parent, pattern: '*.txts');
+      final fileSet = FileSet.fromDir(fileA.parent, pattern: '*.txts');
       expect(fileSet.files.length, 0);
     });
 
     test('fromDir glob 3', () {
-      FileSet fileSet = new FileSet.fromDir(fileA.parent);
+      final fileSet = FileSet.fromDir(fileA.parent);
       expect(fileSet.files.length, 2);
     });
   });
@@ -91,73 +91,70 @@ main() {
     });
 
     test('fileName', () {
-      final String tempFileName = "temp.txt";
-      File tempFile =
-          new File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
+      final tempFileName = 'temp.txt';
+      final tempFile = File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
       expect(fileName(tempFile), tempFileName);
     });
 
     test('fileExt', () {
-      final String extension = 'txt';
-      final String fileName = 'temp' + '.' + extension;
-      File tempFile = new File('${temp.path}${_sep}tempdir${_sep}${fileName}');
+      final extension = 'txt';
+      final fileName = 'temp.$extension';
+      var tempFile = File('${temp.path}${_sep}tempdir${_sep}${fileName}');
       expect(fileExt(tempFile), extension);
 
       final fileNameEmptyExt = 'temp.';
-      tempFile =
-          new File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
+      tempFile = File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
       expect(fileExt(tempFile), '');
     });
 
     test('fileExt null', () {
-      String fileNameNoExt = 'temp';
-      File tempFile =
-          new File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
+      final fileNameNoExt = 'temp';
+      final tempFile =
+          File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
       expect(fileExt(tempFile), null);
     });
 
     test('joinFile', () {
-      File tempFile = joinFile(Directory.current, ['dir', 'test']);
-      File expectedFile =
-          new File('${Directory.current.path}${_sep}dir${_sep}test');
+      final tempFile = joinFile(Directory.current, ['dir', 'test']);
+      final expectedFile =
+          File('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempFile.path, expectedFile.path);
     });
 
     test('joinDir', () {
-      Directory tempDirectory = joinDir(Directory.current, ['dir', 'test']);
-      Directory expectedDir =
-          new Directory('${Directory.current.path}${_sep}dir${_sep}test');
+      final tempDirectory = joinDir(Directory.current, ['dir', 'test']);
+      final expectedDir =
+          Directory('${Directory.current.path}${_sep}dir${_sep}test');
       expect(tempDirectory.path, expectedDir.path);
     });
 
     test('copyFile', () {
-      final String tempFileName = "copytest.txt";
+      final tempFileName = 'copytest.txt';
 
-      File source = joinFile(temp, ['${tempFileName}']);
+      final source = joinFile(temp, ['${tempFileName}']);
       source.writeAsStringSync('abcdABCD');
 
-      Directory targetDir = joinDir(temp, ['targetDir']);
+      final targetDir = joinDir(temp, ['targetDir']);
       copy(source, targetDir);
 
-      File expectedFile = joinFile(targetDir, ['${tempFileName}']);
+      final expectedFile = joinFile(targetDir, ['${tempFileName}']);
       expect(expectedFile.readAsStringSync(), 'abcdABCD');
     });
 
     test('copyDirectory', () {
-      Directory sourceDir = joinDir(temp, ['source']);
+      final sourceDir = joinDir(temp, ['source']);
       sourceDir.createSync();
 
       joinFile(sourceDir, ['fileA']).writeAsStringSync('abcd');
       joinFile(sourceDir, ['fileB']).writeAsStringSync('efgh');
       joinFile(sourceDir, ['fileC']).writeAsStringSync('1234');
 
-      Directory targetDir = joinDir(temp, ['target']);
+      final targetDir = joinDir(temp, ['target']);
       copy(sourceDir, targetDir);
 
-      String expectedResult =
-          joinFile(targetDir, ['fileA']).readAsStringSync() +
-              joinFile(targetDir, ['fileB']).readAsStringSync() +
-              joinFile(targetDir, ['fileC']).readAsStringSync();
+      final expectedResult = joinFile(targetDir, ['fileA']).readAsStringSync() +
+          joinFile(targetDir, ['fileB']).readAsStringSync() +
+          joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
     });
   });
@@ -172,11 +169,11 @@ main() {
     tearDown(() => temp.delete());
 
     test('FilePath(entity)', () {
-      FilePath dir = new FilePath(temp.entity);
+      final dir = FilePath(temp.entity);
       expect(dir.exists, true);
       expect(dir.isDirectory, true);
 
-      FilePath file = dir.join('temp.txt');
+      final file = dir.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
       expect(file.exists, true);
       expect(file.isDirectory, false);
@@ -184,24 +181,24 @@ main() {
     });
 
     test('FilePath(str)', () {
-      FilePath dir = new FilePath(temp.path);
+      final dir = FilePath(temp.path);
       expect(dir.exists, true);
       expect(dir.isDirectory, true);
 
-      FilePath file = dir.join('temp.txt');
+      final file = dir.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
       expect(file.exists, true);
       expect(file.isDirectory, false);
       expect(file.name, 'temp.txt');
 
-      expect(new FilePath(dir.path + _sep).path, dir.path);
+      expect(FilePath(dir.path + _sep).path, dir.path);
     });
 
     test('FilePath(str) platform independent', () {
-      FilePath file = temp.join('temp.txt');
+      final file = temp.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
       expect(file.exists, true);
-      FilePath file2 = new FilePath(file.path.replaceAll(_sep, '/'));
+      final file2 = FilePath(file.path.replaceAll(_sep, '/'));
       expect(file2.exists, true);
     });
 
@@ -218,7 +215,7 @@ main() {
       expect(FilePath.current.parent.path, isNotEmpty);
       expect(FilePath.current.parent.parent, isNotNull);
 
-      FilePath root = new FilePath('/');
+      final root = FilePath('/');
       expect(root.exists, true);
       expect(root.parent, isNotNull);
       expect(root.parent.parent, isNotNull);
@@ -230,16 +227,16 @@ main() {
 //    });
 
     test('copy', () {
-      FilePath file = temp.join('temp.txt');
+      final file = temp.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
-      FilePath childDir = temp.join('child_dir')..createDirectory();
-      FilePath copied = file.copy(childDir);
+      final childDir = temp.join('child_dir')..createDirectory();
+      final copied = file.copy(childDir);
       expect(copied.exists, true);
       expect(copied.path, endsWith('temp.txt'));
     });
 
     test('delete', () {
-      FilePath file = temp.join('temp.txt');
+      final file = temp.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
       expect(file.exists, true);
       file.delete();
@@ -248,7 +245,7 @@ main() {
 
     test('length', () {
       expect(temp.length, 0);
-      FilePath file = temp.join('temp.txt');
+      final file = temp.join('temp.txt');
       file.asFile.writeAsStringSync('foo\n', flush: true);
       expect(file.length, 4);
     });

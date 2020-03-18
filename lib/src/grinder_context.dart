@@ -39,10 +39,11 @@ class GrinderContext {
   @alwaysThrows
   void fail(String message) {
     log(grinder.ansi.emphasized('failed: ') + grinder.ansi.error(message));
-    throw new GrinderException(message);
+    throw GrinderException(message);
   }
 
-  String toString() => "Context for ${task}";
+  @override
+  String toString() => 'Context for ${task}';
 }
 
 // Zone variables.

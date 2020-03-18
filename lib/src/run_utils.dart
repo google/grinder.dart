@@ -33,12 +33,12 @@ RunOptions mergeWorkingDirectory(
     String workingDirectory, RunOptions runOptions) {
   if (workingDirectory != null) {
     if (runOptions?.workingDirectory != null) {
-      throw new ArgumentError(
+      throw ArgumentError(
           'only one of workingDirectory or runOptions.workingDirectory may be specified');
     }
   }
   return runOptions == null
-      ? new RunOptions(workingDirectory: workingDirectory)
+      ? RunOptions(workingDirectory: workingDirectory)
       : runOptions.clone(workingDirectory: workingDirectory);
 }
 
@@ -58,6 +58,6 @@ RunOptions mergeEnvironment(
         runOptions.environment.isEmpty);
   }
   return runOptions == null
-      ? new RunOptions(environment: environment)
+      ? RunOptions(environment: environment)
       : runOptions.clone(environment: environment);
 }
