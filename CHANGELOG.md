@@ -1,7 +1,7 @@
 # grinder.dart changes
 
 ## 0.8.4
-- Update the code to be analysis_options v1.9.0 compliant
+- Update the code to be `package:pedantic` v1.9.0 compliant
 
 ## 0.8.3+1
 - Mark `fail()` and `GrinderContext.fail()` as `@alwaysThrows`.
