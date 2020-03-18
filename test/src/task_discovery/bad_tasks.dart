@@ -13,25 +13,25 @@ export 'external_tasks.dart' show shownVariable;
 const nullTask = null;
 
 @Task()
-get nullReturningGetter => null;
+Null get nullReturningGetter => null;
 
 @Task()
 class Class {}
 
 @Task()
 @Depends(shownMethod)
-dependsNonExported(GrinderContext context) {}
+void dependsNonExported(GrinderContext context) {}
 
 @Task()
 @Depends(shownVariable)
-recursivelyDependsNonExported(GrinderContext context) {}
+void recursivelyDependsNonExported(GrinderContext context) {}
 
 @Task()
 @Depends(nonTask)
-dependsNonTask(GrinderContext context) {}
+void dependsNonTask(GrinderContext context) {}
 
 @Depends(hidden)
-dependsWithoutTask() {}
+void dependsWithoutTask() {}
 
 /// Test that non-[Task]-annotated things are not added.
-nonTask() {}
+void nonTask() {}

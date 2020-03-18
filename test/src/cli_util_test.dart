@@ -7,21 +7,20 @@ import 'package:grinder/src/cli.dart';
 import 'package:grinder/src/cli_util.dart';
 import 'package:grinder/src/grinder.dart';
 import 'package:grinder/src/grinder_task.dart';
-import 'package:grinder/src/task_invocation.dart';
 import 'package:test/test.dart';
 
 import '_common.dart';
 
-main() {
+void main() {
   group('cli_util', () {
     group('ArgParser', () {
       test('flags and tasks', () {
-        ArgParser parser = new ArgParser('foo', 'foo description', () => '');
+        final parser = ArgParser('foo', 'foo description', () => '');
         parser.addFlag('help', abbr: 'h');
         parser.addFlag('foo');
         parser.addFlag('bar');
 
-        ArgResults results =
+        final results =
             parser.parse(['-h', '--foo', 'task1', '--foo', 'task2']);
 
         expect(results.getFlag('help'), true);
@@ -30,7 +29,7 @@ main() {
 
         expect(results.taskInvocations, hasLength(2));
 
-        TaskInvocation task = results.taskInvocations.first;
+        var task = results.taskInvocations.first;
         expect(task.name, 'task1');
         expect(task.arguments.getFlag('foo'), true);
 
@@ -42,15 +41,15 @@ main() {
 
     group('getTaskHelp', () {
       test('with tasks', () {
-        var grinder = new Grinder();
-        grinder.addTask(new GrinderTask('a',
-            description: '1', taskFunction: nullTaskFunction));
-        grinder.addTask(new GrinderTask('b',
-            description: '2', taskFunction: nullTaskFunction));
+        var grinder = Grinder();
         grinder.addTask(
-            new GrinderTask('ab', description: '', depends: ['a', 'b']));
+            GrinderTask('a', description: '1', taskFunction: nullTaskFunction));
         grinder.addTask(
-            new GrinderTask('abc', description: '123', depends: ['ab']));
+            GrinderTask('b', description: '2', taskFunction: nullTaskFunction));
+        grinder
+            .addTask(GrinderTask('ab', description: '', depends: ['a', 'b']));
+        grinder
+            .addTask(GrinderTask('abc', description: '123', depends: ['ab']));
 
         var help = getTaskHelp(grinder, useColor: false);
         expect(help.trim(), '''a                    1
@@ -61,7 +60,7 @@ main() {
       });
 
       test('without tasks', () {
-        var grinder = new Grinder();
+        var grinder = Grinder();
 
         var help = getTaskHelp(grinder, useColor: false);
         expect(help.trim(), 'No tasks defined.');

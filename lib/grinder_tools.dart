@@ -14,10 +14,10 @@ import 'src/utils.dart';
 
 export 'src/run.dart';
 
-final Directory binDir = new Directory('bin');
-final Directory buildDir = new Directory('build');
-final Directory libDir = new Directory('lib');
-final Directory webDir = new Directory('web');
+final Directory binDir = Directory('bin');
+final Directory buildDir = Directory('build');
+final Directory libDir = Directory('lib');
+final Directory webDir = Directory('web');
 
 /// Run a dart [script] using [run_lib.run]. Returns the stdout.
 ///
@@ -43,7 +43,7 @@ void defaultClean([GrinderContext context]) => delete(buildDir);
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
 class TestRunner {
-  final PubApp _test = new PubApp.local('test');
+  final PubApp _test = PubApp.local('test');
 
   TestRunner();
 
@@ -124,7 +124,7 @@ class TestRunner {
       dynamic selector,
       int concurrency,
       int pubServe}) {
-    List<String> args = ['--reporter=expanded'];
+    final args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
     if (selector != null) {
@@ -141,7 +141,7 @@ class TestRunner {
 
 /// A class to drive the Dart Dev Compiler (DDC, from the `dev_compiler` package).
 class DevCompiler {
-  final PubApp _ddc = new PubApp.global('dev_compiler');
+  final PubApp _ddc = PubApp.global('dev_compiler');
 
   DevCompiler();
 
@@ -171,7 +171,7 @@ class DevCompiler {
 
   List<String> _args(dynamic files,
       {Directory outDir, bool forceCompile = false, bool htmlReport = false}) {
-    List<String> args = [];
+    final args = [];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');
     if (htmlReport) args.add('--html-report');

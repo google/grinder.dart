@@ -3,21 +3,21 @@
 
 import 'package:grinder/grinder.dart';
 
-main(args) => grind(args);
+Future<dynamic> main(args) => grind(args);
 
 @Task('Initialize stuff.')
-init() {
-  log("Initializing stuff...");
+void init() {
+  log('Initializing stuff...');
 }
 
 @Task('Compile stuff.')
 @Depends(init)
-compile() {
-  log("Compiling stuff...");
+void compile() {
+  log('Compiling stuff...');
 }
 
 @DefaultTask('Deploy stuff.')
 @Depends(compile)
-deploy() {
-  log("Deploying stuff...");
+void deploy() {
+  log('Deploying stuff...');
 }

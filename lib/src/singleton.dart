@@ -8,21 +8,26 @@ import 'dart:io';
 import '../grinder.dart';
 import 'utils.dart';
 
-final Grinder grinder = new Grinder();
+final Grinder grinder = Grinder();
 
-final ZonedValue zonedContext = new ZonedValue(new _NoopContext());
+final ZonedValue zonedContext = ZonedValue(_NoopContext());
 
 class _NoopContext implements GrinderContext {
+  @override
   Grinder get grinder => null;
 
+  @override
   GrinderTask get task => null;
 
+  @override
   TaskInvocation get invocation => null;
 
+  @override
   void fail(String message) {
     stderr.writeln(message);
     exit(1);
   }
 
+  @override
   void log(String message) => print(message);
 }

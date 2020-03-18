@@ -6,10 +6,10 @@ library grinder.src.task_invocation_test;
 import 'package:grinder/grinder.dart' hide fail;
 import 'package:test/test.dart';
 
-main() {
+void main() {
   group('TaskArgs', () {
     test('flag', () {
-      TaskArgs args = new TaskArgs('test', ['--foo']);
+      final args = TaskArgs('test', ['--foo']);
 
       expect(args.hasFlag('foo'), true);
       expect(args.getFlag('foo'), true);
@@ -19,14 +19,14 @@ main() {
     });
 
     test('negated flag', () {
-      TaskArgs args = new TaskArgs('test', ['--no-foo']);
+      final args = TaskArgs('test', ['--no-foo']);
 
       expect(args.hasFlag('foo'), true);
       expect(args.getFlag('foo'), false);
     });
 
     test('option', () {
-      TaskArgs args = new TaskArgs('test', ['--foo=bar']);
+      final args = TaskArgs('test', ['--foo=bar']);
 
       expect(args.hasOption('foo'), true);
       expect(args.getOption('foo'), 'bar');
@@ -36,14 +36,14 @@ main() {
     });
 
     test('quoted option', () {
-      TaskArgs args = new TaskArgs('test', ['--foo="bar baz"']);
+      final args = TaskArgs('test', ['--foo="bar baz"']);
 
       expect(args.hasOption('foo'), true);
       expect(args.getOption('foo'), 'bar baz');
     });
 
     test('option missing value', () {
-      TaskArgs args = new TaskArgs('test', ['--foo=']);
+      final args = TaskArgs('test', ['--foo=']);
 
       expect(args.hasOption('foo'), true);
       expect(args.getOption('foo'), '');

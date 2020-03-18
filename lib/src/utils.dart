@@ -17,23 +17,26 @@ class ResettableTimer implements Timer {
   Timer _timer;
 
   ResettableTimer(this.duration, this.callback) {
-    _timer = new Timer(duration, callback);
+    _timer = Timer(duration, callback);
   }
 
   void reset() {
     _timer.cancel();
-    _timer = new Timer(duration, callback);
+    _timer = Timer(duration, callback);
   }
 
+  @override
   void cancel() => _timer.cancel();
 
+  @override
   bool get isActive => _timer.isActive;
 
+  @override
   int get tick => _timer.tick;
 }
 
 String camelToDashes(String input) {
-  var segment = new RegExp(r'.[^A-Z]*');
+  var segment = RegExp(r'.[^A-Z]*');
   var matches = segment.allMatches(input);
   return matches
       .map((Match match) => withCapitalization(
@@ -59,17 +62,15 @@ bool declarationsEqual(DeclarationMirror decl1, decl2) =>
 
 Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
     LibraryMirror library) {
-  final Map<Symbol, DeclarationMirror> resolvedDeclarations =
-      <Symbol, DeclarationMirror>{};
+  final resolvedDeclarations = <Symbol, DeclarationMirror>{};
   resolvedDeclarations.addAll(library.declarations);
 
   library.libraryDependencies.forEach((LibraryDependencyMirror dependency) {
-    List<CombinatorMirror> combinators =
-        dependency.combinators.cast<CombinatorMirror>();
+    final combinators = dependency.combinators.cast<CombinatorMirror>();
 
     if (dependency.isExport) {
-      Map<Symbol, DeclarationMirror> shown = <Symbol, DeclarationMirror>{};
-      List<Symbol> hidden = <Symbol>[];
+      final shown = <Symbol, DeclarationMirror>{};
+      final hidden = <Symbol>[];
       combinators.forEach((CombinatorMirror combinator) {
         if (combinator.isShow) {
           combinator.identifiers.forEach((Symbol id) {
@@ -88,11 +89,11 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
     }
   });
 
-  return new UnmodifiableMapView<Symbol, DeclarationMirror>(
-      resolvedDeclarations);
+  return UnmodifiableMapView<Symbol, DeclarationMirror>(resolvedDeclarations);
 }
 
-getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
+dynamic getFirstMatchingAnnotation(
+        DeclarationMirror decl, bool Function(dynamic) test) =>
     decl.metadata
         .map((InstanceMirror mirror) => mirror.reflectee)
         .firstWhere(test, orElse: () => null);
@@ -100,14 +101,14 @@ getFirstMatchingAnnotation(DeclarationMirror decl, bool test(annotation)) =>
 /// A simple way to expose a default value that can be overridden within zones.
 class ZonedValue<T> {
   final T _rootValue;
-  final _valueKey = new Object();
-  final _finalKey = new Object();
+  final _valueKey = Object();
+  final _finalKey = Object();
 
   ZonedValue(T rootValue) : _rootValue = rootValue;
 
-  withValue(T value, f(), {bool isFinal = false}) {
+  dynamic withValue(T value, dynamic Function() f, {bool isFinal = false}) {
     if (this.isFinal) {
-      throw new StateError('Cannot override final zoned value');
+      throw StateError('Cannot override final zoned value');
     }
     return runZoned(f, zoneValues: {_valueKey: value, _finalKey: isFinal});
   }
@@ -120,7 +121,7 @@ class ZonedValue<T> {
   T get value {
     // TODO: Allow null values when http://dartbug.com/21247 is fixed.
     var v = Zone.current[_valueKey];
-    return v != null ? v : _rootValue;
+    return v ?? _rootValue;
   }
 }
 
@@ -147,10 +148,10 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 
   /// Returns `true` if this relative path is a hidden directory.
   bool _isInHiddenDir(String relative) =>
-      path.split(relative).any((part) => part.startsWith("."));
+      path.split(relative).any((part) => part.startsWith('.'));
 
   Set<String> _findDartSourceFiles(Directory directory) {
-    var files = new Set<String>();
+    var files = <String>{};
     if (directory.existsSync()) {
       for (var entry
           in directory.listSync(recursive: true, followLinks: false)) {
@@ -163,11 +164,11 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
     return files;
   }
 
-  var files = new Set<String>();
+  var files = <String>{};
 
   paths.forEach((p) {
     if (FileSystemEntity.typeSync(p) == FileSystemEntityType.directory) {
-      files.addAll(_findDartSourceFiles(new Directory(p)));
+      files.addAll(_findDartSourceFiles(Directory(p)));
     } else {
       files.add(p);
     }
@@ -176,12 +177,12 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 }
 
 String cleanupStackTrace(st) {
-  List<String> lines = '${st}'.trim().split('\n');
+  final lines = '${st}'.trim().split('\n');
 
   // Remove lines which are not useful to debugging script issues. With our move
   // to using zones, the exceptions now have stacks 30 frames deep.
   while (lines.isNotEmpty) {
-    String line = lines.last;
+    final line = lines.last;
 
     if (line.contains(' (dart:') || line.contains(' (package:grinder/')) {
       lines.removeLast();

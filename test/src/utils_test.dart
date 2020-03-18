@@ -8,14 +8,14 @@ import 'dart:io';
 import 'package:grinder/src/utils.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   group('src.utils', () {
     test('cleanupStackTrace', () {
       expect(cleanupStackTrace(_st), _stExpected);
     });
 
     test('ResettableTimer', () {
-      ResettableTimer timer = new ResettableTimer(new Duration(seconds: 1), () {
+      final timer = ResettableTimer(Duration(seconds: 1), () {
         fail("timer shouldn't have fired'");
       });
       expect(timer.isActive, true);
@@ -28,14 +28,13 @@ main() {
     test('coerceToPathList', () {
       expect(coerceToPathList([]), isEmpty);
       expect(coerceToPathList('foo'), ['foo']);
-      expect(coerceToPathList(new File('foo')), ['foo']);
-      expect(coerceToPathList(new Directory('foo')), ['foo']);
+      expect(coerceToPathList(File('foo')), ['foo']);
+      expect(coerceToPathList(Directory('foo')), ['foo']);
       expect(coerceToPathList(['a', 'b']), ['a', 'b']);
-      expect(coerceToPathList([new File('a'), new File('b')]), ['a', 'b']);
-      expect(coerceToPathList([new Directory('a'), new Directory('b')]),
-          ['a', 'b']);
-      expect(coerceToPathList([new Directory('a'), new File('b'), 'c']),
-          ['a', 'b', 'c']);
+      expect(coerceToPathList([File('a'), File('b')]), ['a', 'b']);
+      expect(coerceToPathList([Directory('a'), Directory('b')]), ['a', 'b']);
+      expect(
+          coerceToPathList([Directory('a'), File('b'), 'c']), ['a', 'b', 'c']);
     });
 
     test('findDartSourceFiles', () {
@@ -44,7 +43,7 @@ main() {
       expect(
           testFiles,
           anyElement((f) =>
-              new File(f).existsSync() &&
+              File(f).existsSync() &&
               FileSystemEntity.typeSync(f) == FileSystemEntityType.file));
     });
   });

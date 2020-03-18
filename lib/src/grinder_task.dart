@@ -11,7 +11,7 @@ import 'singleton.dart';
 import 'task_invocation.dart';
 
 /// The typedef for grinder task functions.
-typedef dynamic TaskFunction(TaskArgs args);
+typedef TaskFunction = dynamic Function(TaskArgs args);
 
 /// Represents a Grinder task. These can be created automatically using the
 /// [Task] and [Depends] annotations.
@@ -40,10 +40,10 @@ class GrinderTask {
     this.taskFunction,
     this.description,
     Iterable<dynamic> depends = const [],
-  }) : this.depends = new UnmodifiableListView(depends
-            .map((dep) => dep is String ? new TaskInvocation(dep) : dep)) {
+  }) : depends = UnmodifiableListView(
+            depends.map((dep) => dep is String ? TaskInvocation(dep) : dep)) {
     if (taskFunction == null && depends.isEmpty) {
-      throw new GrinderException(
+      throw GrinderException(
           'GrinderTasks must have a task function or dependencies.');
     }
   }
@@ -64,7 +64,8 @@ class GrinderTask {
     }
   }
 
-  String toString() => "[$name]";
+  @override
+  String toString() => '[$name]';
 }
 
-typedef dynamic _OldTaskFunction(GrinderContext context);
+typedef _OldTaskFunction = dynamic Function(GrinderContext context);

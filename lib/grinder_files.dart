@@ -28,7 +28,7 @@ class FileSet {
   List<File> files = [];
 
   FileSet.fromDir(Directory dir, {String pattern, bool recurse = false}) {
-    Glob glob = (pattern == null ? null : new Glob(pattern));
+    final glob = (pattern == null ? null : Glob(pattern));
 
     if (dir.existsSync()) {
       _collect(files, dir, glob, recurse);
@@ -58,10 +58,10 @@ class FileSet {
   }
 
   DateTime get lastModified {
-    DateTime time = new DateTime.fromMillisecondsSinceEpoch(0);
+    var time = DateTime.fromMillisecondsSinceEpoch(0);
 
     files.forEach((f) {
-      DateTime modified = f.lastModifiedSync();
+      final modified = f.lastModifiedSync();
       if (modified.isAfter(time)) {
         time = modified;
       }
@@ -74,9 +74,8 @@ class FileSet {
 
   static void _collect(
       List<File> files, Directory dir, Glob glob, bool recurse) {
-    for (FileSystemEntity entity
-        in dir.listSync(recursive: false, followLinks: false)) {
-      String name = fileName(entity);
+    for (final entity in dir.listSync(recursive: false, followLinks: false)) {
+      final name = fileName(entity);
 
       if (entity is File) {
         if (glob == null || glob.matches(name)) {
@@ -99,10 +98,10 @@ class FilePath {
   /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
   /// missing or null, the empty string is used for [prefix].
   static FilePath createSystemTemp([String prefix]) {
-    return new FilePath(Directory.systemTemp.createTempSync(prefix));
+    return FilePath(Directory.systemTemp.createTempSync(prefix));
   }
 
-  static FilePath get current => new FilePath(Directory.current);
+  static FilePath get current => FilePath(Directory.current);
 
   final String _path;
 
@@ -114,21 +113,21 @@ class FilePath {
   FilePath(entityOrString) : _path = _coerce(entityOrString);
 
   String get name {
-    int index = _path.lastIndexOf(_sep);
+    final index = _path.lastIndexOf(_sep);
     return index != -1 ? _path.substring(index + 1) : null;
   }
 
   String get path => _path;
 
   FileSystemEntity get entity {
-    final FileSystemEntityType type = FileSystemEntity.typeSync(_path);
+    final type = FileSystemEntity.typeSync(_path);
 
     if (type == FileSystemEntityType.file) {
-      return new File(_path);
+      return File(_path);
     } else if (type == FileSystemEntityType.directory) {
-      return new Directory(_path);
+      return Directory(_path);
     } else if (type == FileSystemEntityType.link) {
-      return new Link(_path);
+      return Link(_path);
     } else {
       return null;
     }
@@ -145,15 +144,14 @@ class FilePath {
   ///
   /// See [FileSystemEntity.parent].
   FilePath get parent {
-    int index = _path.lastIndexOf(_sep);
+    final index = _path.lastIndexOf(_sep);
 
     // Do string manipulation if there are path separators; otherwise, use the
     // file system entity information.
     if (index == 0 || index == -1) {
-      FileSystemEntity e = entity;
-      return e == null ? null : new FilePath(e.parent);
+      return entity == null ? null : FilePath(entity.parent);
     } else {
-      return new FilePath(_path.substring(0, index));
+      return FilePath(_path.substring(0, index));
     }
   }
 
@@ -166,23 +164,23 @@ class FilePath {
   /// Assume the current file system entity is a [File] and return it as such.
   /// You would call this instead of [entity] when the file system entity does
   /// not yet exist.
-  File get asFile => new File(path);
+  File get asFile => File(path);
 
   /// Assume the current file system entity is a [Directory] and return it as
   /// such. You would call this instead of [entity] when the file system entity
   /// does not yet exist.
-  Directory get asDirectory => new Directory(path);
+  Directory get asDirectory => Directory(path);
 
   /// Assume the current file system entity is a [Link] and return it as such.
   /// You would call this instead of [entity] when the file system entity does
   /// not yet exist.
-  Link get asLink => new Link(path);
+  Link get asLink => Link(path);
 
   /// Copy the the entity to the given destination. Return the newly created
   /// [FilePath].
   FilePath copy(FilePath destDir) {
     _copyImpl(entity, destDir.asDirectory);
-    return new FilePath(destDir).join(name);
+    return FilePath(destDir).join(name);
   }
 
   /// Delete the entity at the path.
@@ -236,9 +234,9 @@ class FilePath {
       String arg7,
       String arg8,
       String arg9]) {
-    List paths = [path];
+    var paths = [path];
 
-    if (arg0 is List) {
+    if (arg0 is List<String>) {
       paths.addAll(arg0);
     } else if (arg0 is String) {
       _addNonNull(paths, arg0);
@@ -256,14 +254,17 @@ class FilePath {
     if (paths.length == 1) {
       return this;
     } else {
-      return new FilePath(paths.join(_sep));
+      return FilePath(paths.join(_sep));
     }
   }
 
+  @override
   bool operator ==(other) => other is FilePath && path == other.path;
 
+  @override
   int get hashCode => path.hashCode;
 
+  @override
   String toString() => path;
 
   static String _coerce(arg) {
@@ -278,49 +279,49 @@ class FilePath {
     }
     if (arg is FileSystemEntity) return arg.path;
     if (arg is FilePath) return arg.path;
-    throw new ArgumentError('expected a FileSystemEntity or a String');
+    throw ArgumentError('expected a FileSystemEntity or a String');
   }
 }
 
 /// Return the last segment of the file path.
 String fileName(FileSystemEntity entity) {
-  String name = entity.path;
-  int index = name.lastIndexOf(_sep);
+  final name = entity.path;
+  final index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(index + 1) : name);
 }
 
 /// Return the file's extension without the period. This will return `null` if
 /// there is no extension.
 String fileExt(FileSystemEntity entity) {
-  String name = fileName(entity);
-  int index = name.indexOf('.');
+  final name = fileName(entity);
+  final index = name.indexOf('.');
   return index != -1 && index < name.length ? name.substring(index + 1) : null;
 }
 
 /// Return the first n - 1 segments of the file path.
 String baseName(FileSystemEntity entity) {
-  String name = entity.path;
-  int index = name.lastIndexOf(_sep);
+  final name = entity.path;
+  final index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(0, index) : null);
 }
 
 File joinFile(Directory dir, List<String> files) {
-  String pathFragment = files.join(_sep);
-  return new File("${dir.path}${_sep}${pathFragment}");
+  final pathFragment = files.join(_sep);
+  return File('${dir.path}${_sep}${pathFragment}');
 }
 
 Directory joinDir(Directory dir, List<String> files) {
-  String pathFragment = files.join(_sep);
-  return new Directory("${dir.path}${_sep}${pathFragment}");
+  final pathFragment = files.join(_sep);
+  return Directory('${dir.path}${_sep}${pathFragment}');
 }
 
 /// Return the file pointed to by the given [path]. This method converts the
 /// given path to a platform dependent path.
 File getFile(String path) {
   if (_sep == '/') {
-    return new File(path);
+    return File(path);
   } else {
-    return new File(path.replaceAll('/', _sep));
+    return File(path.replaceAll('/', _sep));
   }
 }
 
@@ -328,9 +329,9 @@ File getFile(String path) {
 /// given path to a platform dependent path.
 Directory getDir(String path) {
   if (_sep == '/') {
-    return new Directory(path);
+    return Directory(path);
   } else {
-    return new Directory(path.replaceAll('/', _sep));
+    return Directory(path.replaceAll('/', _sep));
   }
 }
 
@@ -343,8 +344,8 @@ void copy(FileSystemEntity entity, Directory destDir,
 void _copyImpl(FileSystemEntity entity, Directory destDir,
     [GrinderContext context]) {
   if (entity is Directory) {
-    for (FileSystemEntity entity in entity.listSync()) {
-      String name = fileName(entity);
+    for (final entity in entity.listSync()) {
+      final name = fileName(entity);
 
       if (entity is File) {
         _copyImpl(entity, destDir);
@@ -353,7 +354,7 @@ void _copyImpl(FileSystemEntity entity, Directory destDir,
       }
     }
   } else if (entity is File) {
-    File destFile = joinFile(destDir, [fileName(entity)]);
+    final destFile = joinFile(destDir, [fileName(entity)]);
 
     if (!destFile.existsSync() ||
         entity.lastModifiedSync() != destFile.lastModifiedSync()) {
@@ -361,7 +362,7 @@ void _copyImpl(FileSystemEntity entity, Directory destDir,
       entity.copySync(destFile.path);
     }
   } else {
-    throw new StateError('unexpected type: ${entity.runtimeType}');
+    throw StateError('unexpected type: ${entity.runtimeType}');
   }
 }
 

@@ -8,7 +8,7 @@ import 'dart:io' as io;
 /// Return information about how the script was launched to be investigated by
 /// the caller.
 void main(List<String> args) {
-  Map json = {
+  final json = {
     'arguments': args,
     'workingDirectory': io.Directory.current.path,
     'environment': io.Platform.environment,

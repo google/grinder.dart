@@ -23,20 +23,20 @@ final Set<Directory> sourceDirs = [
   'test',
   'tool',
   'web'
-].map((path) => new Directory(path)).toSet();
+].map((path) => Directory(path)).toSet();
 
 /// The subset of directories in [sourceDirs] which actually exist in the
 /// current working directory.
 Set<Directory> get existingSourceDirs => Directory.current
     .listSync()
-    .where((f) => f is Directory)
-    .map((d) => new Directory(path.relative(d.path)))
+    .whereType<Directory>()
+    .map((d) => Directory(path.relative(d.path)))
     .where((d) => sourceDirs.any((sd) => sd.path == d.path))
     .toSet();
 
 /// The path to the current Dart SDK.
 final Directory sdkDir =
-    new Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
+    Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
 
 /// This is deprecated.
 ///
@@ -44,7 +44,7 @@ final Directory sdkDir =
 @deprecated
 Directory getSdkDir([List<String> cliArgs]) => sdkDir;
 
-final File dartVM = new File(Platform.resolvedExecutable);
+final File dartVM = File(Platform.resolvedExecutable);
 
 /// Return the path to a binary in the SDK's `bin/` directory. This will handle
 /// appending `.bat` or `.exe` on Windows. This is useful for finding the path
@@ -70,7 +70,7 @@ class Dart {
       String workingDirectory, //
       List<String> vmArgs = const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
+    final args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
     return runlib.run(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
@@ -82,7 +82,7 @@ class Dart {
       String packageRoot,
       RunOptions runOptions, //
       List<String> vmArgs = const []}) {
-    List<String> args = _buildArgs(script, arguments, packageRoot, vmArgs);
+    final args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
     return runlib.runAsync(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
@@ -99,7 +99,7 @@ class Dart {
 
   static List<String> _buildArgs(String script, List<String> arguments,
       String packageRoot, List<String> vmArgs) {
-    List<String> args = [];
+    final args = <String>[];
 
     if (vmArgs != null) {
       args.addAll(vmArgs);
@@ -117,7 +117,7 @@ class Dart {
 
 /// Utility tasks for executing pub commands.
 class Pub {
-  static final PubGlobal _global = new PubGlobal._();
+  static final PubGlobal _global = PubGlobal._();
 
   /// Run `pub get` on the current project. If [force] is true, this will execute
   /// even if the pubspec.lock file is up-to-date with respect to the
@@ -128,8 +128,8 @@ class Pub {
     final prefix = runOptions.workingDirectory == null
         ? ''
         : '${runOptions.workingDirectory}/';
-    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
+    final pubspec = FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    final publock = FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       _run('get', runOptions: runOptions);
@@ -145,8 +145,8 @@ class Pub {
     final prefix = runOptions.workingDirectory == null
         ? ''
         : '${runOptions.workingDirectory}/';
-    FileSet pubspec = new FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
-    FileSet publock = new FileSet.fromFile(getFile('${prefix}pubspec.lock'));
+    final pubspec = FileSet.fromFile(getFile('${prefix}pubspec.yaml'));
+    final publock = FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
       return runlib
@@ -154,7 +154,7 @@ class Pub {
           .then((_) => null);
     }
 
-    return new Future.value();
+    return Future.value();
   }
 
   /// Run `pub upgrade` on the current project.
@@ -198,7 +198,7 @@ class Pub {
     String workingDirectory,
   }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List<String> args = ['build'];
+    final args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
@@ -216,7 +216,7 @@ class Pub {
       String outputDirectory,
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    List<String> args = ['build'];
+    final args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
     if (outputDirectory != null) args.add('--output=${outputDirectory}');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
@@ -236,7 +236,7 @@ class Pub {
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    List<String> args = ['run', scriptArg];
+    final args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
@@ -247,7 +247,7 @@ class Pub {
   static Future<String> runAsync(String package,
       {List<String> arguments, RunOptions runOptions, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    List<String> args = ['run', scriptArg];
+    final args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
@@ -297,8 +297,8 @@ class Dart2js {
       String categories,
       List<String> extraArgs = const []}) {
     if (outFile == null) {
-      if (outDir == null) outDir = sourceFile.parent;
-      outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+      outDir ??= sourceFile.parent;
+      outFile = joinFile(outDir, ['${fileName(sourceFile)}.js']);
     } else {
       outDir = outFile.parent;
     }
@@ -326,8 +326,8 @@ class Dart2js {
       String categories,
       List<String> extraArgs = const []}) {
     if (outFile == null) {
-      if (outDir == null) outDir = sourceFile.parent;
-      outFile = joinFile(outDir, ["${fileName(sourceFile)}.js"]);
+      outDir ??= sourceFile.parent;
+      outFile = joinFile(outDir, ['${fileName(sourceFile)}.js']);
     } else {
       outDir = outFile.parent;
     }
@@ -368,7 +368,7 @@ class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
       {Directory packageRoot, bool fatalWarnings = false}) {
-    List<String> args = [];
+    final args = <String>[];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
@@ -379,7 +379,7 @@ class Analyzer {
   @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
       {Directory packageRoot, bool fatalWarnings = false}) {
-    List<String> args = [];
+    final args = <String>[];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
     args.addAll(coerceToPathList(files));
@@ -403,14 +403,14 @@ class DartFmt {
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath, {int lineLength}) {
-    String results =
+    final results =
         _run('--dry-run', coerceToPathList(fileOrPath), lineLength: lineLength);
     return results.trim().isNotEmpty;
   }
 
   static String _run(String option, List<String> targets,
       {bool quiet = false, int lineLength}) {
-    List<String> args = [option];
+    final args = [option];
     if (lineLength != null) args.add('--line-length=${lineLength}');
     args.addAll(targets);
     return runlib.run(sdkBin('dartfmt'), quiet: quiet, arguments: args);
@@ -439,7 +439,7 @@ class PubGlobal {
       String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    List<String> args = ['global', 'run', scriptArg];
+    final args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
   }
@@ -448,7 +448,7 @@ class PubGlobal {
   Future<String> runAsync(String package,
       {List<String> arguments, RunOptions runOptions, String script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    List<String> args = ['global', 'run', scriptArg];
+    final args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
     return runlib.runAsync(sdkBin('pub'),
         arguments: args, runOptions: runOptions);
@@ -467,8 +467,8 @@ class PubGlobal {
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
       line = line.trim();
-      if (!line.contains(' ')) return new PubApp.global(line);
-      return new PubApp.global(line.split(' ').first);
+      if (!line.contains(' ')) return PubApp.global(line);
+      return PubApp.global(line.split(' ').first);
     }).toList();
   }
 
@@ -480,7 +480,7 @@ class PubGlobal {
 
   void _initActivated() {
     if (_activatedPackages == null) {
-      _activatedPackages = new Set();
+      _activatedPackages = <String>{};
       _activatedPackages.addAll(list().map((app) => app.packageName));
     }
   }
@@ -494,11 +494,11 @@ abstract class PubApp {
 
   /// Create a new reference to a pub application; [packageName] is the same as the
   /// package name.
-  factory PubApp.global(String packageName) => new _PubGlobalApp(packageName);
+  factory PubApp.global(String packageName) => _PubGlobalApp(packageName);
 
   /// Create a new reference to a pub application; [packageName] is the same as the
   /// package name.
-  factory PubApp.local(String packageName) => new _PubLocalApp(packageName);
+  factory PubApp.local(String packageName) => _PubLocalApp(packageName);
 
   bool get isGlobal;
 
@@ -527,6 +527,7 @@ abstract class PubApp {
   Future<String> runAsync(List<String> arguments,
       {String script, RunOptions runOptions});
 
+  @override
   String toString() => packageName;
 }
 
@@ -535,20 +536,24 @@ abstract class PubApp {
 ///     dart_coveralls 0.1.11
 ///     pub_cache 0.0.1 at path "/Users/foobar/projects/pub_cache"
 String _parseVersion(String output) {
-  List<String> tokens = output.split(' ');
+  final tokens = output.split(' ');
   return tokens.length < 2 ? null : tokens[1];
 }
 
 class _PubGlobalApp extends PubApp {
   _PubGlobalApp(String packageName) : super._(packageName);
 
+  @override
   bool get isGlobal => true;
 
+  @override
   bool get isActivated => Pub.global.isActivated(packageName);
 
+  @override
   void activate({bool force = false}) =>
       Pub.global.activate(packageName, force: force);
 
+  @override
   String run(List<String> arguments,
       {String script, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
@@ -558,6 +563,7 @@ class _PubGlobalApp extends PubApp {
         script: script, arguments: arguments, runOptions: runOptions);
   }
 
+  @override
   Future<String> runAsync(List<String> arguments,
       {String script, RunOptions runOptions}) {
     activate();
@@ -570,13 +576,17 @@ class _PubGlobalApp extends PubApp {
 class _PubLocalApp extends PubApp {
   _PubLocalApp(String packageName) : super._(packageName);
 
+  @override
   bool get isGlobal => false;
 
   // TODO: Implement: call a `Pub.isActivated/Pub.isInstalled`.
-  bool get isActivated => throw new UnsupportedError('unimplemented');
+  @override
+  bool get isActivated => throw UnsupportedError('unimplemented');
 
+  @override
   void activate({bool force = false}) {}
 
+  @override
   String run(List<String> arguments,
       {String script, RunOptions runOptions, String workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
@@ -584,6 +594,7 @@ class _PubLocalApp extends PubApp {
         script: script, arguments: arguments, runOptions: runOptions);
   }
 
+  @override
   Future<String> runAsync(List<String> arguments,
       {String script, RunOptions runOptions}) {
     return Pub.runAsync(packageName,

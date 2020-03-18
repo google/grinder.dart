@@ -7,8 +7,8 @@ library grinder.bin.grinder;
 import 'dart:io';
 
 void main(List<String> args) {
-  final String script = 'tool/grind.dart';
-  final File file = new File(script);
+  final script = 'tool/grind.dart';
+  final file = File(script);
 
   if (!file.existsSync()) {
     stderr.writeln(
@@ -16,7 +16,7 @@ void main(List<String> args) {
     exit(1);
   }
 
-  final List<String> newArgs = <String>[script]..addAll(args);
+  final newArgs = <String>[script, ...args];
   Process.start(Platform.resolvedExecutable, newArgs).then((Process process) {
     stdout.addStream(process.stdout);
     stderr.addStream(process.stderr);

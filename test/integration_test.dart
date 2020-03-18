@@ -11,17 +11,16 @@ import 'src/_common.dart';
 
 Map ranTasks = {};
 
-main() {
+void main() {
   group('integration', () {
-    bool isSetup = false;
+    var isSetup = false;
 
     setUp(() {
       if (!isSetup) {
         isSetup = true;
-        addTask(new GrinderTask('foo', taskFunction: _fooTask));
-        addTask(
-            new GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
-        addTask(new GrinderTask('baz', taskFunction: _bazTask));
+        addTask(GrinderTask('foo', taskFunction: _fooTask));
+        addTask(GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
+        addTask(GrinderTask('baz', taskFunction: _bazTask));
       }
 
       _clear();
@@ -47,13 +46,13 @@ main() {
 
 void _clear() => ranTasks.clear();
 
-_fooTask() {
+void _fooTask() {
   ranTasks['foo'] = true;
 
   log('ran _fooTask');
 }
 
-_barTask(TaskArgs args) {
+void _barTask(TaskArgs args) {
   ranTasks['bar'] = true;
   ranTasks['flag'] = args.getFlag('flag');
   ranTasks['option'] = args.getOption('option');
@@ -62,7 +61,7 @@ _barTask(TaskArgs args) {
 }
 
 // old form
-_bazTask(GrinderContext c) {
+void _bazTask(GrinderContext c) {
   ranTasks['baz'] = true;
 
   log('baz _fooTask');

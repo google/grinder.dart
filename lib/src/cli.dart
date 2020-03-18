@@ -23,10 +23,10 @@ Future runTasks(
   List<String> args, {
   bool verifyProjectRoot = false,
 }) async {
-  _args = args == null ? [] : args;
+  _args = args ?? [];
   _verifyProjectRoot = verifyProjectRoot;
 
-  final ArgParser parser = new ArgParser(
+  final parser = ArgParser(
     'grinder',
     'Dart workflows, automated.',
     () => getTaskHelp(singleton.grinder),
@@ -37,7 +37,7 @@ Future runTasks(
   parser.addFlag('version', help: 'Reports the version of this tool.');
   parser.addFlag('help', abbr: 'h', help: 'Print this usage information.');
 
-  final ArgResults results = parser.parse(args);
+  final results = parser.parse(args);
 
   if (results.getFlag('help')) {
     print(parser.getUsage());
@@ -47,9 +47,9 @@ Future runTasks(
     return null;
   } else {
     if (results.hasFlag('color')) {
-      singleton.grinder.ansi = new Ansi(results.getFlag('color'));
+      singleton.grinder.ansi = Ansi(results.getFlag('color'));
     } else {
-      singleton.grinder.ansi = new Ansi(true);
+      singleton.grinder.ansi = Ansi(true);
     }
 
     if (_verifyProjectRoot) {
@@ -59,12 +59,12 @@ Future runTasks(
       }
     }
 
-    for (TaskInvocation invocation in results.taskInvocations) {
+    for (final invocation in results.taskInvocations) {
       var task = singleton.grinder.getTask(invocation.name);
       if (task == null) fail("Error, no task found: '${invocation.name}'.");
     }
 
-    Future result = singleton.grinder.start(results.taskInvocations);
+    final result = singleton.grinder.start(results.taskInvocations);
 
     return result.catchError((e, st) {
       String message;
@@ -78,32 +78,30 @@ Future runTasks(
   }
 }
 
-typedef String DescribeFunction();
+typedef DescribeFunction = String Function();
 
 class ArgParser {
   final String name;
   final String description;
 
-  DescribeFunction _describeTasks;
+  final DescribeFunction _describeTasks;
   final List<_ArgsFlag> _flags = [];
 
-  ArgParser(this.name, this.description, DescribeFunction describeTasks) {
-    this._describeTasks = describeTasks;
-  }
+  ArgParser(this.name, this.description, DescribeFunction describeTasks)
+      : _describeTasks = describeTasks;
 
   void addFlag(String name,
       {String abbr, String help, bool negatable = false}) {
-    _flags
-        .add(new _ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
+    _flags.add(_ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
   }
 
   ArgResults parse(List<String> args) {
-    ArgResults results = new ArgResults._(args);
+    final results = ArgResults._(args);
 
     String taskInvocation;
     List<String> taskArgs;
 
-    for (String arg in args) {
+    for (final arg in args) {
       if (arg.startsWith('-')) {
         // in flags, or args for a task
         if (taskInvocation != null) {
@@ -112,8 +110,8 @@ class ArgParser {
           if (arg.startsWith('--')) {
             results._flags.add(arg.substring(2));
           } else {
-            String abbr = arg.substring(1);
-            for (_ArgsFlag flag in _flags) {
+            final abbr = arg.substring(1);
+            for (final flag in _flags) {
               if (flag.abbr == abbr) {
                 results._flags.add(flag.name);
                 break;
@@ -124,8 +122,8 @@ class ArgParser {
       } else {
         // start a new task
         if (taskInvocation != null) {
-          results.taskInvocations.add(new TaskInvocation(
-              taskInvocation, new TaskArgs(taskInvocation, taskArgs)));
+          results.taskInvocations.add(TaskInvocation(
+              taskInvocation, TaskArgs(taskInvocation, taskArgs)));
         }
 
         taskInvocation = arg;
@@ -134,8 +132,8 @@ class ArgParser {
     }
 
     if (taskInvocation != null) {
-      results.taskInvocations.add(new TaskInvocation(
-          taskInvocation, new TaskArgs(taskInvocation, taskArgs)));
+      results.taskInvocations.add(
+          TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs)));
     }
 
     return results;
@@ -184,7 +182,7 @@ class ArgResults {
   final List<String> arguments;
 
   final List<TaskInvocation> taskInvocations = [];
-  final Set<String> _flags = new Set();
+  final Set<String> _flags = <String>{};
 
   ArgResults._(this.arguments);
 
@@ -192,5 +190,6 @@ class ArgResults {
 
   bool getFlag(String name) => _flags.contains(name);
 
+  @override
   String toString() => arguments.join(' ');
 }

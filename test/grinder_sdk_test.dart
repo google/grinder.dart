@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 
 import 'src/_common.dart';
 
-main() {
+void main() {
   group('grinder.sdk', () {
     test('sdkDir', () {
       if (Platform.environment['DART_SDK'] != null) {
@@ -65,7 +65,7 @@ main() {
     });
 
     test('PubApp.global', () {
-      PubApp grinder = new PubApp.global('grinder');
+      final grinder = PubApp.global('grinder');
       expect(grinder.isGlobal, true);
       if (!grinder.isActivated) {
         grinder.activate();
@@ -74,7 +74,7 @@ main() {
     });
 
     test('PubApp.local', () {
-      PubApp grinder = new PubApp.local('grinder');
+      final grinder = PubApp.local('grinder');
       expect(grinder.isGlobal, false);
     });
   });
@@ -90,8 +90,8 @@ main() {
     });
 
     test('runAsync', () async {
-      String result = await Dart.runAsync(file.path);
-      expect(result, startsWith("hello from runAsync"));
+      final result = await Dart.runAsync(file.path);
+      expect(result, startsWith('hello from runAsync'));
     });
   });
 
@@ -110,14 +110,14 @@ main() {
     });
 
     test('dryRun', () {
-      bool wouldChange = DartFmt.dryRun(file);
+      final wouldChange = DartFmt.dryRun(file);
       expect(wouldChange, true);
     });
 
     test('format', () {
-      String originalText = file.readAsStringSync();
+      final originalText = file.readAsStringSync();
       DartFmt.format(file);
-      String newText = file.readAsStringSync();
+      final newText = file.readAsStringSync();
       expect(newText, isNot(equals(originalText)));
     });
   });

@@ -14,7 +14,7 @@ import 'task_discovery/bad_tasks.dart' as bad;
 import 'task_discovery/external_tasks.dart' as external_tasks;
 import 'task_discovery/good_tasks.dart' as good;
 
-main() {
+void main() {
   // Libs which contains annotated tasks (imported above).
   LibraryMirror goodLib;
   LibraryMirror badLib;
@@ -38,14 +38,14 @@ main() {
     goodLib = getLib(#grinder.test.task_discovery.good_tasks);
     badLib = getLib(#grinder.test.task_discovery.bad_tasks);
     externalLib = getLib(#grinder.test.task_discovery.external_tasks);
-    discoveryGood = new TaskDiscovery(goodLib);
-    discoveryBad = new TaskDiscovery(badLib);
+    discoveryGood = TaskDiscovery(goodLib);
+    discoveryBad = TaskDiscovery(badLib);
   });
 
   group('discoverDeclaration', () {
     test('should set cache', () {
-      Map<DeclarationMirror, AnnotatedTask> cache = {};
-      DeclarationMirror methodDecl = goodLib.declarations[#method];
+      final cache = <DeclarationMirror, AnnotatedTask>{};
+      final methodDecl = goodLib.declarations[#method];
       var annotated = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(annotated.isDefault, isFalse);
       expect(cache, {methodDecl: annotated});
@@ -53,8 +53,8 @@ main() {
 
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method];
-      var annotated = new AnnotatedTask(
-          new GrinderTask('method', taskFunction: nullTaskFunction), false);
+      var annotated = AnnotatedTask(
+          GrinderTask('method', taskFunction: nullTaskFunction), false);
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
@@ -74,7 +74,7 @@ main() {
           .discoverDeclaration(goodLib.declarations[#variable], {});
       var task = annotated.task;
       expect(task.name, 'variable');
-      expect(task.depends, [new TaskInvocation('method')]);
+      expect(task.depends, [TaskInvocation('method')]);
     });
 
     test('should discover task from getter', () {
@@ -82,7 +82,7 @@ main() {
           discoveryGood.discoverDeclaration(goodLib.declarations[#getter], {});
       var task = annotated.task;
       expect(task.name, 'getter');
-      expect(task.depends, [new TaskInvocation('method')]);
+      expect(task.depends, [TaskInvocation('method')]);
     });
 
     test('should dasherize camel case task method', () {
@@ -97,7 +97,7 @@ main() {
       expect(annotated.isDefault, isTrue);
       var task = annotated.task;
       expect(task.name, 'def');
-      expect(task.depends, [new TaskInvocation('method')]);
+      expect(task.depends, [TaskInvocation('method')]);
     });
 
     test('should return null for non-Task-annotated declarations', () {
@@ -107,42 +107,43 @@ main() {
     });
 
     test('should throw when variable task is null', () {
-      f() =>
+      AnnotatedTask f() =>
           discoveryBad.discoverDeclaration(badLib.declarations[#nullTask], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when task getter returns null', () {
-      f() => discoveryBad
+      AnnotatedTask f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#nullReturningGetter], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when task is wront type of declaration', () {
-      f() => discoveryBad.discoverDeclaration(badLib.declarations[#Class], {});
+      AnnotatedTask f() =>
+          discoveryBad.discoverDeclaration(badLib.declarations[#Class], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when depending on non-exported task', () {
-      f() => discoveryBad
+      AnnotatedTask f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsNonExported], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when recursively depending on non-exported task', () {
-      f() => discoveryBad.discoverDeclaration(
+      AnnotatedTask f() => discoveryBad.discoverDeclaration(
           badLib.declarations[#recursivelyDependsNonExported], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when depending on invalid task', () {
-      f() => discoveryBad
+      AnnotatedTask f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsNonTask], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when annotated with Depends but not Task', () {
-      f() => discoveryBad
+      AnnotatedTask f() => discoveryBad
           .discoverDeclaration(badLib.declarations[#dependsWithoutTask], {});
       expect(f, throwsA(isA<GrinderException>()));
     });
