@@ -4,9 +4,6 @@ version: 0.8.5
 description: Grinder is a task runner for Dart, helping to define and automate common project workflows.
 
 homepage: https://github.com/google/grinder.dart
-authors:
-- Devon Carew <devoncarew@google.com>
-- Sean Eagan <seaneagan1@gmail.com>
 
 environment:
   sdk: '>=2.3.0 <3.0.0'
