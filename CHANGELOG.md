@@ -1,7 +1,10 @@
 # grinder.dart changes
 
+## 0.8.5
+- Broaden the `cli_util` dependency to be compatible with version 0.2.0.
+
 ## 0.8.4
-- Update the code to be `package:pedantic` v1.9.0 compliant
+- Update the code to be `package:pedantic` v1.9.0 compliant.
 
 ## 0.8.3+1
 - Mark `fail()` and `GrinderContext.fail()` as `@alwaysThrows`.

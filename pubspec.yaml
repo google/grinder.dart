@@ -1,6 +1,6 @@
 name: grinder
 # This version must be updated in tandem with the lib/src/cli.dart version.
-version: 0.8.4
+version: 0.8.5
 description: Grinder is a task runner for Dart, helping to define and automate common project workflows.
 
 homepage: https://github.com/google/grinder.dart
@@ -12,7 +12,7 @@ environment:
   sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
-  cli_util: ^0.1.2
+  cli_util: '>=0.1.2 <3.0.0'
   glob: ^1.0.0
   meta: ^1.1.7
   path: ^1.0.0
