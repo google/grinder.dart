@@ -8,7 +8,6 @@
 /// [README]: https://pub.dartlang.org/packages/grinder
 library grinder;
 
-import 'dart:async';
 import 'dart:mirrors';
 
 import 'src/cli.dart';
