@@ -37,7 +37,10 @@ class MockGrinderContext implements GrinderContext {
   void log(String message) => logBuffer.write('${message}\n');
 
   @override
-  void fail(String message) => failBuffer.write('${message}\n');
+  Never fail(String message) {
+    failBuffer.write('${message}\n');
+    throw GrinderException(message);
+  }
 
   Future runZoned(Function f) {
     var result = zonedContext.withValue(this, f);
