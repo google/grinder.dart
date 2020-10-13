@@ -9,7 +9,7 @@ void main(args) => grind(args);
 
 @Task()
 Future<String> analyze() =>
-    PubApp.global('tuneup').runAsync(['check', '--ignore-infos']);
+    Dart.runAsync('analyze', arguments: ['--fatal-infos']);
 
 @Task()
 Future<String> test() {
