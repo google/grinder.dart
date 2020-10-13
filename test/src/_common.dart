@@ -37,7 +37,7 @@ class MockGrinderContext implements GrinderContext {
   void log(String message) => logBuffer.write('${message}\n');
 
   @override
-  Never fail(String message) {
+  Null fail(String message) {
     failBuffer.write('${message}\n');
     throw GrinderException(message);
   }
