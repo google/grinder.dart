@@ -23,7 +23,7 @@ class _NoopContext implements GrinderContext {
   TaskInvocation get invocation => null;
 
   @override
-  Never fail(String message) {
+  Null fail(String message) {
     stderr.writeln(message);
     exit(1);
   }
