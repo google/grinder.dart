@@ -6,7 +6,7 @@ description: Grinder is a task runner for Dart, helping to define and automate c
 homepage: https://github.com/google/grinder.dart
 
 environment:
-  sdk: '>=2.8.1 <3.0.0'
+  sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
   cli_util: '>=0.1.2 <3.0.0'
