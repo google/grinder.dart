@@ -1,5 +1,8 @@
 # grinder.dart changes
 
+## 0.8.6
+- Declare a `Never` return type for `fail()` and `GrinderContext.fail()`.
+
 ## 0.8.5
 - Broaden the `cli_util` dependency to be compatible with version 0.2.0.
 
