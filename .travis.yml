@@ -1,6 +1,7 @@
 language: dart
 dart:
   - dev
+  - stable
 script:
   - dart tool/grind.dart
 
