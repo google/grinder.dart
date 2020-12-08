@@ -9,7 +9,7 @@
 /// Task dependencies can be defined with a co-located [Depends] annotation.
 class Task {
   /// See [GrinderTask.description].
-  final String description;
+  final String? description;
 
   const Task([this.description]);
 }
@@ -50,5 +50,5 @@ class Depends {
 ///
 /// Use this instead of [Task] when defining the default task.
 class DefaultTask extends Task {
-  const DefaultTask([String description]) : super(description);
+  const DefaultTask([String? description]) : super(description);
 }

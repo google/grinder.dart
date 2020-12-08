@@ -8,13 +8,15 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:mirrors';
 
+import 'package:collection/collection.dart';
+
 import 'package:path/path.dart' as path;
 
 class ResettableTimer implements Timer {
   final Duration duration;
-  final Function callback;
+  final void Function() callback;
 
-  Timer _timer;
+  late Timer _timer;
 
   ResettableTimer(this.duration, this.callback) {
     _timer = Timer(duration, callback);
@@ -46,7 +48,7 @@ String camelToDashes(String input) {
 
 // Upper-case or lower-case the first charater of a String.
 String withCapitalization(String s, bool capitalized) {
-  if (s.isEmpty || capitalized == null) return s;
+  if (s.isEmpty) return s;
   var firstLetter = s[0];
   firstLetter =
       capitalized ? firstLetter.toUpperCase() : firstLetter.toLowerCase();
@@ -66,15 +68,21 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
   resolvedDeclarations.addAll(library.declarations);
 
   library.libraryDependencies.forEach((LibraryDependencyMirror dependency) {
-    final combinators = dependency.combinators.cast<CombinatorMirror>();
-
     if (dependency.isExport) {
+      var library = dependency.targetLibrary;
+
+      // Ignore deferred libraries that aren't loaded yet.
+      if (library == null) return;
+
       final shown = <Symbol, DeclarationMirror>{};
       final hidden = <Symbol>[];
-      combinators.forEach((CombinatorMirror combinator) {
+      dependency.combinators.forEach((CombinatorMirror combinator) {
         if (combinator.isShow) {
           combinator.identifiers.forEach((Symbol id) {
-            shown[id] = dependency.targetLibrary.declarations[id];
+            // It's valid for an export to show names that don't exist. If it
+            // does, ignore those `show`s.
+            var declaration = library.declarations[id];
+            if (declaration != null) shown[id] = declaration;
           });
         }
         if (combinator.isHide) {
@@ -82,7 +90,7 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
         }
       });
       if (shown.isEmpty) {
-        shown.addAll(dependency.targetLibrary.declarations);
+        shown.addAll(library.declarations);
         hidden.forEach(shown.remove);
       }
       resolvedDeclarations.addAll(shown);
@@ -92,11 +100,10 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
   return UnmodifiableMapView<Symbol, DeclarationMirror>(resolvedDeclarations);
 }
 
-dynamic getFirstMatchingAnnotation(
-        DeclarationMirror decl, bool Function(dynamic) test) =>
-    decl.metadata
-        .map((InstanceMirror mirror) => mirror.reflectee)
-        .firstWhere(test, orElse: () => null);
+T? getFirstMatchingAnnotation<T>(DeclarationMirror decl) => decl.metadata
+    .map((InstanceMirror mirror) => mirror.reflectee)
+    .whereType<T>()
+    .firstOrNull;
 
 /// A simple way to expose a default value that can be overridden within zones.
 class ZonedValue<T> {

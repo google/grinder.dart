@@ -14,20 +14,21 @@ final String sep = io.Platform.pathSeparator;
 const runScriptName = 'run_script.dart';
 final runScriptPath = 'test${sep}src';
 final runScript = '$runScriptPath$sep$runScriptName';
+final pathVar = io.Platform.environment['PATH'] ?? '';
 
 void main() {
   group('run', () {
     test('should pass arguments', () {
       const arguments = ['a', 'b'];
 
-      final output =
-          run('dart', arguments: [runScript, ...arguments], quiet: true);
+      final output = run(io.Platform.executable,
+          arguments: [runScript, ...arguments], quiet: true);
       Map json = jsonDecode(output);
       expect(json['arguments'], orderedEquals(arguments));
     });
 
     test('should use workingDirectory from RunOptions', () {
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScriptName],
           runOptions: RunOptions(workingDirectory: runScriptPath),
           quiet: true);
@@ -36,7 +37,7 @@ void main() {
     });
 
     test('should use workingDirectory form workingDirectory parameter', () {
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScriptName],
           workingDirectory: runScriptPath,
           quiet: true);
@@ -47,7 +48,7 @@ void main() {
     test(
         'should also use workingDirectory parameter when runOptions are passed',
         () {
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScriptName],
           workingDirectory: runScriptPath,
           runOptions: RunOptions(),
@@ -63,7 +64,7 @@ void main() {
       assert((() => isCheckedMode = true)());
       if (isCheckedMode) {
         expect(
-            () => run('dart',
+            () => run(io.Platform.executable,
                 arguments: [runScriptName],
                 workingDirectory: runScriptPath,
                 runOptions: RunOptions(workingDirectory: runScriptPath)),
@@ -74,11 +75,11 @@ void main() {
     test('should pass environment', () {
       const environment = {'TESTENV1': 'value1', 'TESTENV2': 'value2'};
 
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScript],
           runOptions: RunOptions(environment: environment),
           quiet: true);
-      Map json = jsonDecode(output);
+      final json = jsonDecode(output) as Map;
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
@@ -88,10 +89,10 @@ void main() {
       final environment = {
         'TESTENV1': 'value1',
         'TESTENV2': 'value2',
-        'PATH': io.Platform.environment['PATH']
+        'PATH': pathVar
       };
 
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScript],
           runOptions: RunOptions(
               environment: environment, includeParentEnvironment: false),
@@ -108,13 +109,13 @@ void main() {
     });
 
     test('should pass runInShell setting', () {
-      final environment = {
+      final environment = <String, String>{
         'TESTENV1': 'value1',
         'TESTENV2': 'value2',
-        'PATH': io.Platform.environment['PATH']
+        'PATH': pathVar
       };
 
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScript],
           runOptions: RunOptions(
               environment: environment,
@@ -131,7 +132,7 @@ void main() {
     });
 
     test('should use stdoutEncoding', () {
-      final output = run('dart',
+      final output = run(io.Platform.executable,
           arguments: [runScript],
           runOptions: RunOptions(stdoutEncoding: const DummyEncoding()),
           quiet: true);
@@ -142,7 +143,7 @@ void main() {
       const environment = {'USE_EXIT_CODE': '100'};
 
       expect(
-          () => run('dart',
+          () => run(io.Platform.executable,
               arguments: [runScript],
               runOptions: RunOptions(
                   environment: environment,
@@ -162,10 +163,11 @@ class DummyEncoding extends Encoding {
   Converter<List<int>, String> get decoder => const DummyDecoder();
 
   @override
-  Converter<String, List<int>> get encoder => null;
+  Converter<String, List<int>> get encoder =>
+      throw UnsupportedError('DummyEncoding.encoder is not supported');
 
   @override
-  String get name => null;
+  String get name => 'dummy';
 }
 
 /// Decoder for [DummyEncoding].
@@ -175,7 +177,7 @@ class DummyDecoder extends Converter<List<int>, String> {
   const DummyDecoder();
 
   @override
-  String convert(List<int> codeUnits, [int start = 0, int end]) {
+  String convert(List<int> codeUnits, [int start = 0, int? end]) {
     return dummyDecoderOutput;
   }
 }

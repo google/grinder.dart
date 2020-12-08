@@ -6,6 +6,7 @@ library grinder.src.grinder;
 import 'dart:async';
 
 import 'package:cli_util/cli_logging.dart' show Ansi;
+import 'package:collection/collection.dart';
 
 import 'grinder_context.dart';
 import 'grinder_exception.dart';
@@ -19,16 +20,16 @@ import 'task_invocation.dart';
 void addTask(GrinderTask task) => grinder.addTask(task);
 
 /// The default task run when no tasks are specified on the command line.
-GrinderTask get defaultTask => grinder.defaultTask;
+GrinderTask? get defaultTask => grinder.defaultTask;
 
-set defaultTask(GrinderTask v) {
+set defaultTask(GrinderTask? v) {
   grinder.defaultTask = v;
 }
 
 /// A class representing a running instance of a Grinder.
 class Grinder {
   final List<GrinderTask> _tasks = [];
-  Map<GrinderTask, List> _taskDeps;
+  Map<GrinderTask, List<TaskInvocation>>? _taskDeps;
   final List<TaskInvocation> _invocationOrder = [];
   final Set<String> _calcedTaskNameSet = <String>{};
 
@@ -41,9 +42,13 @@ class Grinder {
   void addTask(GrinderTask task) => _tasks.add(task);
 
   /// The default task run when no tasks are specified on the command line.
-  GrinderTask get defaultTask => _defaultTask;
+  GrinderTask? get defaultTask => _defaultTask;
 
-  set defaultTask(GrinderTask v) {
+  set defaultTask(GrinderTask? v) {
+    // We can't make the argument non-nullable because then it's not a supertype
+    // of the corresponding getter's return type.
+    if (v == null) throw ArgumentError('defaultTask may not be set to null.');
+
     if (_defaultTask != null) {
       throw GrinderException('Cannot overwrite existing default task '
           '$_defaultTask with task $v.');
@@ -55,20 +60,20 @@ class Grinder {
   /// Return whether this grinder instance has a default task set.
   bool get hasDefaultTask => _defaultTask != null;
 
-  GrinderTask _defaultTask;
+  GrinderTask? _defaultTask;
 
   /// Get the list of all the Grinder tasks.
   List<GrinderTask> get tasks => _tasks;
 
   /// Get the task with the given name. Returns `null` if none found.
-  GrinderTask getTask(String name) =>
-      _tasks.firstWhere((t) => t.name == name, orElse: () => null);
+  GrinderTask? getTask(String name) =>
+      _tasks.firstWhereOrNull((t) => t.name == name);
 
   /// Return the calculated build order of the task invocations for this run.
   List<TaskInvocation> getBuildOrder() => _invocationOrder;
 
   void _postOrder(TaskInvocation invocation) {
-    var task = getTask(invocation.name);
+    var task = getTask(invocation.name)!;
     for (var dep in task.depends) {
       _postOrder(dep);
     }
@@ -111,6 +116,7 @@ class Grinder {
     final startTime = DateTime.now();
 
     if (invocations.isEmpty) {
+      var defaultTask = this.defaultTask;
       if (defaultTask != null) {
         invocations = [TaskInvocation(defaultTask.name)];
       } else if (!dontRun) {
@@ -180,7 +186,21 @@ class Grinder {
       task.depends;
 
   /// Given a task, return all of its transitive dependencies.
-  List<TaskInvocation> getAllDependencies(GrinderTask task) => _taskDeps[task];
+  List<TaskInvocation> getAllDependencies(GrinderTask task) {
+    var taskDeps = _taskDeps;
+    if (taskDeps == null) {
+      throw StateError(
+          'Grinder.getAllDependencies() may only be called after grind().');
+    }
+
+    var dependencies = taskDeps[task];
+    if (dependencies == null) {
+      throw ArgumentError(
+          'Task "$task" isn\'t associated with this Grinder instance.');
+    }
+
+    return dependencies;
+  }
 
   /// Log the given informational message.
   void log(String message) => print(message);
@@ -188,7 +208,7 @@ class Grinder {
   Future _invokeTask(TaskInvocation invocation) {
     log('${ansi.emphasized(invocation.toString())}');
 
-    var task = getTask(invocation.name);
+    var task = getTask(invocation.name)!;
     final context = GrinderContext(this, task, invocation);
     dynamic result = task.execute(context, invocation.arguments);
 
@@ -196,16 +216,16 @@ class Grinder {
       result = Future.value(result);
     }
 
-    return (result as Future).then((_) {
+    return result.then((_) {
       log('');
     });
   }
 
   void _calculateAllDeps() {
-    _taskDeps = {};
+    var taskDeps = _taskDeps = {};
 
     for (final task in _tasks) {
-      _taskDeps[task] = _calcDependencies(task, {}).toList();
+      taskDeps[task] = _calcDependencies(task, {}).toList();
     }
   }
 
@@ -215,7 +235,7 @@ class Grinder {
       final contains = foundDeps.contains(dep);
       foundDeps.add(dep);
       if (!contains) {
-        _calcDependencies(getTask(dep.name), foundDeps);
+        _calcDependencies(getTask(dep.name)!, foundDeps);
       }
     }
     return foundDeps;

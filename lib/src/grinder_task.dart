@@ -22,14 +22,14 @@ class GrinderTask {
   // TODO: document how to pass in args
 
   /// The function to execute when starting this task.
-  final Function taskFunction;
+  final Function? taskFunction;
 
   /// The list of task invocation dependencies; task invocations that must run
   /// before this task is invoked.
   final List<TaskInvocation> depends;
 
   /// An optional description of the task.
-  final String description;
+  final String? description;
 
   /// Create a new [GrinderTask].
   ///
@@ -50,17 +50,20 @@ class GrinderTask {
 
   /// This method is invoked when the task is started. If a task was created
   /// with a function, that function will be invoked by this method.
-  dynamic execute(GrinderContext _context, TaskArgs args) {
+  dynamic execute(GrinderContext _context, [TaskArgs? args]) {
+    var taskFunction = this.taskFunction;
     if (taskFunction == null) return null;
 
     if (taskFunction is TaskFunction) {
-      return zonedContext.withValue(_context, () => taskFunction(args));
+      return zonedContext.withValue(
+          _context, () => taskFunction(args ?? TaskArgs(name, [])));
     } else if (taskFunction is _OldTaskFunction) {
       _context.log(
           "warning: task definitions no longer require an explicit 'GrinderContext' parameter");
       return zonedContext.withValue(_context, () => taskFunction(_context));
     } else {
-      return zonedContext.withValue(_context, taskFunction);
+      return zonedContext.withValue(
+          _context, taskFunction as dynamic Function());
     }
   }
 

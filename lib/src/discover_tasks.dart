@@ -5,6 +5,8 @@ library grinder.src.discover_tasks;
 
 import 'dart:mirrors';
 
+import 'package:collection/collection.dart';
+
 import '../grinder.dart';
 import 'utils.dart';
 
@@ -23,13 +25,8 @@ void discoverTasks(Grinder grinder, LibraryMirror buildLibrary) {
 class TaskDiscovery {
   final LibraryMirror library;
 
-  Map<Symbol, DeclarationMirror> get resolvedDeclarations {
-    _resolvedDeclarations ??= resolveExportedDeclarations(library);
-
-    return _resolvedDeclarations;
-  }
-
-  Map<Symbol, DeclarationMirror> _resolvedDeclarations;
+  late final Map<Symbol, DeclarationMirror> resolvedDeclarations =
+    resolveExportedDeclarations(library);
 
   TaskDiscovery(this.library);
 
@@ -38,23 +35,27 @@ class TaskDiscovery {
     final cache = <DeclarationMirror, AnnotatedTask>{};
     return resolvedDeclarations.values
         .map((decl) => discoverDeclaration(decl, cache))
-        .where((task) => task != null);
+        .whereNotNull();
   }
 
   /// Extract a task from a [Task]-annotated [decl].
   ///
   /// Returns `null` if [decl] is not [Task]-annotated.
-  AnnotatedTask discoverDeclaration(
+  AnnotatedTask? discoverDeclaration(
       DeclarationMirror decl, Map<DeclarationMirror, AnnotatedTask> cache) {
     if (cache.containsKey(decl)) {
       return cache[decl];
     }
 
-    var owner = decl.owner as LibraryMirror;
+    var owner = decl.owner;
+    if (owner is! LibraryMirror) {
+      throw ArgumentError.value(decl, 'decl',
+          'discoverDeclaration() may only be called on a top-level method.');
+    }
+
     var methodName = MirrorSystem.getName(decl.simpleName);
-    Task annotation = getFirstMatchingAnnotation(decl, (a) => a is Task);
-    Depends dependsAnnotation =
-        getFirstMatchingAnnotation(decl, (a) => a is Depends);
+    var annotation = getFirstMatchingAnnotation<Task>(decl);
+    var dependsAnnotation = getFirstMatchingAnnotation<Depends>(decl);
 
     if (annotation == null && dependsAnnotation != null) {
       throw GrinderException(
@@ -63,7 +64,7 @@ class TaskDiscovery {
     }
 
     if (annotation != null) {
-      Function taskFunction;
+      Function? taskFunction;
 
       if (decl is VariableMirror || (decl is MethodMirror && decl.isGetter)) {
         taskFunction = owner.getField(decl.simpleName).reflectee;
@@ -103,7 +104,7 @@ class TaskDiscovery {
             if (!resolvedDeclarations.values
                 .any((decl) => declarationsEqual(decl, depMethod))) {
               var depName = annotatedMethodTask.task.name;
-              var depLib = MirrorSystem.getName(depMethod.owner.qualifiedName);
+              var depLib = MirrorSystem.getName(depMethod.owner!.qualifiedName);
               throw GrinderException(
                   'Task `$name` references dependency task `$depName` from '
                   'library `$depLib` which this build file does not export.');

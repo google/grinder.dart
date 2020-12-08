@@ -19,12 +19,11 @@ import 'run_utils.dart';
 /// All other optional parameters are forwarded to [Process.runSync].
 String run(String executable,
     {List<String> arguments = const [],
-    RunOptions runOptions,
+    RunOptions? runOptions,
     bool quiet = false,
-    String workingDirectory}) {
+    String? workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("${executable} ${arguments.join(' ')}");
-  runOptions ??= RunOptions();
 
   final result = Process.runSync(executable, arguments,
       workingDirectory: runOptions.workingDirectory,
@@ -34,22 +33,17 @@ String run(String executable,
       stdoutEncoding: runOptions.stdoutEncoding,
       stderrEncoding: runOptions.stderrEncoding);
 
-  if (!quiet) {
-    if (result.stdout != null && result.stdout.isNotEmpty) {
-      log(result.stdout.trim());
-    }
-  }
+  var stdout = result.stdout as String;
+  var stderr = result.stderr as String;
 
-  if (result.stderr != null && result.stderr.isNotEmpty) {
-    log(result.stderr);
-  }
+  if (!quiet && stdout.isNotEmpty) log(stdout.trim());
+  if (stderr.isNotEmpty) log(result.stderr);
 
   if (result.exitCode != 0) {
-    throw ProcessException._(
-        executable, result.exitCode, result.stdout, result.stderr);
+    throw ProcessException._(executable, result.exitCode, stdout, stderr);
   }
 
-  return result.stdout;
+  return stdout;
 }
 
 /// Synchronously run an [executable].
@@ -62,9 +56,9 @@ String run(String executable,
 @Deprecated('Use `run` instead.')
 String runProcess(String executable,
     {List<String> arguments = const [],
-    RunOptions runOptions,
+    RunOptions? runOptions,
     bool quiet = false,
-    String workingDirectory}) {
+    String? workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return run(executable,
       arguments: arguments, runOptions: runOptions, quiet: quiet);
@@ -80,20 +74,18 @@ String runProcess(String executable,
 /// All other optional parameters are forwarded to [Process.start].
 Future<String> runAsync(String executable,
     {List<String> arguments = const [],
-    RunOptions runOptions,
+    RunOptions? runOptions,
     bool quiet = false,
-    String workingDirectory}) {
+    String? workingDirectory}) async {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
-  runOptions ??= RunOptions();
   final stdout = <int>[], stderr = <int>[];
 
-  return Process.start(executable, arguments,
+  var process = await Process.start(executable, arguments,
           workingDirectory: runOptions.workingDirectory,
           environment: runOptions.environment,
           includeParentEnvironment: runOptions.includeParentEnvironment,
-          runInShell: runOptions.runInShell)
-      .then((Process process) {
+          runInShell: runOptions.runInShell);
     // Handle stdout.
     var broadcastStdout = process.stdout.asBroadcastStream();
     var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
@@ -108,8 +100,8 @@ Future<String> runAsync(String executable,
     broadcastStderr.listen((List<int> data) => stderr.addAll(data));
     stderrLines.listen(logStderr);
 
-    var encoding = runOptions.stdoutEncoding ?? systemEncoding;
-    return process.exitCode.then((int code) {
+    var encoding = runOptions.stdoutEncoding;
+  var code = await process.exitCode;
       var stdoutString = encoding.decode(stdout);
 
       if (code != 0) {
@@ -118,8 +110,6 @@ Future<String> runAsync(String executable,
       }
 
       return stdoutString;
-    });
-  });
 }
 
 /// Asynchronously run an [executable].
@@ -133,8 +123,8 @@ Future<String> runAsync(String executable,
 @Deprecated('Use `runAsync` instead.')
 Future<String> runProcessAsync(String executable,
     {List<String> arguments = const [],
-    RunOptions runOptions,
-    String workingDirectory,
+    RunOptions? runOptions,
+    String? workingDirectory,
     bool quiet = false}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return runAsync(executable,
@@ -157,7 +147,7 @@ class ProcessException implements Exception {
 /// Arguments passed to [Process.run] or [Process.start].
 /// See [Process.run] for more details.
 class RunOptions {
-  final String workingDirectory;
+  final String? workingDirectory;
   final Map<String, String> environment;
   final bool includeParentEnvironment;
   final bool runInShell;
@@ -166,30 +156,27 @@ class RunOptions {
 
   RunOptions(
       {this.workingDirectory,
-      this.environment,
+      Map<String, String>? environment,
       this.includeParentEnvironment = true,
       this.runInShell = false,
       this.stdoutEncoding = systemEncoding,
-      this.stderrEncoding = systemEncoding});
+      this.stderrEncoding = systemEncoding})
+      : environment = environment ?? {};
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.
   RunOptions clone(
-      {String workingDirectory,
-      Map<String, String> environment,
-      bool includeParentEnvironment,
-      bool runInShell,
-      Encoding stdoutEncoding,
-      Encoding stderrEncoding}) {
-    Map<String, String> env;
-    if (environment != null) {
-      env = Map.from(environment);
-    } else {
-      env = this.environment != null ? Map.from(this.environment) : {};
-    }
+      {String? workingDirectory,
+      Map<String, String>? environment,
+      bool? includeParentEnvironment,
+      bool? runInShell,
+      Encoding? stdoutEncoding,
+      Encoding? stderrEncoding}) {
     return RunOptions(
         workingDirectory: workingDirectory ?? this.workingDirectory,
-        environment: env,
+        environment: environment != null
+            ? Map.from(environment)
+            : Map.from(this.environment),
         includeParentEnvironment:
             includeParentEnvironment ?? this.includeParentEnvironment,
         runInShell: runInShell ?? this.runInShell,

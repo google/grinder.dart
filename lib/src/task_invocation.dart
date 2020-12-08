@@ -9,11 +9,10 @@ library grinder.src.task_invocation;
 /// it.
 class TaskInvocation {
   final String name;
-  TaskArgs _arguments;
+  final TaskArgs _arguments;
 
-  TaskInvocation(this.name, [TaskArgs arguments]) {
-    _arguments = arguments ?? TaskArgs(name, const []);
-  }
+  TaskInvocation(this.name, [TaskArgs? arguments])
+      : _arguments = arguments ?? TaskArgs(name, const []);
 
   TaskArgs get arguments => _arguments;
 
@@ -53,11 +52,11 @@ class TaskArgs {
 
   bool hasFlag(String name) => _flags.containsKey(name);
 
-  bool getFlag(String name) => hasFlag(name) ? _flags[name] : false;
+  bool getFlag(String name) => _flags[name] ?? false;
 
   bool hasOption(String name) => _options.containsKey(name);
 
-  String getOption(String name) => _options[name];
+  String? getOption(String name) => _options[name];
 
   void _parse() {
     for (var arg in arguments) {
@@ -92,7 +91,6 @@ class TaskArgs {
 
 bool _listEquals(List elements1, List elements2) {
   if (identical(elements1, elements2)) return true;
-  if (elements1 == null || elements2 == null) return false;
   if (elements1.length != elements2.length) return false;
   var it1 = elements1.iterator;
   var it2 = elements2.iterator;

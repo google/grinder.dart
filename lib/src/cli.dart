@@ -15,16 +15,19 @@ import 'singleton.dart' as singleton;
 // This version must be updated in tandem with the pubspec version.
 const String appVersion = '0.8.5';
 
-List<String> grinderArgs() => _args;
-List<String> _args;
-bool _verifyProjectRoot;
+List<String> grinderArgs() {
+  var args = _args;
+  if (args == null) fail('grinderArgs() may only be called after grind().');
+  return args;
+}
+
+List<String>? _args;
 
 Future runTasks(
   List<String> args, {
   bool verifyProjectRoot = false,
 }) async {
-  _args = args ?? [];
-  _verifyProjectRoot = verifyProjectRoot;
+  _args = args;
 
   final parser = ArgParser(
     'grinder',
@@ -52,7 +55,7 @@ Future runTasks(
       singleton.grinder.ansi = Ansi(true);
     }
 
-    if (_verifyProjectRoot) {
+    if (verifyProjectRoot) {
       // Verify that we're running from the project root.
       if (!getFile('pubspec.yaml').existsSync()) {
         fail('This script must be run from the project root.');
@@ -67,13 +70,7 @@ Future runTasks(
     final result = singleton.grinder.start(results.taskInvocations);
 
     return result.catchError((e, st) {
-      String message;
-      if (st != null) {
-        message = '\n${e}\n${cleanupStackTrace(st)}';
-      } else {
-        message = '\n${e}';
-      }
-      fail(message);
+      fail('\n${e}\n${cleanupStackTrace(st)}');
     });
   }
 }
@@ -91,21 +88,25 @@ class ArgParser {
       : _describeTasks = describeTasks;
 
   void addFlag(String name,
-      {String abbr, String help, bool negatable = false}) {
+      {String? abbr, String? help, bool negatable = false}) {
     _flags.add(_ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
   }
 
   ArgResults parse(List<String> args) {
     final results = ArgResults._(args);
 
-    String taskInvocation;
-    List<String> taskArgs;
+    String? taskInvocation;
+    List<String>? taskArgs;
 
     for (final arg in args) {
       if (arg.startsWith('-')) {
         // in flags, or args for a task
         if (taskInvocation != null) {
-          taskArgs.add(arg);
+          if (taskArgs == null) {
+            fail('Arg "$arg" must come after a task name.');
+          } else {
+            taskArgs.add(arg);
+          }
         } else {
           if (arg.startsWith('--')) {
             results._flags.add(arg.substring(2));
@@ -123,7 +124,7 @@ class ArgParser {
         // start a new task
         if (taskInvocation != null) {
           results.taskInvocations.add(TaskInvocation(
-              taskInvocation, TaskArgs(taskInvocation, taskArgs)));
+              taskInvocation, TaskArgs(taskInvocation, taskArgs!)));
         }
 
         taskInvocation = arg;
@@ -133,7 +134,7 @@ class ArgParser {
 
     if (taskInvocation != null) {
       results.taskInvocations.add(
-          TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs)));
+          TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs!)));
     }
 
     return results;
@@ -162,11 +163,11 @@ ${_describeTasks()}
 
 class _ArgsFlag {
   final String name;
-  final String abbr;
-  final String help;
+  final String? abbr;
+  final String? help;
   final bool negatable;
 
-  _ArgsFlag(this.name, {this.abbr, this.help, this.negatable});
+  _ArgsFlag(this.name, {this.abbr, this.help, this.negatable = false});
 
   String get label {
     if (negatable) {

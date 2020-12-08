@@ -27,7 +27,7 @@ final String _sep = Platform.pathSeparator;
 class FileSet {
   List<File> files = [];
 
-  FileSet.fromDir(Directory dir, {String pattern, bool recurse = false}) {
+  FileSet.fromDir(Directory dir, {String? pattern, bool recurse = false}) {
     final glob = (pattern == null ? null : Glob(pattern));
 
     if (dir.existsSync()) {
@@ -73,7 +73,7 @@ class FileSet {
   // TODO: have a refresh method?
 
   static void _collect(
-      List<File> files, Directory dir, Glob glob, bool recurse) {
+      List<File> files, Directory dir, Glob? glob, bool recurse) {
     for (final entity in dir.listSync(recursive: false, followLinks: false)) {
       final name = fileName(entity);
 
@@ -97,7 +97,7 @@ class FilePath {
   /// Creates a temporary directory in the system temp directory. See
   /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
   /// missing or null, the empty string is used for [prefix].
-  static FilePath createSystemTemp([String prefix]) {
+  static FilePath createSystemTemp([String? prefix]) {
     return FilePath(Directory.systemTemp.createTempSync(prefix));
   }
 
@@ -112,14 +112,14 @@ class FilePath {
   /// use for absolute ones.
   FilePath(entityOrString) : _path = _coerce(entityOrString);
 
-  String get name {
+  String? get name {
     final index = _path.lastIndexOf(_sep);
     return index != -1 ? _path.substring(index + 1) : null;
   }
 
   String get path => _path;
 
-  FileSystemEntity get entity {
+  FileSystemEntity? get entity {
     final type = FileSystemEntity.typeSync(_path);
 
     if (type == FileSystemEntityType.file) {
@@ -143,13 +143,13 @@ class FilePath {
   /// root directory.
   ///
   /// See [FileSystemEntity.parent].
-  FilePath get parent {
+  FilePath? get parent {
     final index = _path.lastIndexOf(_sep);
 
     // Do string manipulation if there are path separators; otherwise, use the
     // file system entity information.
     if (index == 0 || index == -1) {
-      return entity == null ? null : FilePath(entity.parent);
+      return entity == null ? null : FilePath(entity!.parent);
     } else {
       return FilePath(_path.substring(0, index));
     }
@@ -184,7 +184,10 @@ class FilePath {
   }
 
   /// Delete the entity at the path.
-  void delete() => _deleteImpl(entity);
+  void delete() {
+    var entity = this.entity;
+    if (entity != null) _deleteImpl(entity);
+  }
 
   /// Synchronously create the file. See also [File.createSync].
   ///
@@ -225,15 +228,15 @@ class FilePath {
   /// Join the given path elements to this path, and return a new [FilePath] object.
   FilePath join(
       [arg0,
-      String arg1,
-      String arg2,
-      String arg3,
-      String arg4,
-      String arg5,
-      String arg6,
-      String arg7,
-      String arg8,
-      String arg9]) {
+      String? arg1,
+      String? arg2,
+      String? arg3,
+      String? arg4,
+      String? arg5,
+      String? arg6,
+      String? arg7,
+      String? arg8,
+      String? arg9]) {
     var paths = [path];
 
     if (arg0 is List<String>) {
@@ -292,14 +295,14 @@ String fileName(FileSystemEntity entity) {
 
 /// Return the file's extension without the period. This will return `null` if
 /// there is no extension.
-String fileExt(FileSystemEntity entity) {
+String? fileExt(FileSystemEntity entity) {
   final name = fileName(entity);
   final index = name.indexOf('.');
   return index != -1 && index < name.length ? name.substring(index + 1) : null;
 }
 
 /// Return the first n - 1 segments of the file path.
-String baseName(FileSystemEntity entity) {
+String? baseName(FileSystemEntity entity) {
   final name = entity.path;
   final index = name.lastIndexOf(_sep);
   return (index != -1 ? name.substring(0, index) : null);
@@ -336,13 +339,12 @@ Directory getDir(String path) {
 }
 
 void copy(FileSystemEntity entity, Directory destDir,
-    [GrinderContext context]) {
+    [GrinderContext? context]) {
   log('copying ${entity.path} to ${destDir.path}');
-  return _copyImpl(entity, destDir, context);
+  return _copyImpl(entity, destDir);
 }
 
-void _copyImpl(FileSystemEntity entity, Directory destDir,
-    [GrinderContext context]) {
+void _copyImpl(FileSystemEntity? entity, Directory destDir) {
   if (entity is Directory) {
     for (final entity in entity.listSync()) {
       final name = fileName(entity);
@@ -377,21 +379,21 @@ void _deleteImpl(FileSystemEntity entity) {
 }
 
 /// Prefer using [copy].
-void copyFile(File srcFile, Directory destDir, [GrinderContext context]) {
+void copyFile(File srcFile, Directory destDir, [GrinderContext? context]) {
   copy(srcFile, destDir, context);
 }
 
 /// Prefer using [copy].
 void copyDirectory(Directory srcDir, Directory destDir,
-    [GrinderContext context]) {
+    [GrinderContext? context]) {
   copy(srcDir, destDir, context);
 }
 
 /// Prefer using [delete].
-void deleteEntity(FileSystemEntity entity, [GrinderContext context]) {
+void deleteEntity(FileSystemEntity entity, [GrinderContext? context]) {
   delete(entity);
 }
 
-void _addNonNull(List args, String arg) {
+void _addNonNull(List args, String? arg) {
   if (arg != null) args.add(arg);
 }
