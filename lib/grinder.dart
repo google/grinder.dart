@@ -66,7 +66,7 @@ Future startGrinder(List<String> args, {bool verifyProjectRoot = true}) {
 /// in via [depends].
 @Deprecated('Use the task annotations instead.')
 void task(String name,
-    [Function taskFunction, List<String> depends = const []]) {
+    [Function? taskFunction, List<String> depends = const []]) {
   grinder.addTask(GrinderTask(name,
       taskFunction: taskFunction,
       depends: depends.map((dep) => TaskInvocation(dep))));

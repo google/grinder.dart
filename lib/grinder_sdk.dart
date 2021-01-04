@@ -42,7 +42,7 @@ final Directory sdkDir =
 ///
 /// Use [sdkDir] instead.
 @deprecated
-Directory getSdkDir([List<String> cliArgs]) => sdkDir;
+Directory getSdkDir([List<String>? cliArgs]) => sdkDir;
 
 final File dartVM = File(Platform.resolvedExecutable);
 
@@ -65,9 +65,9 @@ class Dart {
   static String run(String script,
       {List<String> arguments = const [],
       bool quiet = false,
-      String packageRoot,
-      RunOptions runOptions, //
-      String workingDirectory, //
+      String? packageRoot,
+      RunOptions? runOptions, //
+      String? workingDirectory, //
       List<String> vmArgs = const []}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = _buildArgs(script, arguments, packageRoot, vmArgs);
@@ -79,8 +79,8 @@ class Dart {
   static Future<String> runAsync(String script,
       {List<String> arguments = const [],
       bool quiet = false,
-      String packageRoot,
-      RunOptions runOptions, //
+      String? packageRoot,
+      RunOptions? runOptions, //
       List<String> vmArgs = const []}) {
     final args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
@@ -98,12 +98,8 @@ class Dart {
   }
 
   static List<String> _buildArgs(String script, List<String> arguments,
-      String packageRoot, List<String> vmArgs) {
-    final args = <String>[];
-
-    if (vmArgs != null) {
-      args.addAll(vmArgs);
-    }
+      String? packageRoot, List<String> vmArgs) {
+    final args = List.of(vmArgs);
 
     if (packageRoot != null) {
       args.add('--package-root=${packageRoot}');
@@ -123,7 +119,7 @@ class Pub {
   /// even if the pubspec.lock file is up-to-date with respect to the
   /// pubspec.yaml file.
   static void get(
-      {bool force = false, RunOptions runOptions, String workingDirectory}) {
+      {bool force = false, RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -140,7 +136,7 @@ class Pub {
   /// even if the pubspec.lock file is up-to-date with respect to the
   /// pubspec.yaml file.
   static Future getAsync(
-      {bool force = false, RunOptions runOptions, String workingDirectory}) {
+      {bool force = false, RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -158,13 +154,14 @@ class Pub {
   }
 
   /// Run `pub upgrade` on the current project.
-  static void upgrade({RunOptions runOptions, String workingDirectory}) {
+  static void upgrade({RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     _run('upgrade', runOptions: runOptions);
   }
 
   /// Run `pub upgrade` on the current project.
-  static Future upgradeAsync({RunOptions runOptions, String workingDirectory}) {
+  static Future upgradeAsync(
+      {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
         .runAsync(sdkBin('pub'), arguments: ['upgrade'], runOptions: runOptions)
@@ -172,14 +169,14 @@ class Pub {
   }
 
   /// Run `pub downgrade` on the current project.
-  static void downgrade({RunOptions runOptions, String workingDirectory}) {
+  static void downgrade({RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     _run('downgrade', runOptions: runOptions);
   }
 
   /// Run `pub downgrade` on the current project.
   static Future downgradeAsync(
-      {RunOptions runOptions, String workingDirectory}) {
+      {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
         .runAsync(sdkBin('pub'),
@@ -191,11 +188,11 @@ class Pub {
   ///
   /// The valid values for [mode] are `release` and `debug`.
   static void build({
-    String mode,
-    List<String> directories,
-    RunOptions runOptions,
-    String outputDirectory,
-    String workingDirectory,
+    String? mode,
+    List<String>? directories,
+    RunOptions? runOptions,
+    String? outputDirectory,
+    String? workingDirectory,
   }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = ['build'];
@@ -210,11 +207,11 @@ class Pub {
   ///
   /// The valid values for [mode] are `release` and `debug`.
   static Future buildAsync(
-      {String mode,
-      List<String> directories,
-      RunOptions runOptions,
-      String outputDirectory,
-      String workingDirectory}) {
+      {String? mode,
+      List<String>? directories,
+      RunOptions? runOptions,
+      String? outputDirectory,
+      String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = ['build'];
     if (mode != null) args.add('--mode=${mode}');
@@ -230,10 +227,10 @@ class Pub {
   ///
   /// If [script] is null it defaults to the same value as [package].
   static String run(String package,
-      {List<String> arguments,
-      RunOptions runOptions,
-      String script,
-      String workingDirectory}) {
+      {List<String>? arguments,
+      RunOptions? runOptions,
+      String? script,
+      String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
     final args = ['run', scriptArg];
@@ -245,7 +242,7 @@ class Pub {
   ///
   /// If [script] is null it defaults to the same value as [package].
   static Future<String> runAsync(String package,
-      {List<String> arguments, RunOptions runOptions, String script}) {
+      {List<String>? arguments, RunOptions? runOptions, String? script}) {
     var scriptArg = script == null ? package : '$package:$script';
     final args = ['run', scriptArg];
     if (arguments != null) args.addAll(arguments);
@@ -253,13 +250,13 @@ class Pub {
         arguments: args, runOptions: runOptions);
   }
 
-  static String version({bool quiet = false}) =>
+  static String? version({bool quiet = false}) =>
       _parseVersion(_run('--version', quiet: quiet));
 
   static PubGlobal get global => _global;
 
   static String _run(String command,
-      {bool quiet = false, RunOptions runOptions}) {
+      {bool quiet = false, RunOptions? runOptions}) {
     return runlib.run(sdkBin('pub'),
         quiet: quiet, arguments: [command], runOptions: runOptions);
   }
@@ -268,13 +265,13 @@ class Pub {
 /// Utility tasks for invoking dart2js.
 class Dart2js {
   static List<String> _buildArgs(
-      {bool minify,
-      bool csp,
-      bool enableExperimentalMirrors,
-      String categories,
-      List<String> extraArgs,
-      File outFile,
-      File sourceFile}) {
+      {required bool minify,
+      required bool csp,
+      required bool enableExperimentalMirrors,
+      String? categories,
+      required List<String> extraArgs,
+      required File outFile,
+      required File sourceFile}) {
     var args = <String>[];
     if (minify) args.add('--minify');
     if (csp) args.add('--csp');
@@ -289,12 +286,12 @@ class Dart2js {
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
   static void compile(File sourceFile,
-      {Directory outDir,
-      File outFile,
+      {Directory? outDir,
+      File? outFile,
       bool minify = false,
       bool csp = false,
       bool enableExperimentalMirrors = false,
-      String categories,
+      String? categories,
       List<String> extraArgs = const []}) {
     if (outFile == null) {
       outDir ??= sourceFile.parent;
@@ -318,12 +315,12 @@ class Dart2js {
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
   static Future compileAsync(File sourceFile,
-      {Directory outDir,
-      File outFile,
+      {Directory? outDir,
+      File? outFile,
       bool minify = false,
       bool csp = false,
       bool enableExperimentalMirrors = false,
-      String categories,
+      String? categories,
       List<String> extraArgs = const []}) {
     if (outFile == null) {
       outDir ??= sourceFile.parent;
@@ -347,7 +344,7 @@ class Dart2js {
         .then((_) => null);
   }
 
-  static String version({bool quiet = false}) =>
+  static String? version({bool quiet = false}) =>
       _parseVersion(_run('--version', quiet: quiet));
 
   static String _run(String command, {bool quiet = false}) =>
@@ -367,7 +364,7 @@ class DartDoc {
 class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
-      {Directory packageRoot, bool fatalWarnings = false}) {
+      {Directory? packageRoot, bool fatalWarnings = false}) {
     final args = <String>[];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
@@ -378,7 +375,7 @@ class Analyzer {
   /// Analyze one or more [File]s or paths ([String]).
   @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
-      {Directory packageRoot, bool fatalWarnings = false}) {
+      {Directory? packageRoot, bool fatalWarnings = false}) {
     final args = <String>[];
     if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
     if (fatalWarnings) args.add('--fatal-warnings');
@@ -387,7 +384,7 @@ class Analyzer {
     runlib.run(sdkBin('dartanalyzer'), arguments: args);
   }
 
-  static String version({bool quiet = false}) => _parseVersion(runlib
+  static String? version({bool quiet = false}) => _parseVersion(runlib
       .run(sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
 }
 
@@ -396,20 +393,20 @@ class Analyzer {
 class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
-  static void format(fileOrPath, {int lineLength}) {
+  static void format(fileOrPath, {int? lineLength}) {
     _run('--overwrite', coerceToPathList(fileOrPath), lineLength: lineLength);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
-  static bool dryRun(fileOrPath, {int lineLength}) {
+  static bool dryRun(fileOrPath, {int? lineLength}) {
     final results =
         _run('--dry-run', coerceToPathList(fileOrPath), lineLength: lineLength);
     return results.trim().isNotEmpty;
   }
 
   static String _run(String option, List<String> targets,
-      {bool quiet = false, int lineLength}) {
+      {bool quiet = false, int? lineLength}) {
     final args = [option];
     if (lineLength != null) args.add('--line-length=${lineLength}');
     args.addAll(targets);
@@ -419,7 +416,7 @@ class DartFmt {
 
 /// Access the `pub global` commands.
 class PubGlobal {
-  Set<String> _activatedPackages;
+  late final Set<String> _activatedPackages = list().map((app) => app.packageName).toSet();
 
   PubGlobal._();
 
@@ -433,10 +430,10 @@ class PubGlobal {
 
   /// Run the given installed Dart application.
   String run(String package,
-      {List<String> arguments,
-      RunOptions runOptions,
-      String script,
-      String workingDirectory}) {
+      {List<String>? arguments,
+      RunOptions? runOptions,
+      String? script,
+      String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
     final args = ['global', 'run', scriptArg];
@@ -446,7 +443,7 @@ class PubGlobal {
 
   /// Run the given installed Dart application.
   Future<String> runAsync(String package,
-      {List<String> arguments, RunOptions runOptions, String script}) {
+      {List<String>? arguments, RunOptions? runOptions, String? script}) {
     var scriptArg = script == null ? package : '$package:$script';
     final args = ['global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
@@ -473,17 +470,7 @@ class PubGlobal {
   }
 
   /// Returns whether the given Dart application is installed.
-  bool isActivated(String packageName) {
-    if (_activatedPackages == null) _initActivated();
-    return _activatedPackages.contains(packageName);
-  }
-
-  void _initActivated() {
-    if (_activatedPackages == null) {
-      _activatedPackages = <String>{};
-      _activatedPackages.addAll(list().map((app) => app.packageName));
-    }
-  }
+  bool isActivated(String packageName) => _activatedPackages.contains(packageName);
 }
 
 /// A Dart command-line application, installed via `pub global activate`.
@@ -516,7 +503,7 @@ abstract class PubApp {
   /// `new PubApp.global('grinder').run(script: 'init');` will run
   /// `grinder:init`.
   String run(List<String> arguments,
-      {String script, RunOptions runOptions, String workingDirectory});
+      {String? script, RunOptions? runOptions, String? workingDirectory});
 
   /// Run the application. If the application is not installed this command will
   /// first activate it.
@@ -525,7 +512,7 @@ abstract class PubApp {
   /// `new PubApp.global('grinder').runAsync(script: 'init');` will run
   /// `grinder:init`.
   Future<String> runAsync(List<String> arguments,
-      {String script, RunOptions runOptions});
+      {String? script, RunOptions? runOptions});
 
   @override
   String toString() => packageName;
@@ -535,7 +522,7 @@ abstract class PubApp {
 ///
 ///     dart_coveralls 0.1.11
 ///     pub_cache 0.0.1 at path "/Users/foobar/projects/pub_cache"
-String _parseVersion(String output) {
+String? _parseVersion(String output) {
   final tokens = output.split(' ');
   return tokens.length < 2 ? null : tokens[1];
 }
@@ -555,7 +542,7 @@ class _PubGlobalApp extends PubApp {
 
   @override
   String run(List<String> arguments,
-      {String script, RunOptions runOptions, String workingDirectory}) {
+      {String? script, RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     activate();
 
@@ -565,7 +552,7 @@ class _PubGlobalApp extends PubApp {
 
   @override
   Future<String> runAsync(List<String> arguments,
-      {String script, RunOptions runOptions}) {
+      {String? script, RunOptions? runOptions}) {
     activate();
 
     return Pub.global.runAsync(packageName,
@@ -588,7 +575,7 @@ class _PubLocalApp extends PubApp {
 
   @override
   String run(List<String> arguments,
-      {String script, RunOptions runOptions, String workingDirectory}) {
+      {String? script, RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return Pub.run(packageName,
         script: script, arguments: arguments, runOptions: runOptions);
@@ -596,7 +583,7 @@ class _PubLocalApp extends PubApp {
 
   @override
   Future<String> runAsync(List<String> arguments,
-      {String script, RunOptions runOptions}) {
+      {String? script, RunOptions? runOptions}) {
     return Pub.runAsync(packageName,
         script: script, arguments: arguments, runOptions: runOptions);
   }

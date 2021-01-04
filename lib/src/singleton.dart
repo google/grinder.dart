@@ -14,16 +14,17 @@ final ZonedValue zonedContext = ZonedValue(_NoopContext());
 
 class _NoopContext implements GrinderContext {
   @override
-  Grinder get grinder => null;
+  Grinder get grinder => throw StateError('Grinder is not initialized.');
 
   @override
-  GrinderTask get task => null;
+  GrinderTask get task => throw StateError('Grinder is not initialized.');
 
   @override
-  TaskInvocation get invocation => null;
+  TaskInvocation get invocation =>
+      throw StateError('Grinder is not initialized.');
 
   @override
-  Null fail(String message) {
+  Never fail(String message) {
     stderr.writeln(message);
     exit(1);
   }

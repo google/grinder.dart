@@ -25,9 +25,9 @@ final Directory webDir = Directory('web');
 String runDartScript(String script,
     {List<String> arguments = const [],
     bool quiet = false,
-    String packageRoot,
-    RunOptions runOptions,
-    String workingDirectory}) {
+    String? packageRoot,
+    RunOptions? runOptions,
+    String? workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   return Dart.run(script,
       arguments: arguments,
@@ -38,7 +38,7 @@ String runDartScript(String script,
 
 /// A default implementation of a `clean` task. This task deletes all generated
 /// artifacts in the `build/`.
-void defaultClean([GrinderContext context]) => delete(buildDir);
+void defaultClean([GrinderContext? context]) => delete(buildDir);
 
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
@@ -64,12 +64,12 @@ class TestRunner {
   /// serving `test/`.
   void test(
       {dynamic files,
-      String name,
-      String plainName,
+      String? name,
+      String? plainName,
       dynamic platformSelector,
-      int concurrency,
-      int pubServe,
-      RunOptions runOptions}) {
+      int? concurrency,
+      int? pubServe,
+      RunOptions? runOptions}) {
     _test.run(
         _buildArgs(
             files: files,
@@ -99,12 +99,12 @@ class TestRunner {
   /// serving `test/`.
   Future testAsync(
       {dynamic files,
-      String name,
-      String plainName,
+      String? name,
+      String? plainName,
       dynamic platformSelector,
-      int concurrency,
-      int pubServe,
-      RunOptions runOptions}) {
+      int? concurrency,
+      int? pubServe,
+      RunOptions? runOptions}) {
     return _test.runAsync(
         _buildArgs(
             files: files,
@@ -119,11 +119,11 @@ class TestRunner {
 
   List<String> _buildArgs(
       {dynamic files,
-      String name,
-      String plainName,
+      String? name,
+      String? plainName,
       dynamic selector,
-      int concurrency,
-      int pubServe}) {
+      int? concurrency,
+      int? pubServe}) {
     final args = ['--reporter=expanded'];
     if (name != null) args.add('--name=${name}');
     if (plainName != null) args.add('--plain-name=${plainName}');
@@ -170,8 +170,8 @@ class DevCompiler {
   }
 
   List<String> _args(dynamic files,
-      {Directory outDir, bool forceCompile = false, bool htmlReport = false}) {
-    final args = [];
+      {Directory? outDir, bool forceCompile = false, bool htmlReport = false}) {
+    final args = <String>[];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');
     if (htmlReport) args.add('--html-report');

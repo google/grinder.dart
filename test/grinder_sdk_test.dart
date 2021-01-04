@@ -81,7 +81,7 @@ void main() {
 
   group('grinder.sdk Dart', () {
     FilePath temp;
-    File file;
+    late File file;
 
     setUp(() {
       temp = FilePath.createSystemTemp();
@@ -96,8 +96,8 @@ void main() {
   });
 
   group('grinder.sdk DartFmt', () {
-    FilePath temp;
-    File file;
+    late FilePath temp;
+    late File file;
 
     setUp(() {
       temp = FilePath.createSystemTemp();

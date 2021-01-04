@@ -30,7 +30,7 @@ void logStderr(String line) {
 /// This function can probably be removed when the deprecated `workingDirectory`
 /// arguments are finally removed.
 RunOptions mergeWorkingDirectory(
-    String workingDirectory, RunOptions runOptions) {
+    String? workingDirectory, RunOptions? runOptions) {
   if (workingDirectory != null) {
     if (runOptions?.workingDirectory != null) {
       throw ArgumentError(
@@ -40,24 +40,4 @@ RunOptions mergeWorkingDirectory(
   return runOptions == null
       ? RunOptions(workingDirectory: workingDirectory)
       : runOptions.clone(workingDirectory: workingDirectory);
-}
-
-/// Helper for methods which support the deprecated [envVar] and the
-/// new [runOptions] to create a [RunOptions] instance which contains the values
-/// of the passed [runOptions] and the passed [envVar].
-/// If both [envVar] and [runOptions.environment] are passed
-/// an AssertionError is thrown. Only one of both may be used at one
-/// time.
-/// This function can probably be removed when the deprecated `envVar`
-/// arguments are finally removed.
-RunOptions mergeEnvironment(
-    Map<String, String> environment, RunOptions runOptions) {
-  if (environment != null) {
-    assert(runOptions == null ||
-        runOptions.environment == null ||
-        runOptions.environment.isEmpty);
-  }
-  return runOptions == null
-      ? RunOptions(environment: environment)
-      : runOptions.clone(environment: environment);
 }

@@ -12,9 +12,9 @@ final String _sep = Platform.pathSeparator;
 
 void main() {
   group('grinder.files FileSet', () {
-    Directory temp;
-    File fileA;
-    File fileB;
+    late Directory temp;
+    late File fileA;
+    late File fileB;
 
     setUp(() {
       temp = Directory.systemTemp.createTempSync();
@@ -80,7 +80,7 @@ void main() {
   });
 
   group('grinder.files', () {
-    Directory temp;
+    late Directory temp;
 
     setUp(() {
       temp = Directory.systemTemp.createTempSync();
@@ -160,7 +160,7 @@ void main() {
   });
 
   group('grinder.files FilePath', () {
-    FilePath temp;
+    late FilePath temp;
 
     setUp(() {
       temp = FilePath.createSystemTemp();
@@ -209,16 +209,16 @@ void main() {
 
     test('parent', () {
       expect(temp.parent, isNotNull);
-      expect(temp.parent.isDirectory, true);
+      expect(temp.parent!.isDirectory, true);
 
       expect(FilePath.current.parent, isNotNull);
-      expect(FilePath.current.parent.path, isNotEmpty);
-      expect(FilePath.current.parent.parent, isNotNull);
+      expect(FilePath.current.parent!.path, isNotEmpty);
+      expect(FilePath.current.parent!.parent, isNotNull);
 
       final root = FilePath('/');
       expect(root.exists, true);
       expect(root.parent, isNotNull);
-      expect(root.parent.parent, isNotNull);
+      expect(root.parent!.parent, isNotNull);
     });
 
 //    test('absolute', () {

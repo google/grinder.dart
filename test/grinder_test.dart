@@ -71,7 +71,7 @@ void main() {
     test('can invoke a task with arguments', () {
       final grinder = Grinder();
       var received;
-      grinder.addTask(GrinderTask('foo', taskFunction: ([TaskArgs args]) {
+      grinder.addTask(GrinderTask('foo', taskFunction: ([TaskArgs? args]) {
         received = context.invocation;
       }));
       var sent = TaskInvocation('foo', TaskArgs('foo', ['--foo', '--bar=baz']));

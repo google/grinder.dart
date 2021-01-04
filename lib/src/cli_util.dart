@@ -34,7 +34,7 @@ String getTaskHelp(Grinder grinder, {bool useColor = true}) {
           return '${ansi.green}${d.name}${ansi.none}';
         }).join(' ');
         final depText = '(depends on: $depTasks)';
-        if (task.description != null && task.description.isNotEmpty) {
+        if (task.description?.isNotEmpty ?? false) {
           buffer.writeln(task.description);
           if (deps.isNotEmpty) {
             buffer.writeln('  ${''.padRight(20)} $depText');

@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 typedef TestVerification = Function(MockGrinderContext ctx);
 
-TaskFunction nullTaskFunction = ([TaskArgs args]) => null;
+TaskFunction nullTaskFunction = ([TaskArgs? args]) => null;
 
 void grinderTest(String name, Function setup, TestVerification verify) {
   test(name, () {
@@ -22,11 +22,14 @@ void grinderTest(String name, Function setup, TestVerification verify) {
 
 class MockGrinderContext implements GrinderContext {
   @override
-  Grinder grinder;
+  Grinder get grinder =>
+      throw UnsupportedError('MockGrinderContext.grinder is unsupported');
   @override
-  GrinderTask task;
+  GrinderTask get task =>
+      throw UnsupportedError('MockGrinderContext.task is unsupported');
   @override
-  TaskInvocation invocation;
+  TaskInvocation get invocation =>
+      throw UnsupportedError('MockGrinderContext.invocation is unsupported');
 
   StringBuffer logBuffer = StringBuffer();
   StringBuffer failBuffer = StringBuffer();
@@ -37,12 +40,12 @@ class MockGrinderContext implements GrinderContext {
   void log(String message) => logBuffer.write('${message}\n');
 
   @override
-  Null fail(String message) {
+  Never fail(String message) {
     failBuffer.write('${message}\n');
     throw GrinderException(message);
   }
 
-  Future runZoned(Function f) {
+  Future runZoned(void Function() f) {
     var result = zonedContext.withValue(this, f);
     return result is Future ? result : Future.value();
   }
