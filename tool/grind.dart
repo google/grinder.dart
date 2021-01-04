@@ -35,28 +35,8 @@ void checkInit() {
   }
 }
 
-@Task('Gather and send coverage data.')
-void coverage() {
-  final coverageToken = Platform.environment['COVERAGE_TOKEN'];
-
-  if (coverageToken != null) {
-    final coverallsApp = PubApp.global('dart_coveralls');
-    coverallsApp.run([
-      'report',
-      '--retry',
-      '2',
-      '--exclude-test-files',
-      '--token',
-      coverageToken,
-      'test/all.dart'
-    ]);
-  } else {
-    log('Skipping coverage task: no environment variable `COVERAGE_TOKEN` found.');
-  }
-}
-
 @DefaultTask()
-@Depends(analyze, test, checkInit, coverage)
+@Depends(analyze, test, checkInit)
 void buildbot() => null;
 
 @Task()
