@@ -16,9 +16,8 @@ import 'singleton.dart' as singleton;
 const String appVersion = '0.8.5';
 
 List<String> grinderArgs() {
-  var args = _args;
-  if (args == null) fail('grinderArgs() may only be called after grind().');
-  return args;
+  if (_args == null) fail('grinderArgs() may only be called after grind().');
+  return _args!;
 }
 
 List<String>? _args;
