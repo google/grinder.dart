@@ -101,8 +101,7 @@ class TaskDiscovery {
                   'Task `$name` references invalid task method '
                   '`$depMethodName` as a dependency');
             }
-            if (!resolvedDeclarations.values
-                .any((decl) => declarationsEqual(decl, depMethod))) {
+            if (!resolvedDeclarations.values.any((decl) => decl == depMethod)) {
               var depName = annotatedMethodTask.task.name;
               var depLib = MirrorSystem.getName(depMethod.owner!.qualifiedName);
               throw GrinderException(

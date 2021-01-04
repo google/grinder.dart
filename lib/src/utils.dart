@@ -46,7 +46,7 @@ String camelToDashes(String input) {
       .join('-');
 }
 
-// Upper-case or lower-case the first charater of a String.
+// Upper-case or lower-case the first character of a String.
 String withCapitalization(String s, bool capitalized) {
   if (s.isEmpty) return s;
   var firstLetter = s[0];
@@ -54,13 +54,6 @@ String withCapitalization(String s, bool capitalized) {
       capitalized ? firstLetter.toUpperCase() : firstLetter.toLowerCase();
   return firstLetter + s.substring(1);
 }
-
-// TODO: Remove this once this `dart:mirrors` bug is fixed:
-//       http://dartbug.com/22601
-bool declarationsEqual(DeclarationMirror decl1, decl2) =>
-    decl2 is DeclarationMirror &&
-    decl1.owner == decl2.owner &&
-    decl1.simpleName == decl2.simpleName;
 
 Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
     LibraryMirror library) {
