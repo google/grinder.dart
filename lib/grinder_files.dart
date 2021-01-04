@@ -328,8 +328,8 @@ File getFile(String path) {
   }
 }
 
-/// Return the directory pointed to by the given [path]. This method converts the
-/// given path to a platform dependent path.
+/// Return the directory pointed to by the given [path]. This method converts
+/// the given path to a platform dependent path.
 Directory getDir(String path) {
   if (_sep == '/') {
     return Directory(path);
@@ -338,6 +338,9 @@ Directory getDir(String path) {
   }
 }
 
+/// Copy the given entity to the destination directory.
+///
+/// Note that the [context] parameter is deprecated.
 void copy(FileSystemEntity entity, Directory destDir,
     [GrinderContext? context]) {
   log('copying ${entity.path} to ${destDir.path}');
