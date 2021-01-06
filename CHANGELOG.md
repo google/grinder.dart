@@ -1,9 +1,9 @@
 # grinder.dart changes
 
-## 0.8.7-nullsafety.1
+## 0.9.0-nullsafety.0
+- Support null-safety.
 - Declare `Never` instead of `Null` for `fail()` and `GrinderContext.fail()`.
 - Make the `args` parameter to `GrinderTask.execute()` optional.
-- Support null-safety mode.
 
 ## 0.8.6
 - Declare a `Null` return type for `fail()` and `GrinderContext.fail()`.
