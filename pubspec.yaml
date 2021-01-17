@@ -21,7 +21,3 @@ dev_dependencies:
 
 executables:
   grind: grinder
-
-# Work around dart-lang/test#1400
-dependency_overrides:
-  glob: ^2.0.0-nullsafety
