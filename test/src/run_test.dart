@@ -102,9 +102,10 @@ void main() {
         expect(json['environment'][k], environment[k]);
       }
       // Filter out __CF_USER_TEXT_ENCODING.
+      // Filter out COMSPEC, PATHEXT, PROMPT in Windows
       expect(
           json['environment'].keys.where(
-              (str) => (!str.startsWith('__') && !str.startsWith('GLIB'))),
+              (str) => (!str.startsWith('__') && !str.startsWith('GLIB') && str != 'COMSPEC' && str != 'PATHEXT' && str != 'PROMPT')),
           unorderedEquals(environment.keys));
     });
 
@@ -129,6 +130,11 @@ void main() {
       // TODO(zoechi) verify if this works in Windows or find a better way to
       // verify that `runInShell: true` is applied.
       expect(json['environment'].length, greaterThan(3));
+    });
+
+    test('should set runInShell defaults to true in Windows', () {
+      var runOptions = RunOptions();
+      expect(runOptions.runInShell, io.Platform.isWindows);
     });
 
     test('should use stdoutEncoding', () {

@@ -158,10 +158,11 @@ class RunOptions {
       {this.workingDirectory,
       Map<String, String>? environment,
       this.includeParentEnvironment = true,
-      this.runInShell = false,
+      bool? runInShell,
       this.stdoutEncoding = systemEncoding,
       this.stderrEncoding = systemEncoding})
-      : environment = environment ?? {};
+      : environment = environment ?? {},
+      runInShell = runInShell ?? Platform.isWindows;
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.
