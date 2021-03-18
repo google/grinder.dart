@@ -1,6 +1,8 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:io';
+
 import 'package:grinder/grinder.dart';
 
 void main(args) => grind(args);
@@ -24,9 +26,16 @@ void checkInit() {
 
   try {
     final pubspec = temp.join('pubspec.yaml').createFile();
-    pubspec.writeAsStringSync('name: foo', flush: true);
+    pubspec.writeAsStringSync('''name: foo
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+dependencies:
+  grinder: ^0.8.6
+''', flush: true);
     Dart.run(FilePath.current.join('bin', 'init.dart').path,
         runOptions: RunOptions(workingDirectory: temp.path));
+    Process.runSync('pub', ['get'], workingDirectory: temp.path, runInShell: true);
     Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
     temp.delete();
