@@ -1,5 +1,9 @@
 # grinder.dart changes
 
+## 0.9.0
+- Publish `0.9.0` stable.
+- Address an issue with the `Process.run()` / `RunOptions({bool runInShell})` API (@liudonghua123).
+
 ## 0.9.0-nullsafety.0
 - Support null-safety.
 - Declare `Never` instead of `Null` for `fail()` and `GrinderContext.fail()`.
