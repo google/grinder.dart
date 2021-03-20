@@ -31,7 +31,8 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
-  grinder: ^0.8.6
+  grinder:
+    path: ${FilePath.current.path}
 ''', flush: true);
     Dart.run(FilePath.current.join('bin', 'init.dart').path,
         runOptions: RunOptions(workingDirectory: temp.path));
