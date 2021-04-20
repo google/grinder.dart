@@ -91,8 +91,8 @@ and:
 ```dart
 @Task()
 build() {
-  TaskArgs args = context.invocation.arguments
-  bool isRelease = args.getFlag('release');
+  TaskArgs args = context.invocation.arguments;
+  bool isRelease = args.getFlag('release'); // will be set to true
   String mode = args.getOption('mode'); // will be set to topaz
   
   ...
