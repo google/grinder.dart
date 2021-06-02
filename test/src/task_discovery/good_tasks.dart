@@ -1,6 +1,8 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
+// ignore_for_file: prefer_function_declarations_over_variables
+
 library grinder.test.task_discovery.good_tasks;
 
 import 'package:grinder/grinder.dart';

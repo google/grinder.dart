@@ -125,14 +125,14 @@ class TestRunner {
       int? concurrency,
       int? pubServe}) {
     final args = ['--reporter=expanded'];
-    if (name != null) args.add('--name=${name}');
-    if (plainName != null) args.add('--plain-name=${plainName}');
+    if (name != null) args.add('--name=$name');
+    if (plainName != null) args.add('--plain-name=$plainName');
     if (selector != null) {
       if (selector is List) selector = selector.join(',');
-      args.add('--platform=${selector}');
+      args.add('--platform=$selector');
     }
-    if (concurrency != null) args.add('--concurrency=${concurrency}');
-    if (pubServe != null) args.add('--pub-serve=${pubServe}');
+    if (concurrency != null) args.add('--concurrency=$concurrency');
+    if (pubServe != null) args.add('--pub-serve=$pubServe');
     if (files != null) args.addAll(coerceToPathList(files));
     // TODO: Pass in --color based on a global property: #243.
     return args;

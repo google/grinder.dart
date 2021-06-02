@@ -57,7 +57,7 @@ void _barTask(TaskArgs args) {
   ranTasks['flag'] = args.getFlag('flag');
   ranTasks['option'] = args.getOption('option');
 
-  log('ran _barTask\n${context}');
+  log('ran _barTask\n$context');
 }
 
 // old form

@@ -92,25 +92,25 @@ void main() {
 
     test('fileName', () {
       final tempFileName = 'temp.txt';
-      final tempFile = File('${temp.path}${_sep}tempdir${_sep}${tempFileName}');
+      final tempFile = File('${temp.path}${_sep}tempdir$_sep$tempFileName');
       expect(fileName(tempFile), tempFileName);
     });
 
     test('fileExt', () {
       final extension = 'txt';
       final fileName = 'temp.$extension';
-      var tempFile = File('${temp.path}${_sep}tempdir${_sep}${fileName}');
+      var tempFile = File('${temp.path}${_sep}tempdir$_sep$fileName');
       expect(fileExt(tempFile), extension);
 
       final fileNameEmptyExt = 'temp.';
-      tempFile = File('${temp.path}${_sep}tempdir${_sep}${fileNameEmptyExt}');
+      tempFile = File('${temp.path}${_sep}tempdir$_sep$fileNameEmptyExt');
       expect(fileExt(tempFile), '');
     });
 
     test('fileExt null', () {
       final fileNameNoExt = 'temp';
       final tempFile =
-          File('${temp.path}${_sep}tempdir${_sep}${fileNameNoExt}');
+          File('${temp.path}${_sep}tempdir$_sep$fileNameNoExt');
       expect(fileExt(tempFile), null);
     });
 
@@ -131,13 +131,13 @@ void main() {
     test('copyFile', () {
       final tempFileName = 'copytest.txt';
 
-      final source = joinFile(temp, ['${tempFileName}']);
+      final source = joinFile(temp, [tempFileName]);
       source.writeAsStringSync('abcdABCD');
 
       final targetDir = joinDir(temp, ['targetDir']);
       copy(source, targetDir);
 
-      final expectedFile = joinFile(targetDir, ['${tempFileName}']);
+      final expectedFile = joinFile(targetDir, [tempFileName]);
       expect(expectedFile.readAsStringSync(), 'abcdABCD');
     });
 

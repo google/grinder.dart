@@ -60,35 +60,35 @@ Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
   final resolvedDeclarations = <Symbol, DeclarationMirror>{};
   resolvedDeclarations.addAll(library.declarations);
 
-  library.libraryDependencies.forEach((LibraryDependencyMirror dependency) {
+  for (final dependency in library.libraryDependencies) {
     if (dependency.isExport) {
       var library = dependency.targetLibrary;
 
       // Ignore deferred libraries that aren't loaded yet.
-      if (library == null) return;
+      if (library == null) continue;
 
       final shown = <Symbol, DeclarationMirror>{};
       final hidden = <Symbol>[];
-      dependency.combinators.forEach((CombinatorMirror combinator) {
+      for (final combinator in dependency.combinators) {
         if (combinator.isShow) {
-          combinator.identifiers.forEach((Symbol id) {
+          for (final id in combinator.identifiers) {
             // It's valid for an export to show names that don't exist. If it
             // does, ignore those `show`s.
             var declaration = library.declarations[id];
             if (declaration != null) shown[id] = declaration;
-          });
+          }
         }
         if (combinator.isHide) {
           hidden.addAll(combinator.identifiers);
         }
-      });
+      }
       if (shown.isEmpty) {
         shown.addAll(library.declarations);
         hidden.forEach(shown.remove);
       }
       resolvedDeclarations.addAll(shown);
     }
-  });
+  }
 
   return UnmodifiableMapView<Symbol, DeclarationMirror>(resolvedDeclarations);
 }
@@ -133,7 +133,7 @@ List<String> coerceToPathList(filesOrPaths) {
       .map((item) {
         if (item is String) return item;
         if (item is FileSystemEntity) return item.path;
-        return '${item}';
+        return '$item';
       })
       .cast<String>()
       .toList();
@@ -166,18 +166,18 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 
   var files = <String>{};
 
-  paths.forEach((p) {
-    if (FileSystemEntity.typeSync(p) == FileSystemEntityType.directory) {
-      files.addAll(_findDartSourceFiles(Directory(p)));
+  for (final path in paths) {
+    if (FileSystemEntity.typeSync(path) == FileSystemEntityType.directory) {
+      files.addAll(_findDartSourceFiles(Directory(path)));
     } else {
-      files.add(p);
+      files.add(path);
     }
-  });
+  }
   return files;
 }
 
 String cleanupStackTrace(st) {
-  final lines = '${st}'.trim().split('\n');
+  final lines = '$st'.trim().split('\n');
 
   // Remove lines which are not useful to debugging script issues. With our move
   // to using zones, the exceptions now have stacks 30 frames deep.

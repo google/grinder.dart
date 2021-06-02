@@ -41,7 +41,7 @@ final Directory sdkDir =
 /// This is deprecated.
 ///
 /// Use [sdkDir] instead.
-@deprecated
+@Deprecated('Use sdkDir to get the current SDK directory instead.')
 Directory getSdkDir([List<String>? cliArgs]) => sdkDir;
 
 final File dartVM = File(Platform.resolvedExecutable);
@@ -102,7 +102,7 @@ class Dart {
     final args = List.of(vmArgs);
 
     if (packageRoot != null) {
-      args.add('--package-root=${packageRoot}');
+      args.add('--package-root=$packageRoot');
     }
 
     return args
@@ -196,8 +196,8 @@ class Pub {
   }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = ['build'];
-    if (mode != null) args.add('--mode=${mode}');
-    if (outputDirectory != null) args.add('--output=${outputDirectory}');
+    if (mode != null) args.add('--mode=$mode');
+    if (outputDirectory != null) args.add('--output=$outputDirectory');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
@@ -214,8 +214,8 @@ class Pub {
       String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = ['build'];
-    if (mode != null) args.add('--mode=${mode}');
-    if (outputDirectory != null) args.add('--output=${outputDirectory}');
+    if (mode != null) args.add('--mode=$mode');
+    if (outputDirectory != null) args.add('--output=$outputDirectory');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     return runlib
@@ -408,7 +408,7 @@ class DartFmt {
   static String _run(String option, List<String> targets,
       {bool quiet = false, int? lineLength}) {
     final args = [option];
-    if (lineLength != null) args.add('--line-length=${lineLength}');
+    if (lineLength != null) args.add('--line-length=$lineLength');
     args.addAll(targets);
     return runlib.run(sdkBin('dartfmt'), quiet: quiet, arguments: args);
   }

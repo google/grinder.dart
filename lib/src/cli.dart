@@ -45,7 +45,7 @@ Future runTasks(
     print(parser.getUsage());
     return null;
   } else if (results.getFlag('version')) {
-    print('grinder version ${appVersion}');
+    print('grinder version $appVersion');
     return null;
   } else {
     if (results.hasFlag('color')) {
@@ -69,7 +69,7 @@ Future runTasks(
     final result = singleton.grinder.start(results.taskInvocations);
 
     return result.catchError((e, st) {
-      fail('\n${e}\n${cleanupStackTrace(st)}');
+      fail('\n$e\n${cleanupStackTrace(st)}');
     });
   }
 }

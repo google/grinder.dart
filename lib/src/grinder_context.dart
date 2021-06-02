@@ -43,7 +43,7 @@ class GrinderContext {
   }
 
   @override
-  String toString() => 'Context for ${task}';
+  String toString() => 'Context for $task';
 }
 
 // Zone variables.
