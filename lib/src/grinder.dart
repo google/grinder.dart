@@ -148,7 +148,7 @@ class Grinder {
       for (var invocation in task.depends) {
         if (getTask(invocation.name) == null) {
           throw GrinderException(
-              "task '${invocation.name}' referenced by ${task}, doesn't exist");
+              "task '${invocation.name}' referenced by $task, doesn't exist");
         }
       }
     }
@@ -159,12 +159,14 @@ class Grinder {
     for (final task in tasks) {
       if (getAllDependencies(task)
           .any((invocation) => invocation.name == task.name)) {
-        throw GrinderException('Task ${task} has a dependency cycle.\n'
-            "  ${task} ==> ${getAllDependencies(task).join(', ')}");
+        throw GrinderException('Task $task has a dependency cycle.\n'
+            "  $task ==> ${getAllDependencies(task).join(', ')}");
       }
     }
 
-    invocations.forEach((i) => _postOrder(i as TaskInvocation));
+    for (final TaskInvocation invocation in invocations) {
+      _postOrder(invocation);
+    }
 
     if (!dontRun) {
       log('grinder running ${_invocationOrder.join(' ')}');
@@ -206,7 +208,7 @@ class Grinder {
   void log(String message) => print(message);
 
   Future _invokeTask(TaskInvocation invocation) {
-    log('${ansi.emphasized(invocation.toString())}');
+    log(ansi.emphasized(invocation.toString()));
 
     var task = getTask(invocation.name)!;
     final context = GrinderContext(this, task, invocation);

@@ -12,5 +12,5 @@ class GrinderException implements Exception {
   GrinderException(this.message);
 
   @override
-  String toString() => 'GrinderException: ${message}';
+  String toString() => 'GrinderException: $message';
 }

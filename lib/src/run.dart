@@ -23,7 +23,7 @@ String run(String executable,
     bool quiet = false,
     String? workingDirectory}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  if (!quiet) log("${executable} ${arguments.join(' ')}");
+  if (!quiet) log("$executable ${arguments.join(' ')}");
 
   final result = Process.runSync(executable, arguments,
       workingDirectory: runOptions.workingDirectory,
@@ -141,7 +141,7 @@ class ProcessException implements Exception {
   ProcessException._(this.executable, this.exitCode, this.stdout, this.stderr);
 
   @override
-  String toString() => 'failed with exit code ${exitCode}';
+  String toString() => 'failed with exit code $exitCode';
 }
 
 /// Arguments passed to [Process.run] or [Process.start].

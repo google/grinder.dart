@@ -60,12 +60,12 @@ class FileSet {
   DateTime get lastModified {
     var time = DateTime.fromMillisecondsSinceEpoch(0);
 
-    files.forEach((f) {
-      final modified = f.lastModifiedSync();
+    for (final file in files) {
+      final modified = file.lastModifiedSync();
       if (modified.isAfter(time)) {
         time = modified;
       }
-    });
+    }
 
     return time;
   }
@@ -310,12 +310,12 @@ String? baseName(FileSystemEntity entity) {
 
 File joinFile(Directory dir, List<String> files) {
   final pathFragment = files.join(_sep);
-  return File('${dir.path}${_sep}${pathFragment}');
+  return File('${dir.path}$_sep$pathFragment');
 }
 
 Directory joinDir(Directory dir, List<String> files) {
   final pathFragment = files.join(_sep);
-  return Directory('${dir.path}${_sep}${pathFragment}');
+  return Directory('${dir.path}$_sep$pathFragment');
 }
 
 /// Return the file pointed to by the given [path]. This method converts the

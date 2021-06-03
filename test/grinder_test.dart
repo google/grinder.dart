@@ -70,7 +70,7 @@ void main() {
 
     test('can invoke a task with arguments', () {
       final grinder = Grinder();
-      var received;
+      late final TaskInvocation received;
       grinder.addTask(GrinderTask('foo', taskFunction: ([TaskArgs? args]) {
         received = context.invocation;
       }));
@@ -82,7 +82,7 @@ void main() {
 
     test('can invoke a dependency task with arguments', () {
       final grinder = Grinder();
-      var invocation;
+      late final TaskInvocation invocation;
       grinder.addTask(GrinderTask('foo', taskFunction: ([args]) {
         invocation = context.invocation;
       }));
