@@ -146,7 +146,7 @@ class Pub {
 
     if (force || !publock.upToDate(pubspec)) {
       return runlib
-          .runAsync(sdkBin('pub'), arguments: ['get'], runOptions: runOptions)
+          .runAsync(sdkBin('dart'), arguments: ['pub', 'get'], runOptions: runOptions)
           .then((_) => null);
     }
 
@@ -164,7 +164,7 @@ class Pub {
       {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
-        .runAsync(sdkBin('pub'), arguments: ['upgrade'], runOptions: runOptions)
+        .runAsync(sdkBin('dart'), arguments: ['pub', 'upgrade'], runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -179,8 +179,8 @@ class Pub {
       {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
-        .runAsync(sdkBin('pub'),
-            arguments: ['downgrade'], runOptions: runOptions)
+        .runAsync(sdkBin('dart'),
+            arguments: ['pub', 'downgrade'], runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -195,12 +195,12 @@ class Pub {
     String? workingDirectory,
   }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    final args = ['build'];
+    final args = ['pub', 'build'];
     if (mode != null) args.add('--mode=$mode');
     if (outputDirectory != null) args.add('--output=$outputDirectory');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
+    runlib.run(sdkBin('dart'), arguments: args, runOptions: runOptions);
   }
 
   /// Run `pub build` on the current project.
@@ -213,13 +213,13 @@ class Pub {
       String? outputDirectory,
       String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    final args = ['build'];
+    final args = ['pub', 'build'];
     if (mode != null) args.add('--mode=$mode');
     if (outputDirectory != null) args.add('--output=$outputDirectory');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
     return runlib
-        .runAsync(sdkBin('pub'), arguments: args, runOptions: runOptions)
+        .runAsync(sdkBin('dart'), arguments: args, runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -233,9 +233,9 @@ class Pub {
       String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    final args = ['run', scriptArg];
+    final args = ['pub', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
+    return runlib.run(sdkBin('dart'), arguments: args, runOptions: runOptions);
   }
 
   /// Run `pub run` on the given [package] and [script].
@@ -244,9 +244,9 @@ class Pub {
   static Future<String> runAsync(String package,
       {List<String>? arguments, RunOptions? runOptions, String? script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    final args = ['run', scriptArg];
+    final args = ['pub', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.runAsync(sdkBin('pub'),
+    return runlib.runAsync(sdkBin('dart'),
         arguments: args, runOptions: runOptions);
   }
 
@@ -257,8 +257,8 @@ class Pub {
 
   static String _run(String command,
       {bool quiet = false, RunOptions? runOptions}) {
-    return runlib.run(sdkBin('pub'),
-        quiet: quiet, arguments: [command], runOptions: runOptions);
+    return runlib.run(sdkBin('dart'),
+        quiet: quiet, arguments: ['pub', command], runOptions: runOptions);
   }
 }
 
@@ -423,7 +423,7 @@ class PubGlobal {
   /// Install a new Dart application.
   void activate(String packageName, {bool force = false}) {
     if (force || !isActivated(packageName)) {
-      runlib.run(sdkBin('pub'), arguments: ['global', 'activate', packageName]);
+      runlib.run(sdkBin('dart'), arguments: ['pub', 'global', 'activate', packageName]);
       _activatedPackages.add(packageName);
     }
   }
@@ -436,18 +436,18 @@ class PubGlobal {
       String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     var scriptArg = script == null ? package : '$package:$script';
-    final args = ['global', 'run', scriptArg];
+    final args = ['pub', 'global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.run(sdkBin('pub'), arguments: args, runOptions: runOptions);
+    return runlib.run(sdkBin('dart'), arguments: args, runOptions: runOptions);
   }
 
   /// Run the given installed Dart application.
   Future<String> runAsync(String package,
       {List<String>? arguments, RunOptions? runOptions, String? script}) {
     var scriptArg = script == null ? package : '$package:$script';
-    final args = ['global', 'run', scriptArg];
+    final args = ['pub', 'global', 'run', scriptArg];
     if (arguments != null) args.addAll(arguments);
-    return runlib.runAsync(sdkBin('pub'),
+    return runlib.runAsync(sdkBin('dart'),
         arguments: args, runOptions: runOptions);
   }
 
@@ -459,7 +459,7 @@ class PubGlobal {
     //...
 
     var stdout =
-        runlib.run(sdkBin('pub'), arguments: ['global', 'list'], quiet: true);
+        runlib.run(sdkBin('dart'), arguments: ['pub', 'global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
