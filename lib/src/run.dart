@@ -82,34 +82,34 @@ Future<String> runAsync(String executable,
   final stdout = <int>[], stderr = <int>[];
 
   var process = await Process.start(executable, arguments,
-          workingDirectory: runOptions.workingDirectory,
-          environment: runOptions.environment,
-          includeParentEnvironment: runOptions.includeParentEnvironment,
-          runInShell: runOptions.runInShell);
-    // Handle stdout.
-    var broadcastStdout = process.stdout.asBroadcastStream();
-    var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
-    broadcastStdout.listen((List<int> data) => stdout.addAll(data));
-    if (!quiet) {
-      stdoutLines.listen(logStdout);
-    }
+      workingDirectory: runOptions.workingDirectory,
+      environment: runOptions.environment,
+      includeParentEnvironment: runOptions.includeParentEnvironment,
+      runInShell: runOptions.runInShell);
+  // Handle stdout.
+  var broadcastStdout = process.stdout.asBroadcastStream();
+  var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
+  broadcastStdout.listen((List<int> data) => stdout.addAll(data));
+  if (!quiet) {
+    stdoutLines.listen(logStdout);
+  }
 
-    // Handle stderr.
-    var broadcastStderr = process.stderr.asBroadcastStream();
-    var stderrLines = toLineStream(broadcastStderr, runOptions.stderrEncoding);
-    broadcastStderr.listen((List<int> data) => stderr.addAll(data));
-    stderrLines.listen(logStderr);
+  // Handle stderr.
+  var broadcastStderr = process.stderr.asBroadcastStream();
+  var stderrLines = toLineStream(broadcastStderr, runOptions.stderrEncoding);
+  broadcastStderr.listen((List<int> data) => stderr.addAll(data));
+  stderrLines.listen(logStderr);
 
-    var encoding = runOptions.stdoutEncoding;
+  var encoding = runOptions.stdoutEncoding;
   var code = await process.exitCode;
-      var stdoutString = encoding.decode(stdout);
+  var stdoutString = encoding.decode(stdout);
 
-      if (code != 0) {
-        throw ProcessException._(
-            executable, code, stdoutString, encoding.decode(stderr));
-      }
+  if (code != 0) {
+    throw ProcessException._(
+        executable, code, stdoutString, encoding.decode(stderr));
+  }
 
-      return stdoutString;
+  return stdoutString;
 }
 
 /// Asynchronously run an [executable].
@@ -162,7 +162,7 @@ class RunOptions {
       this.stdoutEncoding = systemEncoding,
       this.stderrEncoding = systemEncoding})
       : environment = environment ?? {},
-      runInShell = runInShell ?? Platform.isWindows;
+        runInShell = runInShell ?? Platform.isWindows;
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.

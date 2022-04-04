@@ -27,7 +27,7 @@ void main() {
     });
 
     test('Dart.version', () {
-      expect(Dart.version(quiet: true), isNotEmpty);
+      expect(Dart.version(), isNotEmpty);
     });
 
     grinderTest('dart2js version', () {
@@ -40,13 +40,6 @@ void main() {
     grinderTest('analyzer version', () {
       expect(Analyzer.version(), isNotNull);
     }, (MockGrinderContext ctx) {
-      expect(ctx.logBuffer, isNotEmpty);
-      expect(ctx.isFailed, false);
-    });
-
-    grinderTest('Pub.version', () {
-      expect(Pub.version(), isNotNull);
-    }, (ctx) {
       expect(ctx.logBuffer, isNotEmpty);
       expect(ctx.isFailed, false);
     });
