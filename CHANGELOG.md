@@ -1,5 +1,6 @@
 ## 0.9.1
 - Address an issue with the removal of the `pub` tool from Dart 2.17 (#385).
+- Address an issue with the removal of the `dartfmt` tool from Dart 2.17.
 
 ## 0.9.0
 - Publish `0.9.0` stable.

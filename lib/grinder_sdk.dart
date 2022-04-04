@@ -62,13 +62,15 @@ String sdkBin(String name) {
 /// args set in `vmArgs`.
 class Dart {
   /// Run a dart [script] using [runlib.run]. Returns the stdout.
-  static String run(String script,
-      {List<String> arguments = const [],
-      bool quiet = false,
-      String? packageRoot,
-      RunOptions? runOptions, //
-      String? workingDirectory, //
-      List<String> vmArgs = const []}) {
+  static String run(
+    String script, {
+    List<String> arguments = const [],
+    bool quiet = false,
+    String? packageRoot,
+    RunOptions? runOptions,
+    String? workingDirectory,
+    List<String> vmArgs = const [],
+  }) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
@@ -76,24 +78,21 @@ class Dart {
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static Future<String> runAsync(String script,
-      {List<String> arguments = const [],
-      bool quiet = false,
-      String? packageRoot,
-      RunOptions? runOptions, //
-      List<String> vmArgs = const []}) {
+  static Future<String> runAsync(
+    String script, {
+    List<String> arguments = const [],
+    bool quiet = false,
+    String? packageRoot,
+    RunOptions? runOptions,
+    List<String> vmArgs = const [],
+  }) {
     final args = _buildArgs(script, arguments, packageRoot, vmArgs);
 
     return runlib.runAsync(dartVM.path,
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static String version({bool quiet = false}) {
-    // TODO: We may want to run `dart --version` in order to know the version
-    // of the SDK that grinder has located.
-    // runlib.run(dartVM.path, arguments: ['--version'], quiet: quiet);
-    // The stdout does not have a stable documented format, so use the provided
-    // metadata instead.
+  static String version({@Deprecated('No longer used.') bool quiet = false}) {
     return Platform.version.substring(0, Platform.version.indexOf(' '));
   }
 
@@ -146,7 +145,8 @@ class Pub {
 
     if (force || !publock.upToDate(pubspec)) {
       return runlib
-          .runAsync(sdkBin('dart'), arguments: ['pub', 'get'], runOptions: runOptions)
+          .runAsync(sdkBin('dart'),
+              arguments: ['pub', 'get'], runOptions: runOptions)
           .then((_) => null);
     }
 
@@ -164,7 +164,8 @@ class Pub {
       {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     return runlib
-        .runAsync(sdkBin('dart'), arguments: ['pub', 'upgrade'], runOptions: runOptions)
+        .runAsync(sdkBin('dart'),
+            arguments: ['pub', 'upgrade'], runOptions: runOptions)
         .then((_) => null);
   }
 
@@ -249,9 +250,6 @@ class Pub {
     return runlib.runAsync(sdkBin('dart'),
         arguments: args, runOptions: runOptions);
   }
-
-  static String? version({bool quiet = false}) =>
-      _parseVersion(_run('--version', quiet: quiet));
 
   static PubGlobal get global => _global;
 
@@ -394,36 +392,54 @@ class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
   static void format(fileOrPath, {int? lineLength}) {
-    _run('--overwrite', coerceToPathList(fileOrPath), lineLength: lineLength);
+    _run(const [], coerceToPathList(fileOrPath), lineLength: lineLength);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
   static bool dryRun(fileOrPath, {int? lineLength}) {
-    final results =
-        _run('--dry-run', coerceToPathList(fileOrPath), lineLength: lineLength);
-    return results.trim().isNotEmpty;
+    try {
+      _run(
+        ['--output=none', '--set-exit-if-changed'],
+        coerceToPathList(fileOrPath),
+        lineLength: lineLength,
+      );
+      return false;
+    } on ProcessException catch (e) {
+      if (e.exitCode == 1) {
+        return true;
+      }
+      rethrow;
+    }
   }
 
-  static String _run(String option, List<String> targets,
-      {bool quiet = false, int? lineLength}) {
-    final args = [option];
-    if (lineLength != null) args.add('--line-length=$lineLength');
+  static String _run(
+    List<String> options,
+    List<String> targets, {
+    bool quiet = false,
+    int? lineLength,
+  }) {
+    final args = <String>['format', ...options];
+    if (lineLength != null) {
+      args.add('--line-length=$lineLength');
+    }
     args.addAll(targets);
-    return runlib.run(sdkBin('dartfmt'), quiet: quiet, arguments: args);
+    return runlib.run(sdkBin('dart'), quiet: quiet, arguments: args);
   }
 }
 
 /// Access the `pub global` commands.
 class PubGlobal {
-  late final Set<String> _activatedPackages = list().map((app) => app.packageName).toSet();
+  late final Set<String> _activatedPackages =
+      list().map((app) => app.packageName).toSet();
 
   PubGlobal._();
 
   /// Install a new Dart application.
   void activate(String packageName, {bool force = false}) {
     if (force || !isActivated(packageName)) {
-      runlib.run(sdkBin('dart'), arguments: ['pub', 'global', 'activate', packageName]);
+      runlib.run(sdkBin('dart'),
+          arguments: ['pub', 'global', 'activate', packageName]);
       _activatedPackages.add(packageName);
     }
   }
@@ -458,8 +474,8 @@ class PubGlobal {
     //discoveryapis_generator 0.6.1
     //...
 
-    var stdout =
-        runlib.run(sdkBin('dart'), arguments: ['pub', 'global', 'list'], quiet: true);
+    var stdout = runlib.run(sdkBin('dart'),
+        arguments: ['pub', 'global', 'list'], quiet: true);
 
     var lines = stdout.trim().split('\n');
     return lines.map((line) {
@@ -470,7 +486,8 @@ class PubGlobal {
   }
 
   /// Returns whether the given Dart application is installed.
-  bool isActivated(String packageName) => _activatedPackages.contains(packageName);
+  bool isActivated(String packageName) =>
+      _activatedPackages.contains(packageName);
 }
 
 /// A Dart command-line application, installed via `pub global activate`.
