@@ -4,12 +4,10 @@
 library grinder.utils;
 
 import 'dart:async';
-import 'dart:collection';
 import 'dart:io';
 import 'dart:mirrors';
 
 import 'package:collection/collection.dart';
-
 import 'package:path/path.dart' as path;
 
 class ResettableTimer implements Timer {
