@@ -26,7 +26,7 @@ class TaskDiscovery {
   final LibraryMirror library;
 
   late final Map<Symbol, DeclarationMirror> resolvedDeclarations =
-    resolveExportedDeclarations(library);
+      resolveExportedDeclarations(library);
 
   TaskDiscovery(this.library);
 

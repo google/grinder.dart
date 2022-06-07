@@ -104,8 +104,11 @@ void main() {
       // Filter out __CF_USER_TEXT_ENCODING.
       // Filter out COMSPEC, PATHEXT, PROMPT in Windows
       expect(
-          json['environment'].keys.where(
-              (str) => (!str.startsWith('__') && !str.startsWith('GLIB') && str != 'COMSPEC' && str != 'PATHEXT' && str != 'PROMPT')),
+          json['environment'].keys.where((str) => (!str.startsWith('__') &&
+              !str.startsWith('GLIB') &&
+              str != 'COMSPEC' &&
+              str != 'PATHEXT' &&
+              str != 'PROMPT')),
           unorderedEquals(environment.keys));
     });
 

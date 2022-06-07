@@ -109,8 +109,7 @@ void main() {
 
     test('fileExt null', () {
       final fileNameNoExt = 'temp';
-      final tempFile =
-          File('${temp.path}${_sep}tempdir$_sep$fileNameNoExt');
+      final tempFile = File('${temp.path}${_sep}tempdir$_sep$fileNameNoExt');
       expect(fileExt(tempFile), null);
     });
 
