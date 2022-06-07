@@ -50,20 +50,20 @@ class GrinderTask {
 
   /// This method is invoked when the task is started. If a task was created
   /// with a function, that function will be invoked by this method.
-  dynamic execute(GrinderContext _context, [TaskArgs? args]) {
+  dynamic execute(GrinderContext context, [TaskArgs? args]) {
     var taskFunction = this.taskFunction;
     if (taskFunction == null) return null;
 
     if (taskFunction is TaskFunction) {
       return zonedContext.withValue(
-          _context, () => taskFunction(args ?? TaskArgs(name, [])));
+          context, () => taskFunction(args ?? TaskArgs(name, [])));
     } else if (taskFunction is _OldTaskFunction) {
-      _context.log(
+      context.log(
           "warning: task definitions no longer require an explicit 'GrinderContext' parameter");
-      return zonedContext.withValue(_context, () => taskFunction(_context));
+      return zonedContext.withValue(context, () => taskFunction(context));
     } else {
       return zonedContext.withValue(
-          _context, taskFunction as dynamic Function());
+          context, taskFunction as dynamic Function());
     }
   }
 
