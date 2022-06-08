@@ -142,19 +142,19 @@ List<String> coerceToPathList(filesOrPaths) {
 /// added to the result unchanged.
 Set<String> findDartSourceFiles(Iterable<String> paths) {
   /// Returns `true` if this [fileName] is a Dart file.
-  bool _isDartFileName(String fileName) => fileName.endsWith('.dart');
+  bool isDartFileName(String fileName) => fileName.endsWith('.dart');
 
   /// Returns `true` if this relative path is a hidden directory.
-  bool _isInHiddenDir(String relative) =>
+  bool isInHiddenDir(String relative) =>
       path.split(relative).any((part) => part.startsWith('.'));
 
-  Set<String> _findDartSourceFiles(Directory directory) {
+  Set<String> findDartSourceFiles(Directory directory) {
     var files = <String>{};
     if (directory.existsSync()) {
       for (var entry
           in directory.listSync(recursive: true, followLinks: false)) {
         var relative = path.relative(entry.path, from: directory.path);
-        if (_isDartFileName(entry.path) && !_isInHiddenDir(relative)) {
+        if (isDartFileName(entry.path) && !isInHiddenDir(relative)) {
           files.add(entry.path);
         }
       }
@@ -166,7 +166,7 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 
   for (final path in paths) {
     if (FileSystemEntity.typeSync(path) == FileSystemEntityType.directory) {
-      files.addAll(_findDartSourceFiles(Directory(path)));
+      files.addAll(findDartSourceFiles(Directory(path)));
     } else {
       files.add(path);
     }
