@@ -1,6 +1,9 @@
 name: Dart
 
 on:
+  schedule:
+    # “At 00:00 (UTC) on Sunday.”
+    - cron: '0 0 * * 0'
   push:
     branches: [ master ]
   pull_request:
@@ -10,20 +13,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Docker images for other release channels - like dev and beta - are also
-    # available; see https://hub.docker.com/r/google/dart/ for the available
-    # images.
-    container:
-      image:  google/dart:dev
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Print Dart SDK version
-        run: dart --version
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+      - uses: dart-lang/setup-dart@6a218f2413a3e78e9087f638a238f6b40893203d
 
       - name: Install dependencies
         run: dart pub get
+  
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
 
       - name: Run the grind script (for analysis and testing)
         run: dart tool/grind.dart

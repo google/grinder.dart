@@ -36,8 +36,12 @@ dependencies:
 ''', flush: true);
     Dart.run(FilePath.current.join('bin', 'init.dart').path,
         runOptions: RunOptions(workingDirectory: temp.path));
-    Process.runSync('pub', ['get'],
-        workingDirectory: temp.path, runInShell: true);
+    Process.runSync(
+      'dart',
+      ['pub', 'get'],
+      workingDirectory: temp.path,
+      runInShell: true,
+    );
     Analyzer.analyze(temp.join('tool', 'grind.dart').path, fatalWarnings: true);
   } finally {
     temp.delete();
