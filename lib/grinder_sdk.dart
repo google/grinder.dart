@@ -263,24 +263,24 @@ class Pub {
 /// Utility tasks for invoking dart2js.
 class Dart2js {
   static List<String> _buildArgs(
-      {required bool minify,
-      required bool csp,
-      required bool enableExperimentalMirrors,
-      String? categories,
-      required List<String> extraArgs,
-      required File outFile,
-      required File sourceFile}) {
-    var args = <String>[];
-    if (minify) args.add('--minify');
-    if (csp) args.add('--csp');
-    if (enableExperimentalMirrors) args.add('--enable-experimental-mirrors');
-    if (categories != null) args.add('--categories=$categories');
-
-    return args
-      ..addAll(extraArgs)
-      ..add('-o${outFile.path}')
-      ..add(sourceFile.path);
-  }
+          {required bool minify,
+          required bool csp,
+          required bool enableExperimentalMirrors,
+          String? categories,
+          required List<String> extraArgs,
+          required File outFile,
+          required File sourceFile}) =>
+      [
+        'compile',
+        'js',
+        if (minify) '--minify',
+        if (csp) '--csp',
+        if (enableExperimentalMirrors) '--enable-experimental-mirrors',
+        if (categories != null) '--categories=$categories',
+        ...extraArgs,
+        '-o${outFile.path}',
+        sourceFile.path
+      ];
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
   static void compile(File sourceFile,
@@ -300,7 +300,7 @@ class Dart2js {
 
     if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
-    runlib.run(sdkBin('dart2js'),
+    runlib.run(sdkBin('dart'),
         arguments: _buildArgs(
             minify: minify,
             csp: csp,
@@ -330,7 +330,7 @@ class Dart2js {
     if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
     return runlib
-        .runAsync(sdkBin('dart2js'),
+        .runAsync(sdkBin('dart'),
             arguments: _buildArgs(
                 minify: minify,
                 csp: csp,
@@ -345,17 +345,18 @@ class Dart2js {
   static String? version({bool quiet = false}) =>
       _parseVersion(_run('--version', quiet: quiet));
 
-  static String _run(String command, {bool quiet = false}) =>
-      runlib.run(sdkBin('dart2js'), quiet: quiet, arguments: [command]);
+  static String _run(String command, {bool quiet = false}) => runlib
+      .run(sdkBin('dart'), quiet: quiet, arguments: ['compile', 'js', command]);
 }
 
 /// Utility class for invoking dartdoc.
 class DartDoc {
   static void doc() {
-    runlib.run(sdkBin('dartdoc'));
+    runlib.run(sdkBin('dart'), arguments: ['doc']);
   }
 
-  static Future docAsync() => runlib.runAsync(sdkBin('dartdoc'));
+  static Future docAsync() =>
+      runlib.runAsync(sdkBin('dart'), arguments: ['doc']);
 }
 
 /// Utility tasks for invoking the analyzer.
@@ -363,27 +364,28 @@ class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
       {Directory? packageRoot, bool fatalWarnings = false}) {
-    final args = <String>[];
-    if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
-    if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(findDartSourceFiles(coerceToPathList(fileOrPaths)));
-    runlib.run(sdkBin('dartanalyzer'), arguments: args);
+    runlib.run(sdkBin('dart'), arguments: [
+      'analyze',
+      if (packageRoot != null) '--package-root=${packageRoot.path}',
+      if (fatalWarnings) '--fatal-warnings',
+      ...findDartSourceFiles(coerceToPathList(fileOrPaths))
+    ]);
   }
 
   /// Analyze one or more [File]s or paths ([String]).
   @Deprecated('see `analyze`, which now takes a list as an argument')
   static void analyzeFiles(List files,
       {Directory? packageRoot, bool fatalWarnings = false}) {
-    final args = <String>[];
-    if (packageRoot != null) args.add('--package-root=${packageRoot.path}');
-    if (fatalWarnings) args.add('--fatal-warnings');
-    args.addAll(coerceToPathList(files));
-
-    runlib.run(sdkBin('dartanalyzer'), arguments: args);
+    runlib.run(sdkBin('dart'), arguments: [
+      'analyze',
+      if (packageRoot != null) '--package-root=${packageRoot.path}',
+      if (fatalWarnings) '--fatal-warnings',
+      ...coerceToPathList(files)
+    ]);
   }
 
   static String? version({bool quiet = false}) => _parseVersion(runlib
-      .run(sdkBin('dartanalyzer'), quiet: quiet, arguments: ['--version']));
+      .run(sdkBin('dart'), quiet: quiet, arguments: ['analyze', '--version']));
 }
 
 /// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
