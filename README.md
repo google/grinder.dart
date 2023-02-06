@@ -3,13 +3,8 @@
 
 > Dart workflows, automated.
 
-## What's this?
-
 Grinder consists of a library to define project tasks (e.g. `test`, `build`,
 `doc`) and a command-line tool to run them.
-
-[![pub package](https://img.shields.io/pub/v/grinder.svg)](https://pub.dartlang.org/packages/grinder)
-[![Build Status](https://github.com/google/grinder.dart/workflows/Dart/badge.svg)](https://github.com/google/grinder.dart/actions)
 
 ## Getting Started
 
