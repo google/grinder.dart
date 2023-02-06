@@ -107,3 +107,8 @@ would pass separate flags and options to two different tasks:
 ## Disclaimer
 
 This is not an official Google product.
+
+## Publishing automation
+
+For information about our publishing automation and release process, see
+https://github.com/dart-lang/ecosystem/wiki/Publishing-automation.
