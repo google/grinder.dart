@@ -1,6 +1,9 @@
-# Grinder
+[![Dart](https://github.com/google/grinder.dart/actions/workflows/dart.yml/badge.svg)](https://github.com/google/grinder.dart/actions/workflows/dart.yml)
+[![pub package](https://img.shields.io/pub/v/grinder.svg)](https://pub.dev/packages/grinder)
 
 > Dart workflows, automated.
+
+## What's this?
 
 Grinder consists of a library to define project tasks (e.g. `test`, `build`,
 `doc`) and a command-line tool to run them.
