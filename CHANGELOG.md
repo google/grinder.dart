@@ -1,3 +1,9 @@
+## 0.9.3
+
+- Remove the use of the `alwaysThrows` annotation.
+- Populate the pubspec `repository` field.
+- Update the markdown badges in the readme.
+
 ## 0.9.2
 - Run all Dart SDK executables through `dart` rather than their old standalone
   names.
