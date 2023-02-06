@@ -368,7 +368,7 @@ class Analyzer {
       'analyze',
       if (packageRoot != null) '--package-root=${packageRoot.path}',
       if (fatalWarnings) '--fatal-warnings',
-      ...findDartSourceFiles(coerceToPathList(fileOrPaths))
+      fileOrPaths
     ]);
   }
 
