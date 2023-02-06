@@ -1,6 +1,7 @@
 ## 0.9.3
 
 - Remove the use of the `alwaysThrows` annotation.
+- Fixed an issue with the `analyze` command and long paths on Windows (#392).
 - Populate the pubspec `repository` field.
 - Update the markdown badges in the readme.
 
