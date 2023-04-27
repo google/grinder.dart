@@ -1,3 +1,7 @@
+## 0.9.4
+
+- Update the SDK constraint to `>=2.17.0 <4.0.0`.
+
 ## 0.9.3
 
 - Remove the use of the `alwaysThrows` annotation.
@@ -6,14 +10,17 @@
 - Update the markdown badges in the readme.
 
 ## 0.9.2
+
 - Run all Dart SDK executables through `dart` rather than their old standalone
   names.
 
 ## 0.9.1
+
 - Address an issue with the removal of the `pub` tool from Dart 2.17 (#385).
 - Address an issue with the removal of the `dartfmt` tool from Dart 2.17.
 
 ## 0.9.0
+
 - Publish `0.9.0` stable.
 - Address an issue with the `Process.run()` / `RunOptions({bool runInShell})` API (@liudonghua123).
 
