@@ -547,7 +547,7 @@ String? _parseVersion(String output) {
 }
 
 class _PubGlobalApp extends PubApp {
-  _PubGlobalApp(String packageName) : super._(packageName);
+  _PubGlobalApp(super.packageName) : super._();
 
   @override
   bool get isGlobal => true;
@@ -580,7 +580,7 @@ class _PubGlobalApp extends PubApp {
 }
 
 class _PubLocalApp extends PubApp {
-  _PubLocalApp(String packageName) : super._(packageName);
+  _PubLocalApp(super.packageName) : super._();
 
   @override
   bool get isGlobal => false;

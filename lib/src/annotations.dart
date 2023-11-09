@@ -50,5 +50,5 @@ class Depends {
 ///
 /// Use this instead of [Task] when defining the default task.
 class DefaultTask extends Task {
-  const DefaultTask([String? description]) : super(description);
+  const DefaultTask([super.description]);
 }

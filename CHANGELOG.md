@@ -1,3 +1,8 @@
+## 0.9.5
+
+- Update the SDK constraint to 3.0.
+- Rev to the latest version of `package:lints`.
+
 ## 0.9.4
 
 - Update the SDK constraint to `>=2.17.0 <4.0.0`.
