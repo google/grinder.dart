@@ -6,6 +6,8 @@
 /// The main entry-point (`bin/grinder.dart`) trampolines into a different
 /// script; running with `_boot.dart` instead allows you to hit breakpoints when
 /// debugging.
+library;
+
 import 'package:grinder/grinder.dart';
 
 Future<dynamic> main(List<String> args) => grind(args);
