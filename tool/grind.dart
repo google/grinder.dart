@@ -28,7 +28,7 @@ void checkInit() {
     final pubspec = temp.join('pubspec.yaml').createFile();
     pubspec.writeAsStringSync('''name: foo
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '^3.0.0'
 
 dependencies:
   grinder:
