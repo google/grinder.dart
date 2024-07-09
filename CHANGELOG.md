@@ -1,5 +1,6 @@
 ## 0.9.6-wip
 
+- Update the SDK constraint to 3.1.
 - Update to package:lints 4.0.0.
 
 ## 0.9.5
