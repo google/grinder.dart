@@ -5,8 +5,6 @@ library grinder.src.discover_tasks;
 
 import 'dart:mirrors';
 
-import 'package:collection/collection.dart';
-
 import '../grinder.dart';
 import 'utils.dart';
 
@@ -35,7 +33,7 @@ class TaskDiscovery {
     final cache = <DeclarationMirror, AnnotatedTask>{};
     return resolvedDeclarations.values
         .map((decl) => discoverDeclaration(decl, cache))
-        .whereNotNull();
+        .nonNulls;
   }
 
   /// Extract a task from a [Task]-annotated [decl].
