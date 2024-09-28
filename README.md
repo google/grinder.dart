@@ -17,7 +17,7 @@ Tasks are defined entirely by Dart code allowing you to take advantage of
 the whole Dart ecosystem to write and debug them.  Task definitions reside
 in a `tool/grind.dart` script. To create a simple grinder script, run:
 
-    pub run grinder:init
+    dart run grinder:init
 
 In general, grinder scripts look something like this:
 
