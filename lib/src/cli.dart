@@ -4,11 +4,11 @@
 import 'dart:async';
 
 import 'package:cli_util/cli_logging.dart' show Ansi;
-import 'package:grinder/src/utils.dart';
 
 import '../grinder.dart';
 import 'cli_util.dart';
 import 'singleton.dart' as singleton;
+import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
 const String appVersion = '0.9.6-wip';

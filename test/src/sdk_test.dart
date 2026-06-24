@@ -6,7 +6,7 @@ import 'dart:io' hide ProcessException;
 import 'package:grinder/grinder.dart';
 import 'package:test/test.dart';
 
-import 'src/_common.dart';
+import 'common.dart';
 
 void main() {
   group('grinder.sdk', () {
@@ -122,8 +122,8 @@ void main() {
     test(
         'should analyze a list of files ',
         () => expect(
-            () => Analyzer.analyze(
-                ['test/grinder_sdk_test.dart', 'tool/grind.dart']),
+            () =>
+                Analyzer.analyze(['test/src/sdk_test.dart', 'tool/grind.dart']),
             isNot(throwsA(isA<ProcessException>()))));
   });
 }

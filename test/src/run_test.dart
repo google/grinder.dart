@@ -5,7 +5,6 @@ import 'dart:convert' show Converter, Encoding, jsonDecode;
 import 'dart:io' as io;
 
 import 'package:grinder/grinder.dart';
-import 'package:grinder/grinder_tools.dart';
 import 'package:test/test.dart';
 
 final String sep = io.Platform.pathSeparator;

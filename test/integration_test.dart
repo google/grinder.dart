@@ -5,7 +5,7 @@ import 'package:grinder/grinder.dart';
 import 'package:grinder/src/cli.dart';
 import 'package:test/test.dart';
 
-import 'src/_common.dart';
+import 'src/common.dart';
 
 Map ranTasks = {};
 

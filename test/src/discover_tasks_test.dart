@@ -8,7 +8,7 @@ import 'package:grinder/src/discover_tasks.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import '_common.dart';
+import 'common.dart';
 import 'task_discovery/bad_tasks.dart' as bad;
 import 'task_discovery/external_tasks.dart' as external_tasks;
 import 'task_discovery/good_tasks.dart' as good;

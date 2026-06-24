@@ -18,16 +18,17 @@ import 'src/grinder_task.dart';
 import 'src/singleton.dart';
 import 'src/task_invocation.dart';
 
-export 'grinder_files.dart';
-export 'grinder_sdk.dart';
-export 'grinder_tools.dart';
 export 'src/annotations.dart';
 export 'src/cli.dart' show grinderArgs;
+export 'src/files.dart';
 export 'src/grinder.dart';
 export 'src/grinder_context.dart';
 export 'src/grinder_exception.dart';
 export 'src/grinder_task.dart';
+export 'src/run.dart';
+export 'src/sdk.dart';
 export 'src/task_invocation.dart';
+export 'src/tools.dart';
 
 /// Run the grinder file.
 ///

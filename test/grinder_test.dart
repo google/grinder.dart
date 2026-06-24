@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:grinder/grinder.dart' hide fail;
 import 'package:test/test.dart';
 
-import 'src/_common.dart';
+import 'src/common.dart';
 
 void main() {
   group('grinder', () {

@@ -9,7 +9,7 @@ import 'dart:io';
 
 import 'package:glob/glob.dart';
 
-import 'grinder.dart';
+import 'grinder_context.dart';
 
 final String _sep = Platform.pathSeparator;
 

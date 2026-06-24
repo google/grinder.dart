@@ -8,10 +8,11 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 
-import 'grinder.dart';
-import 'src/run.dart' as runlib;
-import 'src/run_utils.dart';
-import 'src/utils.dart';
+import 'files.dart';
+import 'run.dart';
+import 'run.dart' as runlib;
+import 'run_utils.dart';
+import 'utils.dart';
 
 /// A set of common top-level directories according to the Pub package layout
 /// convention which usually contain Dart source code.

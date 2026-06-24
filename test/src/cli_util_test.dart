@@ -7,7 +7,7 @@ import 'package:grinder/src/grinder.dart';
 import 'package:grinder/src/grinder_task.dart';
 import 'package:test/test.dart';
 
-import '_common.dart';
+import 'common.dart';
 
 void main() {
   group('cli_util', () {

@@ -6,12 +6,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'grinder.dart';
-import 'src/run.dart' as run_lib;
-import 'src/run_utils.dart';
-import 'src/utils.dart';
-
-export 'src/run.dart';
+import 'files.dart';
+import 'grinder_context.dart';
+import 'run.dart';
+import 'run_utils.dart';
+import 'sdk.dart';
+import 'utils.dart';
 
 final Directory binDir = Directory('bin');
 final Directory buildDir = Directory('build');
