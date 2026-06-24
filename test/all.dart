@@ -1,8 +1,6 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library all_test;
-
 import 'grinder_files_test.dart' as grinder_files_test;
 import 'grinder_sdk_test.dart' as grinder_sdk_test;
 import 'grinder_test.dart' as grinder_test;

@@ -6,7 +6,7 @@
 /// See the [README][] for detailed usage information.
 ///
 /// [README]: https://pub.dartlang.org/packages/grinder
-library grinder;
+library;
 
 import 'dart:mirrors';
 

@@ -3,8 +3,6 @@
 
 // ignore_for_file: prefer_void_to_null
 
-library grinder.test.task_discovery.bad_tasks;
-
 import 'package:grinder/grinder.dart';
 
 import 'external_tasks.dart';

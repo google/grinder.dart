@@ -1,10 +1,9 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/// General file system routines, useful in the context of running builds. This
-/// includes the [FileSet] class, which is used for reasoning about sets of
-/// files.
-library grinder.files;
+// General file system routines, useful in the context of running builds. This
+// includes the [FileSet] class, which is used for reasoning about sets of
+// files.
 
 import 'dart:io';
 

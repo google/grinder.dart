@@ -1,8 +1,6 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.src.task_invocation;
-
 /// An invocation of a [GrinderTask].
 ///
 /// Identifies the [name] of the task to invoke, and any [arguments] to send to

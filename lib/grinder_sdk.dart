@@ -1,8 +1,7 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/// A library to access tools in the Dart SDK.
-library grinder.sdk;
+// A library to access tools in the Dart SDK.
 
 import 'dart:async';
 import 'dart:io';
