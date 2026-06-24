@@ -25,7 +25,7 @@ set defaultTask(GrinderTask? v) {
 }
 
 /// A class representing a running instance of a Grinder.
-class Grinder {
+final class Grinder {
   final List<GrinderTask> _tasks = [];
   Map<GrinderTask, List<TaskInvocation>>? _taskDeps;
   final List<TaskInvocation> _invocationOrder = [];

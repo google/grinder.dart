@@ -2,7 +2,7 @@
 // governed by a BSD-style license that can be found in the LICENSE file.
 
 /// An exception class for the Grinder library.
-class GrinderException implements Exception {
+final class GrinderException implements Exception {
   /// A message describing the error.
   final String message;
 

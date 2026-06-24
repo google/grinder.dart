@@ -13,7 +13,7 @@ typedef TaskFunction = dynamic Function(TaskArgs args);
 
 /// Represents a Grinder task. These can be created automatically using the
 /// [Task] and [Depends] annotations.
-class GrinderTask {
+final class GrinderTask {
   /// The name of the task.
   final String name;
 

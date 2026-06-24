@@ -18,7 +18,7 @@ void discoverTasks(Grinder grinder, LibraryMirror buildLibrary) {
   });
 }
 
-class TaskDiscovery {
+final class TaskDiscovery {
   final LibraryMirror library;
 
   late final Map<Symbol, DeclarationMirror> resolvedDeclarations =
@@ -125,7 +125,7 @@ class TaskDiscovery {
   }
 }
 
-class AnnotatedTask {
+final class AnnotatedTask {
   GrinderTask task;
   bool isDefault;
 

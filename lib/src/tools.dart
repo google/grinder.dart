@@ -41,7 +41,7 @@ void defaultClean([GrinderContext? context]) => delete(buildDir);
 
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
-class TestRunner {
+final class TestRunner {
   final PubApp _test = PubApp.local('test');
 
   TestRunner();
@@ -139,7 +139,7 @@ class TestRunner {
 }
 
 /// A class to drive the Dart Dev Compiler (DDC, from the `dev_compiler` package).
-class DevCompiler {
+final class DevCompiler {
   final PubApp _ddc = PubApp.global('dev_compiler');
 
   DevCompiler();

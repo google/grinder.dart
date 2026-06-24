@@ -8,7 +8,7 @@ import 'dart:mirrors';
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 
-class ResettableTimer implements Timer {
+final class ResettableTimer implements Timer {
   final Duration duration;
   final void Function() callback;
 
@@ -95,7 +95,7 @@ T? getFirstMatchingAnnotation<T>(DeclarationMirror decl) => decl.metadata
     .firstOrNull;
 
 /// A simple way to expose a default value that can be overridden within zones.
-class ZonedValue<T> {
+final class ZonedValue<T> {
   final T _rootValue;
   final _valueKey = Object();
   final _finalKey = Object();

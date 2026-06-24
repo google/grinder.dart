@@ -18,7 +18,7 @@ void grinderTest(String name, Function setup, TestVerification verify) {
   });
 }
 
-class MockGrinderContext implements GrinderContext {
+final class MockGrinderContext implements GrinderContext {
   @override
   Grinder get grinder =>
       throw UnsupportedError('MockGrinderContext.grinder is unsupported');

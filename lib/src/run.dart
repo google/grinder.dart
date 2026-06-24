@@ -130,7 +130,7 @@ Future<String> runProcessAsync(String executable,
 }
 
 /// An exception from a process which exited with a non-zero exit code.
-class ProcessException implements Exception {
+final class ProcessException implements Exception {
   final String executable;
   final int exitCode;
   final String stdout;
@@ -144,7 +144,7 @@ class ProcessException implements Exception {
 
 /// Arguments passed to [Process.run] or [Process.start].
 /// See [Process.run] for more details.
-class RunOptions {
+final class RunOptions {
   final String? workingDirectory;
   final Map<String, String> environment;
   final bool includeParentEnvironment;

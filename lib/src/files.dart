@@ -23,7 +23,7 @@ final String _sep = Platform.pathSeparator;
 //   - and returns an output set
 
 /// A class to handle defining, composing, and comparing groups of files.
-class FileSet {
+final class FileSet {
   List<File> files = [];
 
   FileSet.fromDir(Directory dir, {String? pattern, bool recurse = false}) {
@@ -92,7 +92,7 @@ class FileSet {
 /// A class to make it easier to manipulate file system entites. Once paths or
 /// entites are converted into `Path`s, they can be easily copied, deleted,
 /// joined, and their name retrieved.
-class FilePath {
+final class FilePath {
   /// Creates a temporary directory in the system temp directory. See
   /// [Directory.systemTemp] and [Directory.createTempSync]. If [prefix] is
   /// missing or null, the empty string is used for [prefix].

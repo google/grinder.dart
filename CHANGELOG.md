@@ -7,6 +7,9 @@
   All members provided by these libraries are still available through the main
   `package:grinder/grinder.dart` library.
 
+- **Breaking change:** Mark all classes exported by this library as `final`
+  except for `GrinderContext`.
+
 ## 0.9.5
 
 - Update the SDK constraint to 3.0.

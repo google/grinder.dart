@@ -16,7 +16,7 @@ const dynamic nullTask = null;
 Null get nullReturningGetter => null;
 
 @Task()
-class Class {}
+final class Class {}
 
 @Task()
 @Depends(shownMethod)

@@ -7,7 +7,7 @@
 /// [Function] methods or properties which return [Function]s.
 ///
 /// Task dependencies can be defined with a co-located [Depends] annotation.
-class Task {
+final class Task {
   /// See [GrinderTask.description].
   final String? description;
 
@@ -21,7 +21,7 @@ class Task {
 ///   rename refactoring, finding uses, etc.
 /// * [String]. Useful for referring to programmatically added tasks.
 /// * [TaskInvocation]. Useful for passing args to dependencies.
-class Depends {
+final class Depends {
   final dynamic dep1;
   final dynamic dep2;
   final dynamic dep3;
@@ -49,6 +49,6 @@ class Depends {
 /// specified on the command line.
 ///
 /// Use this instead of [Task] when defining the default task.
-class DefaultTask extends Task {
+final class DefaultTask extends Task {
   const DefaultTask([super.description]);
 }

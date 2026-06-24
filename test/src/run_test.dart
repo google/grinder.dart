@@ -162,7 +162,7 @@ void main() {
 }
 
 /// Simple Encoding just to test if this encoding is used when passed.
-class DummyEncoding extends Encoding {
+final class DummyEncoding extends Encoding {
   const DummyEncoding();
 
   @override
@@ -177,7 +177,7 @@ class DummyEncoding extends Encoding {
 }
 
 /// Decoder for [DummyEncoding].
-class DummyDecoder extends Converter<List<int>, String> {
+final class DummyDecoder extends Converter<List<int>, String> {
   static const dummyDecoderOutput = 'DummyDecoder';
 
   const DummyDecoder();

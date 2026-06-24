@@ -74,7 +74,7 @@ Future runTasks(
 
 typedef DescribeFunction = String Function();
 
-class ArgParser {
+final class ArgParser {
   final String name;
   final String description;
 
@@ -158,7 +158,7 @@ ${_describeTasks()}
   }
 }
 
-class _ArgsFlag {
+final class _ArgsFlag {
   final String name;
   final String? abbr;
   final String? help;
@@ -175,7 +175,7 @@ class _ArgsFlag {
   }
 }
 
-class ArgResults {
+final class ArgResults {
   /// The raw list of arguments.
   final List<String> arguments;
 
