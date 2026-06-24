@@ -6,7 +6,7 @@ import 'dart:io';
 import 'dart:mirrors';
 
 import 'package:collection/collection.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 
 class ResettableTimer implements Timer {
   final Duration duration;
@@ -144,14 +144,14 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 
   /// Returns `true` if this relative path is a hidden directory.
   bool isInHiddenDir(String relative) =>
-      path.split(relative).any((part) => part.startsWith('.'));
+      p.split(relative).any((part) => part.startsWith('.'));
 
   Set<String> findDartSourceFiles(Directory directory) {
     var files = <String>{};
     if (directory.existsSync()) {
       for (var entry
           in directory.listSync(recursive: true, followLinks: false)) {
-        var relative = path.relative(entry.path, from: directory.path);
+        var relative = p.relative(entry.path, from: directory.path);
         if (isDartFileName(entry.path) && !isInHiddenDir(relative)) {
           files.add(entry.path);
         }

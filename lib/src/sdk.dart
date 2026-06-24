@@ -6,7 +6,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 
 import 'files.dart';
 import 'run.dart';
@@ -30,13 +30,13 @@ final Set<Directory> sourceDirs = [
 Set<Directory> get existingSourceDirs => Directory.current
     .listSync()
     .whereType<Directory>()
-    .map((d) => Directory(path.relative(d.path)))
+    .map((d) => Directory(p.relative(d.path)))
     .where((d) => sourceDirs.any((sd) => sd.path == d.path))
     .toSet();
 
 /// The path to the current Dart SDK.
 final Directory sdkDir =
-    Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
+    Directory(p.dirname(p.dirname(Platform.resolvedExecutable)));
 
 /// This is deprecated.
 ///
@@ -50,9 +50,9 @@ final File dartVM = File(Platform.resolvedExecutable);
 /// appending `.bat` or `.exe` on Windows. This is useful for finding the path
 /// to SDK utilities like `dartdoc`, `dart2js`, ...
 String sdkBin(String name) {
-  if (!Platform.isWindows) return path.join(sdkDir.path, 'bin', name);
+  if (!Platform.isWindows) return p.join(sdkDir.path, 'bin', name);
   if (name == 'dart') return Platform.resolvedExecutable;
-  return path.join(sdkDir.path, 'bin', '$name.bat');
+  return p.join(sdkDir.path, 'bin', '$name.bat');
 }
 
 /// Utility tasks for for getting information about the Dart VM and for running
