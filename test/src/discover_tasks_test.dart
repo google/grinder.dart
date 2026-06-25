@@ -1,15 +1,14 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.test.task_discovery.discover_tasks_test;
-
 import 'dart:mirrors';
 
 import 'package:grinder/grinder.dart';
 import 'package:grinder/src/discover_tasks.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import '_common.dart';
+import 'common.dart';
 import 'task_discovery/bad_tasks.dart' as bad;
 import 'task_discovery/external_tasks.dart' as external_tasks;
 import 'task_discovery/good_tasks.dart' as good;
@@ -27,13 +26,14 @@ void main() {
   late TaskDiscovery discoveryGood;
   late TaskDiscovery discoveryBad;
   setUp(() {
-    LibraryMirror getLib(Symbol name) => currentMirrorSystem()
-        .libraries
-        .values
-        .singleWhere((lib) => lib.qualifiedName == name);
+    LibraryMirror getLib(String urlPath) {
+      var url = Uri.parse(p.url.join(p.toUri(p.current).toString(), urlPath));
+      return currentMirrorSystem().libraries[url] ??
+          (throw 'No library found at URL "$url"');
+    }
 
-    goodLib = getLib(#grinder.test.task_discovery.good_tasks);
-    badLib = getLib(#grinder.test.task_discovery.bad_tasks);
+    goodLib = getLib('test/src/task_discovery/good_tasks.dart');
+    badLib = getLib('test/src/task_discovery/bad_tasks.dart');
     discoveryGood = TaskDiscovery(goodLib);
     discoveryBad = TaskDiscovery(badLib);
   });

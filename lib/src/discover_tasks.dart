@@ -1,8 +1,6 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.src.discover_tasks;
-
 import 'dart:mirrors';
 
 import '../grinder.dart';
@@ -20,7 +18,7 @@ void discoverTasks(Grinder grinder, LibraryMirror buildLibrary) {
   });
 }
 
-class TaskDiscovery {
+final class TaskDiscovery {
   final LibraryMirror library;
 
   late final Map<Symbol, DeclarationMirror> resolvedDeclarations =
@@ -127,7 +125,7 @@ class TaskDiscovery {
   }
 }
 
-class AnnotatedTask {
+final class AnnotatedTask {
   GrinderTask task;
   bool isDefault;
 

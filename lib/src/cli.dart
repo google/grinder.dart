@@ -1,19 +1,17 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.src.cli;
-
 import 'dart:async';
 
 import 'package:cli_util/cli_logging.dart' show Ansi;
-import 'package:grinder/src/utils.dart';
 
 import '../grinder.dart';
 import 'cli_util.dart';
 import 'singleton.dart' as singleton;
+import 'utils.dart';
 
 // This version must be updated in tandem with the pubspec version.
-const String appVersion = '0.9.6-dev';
+const String appVersion = '0.10.0-dev';
 
 List<String> grinderArgs() {
   if (_args == null) fail('grinderArgs() may only be called after grind().');
@@ -76,7 +74,7 @@ Future runTasks(
 
 typedef DescribeFunction = String Function();
 
-class ArgParser {
+final class ArgParser {
   final String name;
   final String description;
 
@@ -160,7 +158,7 @@ ${_describeTasks()}
   }
 }
 
-class _ArgsFlag {
+final class _ArgsFlag {
   final String name;
   final String? abbr;
   final String? help;
@@ -177,7 +175,7 @@ class _ArgsFlag {
   }
 }
 
-class ArgResults {
+final class ArgResults {
   /// The raw list of arguments.
   final List<String> arguments;
 

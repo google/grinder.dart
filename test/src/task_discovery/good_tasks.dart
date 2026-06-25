@@ -3,8 +3,6 @@
 
 // ignore_for_file: prefer_function_declarations_over_variables
 
-library grinder.test.task_discovery.good_tasks;
-
 import 'package:grinder/grinder.dart';
 
 export 'external_tasks.dart' show shownMethod, shownVariable;

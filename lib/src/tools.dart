@@ -1,18 +1,17 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/// Commonly used tools for build scripts.
-library grinder.tools;
+// Commonly used tools for build scripts.
 
 import 'dart:async';
 import 'dart:io';
 
-import 'grinder.dart';
-import 'src/run.dart' as run_lib;
-import 'src/run_utils.dart';
-import 'src/utils.dart';
-
-export 'src/run.dart';
+import 'files.dart';
+import 'grinder_context.dart';
+import 'run.dart';
+import 'run_utils.dart';
+import 'sdk.dart';
+import 'utils.dart';
 
 final Directory binDir = Directory('bin');
 final Directory buildDir = Directory('build');
@@ -42,7 +41,7 @@ void defaultClean([GrinderContext? context]) => delete(buildDir);
 
 /// A wrapper around the `test` package. This class is used to run your unit
 /// tests.
-class TestRunner {
+final class TestRunner {
   final PubApp _test = PubApp.local('test');
 
   TestRunner();
@@ -140,7 +139,7 @@ class TestRunner {
 }
 
 /// A class to drive the Dart Dev Compiler (DDC, from the `dev_compiler` package).
-class DevCompiler {
+final class DevCompiler {
   final PubApp _ddc = PubApp.global('dev_compiler');
 
   DevCompiler();

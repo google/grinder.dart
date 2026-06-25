@@ -1,14 +1,11 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.src.run_utils;
-
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:grinder/src/singleton.dart';
-
 import '../grinder.dart';
+import 'singleton.dart';
 
 Stream<String> toLineStream(Stream<List<int>> s, Encoding encoding) =>
     s.transform(encoding.decoder).transform(const LineSplitter());

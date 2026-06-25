@@ -1,14 +1,12 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.sdk_test;
-
 import 'dart:io' hide ProcessException;
 
 import 'package:grinder/grinder.dart';
 import 'package:test/test.dart';
 
-import 'src/_common.dart';
+import 'common.dart';
 
 void main() {
   group('grinder.sdk', () {
@@ -124,8 +122,8 @@ void main() {
     test(
         'should analyze a list of files ',
         () => expect(
-            () => Analyzer.analyze(
-                ['test/grinder_sdk_test.dart', 'tool/grind.dart']),
+            () =>
+                Analyzer.analyze(['test/src/sdk_test.dart', 'tool/grind.dart']),
             isNot(throwsA(isA<ProcessException>()))));
   });
 }

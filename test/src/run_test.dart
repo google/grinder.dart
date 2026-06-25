@@ -1,13 +1,10 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.test.src.run;
-
 import 'dart:convert' show Converter, Encoding, jsonDecode;
 import 'dart:io' as io;
 
 import 'package:grinder/grinder.dart';
-import 'package:grinder/grinder_tools.dart';
 import 'package:test/test.dart';
 
 final String sep = io.Platform.pathSeparator;
@@ -165,7 +162,7 @@ void main() {
 }
 
 /// Simple Encoding just to test if this encoding is used when passed.
-class DummyEncoding extends Encoding {
+final class DummyEncoding extends Encoding {
   const DummyEncoding();
 
   @override
@@ -180,7 +177,7 @@ class DummyEncoding extends Encoding {
 }
 
 /// Decoder for [DummyEncoding].
-class DummyDecoder extends Converter<List<int>, String> {
+final class DummyDecoder extends Converter<List<int>, String> {
   static const dummyDecoderOutput = 'DummyDecoder';
 
   const DummyDecoder();

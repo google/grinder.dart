@@ -1,8 +1,16 @@
-## 0.9.6
+## 0.10.0
 
 - Update the SDK constraint to 3.1.
-- Update to package:lints 4.0.0.
+
 - Support package:cli_util 0.5.0.
+
+- **Breaking change:** Remove `package:grinder/grinder_files.dart`,
+  `package:grinder/grinder_sdk.dart`, and `package:grinder/grinder_tools.dart`.
+  All members provided by these libraries are still available through the main
+  `package:grinder/grinder.dart` library.
+
+- **Breaking change:** Mark all classes exported by this library as `final`
+  except for `GrinderContext`.
 
 ## 0.9.5
 

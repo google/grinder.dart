@@ -1,16 +1,14 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-library grinder.utils;
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:mirrors';
 
 import 'package:collection/collection.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 
-class ResettableTimer implements Timer {
+final class ResettableTimer implements Timer {
   final Duration duration;
   final void Function() callback;
 
@@ -97,7 +95,7 @@ T? getFirstMatchingAnnotation<T>(DeclarationMirror decl) => decl.metadata
     .firstOrNull;
 
 /// A simple way to expose a default value that can be overridden within zones.
-class ZonedValue<T> {
+final class ZonedValue<T> {
   final T _rootValue;
   final _valueKey = Object();
   final _finalKey = Object();
@@ -146,14 +144,14 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
 
   /// Returns `true` if this relative path is a hidden directory.
   bool isInHiddenDir(String relative) =>
-      path.split(relative).any((part) => part.startsWith('.'));
+      p.split(relative).any((part) => part.startsWith('.'));
 
   Set<String> findDartSourceFiles(Directory directory) {
     var files = <String>{};
     if (directory.existsSync()) {
       for (var entry
           in directory.listSync(recursive: true, followLinks: false)) {
-        var relative = path.relative(entry.path, from: directory.path);
+        var relative = p.relative(entry.path, from: directory.path);
         if (isDartFileName(entry.path) && !isInHiddenDir(relative)) {
           files.add(entry.path);
         }

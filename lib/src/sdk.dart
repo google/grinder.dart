@@ -1,18 +1,18 @@
 // Copyright 2013 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
-/// A library to access tools in the Dart SDK.
-library grinder.sdk;
+// A library to access tools in the Dart SDK.
 
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as p;
 
-import 'grinder.dart';
-import 'src/run.dart' as runlib;
-import 'src/run_utils.dart';
-import 'src/utils.dart';
+import 'files.dart';
+import 'run.dart';
+import 'run.dart' as runlib;
+import 'run_utils.dart';
+import 'utils.dart';
 
 /// A set of common top-level directories according to the Pub package layout
 /// convention which usually contain Dart source code.
@@ -30,13 +30,13 @@ final Set<Directory> sourceDirs = [
 Set<Directory> get existingSourceDirs => Directory.current
     .listSync()
     .whereType<Directory>()
-    .map((d) => Directory(path.relative(d.path)))
+    .map((d) => Directory(p.relative(d.path)))
     .where((d) => sourceDirs.any((sd) => sd.path == d.path))
     .toSet();
 
 /// The path to the current Dart SDK.
 final Directory sdkDir =
-    Directory(path.dirname(path.dirname(Platform.resolvedExecutable)));
+    Directory(p.dirname(p.dirname(Platform.resolvedExecutable)));
 
 /// This is deprecated.
 ///
@@ -50,9 +50,9 @@ final File dartVM = File(Platform.resolvedExecutable);
 /// appending `.bat` or `.exe` on Windows. This is useful for finding the path
 /// to SDK utilities like `dartdoc`, `dart2js`, ...
 String sdkBin(String name) {
-  if (!Platform.isWindows) return path.join(sdkDir.path, 'bin', name);
+  if (!Platform.isWindows) return p.join(sdkDir.path, 'bin', name);
   if (name == 'dart') return Platform.resolvedExecutable;
-  return path.join(sdkDir.path, 'bin', '$name.bat');
+  return p.join(sdkDir.path, 'bin', '$name.bat');
 }
 
 /// Utility tasks for for getting information about the Dart VM and for running
@@ -60,7 +60,7 @@ String sdkBin(String name) {
 ///
 /// The custom named parameters (e.g. vmNewGenHeapMB) will override
 /// args set in `vmArgs`.
-class Dart {
+final class Dart {
   /// Run a dart [script] using [runlib.run]. Returns the stdout.
   static String run(
     String script, {
@@ -111,7 +111,7 @@ class Dart {
 }
 
 /// Utility tasks for executing pub commands.
-class Pub {
+final class Pub {
   static final PubGlobal _global = PubGlobal._();
 
   /// Run `pub get` on the current project. If [force] is true, this will execute
@@ -261,7 +261,7 @@ class Pub {
 }
 
 /// Utility tasks for invoking dart2js.
-class Dart2js {
+final class Dart2js {
   static List<String> _buildArgs(
           {required bool minify,
           required bool csp,
@@ -350,7 +350,7 @@ class Dart2js {
 }
 
 /// Utility class for invoking dartdoc.
-class DartDoc {
+final class DartDoc {
   static void doc() {
     runlib.run(sdkBin('dart'), arguments: ['doc']);
   }
@@ -360,7 +360,7 @@ class DartDoc {
 }
 
 /// Utility tasks for invoking the analyzer.
-class Analyzer {
+final class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
   static void analyze(fileOrPaths,
       {Directory? packageRoot, bool fatalWarnings = false}) {
@@ -390,7 +390,7 @@ class Analyzer {
 
 /// Utility class for invoking `dartfmt` from the SDK. This wrapper requires
 /// the `dartfmt` from SDK 1.9 and greater.
-class DartFmt {
+final class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
   static void format(fileOrPath, {int? lineLength}) {
@@ -431,7 +431,7 @@ class DartFmt {
 }
 
 /// Access the `pub global` commands.
-class PubGlobal {
+final class PubGlobal {
   late final Set<String> _activatedPackages =
       list().map((app) => app.packageName).toSet();
 
@@ -546,7 +546,7 @@ String? _parseVersion(String output) {
   return tokens.length < 2 ? null : tokens[1];
 }
 
-class _PubGlobalApp extends PubApp {
+final class _PubGlobalApp extends PubApp {
   _PubGlobalApp(super.packageName) : super._();
 
   @override
@@ -579,7 +579,7 @@ class _PubGlobalApp extends PubApp {
   }
 }
 
-class _PubLocalApp extends PubApp {
+final class _PubLocalApp extends PubApp {
   _PubLocalApp(super.packageName) : super._();
 
   @override
