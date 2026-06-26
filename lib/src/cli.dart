@@ -67,7 +67,7 @@ Future runTasks(
     final result = singleton.grinder.start(results.taskInvocations);
 
     return result.catchError((e, st) {
-      fail('\n$e\n${cleanupStackTrace(st)}');
+      fail('\n$e\n${cleanUpStackTrace(st)}');
     });
   }
 }

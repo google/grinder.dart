@@ -362,13 +362,13 @@ final class DartDoc {
 /// Utility tasks for invoking the analyzer.
 final class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
-  static void analyze(fileOrPaths,
+  static void analyze(Object fileOrPaths,
       {Directory? packageRoot, bool fatalWarnings = false}) {
     runlib.run(sdkBin('dart'), arguments: [
       'analyze',
       if (packageRoot != null) '--package-root=${packageRoot.path}',
       if (fatalWarnings) '--fatal-warnings',
-      fileOrPaths
+      ...coerceToPathList(fileOrPaths)
     ]);
   }
 
@@ -393,13 +393,13 @@ final class Analyzer {
 final class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
-  static void format(fileOrPath, {int? lineLength}) {
+  static void format(Object fileOrPath, {int? lineLength}) {
     _run(const [], coerceToPathList(fileOrPath), lineLength: lineLength);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
-  static bool dryRun(fileOrPath, {int? lineLength}) {
+  static bool dryRun(Object fileOrPath, {int? lineLength}) {
     try {
       _run(
         ['--output=none', '--set-exit-if-changed'],

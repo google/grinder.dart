@@ -3,7 +3,7 @@
 
 import 'package:grinder/grinder.dart';
 
-Future<dynamic> main(args) => grind(args);
+Future<dynamic> main(List<String> args) => grind(args);
 
 @Task('Initialize stuff.')
 void init() {

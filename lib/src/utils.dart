@@ -123,7 +123,7 @@ final class ZonedValue<T> {
 
 /// Given a [String], [File], or list of strings or files, coerce the
 /// [filesOrPaths] param into a list of strings.
-List<String> coerceToPathList(filesOrPaths) {
+List<String> coerceToPathList(Object filesOrPaths) {
   if (filesOrPaths is! Iterable) filesOrPaths = [filesOrPaths];
   return filesOrPaths
       .map((item) {
@@ -172,7 +172,7 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
   return files;
 }
 
-String cleanupStackTrace(st) {
+String cleanUpStackTrace(StackTrace st) {
   final lines = '$st'.trim().split('\n');
 
   // Remove lines which are not useful to debugging script issues. With our move
