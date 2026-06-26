@@ -38,12 +38,6 @@ Set<Directory> get existingSourceDirs => Directory.current
 final Directory sdkDir =
     Directory(p.dirname(p.dirname(Platform.resolvedExecutable)));
 
-/// This is deprecated.
-///
-/// Use [sdkDir] instead.
-@Deprecated('Use sdkDir to get the current SDK directory instead.')
-Directory getSdkDir([List<String>? cliArgs]) => sdkDir;
-
 final File dartVM = File(Platform.resolvedExecutable);
 
 /// Return the path to a binary in the SDK's `bin/` directory. This will handle
@@ -92,7 +86,7 @@ final class Dart {
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static String version({@Deprecated('No longer used.') bool quiet = false}) {
+  static String version() {
     return Platform.version.substring(0, Platform.version.indexOf(' '));
   }
 
@@ -360,18 +354,6 @@ final class Analyzer {
       if (packageRoot != null) '--package-root=${packageRoot.path}',
       if (fatalWarnings) '--fatal-warnings',
       ...coerceToPathList(fileOrPaths)
-    ]);
-  }
-
-  /// Analyze one or more [File]s or paths ([String]).
-  @Deprecated('see `analyze`, which now takes a list as an argument')
-  static void analyzeFiles(List<Object> files,
-      {Directory? packageRoot, bool fatalWarnings = false}) {
-    runlib.run(sdkBin('dart'), arguments: [
-      'analyze',
-      if (packageRoot != null) '--package-root=${packageRoot.path}',
-      if (fatalWarnings) '--fatal-warnings',
-      ...coerceToPathList(files)
     ]);
   }
 

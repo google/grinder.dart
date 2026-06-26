@@ -52,22 +52,3 @@ Future<void> grind(List<String> args, {bool verifyProjectRoot = true}) {
     return Future.error(e);
   }
 }
-
-/// Start the build process. This should be called at the end of the `main()`
-/// method. If there is a task failure, this method will halt task execution and
-/// throw.
-@Deprecated('Use `grind` instead.')
-Future<void> startGrinder(List<String> args, {bool verifyProjectRoot = true}) =>
-    runTasks(args, verifyProjectRoot: verifyProjectRoot);
-
-/// Add a new task definition to the global [Grinder] instance. A [name] is
-/// required. If specified, a [taskFunction] is invoked when the task starts.
-/// Any dependencies of the task, that need to run before it, should be passed
-/// in via [depends].
-@Deprecated('Use the task annotations instead.')
-void task(String name,
-    [Function? taskFunction, List<String> depends = const []]) {
-  grinder.addTask(GrinderTask(name,
-      taskFunction: taskFunction,
-      depends: depends.map((dep) => TaskInvocation(dep))));
-}
