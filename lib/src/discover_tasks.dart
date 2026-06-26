@@ -63,7 +63,7 @@ final class TaskDiscovery {
       Function? taskFunction;
 
       if (decl is VariableMirror || (decl is MethodMirror && decl.isGetter)) {
-        taskFunction = owner.getField(decl.simpleName).reflectee;
+        taskFunction = owner.getField(decl.simpleName).reflectee as Function;
       } else if (decl is MethodMirror && decl.isRegularMethod) {
         if (decl.parameters.isNotEmpty &&
             !decl.parameters.first.isOptional &&
@@ -83,7 +83,7 @@ final class TaskDiscovery {
 
       var name = camelToDashes(methodName);
 
-      var depends = [];
+      var depends = <TaskInvocation>[];
       if (dependsAnnotation != null) {
         depends = dependsAnnotation.depends.map((dep) {
           if (dep is TaskInvocation) return dep;

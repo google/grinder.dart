@@ -37,9 +37,9 @@ final class GrinderTask {
     this.name, {
     this.taskFunction,
     this.description,
-    Iterable<dynamic> depends = const [],
+    Iterable<Object> depends = const [],
   }) : depends = UnmodifiableListView(
-            depends.map((dep) => dep is String ? TaskInvocation(dep) : dep)) {
+            [for (var dep in depends) TaskInvocation.coerce(dep)]) {
     if (taskFunction == null && depends.isEmpty) {
       throw GrinderException(
           'GrinderTasks must have a task function or dependencies.');

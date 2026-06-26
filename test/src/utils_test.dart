@@ -40,7 +40,7 @@ void main() {
       expect(testFiles.length, greaterThan(0));
       expect(
           testFiles,
-          anyElement((f) =>
+          anyElement((String f) =>
               File(f).existsSync() &&
               FileSystemEntity.typeSync(f) == FileSystemEntityType.file));
     });

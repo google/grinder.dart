@@ -20,7 +20,7 @@ void main() {
 
       final output = run(io.Platform.executable,
           arguments: [runScript, ...arguments], quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       expect(json['arguments'], orderedEquals(arguments));
     });
 
@@ -29,7 +29,7 @@ void main() {
           arguments: [runScriptName],
           runOptions: RunOptions(workingDirectory: runScriptPath),
           quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -38,7 +38,7 @@ void main() {
           arguments: [runScriptName],
           workingDirectory: runScriptPath,
           quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -50,7 +50,7 @@ void main() {
           workingDirectory: runScriptPath,
           runOptions: RunOptions(),
           quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       expect(json['workingDirectory'], endsWith('$sep$runScriptPath'));
     });
 
@@ -94,18 +94,19 @@ void main() {
           runOptions: RunOptions(
               environment: environment, includeParentEnvironment: false),
           quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }
       // Filter out __CF_USER_TEXT_ENCODING.
       // Filter out COMSPEC, PATHEXT, PROMPT in Windows
       expect(
-          json['environment'].keys.where((str) => (!str.startsWith('__') &&
-              !str.startsWith('GLIB') &&
-              str != 'COMSPEC' &&
-              str != 'PATHEXT' &&
-              str != 'PROMPT')),
+          (json['environment'] as Map<String, dynamic>).keys.where((str) =>
+              (!str.startsWith('__') &&
+                  !str.startsWith('GLIB') &&
+                  str != 'COMSPEC' &&
+                  str != 'PATHEXT' &&
+                  str != 'PROMPT')),
           unorderedEquals(environment.keys));
     });
 
@@ -123,7 +124,7 @@ void main() {
               includeParentEnvironment: false,
               runInShell: true),
           quiet: true);
-      Map json = jsonDecode(output);
+      var json = jsonDecode(output) as Map<String, dynamic>;
       for (var k in environment.keys) {
         expect(json['environment'][k], environment[k]);
       }

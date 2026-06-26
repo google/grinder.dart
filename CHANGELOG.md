@@ -12,6 +12,9 @@
 - **Breaking change:** Mark all classes exported by this library as `final`
   except for `GrinderContext`.
 
+- **Breaking change:** Tighten a number of static types to avoid `dynamic` and
+  better match the allowed runtime values.
+
 ## 0.9.5
 
 - Update the SDK constraint to 3.0.

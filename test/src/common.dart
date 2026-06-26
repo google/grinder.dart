@@ -7,7 +7,7 @@ import 'package:grinder/grinder.dart';
 import 'package:grinder/src/singleton.dart';
 import 'package:test/test.dart';
 
-typedef TestVerification = Function(MockGrinderContext ctx);
+typedef TestVerification = void Function(MockGrinderContext ctx);
 
 Object? nullTaskFunction([TaskArgs? args]) => null;
 
@@ -43,7 +43,7 @@ final class MockGrinderContext implements GrinderContext {
     throw GrinderException(message);
   }
 
-  Future runZoned(void Function() f) {
+  Future<void> runZoned(void Function() f) {
     var result = zonedContext.withValue(this, f);
     return result is Future ? result : Future.value();
   }

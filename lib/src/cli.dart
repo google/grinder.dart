@@ -20,7 +20,7 @@ List<String> grinderArgs() {
 
 List<String>? _args;
 
-Future runTasks(
+Future<void> runTasks(
   List<String> args, {
   bool verifyProjectRoot = false,
 }) async {
@@ -41,34 +41,34 @@ Future runTasks(
 
   if (results.getFlag('help')) {
     print(parser.getUsage());
-    return null;
+    return;
   } else if (results.getFlag('version')) {
     print('grinder version $appVersion');
-    return null;
+    return;
+  }
+
+  if (results.hasFlag('color')) {
+    singleton.grinder.ansi = Ansi(results.getFlag('color'));
   } else {
-    if (results.hasFlag('color')) {
-      singleton.grinder.ansi = Ansi(results.getFlag('color'));
-    } else {
-      singleton.grinder.ansi = Ansi(true);
+    singleton.grinder.ansi = Ansi(true);
+  }
+
+  if (verifyProjectRoot) {
+    // Verify that we're running from the project root.
+    if (!getFile('pubspec.yaml').existsSync()) {
+      fail('This script must be run from the project root.');
     }
+  }
 
-    if (verifyProjectRoot) {
-      // Verify that we're running from the project root.
-      if (!getFile('pubspec.yaml').existsSync()) {
-        fail('This script must be run from the project root.');
-      }
-    }
+  for (final invocation in results.taskInvocations) {
+    var task = singleton.grinder.getTask(invocation.name);
+    if (task == null) fail("Error, no task found: '${invocation.name}'.");
+  }
 
-    for (final invocation in results.taskInvocations) {
-      var task = singleton.grinder.getTask(invocation.name);
-      if (task == null) fail("Error, no task found: '${invocation.name}'.");
-    }
-
-    final result = singleton.grinder.start(results.taskInvocations);
-
-    return result.catchError((e, st) {
-      fail('\n$e\n${cleanUpStackTrace(st)}');
-    });
+  try {
+    await singleton.grinder.start(results.taskInvocations);
+  } catch (e, st) {
+    fail('\n$e\n${cleanUpStackTrace(st)}');
   }
 }
 

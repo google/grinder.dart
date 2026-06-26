@@ -1,11 +1,1 @@
-include: package:lints/recommended.yaml
-
-linter:
-  rules:
-    - always_declare_return_types
-    - directives_ordering
-    - no_adjacent_strings_in_list
-    - package_api_docs
-    - prefer_single_quotes
-    - sort_child_properties_last
-    - unawaited_futures
+include: package:sass_analysis/analysis_options.yaml

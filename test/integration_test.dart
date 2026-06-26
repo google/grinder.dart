@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 
 import 'src/common.dart';
 
-Map ranTasks = {};
+Map<String, Object?> ranTasks = {};
 
 void main() {
   group('integration', () {

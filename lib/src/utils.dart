@@ -110,13 +110,13 @@ final class ZonedValue<T> {
   }
 
   bool get isFinal {
-    var parentIsFinal = Zone.current[_finalKey];
+    var parentIsFinal = Zone.current[_finalKey] as bool?;
     return parentIsFinal != null && parentIsFinal;
   }
 
   T get value {
     // TODO: Allow null values when http://dartbug.com/21247 is fixed.
-    var v = Zone.current[_valueKey];
+    var v = Zone.current[_valueKey] as T?;
     return v ?? _rootValue;
   }
 }

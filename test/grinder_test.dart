@@ -202,7 +202,7 @@ void main() {
       final grinder = Grinder();
 
       grinder.addTask(GrinderTask('a1', taskFunction: ([args]) {
-        final completer = Completer();
+        final completer = Completer<void>();
         Timer(Duration(milliseconds: 100), () {
           buf.write('a');
           completer.complete();

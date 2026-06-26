@@ -401,6 +401,6 @@ void deleteEntity(FileSystemEntity entity, [GrinderContext? context]) {
   delete(entity);
 }
 
-void _addNonNull(List args, String? arg) {
+void _addNonNull(List<String> args, String? arg) {
   if (arg != null) args.add(arg);
 }

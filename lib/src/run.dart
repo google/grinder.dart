@@ -35,7 +35,7 @@ String run(String executable,
   var stderr = result.stderr as String;
 
   if (!quiet && stdout.isNotEmpty) log(stdout.trim());
-  if (stderr.isNotEmpty) log(result.stderr);
+  if (stderr.isNotEmpty) log(stderr);
 
   if (result.exitCode != 0) {
     throw ProcessException._(executable, result.exitCode, stdout, stderr);

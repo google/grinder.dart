@@ -27,7 +27,7 @@ class GrinderContext {
 
   /// Log an informational message to Grinder's output.
   void log(String message) {
-    List lines = message.trimRight().split('\n');
+    var lines = message.trimRight().split('\n');
     grinder.log("  ${lines.join('\n  ')}");
   }
 
