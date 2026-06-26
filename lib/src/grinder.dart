@@ -206,20 +206,13 @@ final class Grinder {
   /// Log the given informational message.
   void log(String message) => print(message);
 
-  Future<void> _invokeTask(TaskInvocation invocation) {
+  Future<void> _invokeTask(TaskInvocation invocation) async {
     log(ansi.emphasized(invocation.toString()));
 
     var task = getTask(invocation.name)!;
     final context = GrinderContext(this, task, invocation);
-    dynamic result = task.execute(context, invocation.arguments);
-
-    if (result is! Future) {
-      result = Future.value(result);
-    }
-
-    return result.then((_) {
-      log('');
-    });
+    await task.execute(context, invocation.arguments);
+    log('');
   }
 
   void _calculateAllDeps() {

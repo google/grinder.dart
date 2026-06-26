@@ -53,6 +53,6 @@ dependencies:
 void buildbot() {}
 
 @Task()
-Future<dynamic> ddc() {
+Future<void> ddc() {
   return DevCompiler().analyzeAsync(getFile('example/grind.dart'));
 }

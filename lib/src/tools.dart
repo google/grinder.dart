@@ -62,10 +62,10 @@ final class TestRunner {
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
   void test(
-      {dynamic files,
+      {Object? files,
       String? name,
       String? plainName,
-      dynamic platformSelector,
+      Object? platformSelector,
       int? concurrency,
       int? pubServe,
       RunOptions? runOptions}) {
@@ -97,10 +97,10 @@ final class TestRunner {
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
   Future<void> testAsync(
-      {dynamic files,
+      {Object? files,
       String? name,
       String? plainName,
-      dynamic platformSelector,
+      Object? platformSelector,
       int? concurrency,
       int? pubServe,
       RunOptions? runOptions}) {
@@ -120,7 +120,7 @@ final class TestRunner {
       {Object? files,
       String? name,
       String? plainName,
-      dynamic selector,
+      Object? selector,
       int? concurrency,
       int? pubServe}) {
     final args = ['--reporter=expanded'];

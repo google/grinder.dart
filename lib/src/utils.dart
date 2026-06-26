@@ -102,7 +102,7 @@ final class ZonedValue<T> {
 
   ZonedValue(T rootValue) : _rootValue = rootValue;
 
-  dynamic withValue(T value, dynamic Function() f, {bool isFinal = false}) {
+  R withValue<R>(T value, R Function() f, {bool isFinal = false}) {
     if (this.isFinal) {
       throw StateError('Cannot override final zoned value');
     }

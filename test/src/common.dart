@@ -43,7 +43,7 @@ final class MockGrinderContext implements GrinderContext {
     throw GrinderException(message);
   }
 
-  Future<void> runZoned(void Function() f) {
+  Future<void> runZoned(FutureOr<void> Function() f) {
     var result = zonedContext.withValue(this, f);
     return result is Future ? result : Future.value();
   }

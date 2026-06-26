@@ -22,14 +22,14 @@ final class Task {
 /// * [String]. Useful for referring to programmatically added tasks.
 /// * [TaskInvocation]. Useful for passing args to dependencies.
 final class Depends {
-  final dynamic dep1;
-  final dynamic dep2;
-  final dynamic dep3;
-  final dynamic dep4;
-  final dynamic dep5;
-  final dynamic dep6;
-  final dynamic dep7;
-  final dynamic dep8;
+  final Object dep1;
+  final Object? dep2;
+  final Object? dep3;
+  final Object? dep4;
+  final Object? dep5;
+  final Object? dep6;
+  final Object? dep7;
+  final Object? dep8;
 
   const Depends(this.dep1,
       [this.dep2,
@@ -40,8 +40,9 @@ final class Depends {
       this.dep7,
       this.dep8]);
 
-  List<dynamic> get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
+  List<Object> get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
       .takeWhile((dep) => dep != null)
+      .cast<Object>()
       .toList();
 }
 

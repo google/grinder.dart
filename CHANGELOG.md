@@ -4,6 +4,9 @@
 
 - Support package:cli_util 0.5.0.
 
+- **Breaking change:** Tasks can no longer take a `GrinderContext` parameter.
+  Instead, they must access the `context` getter.
+
 - **Breaking change:** Remove `package:grinder/grinder_files.dart`,
   `package:grinder/grinder_sdk.dart`, and `package:grinder/grinder_tools.dart`.
   All members provided by these libraries are still available through the main
