@@ -8,7 +8,7 @@ import 'utils.dart';
 
 final Grinder grinder = Grinder();
 
-final ZonedValue zonedContext = ZonedValue(_NoopContext());
+final ZonedValue<GrinderContext> zonedContext = ZonedValue(_NoopContext());
 
 class _NoopContext implements GrinderContext {
   @override

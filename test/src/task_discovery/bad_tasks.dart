@@ -10,7 +10,7 @@ import 'external_tasks.dart';
 export 'external_tasks.dart' show shownVariable;
 
 @Task()
-const dynamic nullTask = null;
+const Null nullTask = null;
 
 @Task()
 Null get nullReturningGetter => null;

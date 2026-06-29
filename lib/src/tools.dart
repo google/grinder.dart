@@ -62,10 +62,10 @@ final class TestRunner {
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
   void test(
-      {dynamic files,
+      {Object? files,
       String? name,
       String? plainName,
-      dynamic platformSelector,
+      Object? platformSelector,
       int? concurrency,
       int? pubServe,
       RunOptions? runOptions}) {
@@ -96,11 +96,11 @@ final class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  Future testAsync(
-      {dynamic files,
+  Future<void> testAsync(
+      {Object? files,
       String? name,
       String? plainName,
-      dynamic platformSelector,
+      Object? platformSelector,
       int? concurrency,
       int? pubServe,
       RunOptions? runOptions}) {
@@ -117,10 +117,10 @@ final class TestRunner {
   }
 
   List<String> _buildArgs(
-      {dynamic files,
+      {Object? files,
       String? name,
       String? plainName,
-      dynamic selector,
+      Object? selector,
       int? concurrency,
       int? pubServe}) {
     final args = ['--reporter=expanded'];
@@ -145,30 +145,28 @@ final class DevCompiler {
   DevCompiler();
 
   /// Analyze the given file or files with DDC.
-  void analyze(dynamic files, {bool htmlReport = false}) {
+  void analyze(Object files, {bool htmlReport = false}) {
     _ddc.run(_args(files, htmlReport: htmlReport));
   }
 
   /// Analyze the given file or files with DDC.
-  Future analyzeAsync(dynamic files, {bool htmlReport = false}) {
-    return _ddc.runAsync(_args(files, htmlReport: htmlReport));
-  }
+  Future<void> analyzeAsync(Object files, {bool htmlReport = false}) =>
+      _ddc.runAsync(_args(files, htmlReport: htmlReport));
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  void compile(dynamic files, Directory outDir,
+  void compile(Object files, Directory outDir,
       {bool forceCompile = false, bool htmlReport = false}) {
     _ddc.run(_args(files,
         outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  Future compileAsync(dynamic files, Directory outDir,
-      {bool forceCompile = false, bool htmlReport = false}) {
-    return _ddc.runAsync(_args(files,
-        outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
-  }
+  Future<void> compileAsync(Object files, Directory outDir,
+          {bool forceCompile = false, bool htmlReport = false}) =>
+      _ddc.runAsync(_args(files,
+          outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
 
-  List<String> _args(dynamic files,
+  List<String> _args(Object files,
       {Directory? outDir, bool forceCompile = false, bool htmlReport = false}) {
     final args = <String>[];
     if (outDir != null) args.add('-o${outDir.path}');

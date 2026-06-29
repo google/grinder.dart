@@ -1,6 +1,7 @@
 // Copyright 2015 Google. All rights reserved. Use of this source code is
 // governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:collection';
 
 import 'grinder_context.dart';
@@ -9,7 +10,7 @@ import 'singleton.dart';
 import 'task_invocation.dart';
 
 /// The typedef for grinder task functions.
-typedef TaskFunction = dynamic Function(TaskArgs args);
+typedef TaskFunction = FutureOr<void> Function(TaskArgs args);
 
 /// Represents a Grinder task. These can be created automatically using the
 /// [Task] and [Depends] annotations.
@@ -37,9 +38,9 @@ final class GrinderTask {
     this.name, {
     this.taskFunction,
     this.description,
-    Iterable<dynamic> depends = const [],
+    Iterable<Object> depends = const [],
   }) : depends = UnmodifiableListView(
-            depends.map((dep) => dep is String ? TaskInvocation(dep) : dep)) {
+            [for (var dep in depends) TaskInvocation.coerce(dep)]) {
     if (taskFunction == null && depends.isEmpty) {
       throw GrinderException(
           'GrinderTasks must have a task function or dependencies.');
@@ -48,25 +49,19 @@ final class GrinderTask {
 
   /// This method is invoked when the task is started. If a task was created
   /// with a function, that function will be invoked by this method.
-  dynamic execute(GrinderContext context, [TaskArgs? args]) {
+  FutureOr<void> execute(GrinderContext context, [TaskArgs? args]) {
     var taskFunction = this.taskFunction;
     if (taskFunction == null) return null;
 
     if (taskFunction is TaskFunction) {
       return zonedContext.withValue(
           context, () => taskFunction(args ?? TaskArgs(name, [])));
-    } else if (taskFunction is _OldTaskFunction) {
-      context.log(
-          "warning: task definitions no longer require an explicit 'GrinderContext' parameter");
-      return zonedContext.withValue(context, () => taskFunction(context));
     } else {
       return zonedContext.withValue(
-          context, taskFunction as dynamic Function());
+          context, taskFunction as FutureOr<void> Function());
     }
   }
 
   @override
   String toString() => '[$name]';
 }
-
-typedef _OldTaskFunction = dynamic Function(GrinderContext context);

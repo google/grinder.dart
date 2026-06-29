@@ -10,4 +10,4 @@ library;
 
 import 'package:grinder/grinder.dart';
 
-Future<dynamic> main(List<String> args) => grind(args);
+Future<void> main(List<String> args) => grind(args);

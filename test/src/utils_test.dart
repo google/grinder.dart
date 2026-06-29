@@ -8,8 +8,8 @@ import 'package:test/test.dart';
 
 void main() {
   group('src.utils', () {
-    test('cleanupStackTrace', () {
-      expect(cleanupStackTrace(_st), _stExpected);
+    test('cleanUpStackTrace', () {
+      expect(cleanUpStackTrace(_st), _stExpected);
     });
 
     test('ResettableTimer', () {
@@ -40,14 +40,14 @@ void main() {
       expect(testFiles.length, greaterThan(0));
       expect(
           testFiles,
-          anyElement((f) =>
+          anyElement((String f) =>
               File(f).existsSync() &&
               FileSystemEntity.typeSync(f) == FileSystemEntityType.file));
     });
   });
 }
 
-final String _st = '''
+final StackTrace _st = StackTrace.fromString('''
 #0      GrinderContext.fail (package:grinder/grinder.dart:131:5)
 #1      fail (package:grinder/grinder.dart:85:42)
 #2      analyze (file:///Users/devoncarew/projects/grinder.dart/tool/grind.dart:17:7)
@@ -79,7 +79,7 @@ final String _st = '''
 #28     _Timer._runTimers (dart:isolate-patch/timer_impl.dart:392)
 #29     _handleMessage (dart:isolate-patch/timer_impl.dart:411)
 #30     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:142)
-''';
+''');
 
 final String _stExpected = '''
 #0      GrinderContext.fail (package:grinder/grinder.dart:131:5)

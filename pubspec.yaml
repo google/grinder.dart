@@ -17,7 +17,8 @@ dependencies:
   collection: ^1.15.0
 
 dev_dependencies:
-  lints: ^4.0.0
+  sass_analysis:
+    git: {url: https://github.com/sass/dart-sass.git, path: analysis}
   test: ^1.17.0
 
 executables:

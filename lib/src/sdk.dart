@@ -38,12 +38,6 @@ Set<Directory> get existingSourceDirs => Directory.current
 final Directory sdkDir =
     Directory(p.dirname(p.dirname(Platform.resolvedExecutable)));
 
-/// This is deprecated.
-///
-/// Use [sdkDir] instead.
-@Deprecated('Use sdkDir to get the current SDK directory instead.')
-Directory getSdkDir([List<String>? cliArgs]) => sdkDir;
-
 final File dartVM = File(Platform.resolvedExecutable);
 
 /// Return the path to a binary in the SDK's `bin/` directory. This will handle
@@ -92,7 +86,7 @@ final class Dart {
         arguments: args, quiet: quiet, runOptions: runOptions);
   }
 
-  static String version({@Deprecated('No longer used.') bool quiet = false}) {
+  static String version() {
     return Platform.version.substring(0, Platform.version.indexOf(' '));
   }
 
@@ -134,8 +128,10 @@ final class Pub {
   /// Run `pub get` on the current project. If [force] is true, this will execute
   /// even if the pubspec.lock file is up-to-date with respect to the
   /// pubspec.yaml file.
-  static Future getAsync(
-      {bool force = false, RunOptions? runOptions, String? workingDirectory}) {
+  static Future<void> getAsync(
+      {bool force = false,
+      RunOptions? runOptions,
+      String? workingDirectory}) async {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
     final prefix = runOptions.workingDirectory == null
         ? ''
@@ -144,13 +140,9 @@ final class Pub {
     final publock = FileSet.fromFile(getFile('${prefix}pubspec.lock'));
 
     if (force || !publock.upToDate(pubspec)) {
-      return runlib
-          .runAsync(sdkBin('dart'),
-              arguments: ['pub', 'get'], runOptions: runOptions)
-          .then((_) => null);
+      await runlib.runAsync(sdkBin('dart'),
+          arguments: ['pub', 'get'], runOptions: runOptions);
     }
-
-    return Future.value();
   }
 
   /// Run `pub upgrade` on the current project.
@@ -160,13 +152,11 @@ final class Pub {
   }
 
   /// Run `pub upgrade` on the current project.
-  static Future upgradeAsync(
+  static Future<void> upgradeAsync(
       {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    return runlib
-        .runAsync(sdkBin('dart'),
-            arguments: ['pub', 'upgrade'], runOptions: runOptions)
-        .then((_) => null);
+    return runlib.runAsync(sdkBin('dart'),
+        arguments: ['pub', 'upgrade'], runOptions: runOptions);
   }
 
   /// Run `pub downgrade` on the current project.
@@ -176,13 +166,11 @@ final class Pub {
   }
 
   /// Run `pub downgrade` on the current project.
-  static Future downgradeAsync(
+  static Future<void> downgradeAsync(
       {RunOptions? runOptions, String? workingDirectory}) {
     runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-    return runlib
-        .runAsync(sdkBin('dart'),
-            arguments: ['pub', 'downgrade'], runOptions: runOptions)
-        .then((_) => null);
+    return runlib.runAsync(sdkBin('dart'),
+        arguments: ['pub', 'downgrade'], runOptions: runOptions);
   }
 
   /// Run `pub build` on the current project.
@@ -207,7 +195,7 @@ final class Pub {
   /// Run `pub build` on the current project.
   ///
   /// The valid values for [mode] are `release` and `debug`.
-  static Future buildAsync(
+  static Future<void> buildAsync(
       {String? mode,
       List<String>? directories,
       RunOptions? runOptions,
@@ -219,9 +207,8 @@ final class Pub {
     if (outputDirectory != null) args.add('--output=$outputDirectory');
     if (directories != null && directories.isNotEmpty) args.addAll(directories);
 
-    return runlib
-        .runAsync(sdkBin('dart'), arguments: args, runOptions: runOptions)
-        .then((_) => null);
+    return runlib.runAsync(sdkBin('dart'),
+        arguments: args, runOptions: runOptions);
   }
 
   /// Run `pub run` on the given [package] and [script].
@@ -312,7 +299,7 @@ final class Dart2js {
   }
 
   /// Invoke a dart2js compile with the given [sourceFile] as input.
-  static Future compileAsync(File sourceFile,
+  static Future<void> compileAsync(File sourceFile,
       {Directory? outDir,
       File? outFile,
       bool minify = false,
@@ -329,17 +316,15 @@ final class Dart2js {
 
     if (!outDir.existsSync()) outDir.createSync(recursive: true);
 
-    return runlib
-        .runAsync(sdkBin('dart'),
-            arguments: _buildArgs(
-                minify: minify,
-                csp: csp,
-                enableExperimentalMirrors: enableExperimentalMirrors,
-                categories: categories,
-                extraArgs: extraArgs,
-                outFile: outFile,
-                sourceFile: sourceFile))
-        .then((_) => null);
+    return runlib.runAsync(sdkBin('dart'),
+        arguments: _buildArgs(
+            minify: minify,
+            csp: csp,
+            enableExperimentalMirrors: enableExperimentalMirrors,
+            categories: categories,
+            extraArgs: extraArgs,
+            outFile: outFile,
+            sourceFile: sourceFile));
   }
 
   static String? version({bool quiet = false}) =>
@@ -355,32 +340,20 @@ final class DartDoc {
     runlib.run(sdkBin('dart'), arguments: ['doc']);
   }
 
-  static Future docAsync() =>
+  static Future<void> docAsync() =>
       runlib.runAsync(sdkBin('dart'), arguments: ['doc']);
 }
 
 /// Utility tasks for invoking the analyzer.
 final class Analyzer {
   /// Analyze a [File], a path ([String]), or a list of files or paths.
-  static void analyze(fileOrPaths,
+  static void analyze(Object fileOrPaths,
       {Directory? packageRoot, bool fatalWarnings = false}) {
     runlib.run(sdkBin('dart'), arguments: [
       'analyze',
       if (packageRoot != null) '--package-root=${packageRoot.path}',
       if (fatalWarnings) '--fatal-warnings',
-      fileOrPaths
-    ]);
-  }
-
-  /// Analyze one or more [File]s or paths ([String]).
-  @Deprecated('see `analyze`, which now takes a list as an argument')
-  static void analyzeFiles(List files,
-      {Directory? packageRoot, bool fatalWarnings = false}) {
-    runlib.run(sdkBin('dart'), arguments: [
-      'analyze',
-      if (packageRoot != null) '--package-root=${packageRoot.path}',
-      if (fatalWarnings) '--fatal-warnings',
-      ...coerceToPathList(files)
+      ...coerceToPathList(fileOrPaths)
     ]);
   }
 
@@ -393,13 +366,13 @@ final class Analyzer {
 final class DartFmt {
   /// Run the `dartfmt` command with the `--overwrite` option. Format a file, a
   /// directory or a list of files or directories in place.
-  static void format(fileOrPath, {int? lineLength}) {
+  static void format(Object fileOrPath, {int? lineLength}) {
     _run(const [], coerceToPathList(fileOrPath), lineLength: lineLength);
   }
 
   /// Run the `dartfmt` command with the `--dry-run` option. Return `true` if
   /// any files would be changed by running the formatter.
-  static bool dryRun(fileOrPath, {int? lineLength}) {
+  static bool dryRun(Object fileOrPath, {int? lineLength}) {
     try {
       _run(
         ['--output=none', '--set-exit-if-changed'],

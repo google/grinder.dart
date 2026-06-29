@@ -103,28 +103,29 @@ final class Grinder {
   ///
   /// Throws [GrinderException] if named tasks don't exist, or there are
   /// cycles in the dependency graph.
-  Future start(Iterable invocations, {bool dontRun = false}) {
+  Future<void> start(Iterable<Object> invocations, {bool dontRun = false}) {
     if (!dontRun && _taskDeps != null) {
       throw StateError('Grinder instances are not re-usable');
     }
 
-    invocations = invocations.map((invocation) =>
-        invocation is String ? TaskInvocation(invocation) : invocation);
+    var typedInvocations = [
+      for (var invocation in invocations) TaskInvocation.coerce(invocation)
+    ];
 
     final startTime = DateTime.now();
 
-    if (invocations.isEmpty) {
+    if (typedInvocations.isEmpty) {
       var defaultTask = this.defaultTask;
       if (defaultTask != null) {
-        invocations = [TaskInvocation(defaultTask.name)];
+        typedInvocations = [TaskInvocation(defaultTask.name)];
       } else if (!dontRun) {
         throw GrinderException('Tried to call non-existent default task.');
       }
-      if (invocations.isEmpty) return Future.value();
+      if (typedInvocations.isEmpty) return Future.value();
     }
 
     // Verify that all named tasks exist.
-    for (var invocation in invocations) {
+    for (var invocation in typedInvocations) {
       var name = invocation.name;
       if (getTask(name) == null) {
         throw GrinderException("task '$name' doesn't exist");
@@ -162,7 +163,7 @@ final class Grinder {
       }
     }
 
-    for (final TaskInvocation invocation in invocations) {
+    for (final invocation in typedInvocations) {
       _postOrder(invocation);
     }
 
@@ -205,20 +206,13 @@ final class Grinder {
   /// Log the given informational message.
   void log(String message) => print(message);
 
-  Future _invokeTask(TaskInvocation invocation) {
+  Future<void> _invokeTask(TaskInvocation invocation) async {
     log(ansi.emphasized(invocation.toString()));
 
     var task = getTask(invocation.name)!;
     final context = GrinderContext(this, task, invocation);
-    dynamic result = task.execute(context, invocation.arguments);
-
-    if (result is! Future) {
-      result = Future.value(result);
-    }
-
-    return result.then((_) {
-      log('');
-    });
+    await task.execute(context, invocation.arguments);
+    log('');
   }
 
   void _calculateAllDeps() {

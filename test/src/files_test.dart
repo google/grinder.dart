@@ -166,7 +166,7 @@ void main() {
     tearDown(() => temp.delete());
 
     test('FilePath(entity)', () {
-      final dir = FilePath(temp.entity);
+      final dir = FilePath(temp.entity!);
       expect(dir.exists, true);
       expect(dir.isDirectory, true);
 

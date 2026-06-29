@@ -102,7 +102,7 @@ final class ZonedValue<T> {
 
   ZonedValue(T rootValue) : _rootValue = rootValue;
 
-  dynamic withValue(T value, dynamic Function() f, {bool isFinal = false}) {
+  R withValue<R>(T value, R Function() f, {bool isFinal = false}) {
     if (this.isFinal) {
       throw StateError('Cannot override final zoned value');
     }
@@ -110,20 +110,20 @@ final class ZonedValue<T> {
   }
 
   bool get isFinal {
-    var parentIsFinal = Zone.current[_finalKey];
+    var parentIsFinal = Zone.current[_finalKey] as bool?;
     return parentIsFinal != null && parentIsFinal;
   }
 
   T get value {
     // TODO: Allow null values when http://dartbug.com/21247 is fixed.
-    var v = Zone.current[_valueKey];
+    var v = Zone.current[_valueKey] as T?;
     return v ?? _rootValue;
   }
 }
 
 /// Given a [String], [File], or list of strings or files, coerce the
 /// [filesOrPaths] param into a list of strings.
-List<String> coerceToPathList(filesOrPaths) {
+List<String> coerceToPathList(Object filesOrPaths) {
   if (filesOrPaths is! Iterable) filesOrPaths = [filesOrPaths];
   return filesOrPaths
       .map((item) {
@@ -172,7 +172,7 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
   return files;
 }
 
-String cleanupStackTrace(st) {
+String cleanUpStackTrace(StackTrace st) {
   final lines = '$st'.trim().split('\n');
 
   // Remove lines which are not useful to debugging script issues. With our move

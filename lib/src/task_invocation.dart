@@ -12,6 +12,21 @@ final class TaskInvocation {
   TaskInvocation(this.name, [TaskArgs? arguments])
       : _arguments = arguments ?? TaskArgs(name, const []);
 
+  /// Coerces [nameOrInvocation] into a [TaskInvocation].
+  ///
+  /// If [nameOrInvocation] is already a [TaskInvocation], returns it as-is. If
+  /// it's a string, returns a [TaskInvocation] with that name. Otherwise,
+  /// throws an error.
+  factory TaskInvocation.coerce(Object nameOrInvocation) =>
+      switch (nameOrInvocation) {
+        TaskInvocation _ => nameOrInvocation,
+        String _ => TaskInvocation(nameOrInvocation),
+        _ => throw ArgumentError(
+            "Can't coerce $nameOrInvocation (${nameOrInvocation.runtimeType}) "
+                "into a TaskInvocation.",
+            'nameOrInvocation'),
+      };
+
   TaskArgs get arguments => _arguments;
 
   @override
@@ -87,7 +102,7 @@ final class TaskArgs {
   }
 }
 
-bool _listEquals(List elements1, List elements2) {
+bool _listEquals(List<Object> elements1, List<Object> elements2) {
   if (identical(elements1, elements2)) return true;
   if (elements1.length != elements2.length) return false;
   var it1 = elements1.iterator;

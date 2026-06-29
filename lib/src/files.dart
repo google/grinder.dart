@@ -109,7 +109,7 @@ final class FilePath {
   /// given path from a platform independent one to a platform dependent path.
   /// This conversion will work for relative paths but wouldn't make sense to
   /// use for absolute ones.
-  FilePath(entityOrString) : _path = _coerce(entityOrString);
+  FilePath(Object entityOrString) : _path = _coerce(entityOrString);
 
   String? get name {
     final index = _path.lastIndexOf(_sep);
@@ -226,7 +226,7 @@ final class FilePath {
 
   /// Join the given path elements to this path, and return a new [FilePath] object.
   FilePath join(
-      [arg0,
+      [Object? arg0,
       String? arg1,
       String? arg2,
       String? arg3,
@@ -238,19 +238,20 @@ final class FilePath {
       String? arg9]) {
     var paths = [path];
 
-    if (arg0 is List<String>) {
-      paths.addAll(arg0);
-    } else if (arg0 is String) {
-      _addNonNull(paths, arg0);
-      _addNonNull(paths, arg1);
-      _addNonNull(paths, arg2);
-      _addNonNull(paths, arg3);
-      _addNonNull(paths, arg4);
-      _addNonNull(paths, arg5);
-      _addNonNull(paths, arg6);
-      _addNonNull(paths, arg7);
-      _addNonNull(paths, arg8);
-      _addNonNull(paths, arg9);
+    switch (arg0) {
+      case List<String>():
+        paths.addAll(arg0);
+      case String():
+        _addNonNull(paths, arg0);
+        _addNonNull(paths, arg1);
+        _addNonNull(paths, arg2);
+        _addNonNull(paths, arg3);
+        _addNonNull(paths, arg4);
+        _addNonNull(paths, arg5);
+        _addNonNull(paths, arg6);
+        _addNonNull(paths, arg7);
+        _addNonNull(paths, arg8);
+        _addNonNull(paths, arg9);
     }
 
     if (paths.length == 1) {
@@ -269,19 +270,23 @@ final class FilePath {
   @override
   String toString() => path;
 
-  static String _coerce(arg) {
-    if (arg is String) {
-      if (_sep != '/') arg = arg.replaceAll('/', _sep);
+  static String _coerce(Object arg) {
+    switch (arg) {
+      case String():
+        if (_sep != '/') arg = arg.replaceAll('/', _sep);
 
-      if (arg.length > 1 && arg.endsWith((_sep))) {
-        return arg.substring(0, arg.length - 1);
-      } else {
-        return arg;
-      }
+        if (arg.length > 1 && arg.endsWith((_sep))) {
+          return arg.substring(0, arg.length - 1);
+        } else {
+          return arg;
+        }
+      case FileSystemEntity():
+        return arg.path;
+      case FilePath():
+        return arg.path;
+      case _:
+        throw ArgumentError('expected a FileSystemEntity or a String');
     }
-    if (arg is FileSystemEntity) return arg.path;
-    if (arg is FilePath) return arg.path;
-    throw ArgumentError('expected a FileSystemEntity or a String');
   }
 }
 
@@ -396,6 +401,6 @@ void deleteEntity(FileSystemEntity entity, [GrinderContext? context]) {
   delete(entity);
 }
 
-void _addNonNull(List args, String? arg) {
+void _addNonNull(List<String> args, String? arg) {
   if (arg != null) args.add(arg);
 }

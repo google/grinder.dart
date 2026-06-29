@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:grinder/grinder.dart';
 
-void main(args) => grind(args);
+void main(List<String> args) => grind(args);
 
 @Task()
 Future<String> analyze() =>
@@ -53,6 +53,6 @@ dependencies:
 void buildbot() {}
 
 @Task()
-Future<dynamic> ddc() {
+Future<void> ddc() {
   return DevCompiler().analyzeAsync(getFile('example/grind.dart'));
 }

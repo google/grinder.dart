@@ -4,7 +4,7 @@
 import 'dart:io';
 
 /// A command to create a simple, starting `tool/grind.dart` build script.
-void main(List args) {
+void main(List<String> args) {
   if (!File('pubspec.yaml').existsSync()) {
     _fail('This script must be run from the project root.');
   }

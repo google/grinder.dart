@@ -35,31 +35,13 @@ String run(String executable,
   var stderr = result.stderr as String;
 
   if (!quiet && stdout.isNotEmpty) log(stdout.trim());
-  if (stderr.isNotEmpty) log(result.stderr);
+  if (stderr.isNotEmpty) log(stderr);
 
   if (result.exitCode != 0) {
     throw ProcessException._(executable, result.exitCode, stdout, stderr);
   }
 
   return stdout;
-}
-
-/// Synchronously run an [executable].
-///
-/// If [quiet] is false, [log]s the stdout. The stderr is always logged.
-///
-/// Returns the stdout.
-///
-/// All other optional parameters are forwarded to [Process.runSync].
-@Deprecated('Use `run` instead.')
-String runProcess(String executable,
-    {List<String> arguments = const [],
-    RunOptions? runOptions,
-    bool quiet = false,
-    String? workingDirectory}) {
-  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  return run(executable,
-      arguments: arguments, runOptions: runOptions, quiet: quiet);
 }
 
 /// Asynchronously run an [executable].
@@ -108,25 +90,6 @@ Future<String> runAsync(String executable,
   }
 
   return stdoutString;
-}
-
-/// Asynchronously run an [executable].
-///
-/// If [quiet] is false, [log]s the stdout as line breaks are encountered.
-/// The stderr is always logged.
-///
-/// Returns a future for the stdout.
-///
-/// All other optional parameters are forwarded to [Process.start].
-@Deprecated('Use `runAsync` instead.')
-Future<String> runProcessAsync(String executable,
-    {List<String> arguments = const [],
-    RunOptions? runOptions,
-    String? workingDirectory,
-    bool quiet = false}) {
-  runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  return runAsync(executable,
-      arguments: arguments, quiet: quiet, runOptions: runOptions);
 }
 
 /// An exception from a process which exited with a non-zero exit code.
