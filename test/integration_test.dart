@@ -18,14 +18,13 @@ void main() {
         isSetup = true;
         addTask(GrinderTask('foo', taskFunction: _fooTask));
         addTask(GrinderTask('bar', taskFunction: _barTask, depends: ['foo']));
-        addTask(GrinderTask('baz', taskFunction: _bazTask));
       }
 
       _clear();
     });
 
     grinderTest('run dependent tasks',
-        () => runTasks(['bar', '--flag', '--option=123', 'baz']), (ctx) {
+        () => runTasks(['bar', '--flag', '--option=123']), (ctx) {
       expect(ctx.isFailed, false);
 
       // run dependent tasks
@@ -35,9 +34,6 @@ void main() {
       // pass args
       expect(ranTasks['flag'], true);
       expect(ranTasks['option'], '123');
-
-      // old form
-      expect(ranTasks['baz'], true);
     });
   });
 }
@@ -56,11 +52,4 @@ void _barTask(TaskArgs args) {
   ranTasks['option'] = args.getOption('option');
 
   log('ran _barTask\n$context');
-}
-
-// old form
-void _bazTask(GrinderContext c) {
-  ranTasks['baz'] = true;
-
-  log('baz _fooTask');
 }
