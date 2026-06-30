@@ -5,28 +5,69 @@ on:
     # “At 00:00 (UTC) on Sunday.”
     - cron: '0 0 * * 0'
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
 
 jobs:
-  build:
+  analyze-code:
+    name: Static analysis (Code)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        persist-credentials: false
+    - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
+    - run: dart --version
+    - run: dart pub get
+    - run: dart analyze --fatal-infos --fatal-warnings .
+
+  analyze-ci:
+    name: Static analysis (GitHub Actions)
+    runs-on: ubuntu-latest
+    # Required by upload-sarif
+    permissions:
+      security-events: write
+      actions: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
+
+  format:
+    name: Code formatting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        persist-credentials: false
+    - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
+    - run: dart --version
+    - run: dart pub get
+    - run: dart fix --apply
+    - run: dart format .
+    - run: git diff --exit-code
+
+  test:
+    name: Tests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         sdk: [3.1, stable, beta]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
-        with:
-          sdk: ${{ matrix.sdk }}
-
-      - name: Install dependencies
-        run: dart pub get
-  
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Run the grind script (for analysis and testing)
-        run: dart tool/grind.dart
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        persist-credentials: false
+    - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
+      with:
+        sdk: ${{ matrix.sdk }}
+    - run: dart pub get
+    - run: dart pub run test

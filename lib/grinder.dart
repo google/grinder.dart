@@ -14,9 +14,7 @@ import 'src/cli.dart';
 import 'src/discover_tasks.dart';
 import 'src/grinder_context.dart';
 import 'src/grinder_exception.dart';
-import 'src/grinder_task.dart';
 import 'src/singleton.dart';
-import 'src/task_invocation.dart';
 
 export 'src/annotations.dart';
 export 'src/cli.dart' show grinderArgs;
