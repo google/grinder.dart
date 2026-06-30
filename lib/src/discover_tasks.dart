@@ -60,22 +60,25 @@ final class TaskDiscovery {
     }
 
     if (annotation != null) {
-      Function? taskFunction;
-
+      Object? taskFunctionUntyped;
       if (decl is VariableMirror || (decl is MethodMirror && decl.isGetter)) {
-        taskFunction = owner.getField(decl.simpleName).reflectee as Function;
+        taskFunctionUntyped = owner.getField(decl.simpleName).reflectee;
       } else if (decl is MethodMirror && decl.isRegularMethod) {
         if (decl.parameters.isNotEmpty &&
             !decl.parameters.first.isOptional &&
             !decl.parameters.first.isNamed) {
-          taskFunction =
+          taskFunctionUntyped =
               () => owner.invoke(decl.simpleName, [context]).reflectee;
         } else {
-          taskFunction = () => owner.invoke(decl.simpleName, []).reflectee;
+          taskFunctionUntyped =
+              () => owner.invoke(decl.simpleName, []).reflectee;
         }
       }
 
-      if (taskFunction == null) {
+      Function taskFunction;
+      try {
+        taskFunction = taskFunctionUntyped as Function;
+      } on TypeError {
         throw GrinderException(
             '`Task`-annotated top-level `$methodName` should be a task '
             'function or property which returns a task function.');
