@@ -20,7 +20,7 @@ jobs:
     name: Static analysis (Code)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
       with:
         persist-credentials: false
     - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
@@ -36,16 +36,16 @@ jobs:
       security-events: write
       actions: read
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
+      - uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa # v0.5.7
 
   format:
     name: Code formatting
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
       with:
         persist-credentials: false
     - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
@@ -63,7 +63,7 @@ jobs:
       matrix:
         sdk: [3.1, stable, beta]
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
       with:
         persist-credentials: false
     - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
