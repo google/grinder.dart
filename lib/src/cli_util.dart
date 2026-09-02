@@ -28,9 +28,11 @@ String getTaskHelp(Grinder grinder, {bool useColor = true}) {
           label += ' (default)';
         }
         buffer.write('  ${label.padRight(20 + diff)} ');
-        final depTasks = deps.map((d) {
-          return '${ansi.green}${d.name}${ansi.none}';
-        }).join(' ');
+        final depTasks = deps
+            .map((d) {
+              return '${ansi.green}${d.name}${ansi.none}';
+            })
+            .join(' ');
         final depText = '(depends on: $depTasks)';
         if (task.description?.isNotEmpty ?? false) {
           buffer.writeln(task.description);

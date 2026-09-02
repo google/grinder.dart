@@ -23,18 +23,21 @@ void main() {
       _clear();
     });
 
-    grinderTest('run dependent tasks',
-        () => runTasks(['bar', '--flag', '--option=123']), (ctx) {
-      expect(ctx.isFailed, false);
+    grinderTest(
+      'run dependent tasks',
+      () => runTasks(['bar', '--flag', '--option=123']),
+      (ctx) {
+        expect(ctx.isFailed, false);
 
-      // run dependent tasks
-      expect(ranTasks['foo'], true);
-      expect(ranTasks['bar'], true);
+        // run dependent tasks
+        expect(ranTasks['foo'], true);
+        expect(ranTasks['bar'], true);
 
-      // pass args
-      expect(ranTasks['flag'], true);
-      expect(ranTasks['option'], '123');
-    });
+        // pass args
+        expect(ranTasks['flag'], true);
+        expect(ranTasks['option'], '123');
+      },
+    );
   });
 }
 

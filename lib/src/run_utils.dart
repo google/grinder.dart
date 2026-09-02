@@ -27,11 +27,14 @@ void logStderr(String line) {
 /// This function can probably be removed when the deprecated `workingDirectory`
 /// arguments are finally removed.
 RunOptions mergeWorkingDirectory(
-    String? workingDirectory, RunOptions? runOptions) {
+  String? workingDirectory,
+  RunOptions? runOptions,
+) {
   if (workingDirectory != null) {
     if (runOptions?.workingDirectory != null) {
       throw ArgumentError(
-          'only one of workingDirectory or runOptions.workingDirectory may be specified');
+        'only one of workingDirectory or runOptions.workingDirectory may be specified',
+      );
     }
   }
   return runOptions == null

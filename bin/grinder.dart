@@ -10,7 +10,8 @@ void main(List<String> args) {
 
   if (!file.existsSync()) {
     stderr.writeln(
-        "Error: expected to find '$script' relative to the current directory.");
+      "Error: expected to find '$script' relative to the current directory.",
+    );
     exit(1);
   }
 

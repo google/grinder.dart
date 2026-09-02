@@ -31,18 +31,24 @@ void main() {
       expect(coerceToPathList(['a', 'b']), ['a', 'b']);
       expect(coerceToPathList([File('a'), File('b')]), ['a', 'b']);
       expect(coerceToPathList([Directory('a'), Directory('b')]), ['a', 'b']);
-      expect(
-          coerceToPathList([Directory('a'), File('b'), 'c']), ['a', 'b', 'c']);
+      expect(coerceToPathList([Directory('a'), File('b'), 'c']), [
+        'a',
+        'b',
+        'c',
+      ]);
     });
 
     test('findDartSourceFiles', () {
       var testFiles = findDartSourceFiles(['test']);
       expect(testFiles.length, greaterThan(0));
       expect(
-          testFiles,
-          anyElement((String f) =>
+        testFiles,
+        anyElement(
+          (String f) =>
               File(f).existsSync() &&
-              FileSystemEntity.typeSync(f) == FileSystemEntityType.file));
+              FileSystemEntity.typeSync(f) == FileSystemEntityType.file,
+        ),
+      );
     });
   });
 }

@@ -50,15 +50,19 @@ void main() {
     test('should get from cache', () {
       var methodDecl = goodLib.declarations[#method]!;
       var annotated = AnnotatedTask(
-          GrinderTask('method', taskFunction: nullTaskFunction), false);
+        GrinderTask('method', taskFunction: nullTaskFunction),
+        false,
+      );
       var cache = {methodDecl: annotated};
       var result = discoveryGood.discoverDeclaration(methodDecl, cache);
       expect(result, same(annotated));
     });
 
     test('should discover task from regular method', () {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#method]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#method]!,
+        {},
+      )!;
       expect(annotated.isDefault, isFalse);
       var task = annotated.task;
       expect(task.name, 'method');
@@ -66,30 +70,38 @@ void main() {
     });
 
     test('should discover task from variable', () {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#variable]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#variable]!,
+        {},
+      )!;
       var task = annotated.task;
       expect(task.name, 'variable');
       expect(task.depends, [TaskInvocation('method')]);
     });
 
     test('should discover task from getter', () {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#getter]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#getter]!,
+        {},
+      )!;
       var task = annotated.task;
       expect(task.name, 'getter');
       expect(task.depends, [TaskInvocation('method')]);
     });
 
     test('should dasherize camel case task method', () {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#camelCase]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#camelCase]!,
+        {},
+      )!;
       expect(annotated.task.name, 'camel-case');
     });
 
     test('should discover a default task', () {
-      var annotated =
-          discoveryGood.discoverDeclaration(goodLib.declarations[#def]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#def]!,
+        {},
+      )!;
       expect(annotated.isDefault, isTrue);
       var task = annotated.task;
       expect(task.name, 'def');
@@ -97,8 +109,10 @@ void main() {
     });
 
     test('should return null for non-Task-annotated declarations', () {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#nonTask]!, {});
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#nonTask]!,
+        {},
+      );
       expect(annotated, isNull);
     });
 
@@ -109,8 +123,10 @@ void main() {
     });
 
     test('should throw when task getter returns null', () {
-      AnnotatedTask? f() => discoveryBad
-          .discoverDeclaration(badLib.declarations[#nullReturningGetter]!, {});
+      AnnotatedTask? f() => discoveryBad.discoverDeclaration(
+        badLib.declarations[#nullReturningGetter]!,
+        {},
+      );
       expect(f, throwsA(isA<GrinderException>()));
     });
 
@@ -121,52 +137,68 @@ void main() {
     });
 
     test('should throw when depending on non-exported task', () {
-      AnnotatedTask? f() => discoveryBad
-          .discoverDeclaration(badLib.declarations[#dependsNonExported]!, {});
+      AnnotatedTask? f() => discoveryBad.discoverDeclaration(
+        badLib.declarations[#dependsNonExported]!,
+        {},
+      );
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when recursively depending on non-exported task', () {
       AnnotatedTask? f() => discoveryBad.discoverDeclaration(
-          badLib.declarations[#recursivelyDependsNonExported]!, {});
+        badLib.declarations[#recursivelyDependsNonExported]!,
+        {},
+      );
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when depending on invalid task', () {
-      AnnotatedTask? f() => discoveryBad
-          .discoverDeclaration(badLib.declarations[#dependsNonTask]!, {});
+      AnnotatedTask? f() => discoveryBad.discoverDeclaration(
+        badLib.declarations[#dependsNonTask]!,
+        {},
+      );
       expect(f, throwsA(isA<GrinderException>()));
     });
 
     test('should throw when annotated with Depends but not Task', () {
-      AnnotatedTask? f() => discoveryBad
-          .discoverDeclaration(badLib.declarations[#dependsWithoutTask]!, {});
+      AnnotatedTask? f() => discoveryBad.discoverDeclaration(
+        badLib.declarations[#dependsWithoutTask]!,
+        {},
+      );
       expect(f, throwsA(isA<GrinderException>()));
     });
   });
 
   group('execute returns value', () {
     grinderTest('task from method', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#method]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#method]!,
+        {},
+      )!;
       expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from method no-context', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#noContext]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#noContext]!,
+        {},
+      )!;
       expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from variable', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#variable]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#variable]!,
+        {},
+      )!;
       expect(annotated.task.execute(ctx, null), 'someValue');
     });
 
     grinderTest('task from getter', () {}, (MockGrinderContext ctx) {
-      var annotated = discoveryGood
-          .discoverDeclaration(goodLib.declarations[#getter]!, {})!;
+      var annotated = discoveryGood.discoverDeclaration(
+        goodLib.declarations[#getter]!,
+        {},
+      )!;
       expect(annotated.task.execute(ctx, null), 'someValue');
     });
   });
@@ -176,18 +208,19 @@ void main() {
       var tasks = discoveryGood.discover();
 
       expect(
-          tasks.map((annotated) => annotated.task.name),
-          unorderedEquals([
-            'method',
-            'variable',
-            'getter',
-            'camel-case',
-            'def',
-            'shown-method',
-            'shown-variable',
-            'non-hidden',
-            'no-context'
-          ]));
+        tasks.map((annotated) => annotated.task.name),
+        unorderedEquals([
+          'method',
+          'variable',
+          'getter',
+          'camel-case',
+          'def',
+          'shown-method',
+          'shown-variable',
+          'non-hidden',
+          'no-context',
+        ]),
+      );
     });
   });
 }

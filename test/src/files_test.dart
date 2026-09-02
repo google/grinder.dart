@@ -113,15 +113,17 @@ void main() {
 
     test('joinFile', () {
       final tempFile = joinFile(Directory.current, ['dir', 'test']);
-      final expectedFile =
-          File('${Directory.current.path}${_sep}dir${_sep}test');
+      final expectedFile = File(
+        '${Directory.current.path}${_sep}dir${_sep}test',
+      );
       expect(tempFile.path, expectedFile.path);
     });
 
     test('joinDir', () {
       final tempDirectory = joinDir(Directory.current, ['dir', 'test']);
-      final expectedDir =
-          Directory('${Directory.current.path}${_sep}dir${_sep}test');
+      final expectedDir = Directory(
+        '${Directory.current.path}${_sep}dir${_sep}test',
+      );
       expect(tempDirectory.path, expectedDir.path);
     });
 
@@ -149,7 +151,8 @@ void main() {
       final targetDir = joinDir(temp, ['target']);
       copy(sourceDir, targetDir);
 
-      final expectedResult = joinFile(targetDir, ['fileA']).readAsStringSync() +
+      final expectedResult =
+          joinFile(targetDir, ['fileA']).readAsStringSync() +
           joinFile(targetDir, ['fileB']).readAsStringSync() +
           joinFile(targetDir, ['fileC']).readAsStringSync();
       expect(expectedResult, 'abcdefgh1234');
@@ -218,10 +221,10 @@ void main() {
       expect(root.parent!.parent, isNotNull);
     });
 
-//    test('absolute', () {
-//      expect(FilePath.current, notEquals(FilePath.current.absolute));
-//      expect(FilePath.current.absolute.absolute, FilePath.current.absolute);
-//    });
+    //    test('absolute', () {
+    //      expect(FilePath.current, notEquals(FilePath.current.absolute));
+    //      expect(FilePath.current.absolute.absolute, FilePath.current.absolute);
+    //    });
 
     test('copy', () {
       final file = temp.join('temp.txt');

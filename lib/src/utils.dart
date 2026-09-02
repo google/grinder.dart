@@ -37,8 +37,12 @@ String camelToDashes(String input) {
   var segment = RegExp(r'.[^A-Z]*');
   var matches = segment.allMatches(input);
   return matches
-      .map((Match match) => withCapitalization(
-          match.input.substring(match.start, match.end), false))
+      .map(
+        (Match match) => withCapitalization(
+          match.input.substring(match.start, match.end),
+          false,
+        ),
+      )
       .join('-');
 }
 
@@ -46,13 +50,15 @@ String camelToDashes(String input) {
 String withCapitalization(String s, bool capitalized) {
   if (s.isEmpty) return s;
   var firstLetter = s[0];
-  firstLetter =
-      capitalized ? firstLetter.toUpperCase() : firstLetter.toLowerCase();
+  firstLetter = capitalized
+      ? firstLetter.toUpperCase()
+      : firstLetter.toLowerCase();
   return firstLetter + s.substring(1);
 }
 
 Map<Symbol, DeclarationMirror> resolveExportedDeclarations(
-    LibraryMirror library) {
+  LibraryMirror library,
+) {
   final resolvedDeclarations = <Symbol, DeclarationMirror>{};
   resolvedDeclarations.addAll(library.declarations);
 
@@ -149,8 +155,10 @@ Set<String> findDartSourceFiles(Iterable<String> paths) {
   Set<String> findDartSourceFiles(Directory directory) {
     var files = <String>{};
     if (directory.existsSync()) {
-      for (var entry
-          in directory.listSync(recursive: true, followLinks: false)) {
+      for (var entry in directory.listSync(
+        recursive: true,
+        followLinks: false,
+      )) {
         var relative = p.relative(entry.path, from: directory.path);
         if (isDartFileName(entry.path) && !isInHiddenDir(relative)) {
           files.add(entry.path);

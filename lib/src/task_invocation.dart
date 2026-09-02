@@ -10,7 +10,7 @@ final class TaskInvocation {
   final TaskArgs _arguments;
 
   TaskInvocation(this.name, [TaskArgs? arguments])
-      : _arguments = arguments ?? TaskArgs(name, const []);
+    : _arguments = arguments ?? TaskArgs(name, const []);
 
   /// Coerces [nameOrInvocation] into a [TaskInvocation].
   ///
@@ -22,9 +22,10 @@ final class TaskInvocation {
         TaskInvocation _ => nameOrInvocation,
         String _ => TaskInvocation(nameOrInvocation),
         _ => throw ArgumentError(
-            "Can't coerce $nameOrInvocation (${nameOrInvocation.runtimeType}) "
-                "into a TaskInvocation.",
-            'nameOrInvocation'),
+          "Can't coerce $nameOrInvocation (${nameOrInvocation.runtimeType}) "
+              "into a TaskInvocation.",
+          'nameOrInvocation',
+        ),
       };
 
   TaskArgs get arguments => _arguments;

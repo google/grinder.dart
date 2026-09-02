@@ -15,21 +15,26 @@ import 'run_utils.dart';
 /// Returns the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.runSync].
-String run(String executable,
-    {List<String> arguments = const [],
-    RunOptions? runOptions,
-    bool quiet = false,
-    String? workingDirectory}) {
+String run(
+  String executable, {
+  List<String> arguments = const [],
+  RunOptions? runOptions,
+  bool quiet = false,
+  String? workingDirectory,
+}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
 
-  final result = Process.runSync(executable, arguments,
-      workingDirectory: runOptions.workingDirectory,
-      environment: runOptions.environment,
-      includeParentEnvironment: runOptions.includeParentEnvironment,
-      runInShell: runOptions.runInShell,
-      stdoutEncoding: runOptions.stdoutEncoding,
-      stderrEncoding: runOptions.stderrEncoding);
+  final result = Process.runSync(
+    executable,
+    arguments,
+    workingDirectory: runOptions.workingDirectory,
+    environment: runOptions.environment,
+    includeParentEnvironment: runOptions.includeParentEnvironment,
+    runInShell: runOptions.runInShell,
+    stdoutEncoding: runOptions.stdoutEncoding,
+    stderrEncoding: runOptions.stderrEncoding,
+  );
 
   var stdout = result.stdout as String;
   var stderr = result.stderr as String;
@@ -52,20 +57,25 @@ String run(String executable,
 /// Returns a future for the stdout.
 ///
 /// All other optional parameters are forwarded to [Process.start].
-Future<String> runAsync(String executable,
-    {List<String> arguments = const [],
-    RunOptions? runOptions,
-    bool quiet = false,
-    String? workingDirectory}) async {
+Future<String> runAsync(
+  String executable, {
+  List<String> arguments = const [],
+  RunOptions? runOptions,
+  bool quiet = false,
+  String? workingDirectory,
+}) async {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
   if (!quiet) log("$executable ${arguments.join(' ')}");
   final stdout = <int>[], stderr = <int>[];
 
-  var process = await Process.start(executable, arguments,
-      workingDirectory: runOptions.workingDirectory,
-      environment: runOptions.environment,
-      includeParentEnvironment: runOptions.includeParentEnvironment,
-      runInShell: runOptions.runInShell);
+  var process = await Process.start(
+    executable,
+    arguments,
+    workingDirectory: runOptions.workingDirectory,
+    environment: runOptions.environment,
+    includeParentEnvironment: runOptions.includeParentEnvironment,
+    runInShell: runOptions.runInShell,
+  );
   // Handle stdout.
   var broadcastStdout = process.stdout.asBroadcastStream();
   var stdoutLines = toLineStream(broadcastStdout, runOptions.stdoutEncoding);
@@ -86,7 +96,11 @@ Future<String> runAsync(String executable,
 
   if (code != 0) {
     throw ProcessException._(
-        executable, code, stdoutString, encoding.decode(stderr));
+      executable,
+      code,
+      stdoutString,
+      encoding.decode(stderr),
+    );
   }
 
   return stdoutString;
@@ -115,34 +129,36 @@ final class RunOptions {
   final Encoding stdoutEncoding;
   final Encoding stderrEncoding;
 
-  RunOptions(
-      {this.workingDirectory,
-      Map<String, String>? environment,
-      this.includeParentEnvironment = true,
-      bool? runInShell,
-      this.stdoutEncoding = systemEncoding,
-      this.stderrEncoding = systemEncoding})
-      : environment = environment ?? {},
-        runInShell = runInShell ?? Platform.isWindows;
+  RunOptions({
+    this.workingDirectory,
+    Map<String, String>? environment,
+    this.includeParentEnvironment = true,
+    bool? runInShell,
+    this.stdoutEncoding = systemEncoding,
+    this.stderrEncoding = systemEncoding,
+  }) : environment = environment ?? {},
+       runInShell = runInShell ?? Platform.isWindows;
 
   /// Create a clone with updated values in one step.
   /// For omitted parameters values of the original instance are copied.
-  RunOptions clone(
-      {String? workingDirectory,
-      Map<String, String>? environment,
-      bool? includeParentEnvironment,
-      bool? runInShell,
-      Encoding? stdoutEncoding,
-      Encoding? stderrEncoding}) {
+  RunOptions clone({
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool? includeParentEnvironment,
+    bool? runInShell,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) {
     return RunOptions(
-        workingDirectory: workingDirectory ?? this.workingDirectory,
-        environment: environment != null
-            ? Map.from(environment)
-            : Map.from(this.environment),
-        includeParentEnvironment:
-            includeParentEnvironment ?? this.includeParentEnvironment,
-        runInShell: runInShell ?? this.runInShell,
-        stdoutEncoding: stdoutEncoding ?? this.stdoutEncoding,
-        stderrEncoding: stderrEncoding ?? this.stderrEncoding);
+      workingDirectory: workingDirectory ?? this.workingDirectory,
+      environment: environment != null
+          ? Map.from(environment)
+          : Map.from(this.environment),
+      includeParentEnvironment:
+          includeParentEnvironment ?? this.includeParentEnvironment,
+      runInShell: runInShell ?? this.runInShell,
+      stdoutEncoding: stdoutEncoding ?? this.stdoutEncoding,
+      stderrEncoding: stderrEncoding ?? this.stderrEncoding,
+    );
   }
 }
