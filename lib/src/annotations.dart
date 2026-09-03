@@ -31,19 +31,27 @@ final class Depends {
   final Object? dep7;
   final Object? dep8;
 
-  const Depends(this.dep1,
-      [this.dep2,
-      this.dep3,
-      this.dep4,
-      this.dep5,
-      this.dep6,
-      this.dep7,
-      this.dep8]);
+  const Depends(
+    this.dep1, [
+    this.dep2,
+    this.dep3,
+    this.dep4,
+    this.dep5,
+    this.dep6,
+    this.dep7,
+    this.dep8,
+  ]);
 
-  List<Object> get depends => [dep1, dep2, dep3, dep4, dep5, dep6, dep7, dep8]
-      .takeWhile((dep) => dep != null)
-      .cast<Object>()
-      .toList();
+  List<Object> get depends => [
+    dep1,
+    dep2,
+    dep3,
+    dep4,
+    dep5,
+    dep6,
+    dep7,
+    dep8,
+  ].takeWhile((dep) => dep != null).cast<Object>().toList();
 }
 
 /// An annotation to define the default [GrinderTask] to run when no tasks are

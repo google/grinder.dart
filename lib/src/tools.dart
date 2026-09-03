@@ -21,18 +21,22 @@ final Directory webDir = Directory('web');
 /// Run a dart [script] using [run_lib.run]. Returns the stdout.
 ///
 /// Prefer `Dart.run` instead.
-String runDartScript(String script,
-    {List<String> arguments = const [],
-    bool quiet = false,
-    String? packageRoot,
-    RunOptions? runOptions,
-    String? workingDirectory}) {
+String runDartScript(
+  String script, {
+  List<String> arguments = const [],
+  bool quiet = false,
+  String? packageRoot,
+  RunOptions? runOptions,
+  String? workingDirectory,
+}) {
   runOptions = mergeWorkingDirectory(workingDirectory, runOptions);
-  return Dart.run(script,
-      arguments: arguments,
-      quiet: quiet,
-      packageRoot: packageRoot,
-      runOptions: runOptions);
+  return Dart.run(
+    script,
+    arguments: arguments,
+    quiet: quiet,
+    packageRoot: packageRoot,
+    runOptions: runOptions,
+  );
 }
 
 /// A default implementation of a `clean` task. This task deletes all generated
@@ -61,24 +65,27 @@ final class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  void test(
-      {Object? files,
-      String? name,
-      String? plainName,
-      Object? platformSelector,
-      int? concurrency,
-      int? pubServe,
-      RunOptions? runOptions}) {
+  void test({
+    Object? files,
+    String? name,
+    String? plainName,
+    Object? platformSelector,
+    int? concurrency,
+    int? pubServe,
+    RunOptions? runOptions,
+  }) {
     _test.run(
-        _buildArgs(
-            files: files,
-            name: name,
-            plainName: plainName,
-            selector: platformSelector,
-            concurrency: concurrency,
-            pubServe: pubServe),
-        script: 'test',
-        runOptions: runOptions);
+      _buildArgs(
+        files: files,
+        name: name,
+        plainName: plainName,
+        selector: platformSelector,
+        concurrency: concurrency,
+        pubServe: pubServe,
+      ),
+      script: 'test',
+      runOptions: runOptions,
+    );
   }
 
   /// Run the tests in the current package. See the
@@ -96,33 +103,37 @@ final class TestRunner {
   /// `firefox`, `safari`. [concurrency] controls the number of concurrent test
   /// suites run (defaults to 4). [pubServe] is the port of a pub serve instance
   /// serving `test/`.
-  Future<void> testAsync(
-      {Object? files,
-      String? name,
-      String? plainName,
-      Object? platformSelector,
-      int? concurrency,
-      int? pubServe,
-      RunOptions? runOptions}) {
+  Future<void> testAsync({
+    Object? files,
+    String? name,
+    String? plainName,
+    Object? platformSelector,
+    int? concurrency,
+    int? pubServe,
+    RunOptions? runOptions,
+  }) {
     return _test.runAsync(
-        _buildArgs(
-            files: files,
-            name: name,
-            plainName: plainName,
-            selector: platformSelector,
-            concurrency: concurrency,
-            pubServe: pubServe),
-        script: 'test',
-        runOptions: runOptions);
+      _buildArgs(
+        files: files,
+        name: name,
+        plainName: plainName,
+        selector: platformSelector,
+        concurrency: concurrency,
+        pubServe: pubServe,
+      ),
+      script: 'test',
+      runOptions: runOptions,
+    );
   }
 
-  List<String> _buildArgs(
-      {Object? files,
-      String? name,
-      String? plainName,
-      Object? selector,
-      int? concurrency,
-      int? pubServe}) {
+  List<String> _buildArgs({
+    Object? files,
+    String? name,
+    String? plainName,
+    Object? selector,
+    int? concurrency,
+    int? pubServe,
+  }) {
     final args = ['--reporter=expanded'];
     if (name != null) args.add('--name=$name');
     if (plainName != null) args.add('--plain-name=$plainName');
@@ -154,20 +165,43 @@ final class DevCompiler {
       _ddc.runAsync(_args(files, htmlReport: htmlReport));
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  void compile(Object files, Directory outDir,
-      {bool forceCompile = false, bool htmlReport = false}) {
-    _ddc.run(_args(files,
-        outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
+  void compile(
+    Object files,
+    Directory outDir, {
+    bool forceCompile = false,
+    bool htmlReport = false,
+  }) {
+    _ddc.run(
+      _args(
+        files,
+        outDir: outDir,
+        forceCompile: forceCompile,
+        htmlReport: htmlReport,
+      ),
+    );
   }
 
   /// Compile the given file with DDC and generate the output to [outDir].
-  Future<void> compileAsync(Object files, Directory outDir,
-          {bool forceCompile = false, bool htmlReport = false}) =>
-      _ddc.runAsync(_args(files,
-          outDir: outDir, forceCompile: forceCompile, htmlReport: htmlReport));
+  Future<void> compileAsync(
+    Object files,
+    Directory outDir, {
+    bool forceCompile = false,
+    bool htmlReport = false,
+  }) => _ddc.runAsync(
+    _args(
+      files,
+      outDir: outDir,
+      forceCompile: forceCompile,
+      htmlReport: htmlReport,
+    ),
+  );
 
-  List<String> _args(Object files,
-      {Directory? outDir, bool forceCompile = false, bool htmlReport = false}) {
+  List<String> _args(
+    Object files, {
+    Directory? outDir,
+    bool forceCompile = false,
+    bool htmlReport = false,
+  }) {
     final args = <String>[];
     if (outDir != null) args.add('-o${outDir.path}');
     if (forceCompile) args.add('--force-compile');

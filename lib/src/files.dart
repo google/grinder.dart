@@ -72,7 +72,11 @@ final class FileSet {
   // TODO: have a refresh method?
 
   static void _collect(
-      List<File> files, Directory dir, Glob? glob, bool recurse) {
+    List<File> files,
+    Directory dir,
+    Glob? glob,
+    bool recurse,
+  ) {
     for (final entity in dir.listSync(recursive: false, followLinks: false)) {
       final name = fileName(entity);
 
@@ -225,17 +229,18 @@ final class FilePath {
   int get length => isFile ? asFile.lengthSync() : 0;
 
   /// Join the given path elements to this path, and return a new [FilePath] object.
-  FilePath join(
-      [Object? arg0,
-      String? arg1,
-      String? arg2,
-      String? arg3,
-      String? arg4,
-      String? arg5,
-      String? arg6,
-      String? arg7,
-      String? arg8,
-      String? arg9]) {
+  FilePath join([
+    Object? arg0,
+    String? arg1,
+    String? arg2,
+    String? arg3,
+    String? arg4,
+    String? arg5,
+    String? arg6,
+    String? arg7,
+    String? arg8,
+    String? arg9,
+  ]) {
     var paths = [path];
 
     switch (arg0) {
@@ -345,8 +350,11 @@ Directory getDir(String path) {
 /// Copy the given entity to the destination directory.
 ///
 /// Note that the [context] parameter is deprecated.
-void copy(FileSystemEntity entity, Directory destDir,
-    [GrinderContext? context]) {
+void copy(
+  FileSystemEntity entity,
+  Directory destDir, [
+  GrinderContext? context,
+]) {
   log('copying ${entity.path} to ${destDir.path}');
   return _copyImpl(entity, destDir);
 }
@@ -391,8 +399,11 @@ void copyFile(File srcFile, Directory destDir, [GrinderContext? context]) {
 }
 
 /// Prefer using [copy].
-void copyDirectory(Directory srcDir, Directory destDir,
-    [GrinderContext? context]) {
+void copyDirectory(
+  Directory srcDir,
+  Directory destDir, [
+  GrinderContext? context,
+]) {
   copy(srcDir, destDir, context);
 }
 

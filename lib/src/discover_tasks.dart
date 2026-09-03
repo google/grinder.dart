@@ -38,15 +38,20 @@ final class TaskDiscovery {
   ///
   /// Returns `null` if [decl] is not [Task]-annotated.
   AnnotatedTask? discoverDeclaration(
-      DeclarationMirror decl, Map<DeclarationMirror, AnnotatedTask> cache) {
+    DeclarationMirror decl,
+    Map<DeclarationMirror, AnnotatedTask> cache,
+  ) {
     if (cache.containsKey(decl)) {
       return cache[decl];
     }
 
     var owner = decl.owner;
     if (owner is! LibraryMirror) {
-      throw ArgumentError.value(decl, 'decl',
-          'discoverDeclaration() may only be called on a top-level method.');
+      throw ArgumentError.value(
+        decl,
+        'decl',
+        'discoverDeclaration() may only be called on a top-level method.',
+      );
     }
 
     var methodName = MirrorSystem.getName(decl.simpleName);
@@ -55,8 +60,9 @@ final class TaskDiscovery {
 
     if (annotation == null && dependsAnnotation != null) {
       throw GrinderException(
-          'Top-level `$methodName` is annotated with `Depends` but not '
-          '`Task`');
+        'Top-level `$methodName` is annotated with `Depends` but not '
+        '`Task`',
+      );
     }
 
     if (annotation != null) {
@@ -67,11 +73,11 @@ final class TaskDiscovery {
         if (decl.parameters.isNotEmpty &&
             !decl.parameters.first.isOptional &&
             !decl.parameters.first.isNamed) {
-          taskFunctionUntyped =
-              () => owner.invoke(decl.simpleName, [context]).reflectee;
+          taskFunctionUntyped = () =>
+              owner.invoke(decl.simpleName, [context]).reflectee;
         } else {
-          taskFunctionUntyped =
-              () => owner.invoke(decl.simpleName, []).reflectee;
+          taskFunctionUntyped = () =>
+              owner.invoke(decl.simpleName, []).reflectee;
         }
       }
 
@@ -80,8 +86,9 @@ final class TaskDiscovery {
         taskFunction = taskFunctionUntyped as Function;
       } on TypeError {
         throw GrinderException(
-            '`Task`-annotated top-level `$methodName` should be a task '
-            'function or property which returns a task function.');
+          '`Task`-annotated top-level `$methodName` should be a task function '
+          'or property which returns a task function.',
+        );
       }
 
       var name = camelToDashes(methodName);
@@ -97,28 +104,33 @@ final class TaskDiscovery {
             if (annotatedMethodTask == null) {
               var depMethodName = MirrorSystem.getName(depMethod.simpleName);
               throw GrinderException(
-                  'Task `$name` references invalid task method '
-                  '`$depMethodName` as a dependency');
+                'Task `$name` references invalid task method `$depMethodName` '
+                'as a dependency',
+              );
             }
             if (!resolvedDeclarations.values.any((decl) => decl == depMethod)) {
               var depName = annotatedMethodTask.task.name;
               var depLib = MirrorSystem.getName(depMethod.owner!.qualifiedName);
               throw GrinderException(
-                  'Task `$name` references dependency task `$depName` from '
-                  'library `$depLib` which this build file does not export.');
+                'Task `$name` references dependency task `$depName` from '
+                'library `$depLib` which this build file does not export.',
+              );
             }
             return TaskInvocation(annotatedMethodTask.task.name);
           }
 
           throw GrinderException(
-              'Task `$name` references invalid dependency "$dep"');
+            'Task `$name` references invalid dependency "$dep"',
+          );
         }).toList();
       }
 
-      var task = GrinderTask(name,
-          taskFunction: taskFunction,
-          depends: depends,
-          description: annotation.description);
+      var task = GrinderTask(
+        name,
+        taskFunction: taskFunction,
+        depends: depends,
+        description: annotation.description,
+      );
       var annotated = AnnotatedTask(task, annotation is DefaultTask);
 
       return cache[decl] = annotated;

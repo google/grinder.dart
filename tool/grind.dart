@@ -34,8 +34,10 @@ dependencies:
   grinder:
     path: ${FilePath.current.path}
 ''', flush: true);
-    Dart.run(FilePath.current.join('bin', 'init.dart').path,
-        runOptions: RunOptions(workingDirectory: temp.path));
+    Dart.run(
+      FilePath.current.join('bin', 'init.dart').path,
+      runOptions: RunOptions(workingDirectory: temp.path),
+    );
     Process.runSync(
       'dart',
       ['pub', 'get'],

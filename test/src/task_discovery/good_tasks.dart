@@ -17,7 +17,8 @@ final variable = () => 'someValue';
 
 @Task()
 @Depends('method')
-String Function() get getter => () => 'someValue';
+String Function() get getter =>
+    () => 'someValue';
 
 @Task()
 void camelCase() {}

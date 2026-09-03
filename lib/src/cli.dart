@@ -32,8 +32,11 @@ Future<void> runTasks(
     () => getTaskHelp(singleton.grinder),
   );
 
-  parser.addFlag('color',
-      negatable: true, help: 'Whether to use terminal colors.');
+  parser.addFlag(
+    'color',
+    negatable: true,
+    help: 'Whether to use terminal colors.',
+  );
   parser.addFlag('version', help: 'Reports the version of this tool.');
   parser.addFlag('help', abbr: 'h', help: 'Print this usage information.');
 
@@ -82,10 +85,14 @@ final class ArgParser {
   final List<_ArgsFlag> _flags = [];
 
   ArgParser(this.name, this.description, DescribeFunction describeTasks)
-      : _describeTasks = describeTasks;
+    : _describeTasks = describeTasks;
 
-  void addFlag(String name,
-      {String? abbr, String? help, bool negatable = false}) {
+  void addFlag(
+    String name, {
+    String? abbr,
+    String? help,
+    bool negatable = false,
+  }) {
     _flags.add(_ArgsFlag(name, abbr: abbr, help: help, negatable: negatable));
   }
 
@@ -120,8 +127,9 @@ final class ArgParser {
       } else {
         // start a new task
         if (taskInvocation != null) {
-          results.taskInvocations.add(TaskInvocation(
-              taskInvocation, TaskArgs(taskInvocation, taskArgs!)));
+          results.taskInvocations.add(
+            TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs!)),
+          );
         }
 
         taskInvocation = arg;
@@ -131,7 +139,8 @@ final class ArgParser {
 
     if (taskInvocation != null) {
       results.taskInvocations.add(
-          TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs!)));
+        TaskInvocation(taskInvocation, TaskArgs(taskInvocation, taskArgs!)),
+      );
     }
 
     return results;
@@ -152,9 +161,11 @@ ${_describeTasks()}
   }
 
   String _flagsHelp() {
-    return _flags.map((_ArgsFlag flag) {
-      return '  ${flag.label.padRight(20)} ${flag.help ?? ''}';
-    }).join('\n');
+    return _flags
+        .map((_ArgsFlag flag) {
+          return '  ${flag.label.padRight(20)} ${flag.help ?? ''}';
+        })
+        .join('\n');
   }
 }
 

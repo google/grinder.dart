@@ -28,32 +28,48 @@ void main() {
       expect(Dart.version(), isNotEmpty);
     });
 
-    grinderTest('dart2js version', () {
-      expect(Dart2js.version(), isNotNull);
-    }, (MockGrinderContext ctx) {
-      expect(ctx.logBuffer, isNotEmpty);
-      expect(ctx.isFailed, false);
-    });
+    grinderTest(
+      'dart2js version',
+      () {
+        expect(Dart2js.version(), isNotNull);
+      },
+      (MockGrinderContext ctx) {
+        expect(ctx.logBuffer, isNotEmpty);
+        expect(ctx.isFailed, false);
+      },
+    );
 
-    grinderTest('analyzer version', () {
-      expect(Analyzer.version(), isNotNull);
-    }, (MockGrinderContext ctx) {
-      expect(ctx.logBuffer, isNotEmpty);
-      expect(ctx.isFailed, false);
-    });
+    grinderTest(
+      'analyzer version',
+      () {
+        expect(Analyzer.version(), isNotNull);
+      },
+      (MockGrinderContext ctx) {
+        expect(ctx.logBuffer, isNotEmpty);
+        expect(ctx.isFailed, false);
+      },
+    );
 
-    grinderTest('Pub.list', () {
-      expect(Pub.global.list(), isNotNull);
-    }, (ctx) {
-      expect(ctx.logBuffer, isEmpty);
-      expect(ctx.isFailed, false);
-    });
+    grinderTest(
+      'Pub.list',
+      () {
+        expect(Pub.global.list(), isNotNull);
+      },
+      (ctx) {
+        expect(ctx.logBuffer, isEmpty);
+        expect(ctx.isFailed, false);
+      },
+    );
 
-    grinderTest('Pub.isActivated', () {
-      expect(Pub.global.isActivated('foo'), false);
-    }, (ctx) {
-      expect(ctx.isFailed, false);
-    });
+    grinderTest(
+      'Pub.isActivated',
+      () {
+        expect(Pub.global.isActivated('foo'), false);
+      },
+      (ctx) {
+        expect(ctx.isFailed, false);
+      },
+    );
 
     test('PubApp.global', () {
       final grinder = PubApp.global('grinder');
@@ -115,15 +131,19 @@ void main() {
 
   group('grinder.sdk Analyzer', () {
     test(
-        'should throw on non-existing file',
-        () => expect(
-            () => Analyzer.analyze('xyz'), throwsA(isA<ProcessException>())));
+      'should throw on non-existing file',
+      () => expect(
+        () => Analyzer.analyze('xyz'),
+        throwsA(isA<ProcessException>()),
+      ),
+    );
 
     test(
-        'should analyze a list of files ',
-        () => expect(
-            () =>
-                Analyzer.analyze(['test/src/sdk_test.dart', 'tool/grind.dart']),
-            isNot(throwsA(isA<ProcessException>()))));
+      'should analyze a list of files ',
+      () => expect(
+        () => Analyzer.analyze(['test/src/sdk_test.dart', 'tool/grind.dart']),
+        isNot(throwsA(isA<ProcessException>())),
+      ),
+    );
   });
 }

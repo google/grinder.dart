@@ -48,8 +48,10 @@ final class Grinder {
     if (v == null) throw ArgumentError('defaultTask may not be set to null.');
 
     if (_defaultTask != null) {
-      throw GrinderException('Cannot overwrite existing default task '
-          '$_defaultTask with task $v.');
+      throw GrinderException(
+        'Cannot overwrite existing default task '
+        '$_defaultTask with task $v.',
+      );
     }
     addTask(v);
     _defaultTask = v;
@@ -80,11 +82,13 @@ final class Grinder {
       _calcedTaskNameSet.add(invocation.name);
       _invocationOrder.add(invocation);
     } else {
-      var existing = _invocationOrder
-          .firstWhere((existing) => existing.name == invocation.name);
+      var existing = _invocationOrder.firstWhere(
+        (existing) => existing.name == invocation.name,
+      );
       if (invocation != existing) {
         throw GrinderException(
-            'Cannot run a task multiple times with different arguments.');
+          'Cannot run a task multiple times with different arguments.',
+        );
       }
     }
   }
@@ -109,7 +113,7 @@ final class Grinder {
     }
 
     var typedInvocations = [
-      for (var invocation in invocations) TaskInvocation.coerce(invocation)
+      for (var invocation in invocations) TaskInvocation.coerce(invocation),
     ];
 
     final startTime = DateTime.now();
@@ -147,7 +151,8 @@ final class Grinder {
       for (var invocation in task.depends) {
         if (getTask(invocation.name) == null) {
           throw GrinderException(
-              "task '${invocation.name}' referenced by $task, doesn't exist");
+            "task '${invocation.name}' referenced by $task, doesn't exist",
+          );
         }
       }
     }
@@ -156,10 +161,13 @@ final class Grinder {
 
     // Verify that there are no dependency cycles.
     for (final task in tasks) {
-      if (getAllDependencies(task)
-          .any((invocation) => invocation.name == task.name)) {
-        throw GrinderException('Task $task has a dependency cycle.\n'
-            "  $task ==> ${getAllDependencies(task).join(', ')}");
+      if (getAllDependencies(
+        task,
+      ).any((invocation) => invocation.name == task.name)) {
+        throw GrinderException(
+          'Task $task has a dependency cycle.\n'
+          "  $task ==> ${getAllDependencies(task).join(', ')}",
+        );
       }
     }
 
@@ -191,13 +199,15 @@ final class Grinder {
     var taskDeps = _taskDeps;
     if (taskDeps == null) {
       throw StateError(
-          'Grinder.getAllDependencies() may only be called after grind().');
+        'Grinder.getAllDependencies() may only be called after grind().',
+      );
     }
 
     var dependencies = taskDeps[task];
     if (dependencies == null) {
       throw ArgumentError(
-          'Task "$task" isn\'t associated with this Grinder instance.');
+        'Task "$task" isn\'t associated with this Grinder instance.',
+      );
     }
 
     return dependencies;
@@ -224,7 +234,9 @@ final class Grinder {
   }
 
   Set<TaskInvocation> _calcDependencies(
-      GrinderTask task, Set<TaskInvocation> foundDeps) {
+    GrinderTask task,
+    Set<TaskInvocation> foundDeps,
+  ) {
     for (var dep in getImmediateDependencies(task)) {
       final contains = foundDeps.contains(dep);
       foundDeps.add(dep);

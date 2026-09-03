@@ -39,11 +39,13 @@ final class GrinderTask {
     this.taskFunction,
     this.description,
     Iterable<Object> depends = const [],
-  }) : depends = UnmodifiableListView(
-            [for (var dep in depends) TaskInvocation.coerce(dep)]) {
+  }) : depends = UnmodifiableListView([
+         for (var dep in depends) TaskInvocation.coerce(dep),
+       ]) {
     if (taskFunction == null && depends.isEmpty) {
       throw GrinderException(
-          'GrinderTasks must have a task function or dependencies.');
+        'GrinderTasks must have a task function or dependencies.',
+      );
     }
   }
 
@@ -55,10 +57,14 @@ final class GrinderTask {
 
     if (taskFunction is TaskFunction) {
       return zonedContext.withValue(
-          context, () => taskFunction(args ?? TaskArgs(name, [])));
+        context,
+        () => taskFunction(args ?? TaskArgs(name, [])),
+      );
     } else {
       return zonedContext.withValue(
-          context, taskFunction as FutureOr<void> Function());
+        context,
+        taskFunction as FutureOr<void> Function(),
+      );
     }
   }
 
