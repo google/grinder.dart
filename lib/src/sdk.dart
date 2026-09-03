@@ -426,12 +426,11 @@ final class Analyzer {
     );
   }
 
+  @Deprecated(
+    'The Dart analyzer no longer has a separate version from the Dart SDK.',
+  )
   static String? version({bool quiet = false}) => _parseVersion(
-    runlib.run(
-      sdkBin('dart'),
-      quiet: quiet,
-      arguments: ['analyze', '--version'],
-    ),
+    runlib.run(sdkBin('dart'), quiet: quiet, arguments: ['--version']),
   );
 }
 

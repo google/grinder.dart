@@ -1,3 +1,10 @@
+## 0.10.1
+
+- Update the SDK constraint to 3.8.
+
+- Deprecate `Analyzer.version()`, since the Dart analyzer no longer has a
+  separate version from the Dart SDK.
+
 ## 0.10.0
 
 - Update the SDK constraint to 3.1.
