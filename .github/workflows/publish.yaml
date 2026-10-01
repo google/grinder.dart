@@ -14,4 +14,4 @@ jobs:
     permissions:
       pull-requests: write # Create PR comments
       id-token: write # Authenticate via OIDC
-    uses: dart-lang/ecosystem/.github/workflows/publish.yaml@1bdafd85bb97b331ddd683577f48a5dfa7f4cb49
+    uses: dart-lang/ecosystem/.github/workflows/publish.yaml@16dca7ae5d3ff896a4db47e1ed6cd50f7ebbf115

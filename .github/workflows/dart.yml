@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
-    - uses: dart-lang/setup-dart@7654d458321ee25acccccfdb86cd48bd95768ff1
+    - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
     - run: dart --version
     - run: dart pub get
     - run: dart analyze --fatal-infos --fatal-warnings .
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
+      - uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
 
   format:
     name: Code formatting
@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
-    - uses: dart-lang/setup-dart@7654d458321ee25acccccfdb86cd48bd95768ff1
+    - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
     - run: dart --version
     - run: dart pub get
     - run: dart fix --apply
@@ -66,7 +66,7 @@ jobs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       with:
         persist-credentials: false
-    - uses: dart-lang/setup-dart@7654d458321ee25acccccfdb86cd48bd95768ff1
+    - uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
       with:
         sdk: ${{ matrix.sdk }}
     - run: dart pub get
