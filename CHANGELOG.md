@@ -1,3 +1,7 @@
+## 0.10.2
+
+- Support package:cli_util 0.6.0.
+
 ## 0.10.1
 
 - Update the SDK constraint to 3.8.
