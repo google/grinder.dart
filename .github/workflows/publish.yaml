@@ -12,6 +12,5 @@ jobs:
   publish:
     if: ${{ github.repository_owner == 'google' }}
     permissions:
-      pull-requests: write # Create PR comments
       id-token: write # Authenticate via OIDC
-    uses: dart-lang/ecosystem/.github/workflows/publish.yaml@16dca7ae5d3ff896a4db47e1ed6cd50f7ebbf115
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
